@@ -20,16 +20,22 @@
  * THE SOFTWARE.
  */
 
-package it.unipr.aotlab.dmat.core.partitions;
+package it.unipr.aotlab.dmat.core.initializers;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * User: enrico
- * Package: it.unipr.aotlab.dmat.core.partitions
+ * Package: it.unipr.aotlab.dmat.core.initializers
  * Date: 10/17/11
- * Time: 2:41 PM
+ * Time: 4:34 PM
  */
-public interface Partition {
-    // TODO: create checked exception
-    int mapToNode(int col, int row) throws IndexOutOfBoundsException;
+public class URIInitializer {
+    public URIInitializer(URI uri) {
+    }
 
+    public URIInitializer(String uri) throws URISyntaxException {
+        this(new URI(uri));
+    }
 }

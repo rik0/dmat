@@ -33,4 +33,13 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Partitions {
     // High level description on how to create partitions
     // e.g., row cyclic, etc.
+
+    static Partition rowBlocks(int nodesNumber, int rows, int cols) {
+        throw new NotImplementedException();
+    }
+
+    static Partition columnBlocks(int nodesNumber, int rows, int cols) {
+        throw new NotImplementedException();
+    }
+
 }

@@ -20,16 +20,25 @@
  * THE SOFTWARE.
  */
 
-package it.unipr.aotlab.dmat.core.partitions;
+package it.unipr.aotlab.dmat.core.util;
 
 /**
  * User: enrico
- * Package: it.unipr.aotlab.dmat.core.partitions
+ * Package: it.unipr.aotlab.dmat.core.util
  * Date: 10/17/11
- * Time: 2:41 PM
+ * Time: 4:31 PM
  */
-public interface Partition {
-    // TODO: create checked exception
-    int mapToNode(int col, int row) throws IndexOutOfBoundsException;
+public class Cell {
+    final int row;
+    final int col;
 
+    Cell(final int row, final int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public static Cell _(final int row, final int col) {
+        // TODO: maybe some caching for cells? values?
+        return new Cell(row, col);
+    }
 }

@@ -22,6 +22,8 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
+import it.unipr.aotlab.dmat.core.initializers.Initializer;
+
 /**
  * User: enrico
  * Package: it.unipr.aotlab.dmat.core.matrices
@@ -29,4 +31,15 @@ package it.unipr.aotlab.dmat.core.matrices;
  * Time: 2:51 PM
  */
 public interface Matrix {
+    /* TODO: define good format to specify initialization of matrix
+     * we probably need something generic like:
+     * 1. specifiy values directly
+     * 2. specify an URI from which to get the values (URI means that
+     *    it can be either a local file for the specific node where the
+     *    nodes should be stored or other stuff
+     * 3. do we need something clever to manage the fact that some nodes
+     *    may want to use different URIs to get their values?
+     * 4. what about the formats in which we store the values in the files?
+     */
+    Matrix initialize(Initializer init);
 }

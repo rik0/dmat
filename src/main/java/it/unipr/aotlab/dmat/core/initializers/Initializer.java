@@ -20,16 +20,13 @@
  * THE SOFTWARE.
  */
 
-package it.unipr.aotlab.dmat.core.partitions;
+package it.unipr.aotlab.dmat.core.initializers;
 
 /**
  * User: enrico
- * Package: it.unipr.aotlab.dmat.core.partitions
+ * Package: it.unipr.aotlab.dmat.core.initializers
  * Date: 10/17/11
- * Time: 2:41 PM
+ * Time: 4:28 PM
  */
-public interface Partition {
-    // TODO: create checked exception
-    int mapToNode(int col, int row) throws IndexOutOfBoundsException;
-
+public interface Initializer {
 }

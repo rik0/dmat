@@ -3,6 +3,7 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
+import it.unipr.aotlab.dmat.core.errors.PartitionError;
 import it.unipr.aotlab.dmat.core.net.Configurator;
 import it.unipr.aotlab.dmat.core.formats.Format;
 import it.unipr.aotlab.dmat.core.partitions.Partition;
@@ -15,16 +16,17 @@ import it.unipr.aotlab.dmat.core.util.Type;
  * Date: 10/17/11
  * Time: 2:52 PM
  */
-abstract public class Matrices {
+
+// TODO: what do we mean with multiple matrix factories?
+// TODO: how to allocate nodes?
+abstract public class MatrixFactory {
     abstract Configurator getConfigurator();
-    abstract protected Matrix createMatrix(
-            int cols,
-            int rows,
+    abstract protected Matrix createMatrix (
             Type type,
             Partition p,
             Shape s,
             Format f
-    );
+    ) throws PartitionError;
 
     /* createSparse(), etc */
 
