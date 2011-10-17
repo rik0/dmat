@@ -1,3 +1,6 @@
+/* Copyright */
+
+
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.net.Configurator;
@@ -12,7 +15,7 @@ import it.unipr.aotlab.dmat.core.util.Type;
  * Date: 10/17/11
  * Time: 2:52 PM
  */
-abstract public class MatrixFactory {
+abstract public class Matrices {
     abstract Configurator getConfigurator();
     abstract protected Matrix createMatrix(
             int cols,
