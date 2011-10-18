@@ -28,5 +28,11 @@ package it.unipr.aotlab.dmat.core.initializers;
  * Date: 10/17/11
  * Time: 4:28 PM
  */
+
+/*
+ * TODO: useful initializers may be the diagonal ones and similar stuff
+ *
+ */
+
 public interface Initializer {
 }

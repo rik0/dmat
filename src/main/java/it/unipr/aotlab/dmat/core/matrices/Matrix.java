@@ -41,5 +41,19 @@ public interface Matrix {
      *    may want to use different URIs to get their values?
      * 4. what about the formats in which we store the values in the files?
      */
-    Matrix initialize(Initializer init);
+
+    /**
+     * Sets the initializer to the specified initializer.
+     * @param init
+     * @return setInitializer always returns this
+     */
+    Matrix setInitializer(Initializer init);
+
+    /**
+     * Initializes the matrix with the specified initializer.
+     *
+     * TODO decide if It is an error to call this method more than once
+     * @return this
+     */
+    Matrix initialize();
 }
