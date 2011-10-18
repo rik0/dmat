@@ -31,6 +31,5 @@ import it.unipr.aotlab.dmat.core.net.Login;
  * Time: 2:08 PM
  */
 public interface Configurator {
-    void addNode(Address a);
-    void addNode(Address a, Login l);
+    void addNode(Node n);
 }
