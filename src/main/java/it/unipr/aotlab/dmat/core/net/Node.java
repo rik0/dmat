@@ -7,4 +7,5 @@ package it.unipr.aotlab.dmat.core.net;
  * Time: 11:06 AM
  */
 public interface Node {
+    public void sendMessage(Message m);
 }
