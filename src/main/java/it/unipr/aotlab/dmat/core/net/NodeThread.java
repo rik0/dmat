@@ -2,21 +2,20 @@ package it.unipr.aotlab.dmat.core.net;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 public class NodeThread implements Node, Runnable {
-    @SuppressWarnings("unchecked")
-    private final Queue<Message> messages = ((Queue<Message>) Collections
-            .synchronizedList(new LinkedList<Message>()));
+    private final List<Message> messages = Collections
+            .synchronizedList(new LinkedList<Message>());
 
     NodeThread() {
     }
 
     @Override
     public void run() {
-        /*
-         * Here we will active the message loop
-         */
+        popMessage();
     }
 
     @Override
@@ -29,9 +28,9 @@ public class NodeThread implements Node, Runnable {
         while (messages.isEmpty()) {
             try {
                 wait();
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
             }
         }
-        return messages.poll();
+        return messages.remove(0);
     }
 }
