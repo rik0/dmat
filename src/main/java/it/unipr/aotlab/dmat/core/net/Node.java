@@ -1,5 +1,7 @@
 package it.unipr.aotlab.dmat.core.net;
 
+import java.util.Vector;
+
 /**
  * User: enrico
  * Package: it.unipr.aotlab.dmat.core.net
@@ -7,5 +9,7 @@ package it.unipr.aotlab.dmat.core.net;
  * Time: 11:06 AM
  */
 public interface Node {
+    public Vector<Node> getCluster();
+    public void setCluster(Vector<Node> v);
     public void sendMessage(Message m);
 }

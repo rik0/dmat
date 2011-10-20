@@ -5,17 +5,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.Vector;
 
 public class NodeThread implements Node, Runnable {
     private final List<Message> messages = Collections
             .synchronizedList(new LinkedList<Message>());
-
+    private Vector<Node> companions = null;
+    
     NodeThread() {
     }
 
     @Override
     public void run() {
-        popMessage();
     }
 
     @Override
@@ -32,5 +33,16 @@ public class NodeThread implements Node, Runnable {
             }
         }
         return messages.remove(0);
+    }
+
+    
+    @Override
+    public Vector<Node> getCluster() {
+        return companions;
+    }
+
+    @Override
+    public void setCluster(Vector<Node> v) {
+        this.companions = v;
     }
 }

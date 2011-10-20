@@ -32,3 +32,4 @@ public enum Type {
          UINT8, UINT16, UINT32, UINT64,
         FLOAT32, FLOAT64
 }
+

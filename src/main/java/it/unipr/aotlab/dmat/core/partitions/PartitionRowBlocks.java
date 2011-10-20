@@ -1,7 +1,6 @@
 package it.unipr.aotlab.dmat.core.partitions;
 
 public class PartitionRowBlocks implements Partition {
-    private final int nofNodes;
     private final int nofRows;
     private final int nofColumns;
 
@@ -12,7 +11,6 @@ public class PartitionRowBlocks implements Partition {
 
     public PartitionRowBlocks(final int nofNodes, final int nofRows,
             final int nofColumns) {
-        this.nofNodes = nofNodes;
         this.nofRows = nofRows;
         this.nofColumns = nofColumns;
 
