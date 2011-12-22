@@ -28,5 +28,4 @@ package it.unipr.aotlab.dmat.core.net;
  * Time: 2:33 PM
  */
 public interface Login {
-    
 }
