@@ -27,5 +27,5 @@ package it.unipr.aotlab.dmat.core.net;
  * Date: 10/17/11
  * Time: 2:33 PM
  */
-public interface Login {
+public interface Connector {
 }

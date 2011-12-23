@@ -1,0 +1,27 @@
+Cell: a single element of a Chunk.
+Type: type of elements. Type in memory and semiring operations.
+Format: how chunk cells are stored in memory.
+Partition: surjective function from a Cell to the <Node, Chunk> that contains it.
+Chunk: rectangular part of a matrix. Chunk type is the type of its elements, it is identified with a string.
+Message: a class instance to be sent to nodes.
+Node: a node receives messages, might contains chunks, might do computations, it is identified with a string.
+Matrix: a set of Chunk(s) of the same type, the union of the chunks must be a rectangle. The type of a matrix is the type of its chunks.
+Shape: peculiar shapes of matrices.
+
+
+E.g.,
+
+A
+--------------
+I N.a        I
+I            I
+--------------
+I     I      I
+I N.b I M.a  I
+I     I      I
+I     I      I
+--------------
+
+We have one matrix (A), two nodes (N and M), three chunks (N.a, N.b and M.a).
+Two chunks are in the Node N, one chunk is in the node M.
+
