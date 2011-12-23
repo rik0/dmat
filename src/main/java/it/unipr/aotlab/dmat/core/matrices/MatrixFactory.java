@@ -8,7 +8,7 @@ import it.unipr.aotlab.dmat.core.net.Configurator;
 import it.unipr.aotlab.dmat.core.formats.Format;
 import it.unipr.aotlab.dmat.core.partitions.Partition;
 import it.unipr.aotlab.dmat.core.shapes.Shape;
-import it.unipr.aotlab.dmat.core.util.Type;
+import it.unipr.aotlab.dmat.core.util.ElementType;
 
 /**
  * User: enrico
@@ -22,7 +22,7 @@ import it.unipr.aotlab.dmat.core.util.Type;
 abstract public class MatrixFactory {
     abstract Configurator getConfigurator();
     abstract protected Matrix createMatrix (
-            Type type,
+            ElementType type,
             Partition p,
             Shape s,
             Format f

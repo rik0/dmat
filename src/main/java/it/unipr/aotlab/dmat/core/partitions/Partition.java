@@ -31,5 +31,4 @@ package it.unipr.aotlab.dmat.core.partitions;
 public interface Partition {
     // TODO: create checked exception
     int mapToNode(int col, int row) throws IndexOutOfBoundsException;
-
 }
