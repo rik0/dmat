@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.net;
 
-import java.util.Vector;
+import it.unipr.aotlab.dmat.core.partitions.Chunk;
 
 /**
  * User: enrico
@@ -9,7 +9,7 @@ import java.util.Vector;
  * Time: 11:06 AM
  */
 public interface Node {
-    public Vector<Node> getCluster();
-    public void setCluster(Vector<Node> v);
+    public Chunk getChunck(String id);
+
     public void sendMessage(Message m);
 }

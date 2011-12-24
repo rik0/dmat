@@ -21,9 +21,6 @@
  */
 package it.unipr.aotlab.dmat.core.net;
 
-import it.unipr.aotlab.dmat.core.net.Address;
-import it.unipr.aotlab.dmat.core.net.Connector;
-
 /**
  * User: enrico
  * Package: it.unipr.aotlab.dmat.core
