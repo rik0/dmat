@@ -20,7 +20,9 @@
  * THE SOFTWARE.
  */
 
-package it.unipr.aotlab.dmat.core.partitions;
+package it.unipr.aotlab.dmat.core.matrices;
+
+import java.util.Comparator;
 
 /**
  * User: enrico
@@ -30,16 +32,53 @@ package it.unipr.aotlab.dmat.core.partitions;
  */
 
 public class Chunk {
-    final int startRow;
-    final int endRow;
-    final int startCol;
-    final int endCol;
+    String chunkId;
+    int startRow;
+    int endRow;
+    int startCol;
+    int endCol;
 
     // package visibility
-    Chunk(final int startRow, final int endRow, final int startCol, final int endCol) {
+    Chunk(final String chunkId, final int startRow, final int endRow,
+            final int startCol, final int endCol) {
+        this.chunkId = chunkId;
         this.startRow = startRow;
         this.endRow = endRow;
         this.startCol = startCol;
         this.endCol = endCol;
+    }
+
+    public String getChunkId() {
+        return chunkId;
+    }
+
+    Chunk splitHorizzonally(final String newChunkName,
+            final int newChunkStartRow) {
+        final Chunk newChunk = new Chunk(newChunkName, newChunkStartRow,
+                endRow, startCol, endCol);
+        endRow = newChunkStartRow;
+
+        return newChunk;
+    }
+
+    Chunk splitVertically(final String newChunkName,
+            final int newChunkStartCol) {
+        final Chunk newChunk = new Chunk(newChunkName, startRow, endRow,
+                newChunkStartCol, endCol);
+        endCol = newChunkStartCol;
+
+        return newChunk;
+    }
+
+    static class comparator implements Comparator<Chunk> {
+        @Override
+        public int compare(final Chunk left, final Chunk right) {
+            int comparation = left.startCol - right.startCol;
+            if (comparation == 0) {
+                comparation = left.startRow - right.startRow;
+            }
+
+            return comparation;
+        }
     }
 }

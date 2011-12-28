@@ -1,10 +1,12 @@
 package it.unipr.aotlab.dmat.core.net;
 
-import it.unipr.aotlab.dmat.core.partitions.Chunk;
+import it.unipr.aotlab.dmat.core.matrices.Chunk;
 
 public interface Nodes {
-	public void configureNode();
-    public void addChunck(Chunk c);
+	public Nodes configureNode();
+	public Nodes setNodeName(String nodeId);
+    public Nodes addChunck(Chunk c);
+    public void reset();
 
-	Node makeNode();
+	Node build();
 }

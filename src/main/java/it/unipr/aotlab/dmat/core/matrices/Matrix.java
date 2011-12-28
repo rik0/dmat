@@ -22,7 +22,7 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
-import it.unipr.aotlab.dmat.core.initializers.Initializer;
+import java.util.Vector;
 
 /**
  * User: enrico
@@ -30,7 +30,11 @@ import it.unipr.aotlab.dmat.core.initializers.Initializer;
  * Date: 10/17/11
  * Time: 2:51 PM
  */
-public interface Matrix {
+public class Matrix {
+    int rows = 0;
+    int cols = 0;
+    Vector<Chunk> chunks = new Vector<Chunk>();
+
     /* TODO: define good format to specify initialization of matrix
      * we probably need something generic like:
      * 1. specifiy values directly
@@ -43,17 +47,11 @@ public interface Matrix {
      */
 
     /**
-     * Sets the initializer to the specified initializer.
-     * @param init
-     * @return setInitializer always returns this
-     */
-    Matrix setInitializer(Initializer init);
-
-    /**
      * Initializes the matrix with the specified initializer.
      *
-     * TODO decide if It is an error to call this method more than once
      * @return this
      */
-    Matrix initialize();
+    Matrix initialize() {
+        return this;
+    }
 }

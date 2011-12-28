@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.registers;
 
-import it.unipr.aotlab.dmat.core.errors.NodeIdNotUnique;
+import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.net.Node;
 
@@ -11,9 +11,9 @@ public class NodeRegister {
     Map<String, Node> nodes = new LinkedHashMap<String, Node>();
 
     public void registerNode(final String id, final Node n)
-            throws NodeIdNotUnique {
+            throws IdNotUnique {
         if (nodes.get(id) != null)
-            throw new NodeIdNotUnique();
+            throw new IdNotUnique();
 
         nodes.put(id, n);
     }

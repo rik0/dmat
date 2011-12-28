@@ -7,7 +7,7 @@ public class ConfiguratorImpl implements Configurator {
 
     @Override
     public void addNode(final Node n) {
-        n.setCluster(nodes);
+        // n.setCluster(nodes);
         nodes.add(n);
     }
 }

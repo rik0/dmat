@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.net;
 
-import it.unipr.aotlab.dmat.core.partitions.Chunk;
+import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
+import it.unipr.aotlab.dmat.core.matrices.Chunk;
 
 /**
  * User: enrico
@@ -9,7 +10,7 @@ import it.unipr.aotlab.dmat.core.partitions.Chunk;
  * Time: 11:06 AM
  */
 public interface Node {
-    public Chunk getChunck(String id);
+    public Chunk getChunck(String id) throws ChunkNotFound;
 
     public void sendMessage(Message m);
 }
