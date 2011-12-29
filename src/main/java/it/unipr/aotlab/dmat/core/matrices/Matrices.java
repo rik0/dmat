@@ -4,6 +4,9 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
+import it.unipr.aotlab.dmat.core.initializers.Initializers;
+import it.unipr.aotlab.dmat.core.util.ElementType;
+import it.unipr.aotlab.dmat.core.util.SemiRings;
 
 /**
  * User: enrico
@@ -20,18 +23,6 @@ public class Matrices {
      * state & 4 means the default chunk has been created */
     int state = 0;
     Matrix buildingMatrix = new Matrix();
-
-    private void createDefaultChunk() {
-        if ((state & 4) == 4) {
-            throw new InvalidMatricesCall();
-        }
-
-        if ((state & 3) == 3) {
-            buildingMatrix.chunks.add(new Chunk("default", 0,
-                    buildingMatrix.rows, 0, buildingMatrix.cols));
-            state |= 4;
-        }
-    }
 
     public Matrices splitHorizzontalyChuck(final String splitsChuckName,
             final int row, final String newChunkName) throws ChunkNotFound {
@@ -85,12 +76,45 @@ public class Matrices {
         return this;
     }
 
+    public Matrices setElementType(final ElementType elementType) {
+        buildingMatrix.elementType = elementType;
+
+        return this;
+    }
+
+    private void createDefaultChunk() {
+        if ((state & 4) == 4) {
+            throw new InvalidMatricesCall();
+        }
+
+        if ((state & 3) == 3) {
+            buildingMatrix.chunks.add(new Chunk("default", 0,
+                    buildingMatrix.rows, 0, buildingMatrix.cols));
+            state |= 4;
+        }
+    }
+
+    private void setMissingDefaults() {
+        if (buildingMatrix.elementType == null)
+            buildingMatrix.elementType = ElementType.INT32;
+
+        if (buildingMatrix.semiring == null)
+            buildingMatrix.semiring = SemiRings
+                    .defaultSemiring(buildingMatrix.elementType);
+
+        if (buildingMatrix.init == null)
+            buildingMatrix.init = Initializers
+                    .defaultInitializer(buildingMatrix.elementType);
+    }
+
     public void reset() {
         state = 0;
         buildingMatrix = new Matrix();
     }
 
     public Matrix build() {
+        setMissingDefaults();
+
         final Matrix builtMatrix = buildingMatrix;
         reset();
 

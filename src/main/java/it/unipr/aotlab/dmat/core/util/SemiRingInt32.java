@@ -3,8 +3,8 @@ package it.unipr.aotlab.dmat.core.util;
 public class SemiRingInt32 implements SemiRing<Integer> {
     static SemiRingInt32 theOne = new SemiRingInt32();
     static {
-        SemiRings.addFactory(ElementType.INT32, theOne);
-        SemiRings.addFactory(ElementType.UINT32, theOne);
+        SemiRings.addDefaultSemiring(ElementType.INT32, theOne);
+        SemiRings.addDefaultSemiring(ElementType.UINT32, theOne);
     }
 
     @Override

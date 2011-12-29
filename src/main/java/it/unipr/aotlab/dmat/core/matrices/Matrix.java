@@ -25,6 +25,11 @@ package it.unipr.aotlab.dmat.core.matrices;
 import java.util.Vector;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
+import it.unipr.aotlab.dmat.core.initializers.Initializer;
+import it.unipr.aotlab.dmat.core.util.ElementType;
+import it.unipr.aotlab.dmat.core.util.SemiRing;
 
 /**
  * User: enrico
@@ -35,8 +40,16 @@ import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 public class Matrix {
     int rows = 0;
     int cols = 0;
+    ElementType elementType = null;
+    Initializer init = null;
+    SemiRing<?> semiring = null;
 
     Vector<Chunk> chunks = new Vector<Chunk>();
+
+    public void checkCoords(final int row, final int col) {
+        if (row < 0 || col < 0 || row >= rows || col >= cols)
+            throw new InvalidCoord();
+    }
 
     /* TODO: define good format to specify initialization of matrix
      * we probably need something generic like:
@@ -76,4 +89,20 @@ public class Matrix {
         return chunk;
     }
 
+    public Chunk getChunk(final int row, final int col) {
+        checkCoords(row, col);
+
+        Chunk chunk = null;
+        for (final Chunk t : chunks) {
+            if (row >= t.startRow && row < t.endRow && col >= t.startCol
+                    && col < t.endCol) {
+                chunk = t;
+                break;
+            }
+        }
+        if (chunk == null)
+            throw new DMatInternalError();
+
+        return chunk;
+    }
 }

@@ -3,7 +3,7 @@ package it.unipr.aotlab.dmat.core.util;
 public class SemiRingBoolean implements SemiRing<Boolean> {
     static SemiRingBoolean theOne = new SemiRingBoolean();
     static {
-        SemiRings.addFactory(ElementType.BOOL, theOne);
+        SemiRings.addDefaultSemiring(ElementType.BOOL, theOne);
     }
 
     @Override

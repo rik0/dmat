@@ -22,7 +22,7 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
-import java.util.Comparator;
+import it.unipr.aotlab.dmat.core.formats.Format;
 
 /**
  * User: enrico
@@ -32,11 +32,32 @@ import java.util.Comparator;
  */
 
 public class Chunk {
+    Format format;
     String chunkId;
     int startRow;
     int endRow;
     int startCol;
     int endCol;
+
+    public int getStartRow() {
+        return startRow;
+    }
+
+    public int getEndRow() {
+        return endRow;
+    }
+
+    public int getStartCol() {
+        return startCol;
+    }
+
+    public int getEndCol() {
+        return endCol;
+    }
+
+    public String getChunkId() {
+        return chunkId;
+    }
 
     Chunk(final String chunkId, final int startRow, final int endRow,
             final int startCol, final int endCol) {
@@ -45,10 +66,6 @@ public class Chunk {
         this.endRow = endRow;
         this.startCol = startCol;
         this.endCol = endCol;
-    }
-
-    public String getChunkId() {
-        return chunkId;
     }
 
     Chunk splitHorizzonally(final String newChunkName,
@@ -60,24 +77,11 @@ public class Chunk {
         return newChunk;
     }
 
-    Chunk splitVertically(final String newChunkName,
-            final int newChunkStartCol) {
+    Chunk splitVertically(final String newChunkName, final int newChunkStartCol) {
         final Chunk newChunk = new Chunk(newChunkName, startRow, endRow,
                 newChunkStartCol, endCol);
         endCol = newChunkStartCol;
 
         return newChunk;
-    }
-
-    static class comparator implements Comparator<Chunk> {
-        @Override
-        public int compare(final Chunk left, final Chunk right) {
-            int comparation = left.startCol - right.startCol;
-            if (comparation == 0) {
-                comparation = left.startRow - right.startRow;
-            }
-
-            return comparation;
-        }
     }
 }
