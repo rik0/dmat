@@ -38,7 +38,6 @@ public class Chunk {
     int startCol;
     int endCol;
 
-    // package visibility
     Chunk(final String chunkId, final int startRow, final int endRow,
             final int startCol, final int endCol) {
         this.chunkId = chunkId;

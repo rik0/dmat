@@ -24,6 +24,8 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import java.util.Vector;
 
+import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
+
 /**
  * User: enrico
  * Package: it.unipr.aotlab.dmat.core.matrices
@@ -33,6 +35,7 @@ import java.util.Vector;
 public class Matrix {
     int rows = 0;
     int cols = 0;
+
     Vector<Chunk> chunks = new Vector<Chunk>();
 
     /* TODO: define good format to specify initialization of matrix
@@ -52,6 +55,25 @@ public class Matrix {
      * @return this
      */
     Matrix initialize() {
+        //TODO
         return this;
     }
+
+    public Chunk getChunk(final String chunkName) throws ChunkNotFound {
+        // Linear search; there must be a better way. But
+        // we need to be able to change the keys (chunkId)
+        Chunk chunk = null;
+        for (final Chunk t : chunks) {
+            if (t.chunkId.equals(chunkName)) {
+                chunk = t;
+                break;
+            }
+        }
+        if (chunk == null) {
+            throw new ChunkNotFound();
+        }
+
+        return chunk;
+    }
+
 }

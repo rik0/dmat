@@ -2,6 +2,7 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
+import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
 
 /**
@@ -32,7 +33,38 @@ public class Matrices {
         }
     }
 
-    public Matrices splitHorizzontalyChuck(final String chuckName, final int row) {
+    public Matrices splitHorizzontalyChuck(final String splitsChuckName,
+            final int row, final String newChunkName) throws ChunkNotFound {
+        return splitHorizzontalyChuck(splitsChuckName, row, splitsChuckName,
+                newChunkName);
+    }
+
+    public Matrices splitVerticallyChuck(final String splitsChuckName,
+            final int col, final String newChunkName) throws ChunkNotFound {
+        return splitVerticallyChuck(splitsChuckName, col, splitsChuckName,
+                newChunkName);
+    }
+
+    public Matrices splitHorizzontalyChuck(final String splitsChuckName,
+            final int row, final String oldChunkNewName,
+            final String newChunkName) throws ChunkNotFound {
+        final Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
+        buildingMatrix.chunks.add(new Chunk(newChunkName, row, oldChunk.endRow,
+                oldChunk.startCol, oldChunk.endRow));
+        oldChunk.chunkId = oldChunkNewName;
+        oldChunk.endRow = row;
+
+        return this;
+    }
+
+    public Matrices splitVerticallyChuck(final String splitsChuckName,
+            final int col, final String oldChunkNewName,
+            final String newChunkName) throws ChunkNotFound {
+        final Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
+        buildingMatrix.chunks.add(new Chunk(newChunkName, oldChunk.startRow,
+                oldChunk.endRow, col, oldChunk.endRow));
+        oldChunk.chunkId = oldChunkNewName;
+        oldChunk.endCol = col;
 
         return this;
     }
