@@ -4,7 +4,7 @@ public class Address implements it.unipr.aotlab.dmat.core.net.Address {
     int port;
     String address;
 
-    public Address(final int port, final String address) {
+    public Address(final String address, final int port) {
         this.port = port;
         this.address = address;
     }
