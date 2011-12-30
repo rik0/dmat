@@ -29,5 +29,13 @@ package it.unipr.aotlab.dmat.core.errors;
  * Time: 3:34 PM
  */
 public class DMatError extends Exception {
-    private static long serialVersionUID = 7611119708240799899L;
+    private static final long serialVersionUID = 7611119708240799899L;
+
+    public DMatError() {
+        super();
+    }
+
+    public DMatError(String message) {
+        super(message);
+    }
 }

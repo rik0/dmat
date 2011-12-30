@@ -29,5 +29,13 @@ package it.unipr.aotlab.dmat.core.errors;
  * Time: 3:35 PM
  */
 public class PartitionError extends DMatError {
-    private static long serialVersionUID = -8179605367974921494L;
+    private static final long serialVersionUID = -8179605367974921494L;
+
+    public PartitionError() {
+        super();
+    }
+
+    public PartitionError(String message) {
+        super(message);
+    }
 }

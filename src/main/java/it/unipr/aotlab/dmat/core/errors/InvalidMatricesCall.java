@@ -1,5 +1,13 @@
 package it.unipr.aotlab.dmat.core.errors;
 
 public class InvalidMatricesCall extends DMatUncheckedException {
-    private static long serialVersionUID = -3620032023308017348L;
+    private static final long serialVersionUID = -3620032023308017348L;
+
+    public InvalidMatricesCall() {
+        super();
+    }
+
+    public InvalidMatricesCall(String message) {
+        super(message);
+    }
 }
