@@ -9,17 +9,17 @@ public class MessageSender implements
         it.unipr.aotlab.dmat.core.net.MessageSender {
     ConnectionFactory rabbitMQConnector;
 
-    public MessageSender(final Connector c) {
+    public MessageSender(Connector c) {
         rabbitMQConnector = c.connectionFactory();
     }
 
     @Override
-    public void sendMessage(final Message m, final Node n) {
+    public void sendMessage(Message m, final Node n) {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void broadCastMessage(final Message m) {
+    public void broadCastMessage(Message m) {
         // TODO Auto-generated method stub
     }
 }

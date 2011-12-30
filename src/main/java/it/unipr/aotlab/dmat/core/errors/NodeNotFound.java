@@ -1,5 +1,5 @@
 package it.unipr.aotlab.dmat.core.errors;
 
 public class NodeNotFound extends DMatError {
-    private static final long serialVersionUID = 6390364268256641932L;
+    private static long serialVersionUID = 6390364268256641932L;
 }

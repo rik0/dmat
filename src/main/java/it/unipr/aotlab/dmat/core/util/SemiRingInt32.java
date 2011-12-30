@@ -13,12 +13,12 @@ public class SemiRingInt32 implements SemiRing<Integer> {
     }
 
     @Override
-    public Integer add(final Integer firstAddendum, final Integer secondAddendum) {
+    public Integer add(Integer firstAddendum, final Integer secondAddendum) {
         return firstAddendum + secondAddendum;
     }
 
     @Override
-    public Integer times(final Integer multiplicand, final Integer multiplier) {
+    public Integer times(Integer multiplicand, final Integer multiplier) {
         return multiplicand * multiplier;
     }
 

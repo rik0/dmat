@@ -6,7 +6,7 @@ public class Connector implements it.unipr.aotlab.dmat.core.net.Connector {
     Address address;
     ConnectionFactory rabbitMQConnector = new ConnectionFactory();
 
-    public Connector(final Address address) {
+    public Connector(Address address) {
         this.address = address;
         rabbitMQConnector.setPort(address.getPort());
         rabbitMQConnector.setHost(address.getHost());

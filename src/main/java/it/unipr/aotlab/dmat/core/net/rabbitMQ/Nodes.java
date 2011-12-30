@@ -12,21 +12,21 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     }
 
     @Override
-    public Nodes addChunck(final Chunk c) {
+    public Nodes addChunck(Chunk c) {
         buildingNode.chunks.put(c.getChunkId(), c);
         return this;
     }
  
     @Override
     public Node build() {
-        final Node builtNode = buildingNode;
+        Node builtNode = buildingNode;
         reset();
 
         return builtNode;
     }
 
     @Override
-    public Nodes setNodeName(final String nodeId) {
+    public Nodes setNodeName(String nodeId) {
         buildingNode.nodeId = nodeId;
         return this;
     }

@@ -1,16 +1,16 @@
 package it.unipr.aotlab.dmat.core.partitions;
 
 public class PartitionRowBlocks implements Partition {
-    private final int nofRows;
-    private final int nofColumns;
+    private int nofRows;
+    private int nofColumns;
 
-    private final int nofRowsPerNode;
-    private final int nofResidueRows;
+    private int nofRowsPerNode;
+    private int nofResidueRows;
 
-    private final int lineOfChange;
+    private int lineOfChange;
 
-    public PartitionRowBlocks(final int nofNodes, final int nofRows,
-            final int nofColumns) {
+    public PartitionRowBlocks(int nofNodes, final int nofRows,
+            int nofColumns) {
         this.nofRows = nofRows;
         this.nofColumns = nofColumns;
 
@@ -21,7 +21,7 @@ public class PartitionRowBlocks implements Partition {
     }
 
     @Override
-    public int mapToNode(final int col, final int row)
+    public int mapToNode(int col, final int row)
             throws IndexOutOfBoundsException {
         if (col < 0 || row < 0 || col >= nofColumns || row >= nofRows)
             throw new IndexOutOfBoundsException();

@@ -46,7 +46,7 @@ public class Matrix {
 
     Vector<Chunk> chunks = new Vector<Chunk>();
 
-    public void checkCoords(final int row, final int col) {
+    public void checkCoords(int row, final int col) {
         if (row < 0 || col < 0 || row >= rows || col >= cols)
             throw new InvalidCoord();
     }
@@ -72,11 +72,11 @@ public class Matrix {
         return this;
     }
 
-    public Chunk getChunk(final String chunkName) throws ChunkNotFound {
+    public Chunk getChunk(String chunkName) throws ChunkNotFound {
         // Linear search; there must be a better way. But
         // we need to be able to change the keys (chunkId)
         Chunk chunk = null;
-        for (final Chunk t : chunks) {
+        for (Chunk t : chunks) {
             if (t.chunkId.equals(chunkName)) {
                 chunk = t;
                 break;
@@ -89,11 +89,11 @@ public class Matrix {
         return chunk;
     }
 
-    public Chunk getChunk(final int row, final int col) {
+    public Chunk getChunk(int row, final int col) {
         checkCoords(row, col);
 
         Chunk chunk = null;
-        for (final Chunk t : chunks) {
+        for (Chunk t : chunks) {
             if (row >= t.startRow && row < t.endRow && col >= t.startCol
                     && col < t.endCol) {
                 chunk = t;

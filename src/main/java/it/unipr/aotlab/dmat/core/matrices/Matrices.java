@@ -24,22 +24,22 @@ public class Matrices {
     int state = 0;
     Matrix buildingMatrix = new Matrix();
 
-    public Matrices splitHorizzontalyChuck(final String splitsChuckName,
-            final int row, final String newChunkName) throws ChunkNotFound {
+    public Matrices splitHorizzontalyChuck( String splitsChuckName,
+             int row, String newChunkName) throws ChunkNotFound {
         return splitHorizzontalyChuck(splitsChuckName, row, splitsChuckName,
                 newChunkName);
     }
 
-    public Matrices splitVerticallyChuck(final String splitsChuckName,
-            final int col, final String newChunkName) throws ChunkNotFound {
+    public Matrices splitVerticallyChuck( String splitsChuckName,
+             int col, String newChunkName) throws ChunkNotFound {
         return splitVerticallyChuck(splitsChuckName, col, splitsChuckName,
                 newChunkName);
     }
 
-    public Matrices splitHorizzontalyChuck(final String splitsChuckName,
-            final int row, final String oldChunkNewName,
-            final String newChunkName) throws ChunkNotFound {
-        final Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
+    public Matrices splitHorizzontalyChuck( String splitsChuckName,
+             int row, String oldChunkNewName,
+             String newChunkName) throws ChunkNotFound {
+         Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
         buildingMatrix.chunks.add(new Chunk(newChunkName, row, oldChunk.endRow,
                 oldChunk.startCol, oldChunk.endRow));
         oldChunk.chunkId = oldChunkNewName;
@@ -48,10 +48,10 @@ public class Matrices {
         return this;
     }
 
-    public Matrices splitVerticallyChuck(final String splitsChuckName,
-            final int col, final String oldChunkNewName,
-            final String newChunkName) throws ChunkNotFound {
-        final Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
+    public Matrices splitVerticallyChuck( String splitsChuckName,
+             int col, String oldChunkNewName,
+             String newChunkName) throws ChunkNotFound {
+         Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
         buildingMatrix.chunks.add(new Chunk(newChunkName, oldChunk.startRow,
                 oldChunk.endRow, col, oldChunk.endRow));
         oldChunk.chunkId = oldChunkNewName;
@@ -60,7 +60,7 @@ public class Matrices {
         return this;
     }
 
-    public Matrices setNofColumns(final int nofColumns) {
+    public Matrices setNofColumns( int nofColumns) {
         state |= 1;
         buildingMatrix.cols = nofColumns;
         createDefaultChunk();
@@ -68,7 +68,7 @@ public class Matrices {
         return this;
     }
 
-    public Matrices setNofRows(final int nofRows) {
+    public Matrices setNofRows( int nofRows) {
         state |= 2;
         buildingMatrix.rows = nofRows;
         createDefaultChunk();
@@ -76,7 +76,7 @@ public class Matrices {
         return this;
     }
 
-    public Matrices setElementType(final ElementType elementType) {
+    public Matrices setElementType( ElementType elementType) {
         buildingMatrix.elementType = elementType;
 
         return this;
@@ -115,7 +115,7 @@ public class Matrices {
     public Matrix build() {
         setMissingDefaults();
 
-        final Matrix builtMatrix = buildingMatrix;
+         Matrix builtMatrix = buildingMatrix;
         reset();
 
         return builtMatrix;

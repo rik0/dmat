@@ -11,7 +11,7 @@ package it.unipr.aotlab.dmat.core.initializers;
 public class ConstValues<E extends Number> implements Initializer {
     private E value;
 
-    public ConstValues(final E value) {
+    public ConstValues(E value) {
         this.value = value;
     }
 

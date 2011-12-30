@@ -12,12 +12,12 @@ public class SemiRingBoolean implements SemiRing<Boolean> {
     }
 
     @Override
-    public Boolean add(final Boolean firstAddendum, final Boolean secondAddendum) {
+    public Boolean add(Boolean firstAddendum, final Boolean secondAddendum) {
         return firstAddendum || secondAddendum;
     }
 
     @Override
-    public Boolean times(final Boolean multiplicand, final Boolean multiplier) {
+    public Boolean times(Boolean multiplicand, final Boolean multiplier) {
         return multiplicand && multiplier;
     }
 

@@ -6,7 +6,7 @@ public class SemiRings {
     static EnumMap<ElementType, SemiRing<?>> defaultSemirings = new EnumMap<ElementType, SemiRing<?>>(
             ElementType.class);
 
-    static void addDefaultSemiring(final ElementType et, final SemiRing<?> sr) {
+    static void addDefaultSemiring(ElementType et, final SemiRing<?> sr) {
         defaultSemirings.put(et, sr);
     }
     

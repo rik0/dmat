@@ -1,12 +1,12 @@
 package it.unipr.aotlab.dmat.core.partitions;
 
 public class PartitionCyclicRow implements Partition {
-    private final int nofNodes;
-    private final int nofRows;
-    private final int nofColumns;
+    private int nofNodes;
+    private int nofRows;
+    private int nofColumns;
 
-    public PartitionCyclicRow(final int nofNodes, final int nofRows,
-            final int nofColumns) {
+    public PartitionCyclicRow(int nofNodes, final int nofRows,
+            int nofColumns) {
         this.nofNodes = nofNodes;
         this.nofRows = nofRows;
         this.nofColumns = nofColumns;

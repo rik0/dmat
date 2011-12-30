@@ -29,15 +29,15 @@ package it.unipr.aotlab.dmat.core.util;
  * Time: 4:31 PM
  */
 public class Cell {
-    final int row;
-    final int col;
+    int row;
+    int col;
 
-    Cell(final int row, final int col) {
+    Cell(int row, final int col) {
         this.row = row;
         this.col = col;
     }
 
-    public static Cell _(final int row, final int col) {
+    public static Cell _(int row, final int col) {
         // TODO: maybe some caching for cells? values?
         return new Cell(row, col);
     }

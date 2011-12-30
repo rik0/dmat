@@ -1,7 +1,7 @@
 package it.unipr.aotlab.dmat.core.util;
 
 public class SemiRingInt32Tropical implements SemiRing<Integer> {
-    final Integer INFINITY = Integer.MAX_VALUE;
+    Integer INFINITY = Integer.MAX_VALUE;
     static SemiRingInt32Tropical theOne = null;
 
     @Override
@@ -12,12 +12,12 @@ public class SemiRingInt32Tropical implements SemiRing<Integer> {
     }
 
     @Override
-    public Integer add(final Integer firstAddendum, final Integer secondAddendum) {
+    public Integer add(Integer firstAddendum, final Integer secondAddendum) {
         return Math.min(firstAddendum, secondAddendum);
     }
 
     @Override
-    public Integer times(final Integer multiplicand, final Integer multiplier) {
+    public Integer times(Integer multiplicand, final Integer multiplier) {
         return multiplicand + multiplier;
     }
 

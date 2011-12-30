@@ -1,5 +1,7 @@
 package it.unipr.aotlab.dmat.core;
 
+import java.io.IOException;
+
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 
@@ -11,7 +13,7 @@ public class MainNode {
         System.out.println();
     }
 
-    static public Address buildBrokerAddress(final String[] args) {
+    static public Address buildBrokerAddress(String[] args) {
         Address address = null;
         if (args.length > 3) {
             address = new Address(args[2], Integer.parseInt(args[3]));
@@ -21,21 +23,22 @@ public class MainNode {
         return address;
     }
 
-    static public int realMain(final String[] args) {
+    static public int realMain(String[] args) throws Exception {
         if (args.length < 3) {
             showUsage();
             throw new BadQuit("node.jar expects at least three parameters.");
         }
-        final Connector rabbitMQConnector = new Connector(buildBrokerAddress(args));
-        final WorkingNode wn = new WorkingNode(args[0], args[1], rabbitMQConnector);
+        Connector rabbitMQConnector = new Connector(buildBrokerAddress(args));
+        WorkingNode wn = new WorkingNode(args[0], args[1], rabbitMQConnector);
 
+        wn.connect();
         wn.consumerLoop();
 
         return 0;
     }
 
     static public class BadQuit extends Error {
-        public BadQuit(final String message) {
+        public BadQuit(String message) {
             super(message);
         }
     }
@@ -45,35 +48,35 @@ public class MainNode {
 
     static public int mainReturnValue = 0;
 
-    static public int intMain(final String[] args) {
+    static public int intMain(String[] args) {
         try {
             mainReturnValue = realMain(args);
-        } catch (final Quit e) {
-        } catch (final BadQuit e) {
+        } catch (Quit e) {
+        } catch (BadQuit e) {
             mainReturnValue += 1;
             System.err.println("Fatal Error: " + e.getMessage());
-        } catch (final Error e) {
+        } catch (Error e) {
             mainReturnValue = 1;
             e.printStackTrace();
-            System.err.println("Caught Error.\nClass: " + e.getClass()
+            System.err.println("Caught Error.\n " + e.getClass()
                     + ". Message: " + e.getMessage());
 
-        } catch (final Exception e) {
+        } catch (Exception e) {
             mainReturnValue = 2;
             e.printStackTrace();
-            System.err.println("Caught Exception.\nClass: " + e.getClass()
+            System.err.println("Caught Exception.\n " + e.getClass()
                     + ". Message: " + e.getMessage());
 
-        } catch (final Throwable e) {
+        } catch (Throwable e) {
             mainReturnValue = 3;
             e.printStackTrace();
-            System.err.println("Caught Throwable.\nClass: " + e.getClass()
+            System.err.println("Caught Throwable.\n " + e.getClass()
                     + ". Message: " + e.getMessage());
         }
         return mainReturnValue;
     }
 
-    static public void main(final String[] args) {
+    static public void main(String[] args) {
         System.exit(intMain(args));
     }
 }

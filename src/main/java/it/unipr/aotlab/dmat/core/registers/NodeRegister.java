@@ -10,7 +10,7 @@ import java.util.Map;
 public class NodeRegister {
     Map<String, Node> nodes = new LinkedHashMap<String, Node>();
 
-    public void registerNode(final String id, final Node n)
+    public void registerNode(String id, final Node n)
             throws IdNotUnique {
         if (nodes.get(id) != null)
             throw new IdNotUnique();
@@ -18,8 +18,8 @@ public class NodeRegister {
         nodes.put(id, n);
     }
 
-    public Node getNode(final String id) throws NodeNotFound {
-        final Node n = nodes.get(id);
+    public Node getNode(String id) throws NodeNotFound {
+        Node n = nodes.get(id);
         if (n == null)
             throw new NodeNotFound();
 

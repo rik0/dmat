@@ -8,11 +8,11 @@ public class Initializers {
     static EnumMap<ElementType, Initializer> defaultInitializers = new EnumMap<ElementType, Initializer>(
             ElementType.class);
 
-    static void addDefaultInitializer(final ElementType type, final Initializer init) {
+    static void addDefaultInitializer(ElementType type, final Initializer init) {
         defaultInitializers.put(type, init);
     }
 
-    static public Initializer defaultInitializer(final ElementType type) {
+    static public Initializer defaultInitializer(ElementType type) {
         return defaultInitializer(type);
     }
 }
