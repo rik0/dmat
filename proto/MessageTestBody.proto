@@ -1,0 +1,7 @@
+
+option java_package = "it.unipr.aotlab.dmat.core.net.rabbitMQ";
+
+message Body {
+    optional string message = 1;
+}
+
