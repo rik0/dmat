@@ -12,7 +12,7 @@ public class MessagesTest extends Messages {
 
     private MessagesTest() {
     }
-
+    
     @Override
     public Message parseMessage(byte[] rawMessage) throws InvalidProtocolBufferException {
         return new MessageTest(MessageTestBody.Body.parseFrom(rawMessage));

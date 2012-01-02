@@ -8,9 +8,26 @@ import com.rabbitmq.client.QueueingConsumer;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.util.PackageGetClasses;
 
 public class Messages {
     static Map<String, Messages> messageFactories = new HashMap<String, Messages>();
+    static {
+        PackageGetClasses.execOnClasses(
+                "it.unipr.aotlab.dmat.core.net.rabbitMQ",
+                new PackageGetClasses.ClassNameFilter() {
+                    @Override
+                    public boolean accept(String className) {
+                        return className.startsWith("it.unipr.aotlab.dmat.core.net.rabbitMQ.Messages");
+                    }
+                }, new PackageGetClasses.OnClassExecutor() {
+                    @Override
+                    public void execOnClass(Class<?> klass) {
+                        //nothing; we just need to load the class.
+                        //Since on loading the static code is executed.
+                    }
+                });
+    }
 
     public Message parseMessage(byte[] rawMessage)
             throws InvalidProtocolBufferException {
@@ -32,7 +49,7 @@ public class Messages {
                 envelopedMessage.getBody());
     }
 
-    static Message readMessage(String contentType, byte[] rawMessage)
+    public static Message readMessage(String contentType, byte[] rawMessage)
             throws InvalidProtocolBufferException {
         return getFactory(contentType).parseMessage(rawMessage);
     }
