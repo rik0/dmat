@@ -1,4 +1,6 @@
-package it.unipr.aotlab.dmat.core.util;
+package it.unipr.aotlab.dmat.core.semirings;
+
+import it.unipr.aotlab.dmat.core.util.ElementType;
 
 public class SemiRingInt32 implements SemiRing<Integer> {
     static SemiRingInt32 theOne = new SemiRingInt32();
@@ -7,8 +9,7 @@ public class SemiRingInt32 implements SemiRing<Integer> {
         SemiRings.addDefaultSemiring(ElementType.UINT32, theOne);
     }
 
-    @Override
-    public SemiRing<Integer> get() {
+    static public SemiRing<Integer> get() {
         return theOne;
     }
 

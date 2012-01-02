@@ -5,8 +5,8 @@ package it.unipr.aotlab.dmat.core.matrices;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
 import it.unipr.aotlab.dmat.core.initializers.Initializers;
+import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 import it.unipr.aotlab.dmat.core.util.ElementType;
-import it.unipr.aotlab.dmat.core.util.SemiRings;
 
 /**
  * User: enrico

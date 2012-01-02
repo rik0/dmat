@@ -1,4 +1,6 @@
-package it.unipr.aotlab.dmat.core.util;
+package it.unipr.aotlab.dmat.core.semirings;
+
+import it.unipr.aotlab.dmat.core.util.ElementType;
 
 public class SemiRingBoolean implements SemiRing<Boolean> {
     static SemiRingBoolean theOne = new SemiRingBoolean();
@@ -6,8 +8,7 @@ public class SemiRingBoolean implements SemiRing<Boolean> {
         SemiRings.addDefaultSemiring(ElementType.BOOL, theOne);
     }
 
-    @Override
-    public SemiRing<Boolean> get() {
+    public static SemiRing<Boolean> get() {
         return theOne;
     }
 

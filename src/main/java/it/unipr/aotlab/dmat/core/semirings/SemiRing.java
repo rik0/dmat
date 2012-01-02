@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.core.util;
+package it.unipr.aotlab.dmat.core.semirings;
 
 public interface SemiRing<E> {
     public E add(E firstAddendum, E secondAddendum);
@@ -8,6 +8,4 @@ public interface SemiRing<E> {
     public E zero();
 
     public E one();
-
-    SemiRing<E> get();
 }

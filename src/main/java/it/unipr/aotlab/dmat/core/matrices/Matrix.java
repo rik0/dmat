@@ -28,8 +28,8 @@ import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
+import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.util.ElementType;
-import it.unipr.aotlab.dmat.core.util.SemiRing;
 
 /**
  * User: enrico
