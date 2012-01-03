@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.junit;
 
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageTest;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageTestBody;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Messages;
@@ -18,11 +19,14 @@ public class MakeAndReadMessage {
 
         MessageTestBody.Body body = MessageTestBody.Body.newBuilder()
                 .setMessage(messageOnTheWire).build();
-        byte[] onTheWire = body.toByteArray();
+        MessageTest messageTestSent = new MessageTest(body);
 
-        MessageTest message = (MessageTest) Messages.readMessage("MessageTest",
-                onTheWire);
+        Message message = Messages.readMessage(
+                messageTestSent.contentType(), messageTestSent.message());
 
-        assertEquals(message.body.getMessage(), messageOnTheWire);
+        message.exec();
+
+        MessageTest messageTestReceived = (MessageTest) message;
+        assertEquals(messageTestReceived.body.getMessage(), messageOnTheWire);
     }
 }

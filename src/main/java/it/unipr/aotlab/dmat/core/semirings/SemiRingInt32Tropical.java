@@ -1,7 +1,7 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
 public class SemiRingInt32Tropical implements SemiRing<Integer> {
-    Integer INFINITY = Integer.MAX_VALUE;
+    static final private Integer INFINITY = Integer.MAX_VALUE;
     static SemiRingInt32Tropical theOne = null;
 
     public static SemiRing<Integer> get() {

@@ -1,5 +1,7 @@
 package it.unipr.aotlab.dmat.core.net;
 
+import java.io.IOException;
+
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 
@@ -12,5 +14,5 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
 public interface Node {
     public Chunk getChunck(String id) throws ChunkNotFound;
 
-    public void sendMessage(Message m);
+    public void sendMessage(Message m) throws IOException;
 }
