@@ -46,7 +46,7 @@ public class Matrix {
 
     Vector<Chunk> chunks = new Vector<Chunk>();
 
-    public void checkCoords(int row, final int col) {
+    public void checkCoords(int row, int col) {
         if (row < 0 || col < 0 || row >= rows || col >= cols)
             throw new InvalidCoord();
     }
@@ -89,7 +89,7 @@ public class Matrix {
         return chunk;
     }
 
-    public Chunk getChunk(int row, final int col) {
+    public Chunk getChunk(int row, int col) {
         checkCoords(row, col);
 
         Chunk chunk = null;

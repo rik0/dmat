@@ -59,8 +59,8 @@ public class Chunk {
         return chunkId;
     }
 
-    Chunk(String chunkId, final int startRow, final int endRow,
-            int startCol, final int endCol) {
+    Chunk(String chunkId, int startRow, int endRow,
+            int startCol, int endCol) {
         this.chunkId = chunkId;
         this.startRow = startRow;
         this.endRow = endRow;
@@ -77,7 +77,7 @@ public class Chunk {
         return newChunk;
     }
 
-    Chunk splitVertically(String newChunkName, final int newChunkStartCol) {
+    Chunk splitVertically(String newChunkName, int newChunkStartCol) {
         Chunk newChunk = new Chunk(newChunkName, startRow, endRow,
                 newChunkStartCol, endCol);
         endCol = newChunkStartCol;

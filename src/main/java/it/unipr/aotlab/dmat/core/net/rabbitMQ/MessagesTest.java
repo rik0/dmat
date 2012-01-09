@@ -15,6 +15,6 @@ public class MessagesTest extends Messages {
     
     @Override
     public Message parseMessage(byte[] rawMessage) throws InvalidProtocolBufferException {
-        return new MessageTest(MessageTestBody.Body.parseFrom(rawMessage));
+        return new MessageTest(AGPBCMessageTestBody.Body.parseFrom(rawMessage));
     }
 }

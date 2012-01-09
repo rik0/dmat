@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.junit;
+package it.unipr.aotlab.dmat;
 
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRingInt32Tropical;
