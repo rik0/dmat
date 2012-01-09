@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat;
+package it.unipr.aotlab.test.dmat;
 
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRingInt32Tropical;
@@ -9,12 +9,12 @@ import org.junit.*;
 
 import static junit.framework.Assert.*;
 
-public class SemiRingsTesting {
+public class SemiRingsTestCase {
     public static class Values<E> {
         E a;
         E b;
         E c;
-    }
+    } 
 
     @Test
     public void int32DefaultSemiRing() {

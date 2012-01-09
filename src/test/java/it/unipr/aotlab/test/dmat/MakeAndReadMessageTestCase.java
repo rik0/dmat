@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat;
+package it.unipr.aotlab.test.dmat;
 
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageTest;
@@ -10,7 +10,7 @@ import static junit.framework.Assert.*;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
-public class MakeAndReadMessage {
+public class MakeAndReadMessageTestCase {
     Messages factory = new Messages();
 
     @Test
