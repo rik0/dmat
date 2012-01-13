@@ -25,7 +25,6 @@ public class ForceLoad {
                     + e.getMessage());
 
         }
-
     }
 
     static private void listFromFileImpl(String filename)

@@ -1,7 +1,5 @@
 package it.unipr.aotlab.dmat.core;
 
-import java.io.IOException;
-
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 
@@ -28,11 +26,17 @@ public class MainNode {
             showUsage();
             throw new BadQuit("node.jar expects at least three parameters.");
         }
+
         Connector rabbitMQConnector = new Connector(buildBrokerAddress(args));
         WorkingNode wn = new WorkingNode(args[0], args[1], rabbitMQConnector);
 
         wn.connect();
-        wn.consumerLoop();
+        try {
+            wn.consumerLoop();
+        }
+        finally {
+            rabbitMQConnector.connection().close();
+        }
 
         return 0;
     }
@@ -75,7 +79,7 @@ public class MainNode {
         }
         return mainReturnValue;
     }
-    
+
     static public void main(String[] args) {
         System.exit(intMain(args));
     }

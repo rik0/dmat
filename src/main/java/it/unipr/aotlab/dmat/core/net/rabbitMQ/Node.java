@@ -42,13 +42,14 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
         //it might be better using the same channel multiple times?
         Channel channel = connector.connection().createChannel();
         try {
-            channel.queueDeclare(nodeId, false, true, true, null);
+            channel.queueDeclare(nodeId, false, false, false, null);
             Builder propBuilder = new AMQP.BasicProperties.Builder();
             propBuilder.contentType(m.contentType());
-            channel.basicPublish("amq.direct", nodeId, propBuilder.build(),
+            channel.basicPublish("", nodeId, propBuilder.build(),
                     m.message());
         } finally {
-            channel.close();
+            if (channel.isOpen())
+                channel.close();
         }
     }
 }

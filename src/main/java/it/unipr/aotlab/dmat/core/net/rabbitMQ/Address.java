@@ -11,6 +11,7 @@ public class Address implements it.unipr.aotlab.dmat.core.net.Address {
 
     public Address(String address) {
         this.address = address;
+        this.port = 5672;
     }
 
     public Address() {

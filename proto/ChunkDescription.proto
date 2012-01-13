@@ -1,0 +1,11 @@
+
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message Body {
+    required string chunkId = 1;
+    required int32 startRow = 2;
+    required int32 endRow = 3;
+    required int32 startCol = 4;
+    required int32 endCol = 5;
+}
+

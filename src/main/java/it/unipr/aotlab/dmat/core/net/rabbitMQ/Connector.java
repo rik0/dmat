@@ -23,7 +23,6 @@ public class Connector implements it.unipr.aotlab.dmat.core.net.Connector {
     public Connection connection() throws IOException {
         if (conn == null)
             conn = connectionFactory().newConnection();
-
         return conn;
     }
 }

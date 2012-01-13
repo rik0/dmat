@@ -1,5 +1,5 @@
 #!/bin/bash
-set +e
+set -e
 set -x
 
 PROTODIR="`dirname $0`"

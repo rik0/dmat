@@ -1,1 +1,3 @@
 it.unipr.aotlab.dmat.core.net.rabbitMQ.MessagesTest
+it.unipr.aotlab.dmat.core.net.rabbitMQ.MessagesAssignChunkToNode
+it.unipr.aotlab.dmat.core.net.rabbitMQ.MessagesShutdown

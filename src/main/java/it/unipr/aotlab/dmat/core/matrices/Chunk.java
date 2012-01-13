@@ -23,11 +23,15 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.formats.Format;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body;
+import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
+
+import java.io.IOException;
 
 /**
- * User: enrico
- * Package: it.unipr.aotlab.dmat.core.partitions
- * Date: 10/17/11
+ * User: enrico Package: it.unipr.aotlab.dmat.core.partitions Date: 10/17/11
  * Time: 3:44 PM
  */
 
@@ -38,6 +42,7 @@ public class Chunk {
     int endRow;
     int startCol;
     int endCol;
+    boolean assigned = false;
 
     public int getStartRow() {
         return startRow;
@@ -59,8 +64,16 @@ public class Chunk {
         return chunkId;
     }
 
-    Chunk(String chunkId, int startRow, int endRow,
-            int startCol, int endCol) {
+    public void assignChunkToNode(Node node) throws IOException {
+        Body chunk = ChunkDescription.Body.newBuilder().setChunkId(chunkId)
+                .setEndCol(endCol).setEndRow(endRow).setStartCol(startCol)
+                .setStartRow(startRow).build();
+
+        node.sendMessage(new MessageAssignChunkToNode(chunk));
+
+    }
+
+    Chunk(String chunkId, int startRow, int endRow, int startCol, int endCol) {
         this.chunkId = chunkId;
         this.startRow = startRow;
         this.endRow = endRow;
@@ -68,10 +81,9 @@ public class Chunk {
         this.endCol = endCol;
     }
 
-    Chunk splitHorizzonally(String newChunkName,
-            int newChunkStartRow) {
-        Chunk newChunk = new Chunk(newChunkName, newChunkStartRow,
-                endRow, startCol, endCol);
+    Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
+        Chunk newChunk = new Chunk(newChunkName, newChunkStartRow, endRow,
+                startCol, endCol);
         endRow = newChunkStartRow;
 
         return newChunk;
