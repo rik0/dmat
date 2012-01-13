@@ -1,8 +1,8 @@
 package it.unipr.aotlab.test.dmat;
 
+import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageTest;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.AGPBCMessageTestBody;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Messages;
 
 import org.junit.*;
@@ -17,7 +17,7 @@ public class MakeAndReadMessageTestCase {
     public void makeAndReadMessage() throws InvalidProtocolBufferException {
         String messageOnTheWire = "Test message";
 
-        AGPBCMessageTestBody.Body body = AGPBCMessageTestBody.Body.newBuilder()
+        MessageTestBody.Body body = MessageTestBody.Body.newBuilder()
                 .setMessage(messageOnTheWire).build();
         MessageTest messageTestSent = new MessageTest(body);
 

@@ -1,32 +1,20 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.util.ForceLoad;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.rabbitmq.client.QueueingConsumer;
 
-import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
-import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.util.PackageGetClasses;
-
 public class Messages {
     static Map<String, Messages> messageFactories = new HashMap<String, Messages>();
+
     static {
-        PackageGetClasses.execOnClasses(
-                "it.unipr.aotlab.dmat.core.net.rabbitMQ",
-                new PackageGetClasses.ClassNameFilter() {
-                    @Override
-                    public boolean accept(String className) {
-                        return className.startsWith("it.unipr.aotlab.dmat.core.net.rabbitMQ.Messages");
-                    }
-                }, new PackageGetClasses.OnClassExecutor() {
-                    @Override
-                    public void execOnClass(Class<?> klass) {
-                        //nothing; we just need to load the class.
-                        //Since on loading the static code is executed.
-                    }
-                });
+        ForceLoad.listFromFile(Messages.class, "KindOfMessages");
     }
 
     public Message parseMessage(byte[] rawMessage)
