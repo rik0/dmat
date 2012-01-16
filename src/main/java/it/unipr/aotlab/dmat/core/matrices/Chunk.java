@@ -24,7 +24,6 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.formats.Format;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
 
@@ -65,12 +64,20 @@ public class Chunk {
     }
 
     public void assignChunkToNode(Node node) throws IOException {
-        Body chunk = ChunkDescription.Body.newBuilder().setChunkId(chunkId)
-                .setEndCol(endCol).setEndRow(endRow).setStartCol(startCol)
-                .setStartRow(startRow).build();
+        ChunkDescription.Body chunk = ChunkDescription.Body.newBuilder()
+                .setChunkId(chunkId).setEndCol(endCol).setEndRow(endRow)
+                .setStartCol(startCol).setStartRow(startRow).build();
 
         node.sendMessage(new MessageAssignChunkToNode(chunk));
+        assigned = true;
+    }
 
+    public Chunk(ChunkDescription.Body m) {
+        this.chunkId = m.getChunkId();
+        this.startRow = m.getStartRow();
+        this.endRow = m.getEndRow();
+        this.startCol = m.getStartCol();
+        this.endCol = m.getEndCol();
     }
 
     Chunk(String chunkId, int startRow, int endRow, int startCol, int endCol) {
@@ -96,4 +103,17 @@ public class Chunk {
 
         return newChunk;
     }
+
+    public boolean doesManage(int row, int col) {
+        return (row >= getStartRow() && row < getEndRow()
+                && col >= getStartCol() && col < getEndCol());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " chunkId:" + chunkId + " startRow: " + startRow
+                + " endRow: " + endRow + " startCol: " + startCol + " endCol: "
+                + endCol;
+    }
+
 }

@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
+import it.unipr.aotlab.dmat.core.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.net.Message;
 
@@ -11,11 +12,12 @@ public class MessageAssignChunkToNode extends Message {
     }
 
     @Override
-    public void exec() {
+    public byte[] message() {
+        return body.toByteArray();
     }
 
     @Override
-    public byte[] message() {
-        return body.toByteArray();
+    public void exec(NodeMessageDigester digester) {
+        digester.accept(this);
     }
 }

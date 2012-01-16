@@ -24,7 +24,7 @@ public class MakeAndReadMessageTestCase {
         Message message = Messages.readMessage(
                 messageTestSent.contentType(), messageTestSent.message());
 
-        message.exec();
+        message.exec(null);
 
         MessageTest messageTestReceived = (MessageTest) message;
         assertEquals(messageTestReceived.body.getMessage(), messageOnTheWire);

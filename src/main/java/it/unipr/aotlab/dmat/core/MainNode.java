@@ -4,7 +4,6 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 
 public class MainNode {
-
     static public void showUsage() {
         System.out
                 .println("Use: node.jar nodeName brokerName brokerAddress [brokerPort]");
@@ -42,12 +41,15 @@ public class MainNode {
     }
 
     static public class BadQuit extends Error {
+        private static final long serialVersionUID = -7374469760174497184L;
+
         public BadQuit(String message) {
             super(message);
         }
     }
 
     static public class Quit extends Error {
+        private static final long serialVersionUID = 7604051811503970597L;
     }
 
     static public int mainReturnValue = 0;

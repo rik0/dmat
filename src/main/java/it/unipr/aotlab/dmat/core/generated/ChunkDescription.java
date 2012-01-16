@@ -8,6 +8,78 @@ public final class ChunkDescription {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  public enum Format
+      implements com.google.protobuf.ProtocolMessageEnum {
+    COMPRESSEDROWS(0, 1),
+    COMPRESSEDCOLUMNS(1, 2),
+    DENSE(2, 3),
+    ;
+    
+    public static final int COMPRESSEDROWS_VALUE = 1;
+    public static final int COMPRESSEDCOLUMNS_VALUE = 2;
+    public static final int DENSE_VALUE = 3;
+    
+    
+    public final int getNumber() { return value; }
+    
+    public static Format valueOf(int value) {
+      switch (value) {
+        case 1: return COMPRESSEDROWS;
+        case 2: return COMPRESSEDCOLUMNS;
+        case 3: return DENSE;
+        default: return null;
+      }
+    }
+    
+    public static com.google.protobuf.Internal.EnumLiteMap<Format>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Format>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Format>() {
+            public Format findValueByNumber(int number) {
+              return Format.valueOf(number);
+            }
+          };
+    
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return it.unipr.aotlab.dmat.core.generated.ChunkDescription.getDescriptor().getEnumTypes().get(0);
+    }
+    
+    private static final Format[] VALUES = {
+      COMPRESSEDROWS, COMPRESSEDCOLUMNS, DENSE, 
+    };
+    
+    public static Format valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+    
+    private final int index;
+    private final int value;
+    
+    private Format(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+    
+    // @@protoc_insertion_point(enum_scope:Format)
+  }
+  
   public interface BodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
@@ -30,6 +102,10 @@ public final class ChunkDescription {
     // required int32 endCol = 5;
     boolean hasEndCol();
     int getEndCol();
+    
+    // required .Format format = 6 [default = DENSE];
+    boolean hasFormat();
+    it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format getFormat();
   }
   public static final class Body extends
       com.google.protobuf.GeneratedMessage
@@ -132,12 +208,23 @@ public final class ChunkDescription {
       return endCol_;
     }
     
+    // required .Format format = 6 [default = DENSE];
+    public static final int FORMAT_FIELD_NUMBER = 6;
+    private it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format format_;
+    public boolean hasFormat() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format getFormat() {
+      return format_;
+    }
+    
     private void initFields() {
       chunkId_ = "";
       startRow_ = 0;
       endRow_ = 0;
       startCol_ = 0;
       endCol_ = 0;
+      format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -164,6 +251,10 @@ public final class ChunkDescription {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasFormat()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -185,6 +276,9 @@ public final class ChunkDescription {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt32(5, endCol_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeEnum(6, format_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -214,6 +308,10 @@ public final class ChunkDescription {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(5, endCol_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(6, format_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -349,6 +447,8 @@ public final class ChunkDescription {
         bitField0_ = (bitField0_ & ~0x00000008);
         endCol_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
+        format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       
@@ -407,6 +507,10 @@ public final class ChunkDescription {
           to_bitField0_ |= 0x00000010;
         }
         result.endCol_ = endCol_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.format_ = format_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -438,6 +542,9 @@ public final class ChunkDescription {
         if (other.hasEndCol()) {
           setEndCol(other.getEndCol());
         }
+        if (other.hasFormat()) {
+          setFormat(other.getFormat());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -460,6 +567,10 @@ public final class ChunkDescription {
           return false;
         }
         if (!hasEndCol()) {
+          
+          return false;
+        }
+        if (!hasFormat()) {
           
           return false;
         }
@@ -512,6 +623,17 @@ public final class ChunkDescription {
             case 40: {
               bitField0_ |= 0x00000010;
               endCol_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              int rawValue = input.readEnum();
+              it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(6, rawValue);
+              } else {
+                bitField0_ |= 0x00000020;
+                format_ = value;
+              }
               break;
             }
           }
@@ -640,6 +762,30 @@ public final class ChunkDescription {
         return this;
       }
       
+      // required .Format format = 6 [default = DENSE];
+      private it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
+      public boolean hasFormat() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format getFormat() {
+        return format_;
+      }
+      public Builder setFormat(it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000020;
+        format_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearFormat() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
+        onChanged();
+        return this;
+      }
+      
       // @@protoc_insertion_point(builder_scope:Body)
     }
     
@@ -666,10 +812,13 @@ public final class ChunkDescription {
   static {
     java.lang.String[] descriptorData = {
       "\n=home/paolo/uni/dissertation/dmat/proto" +
-      "/ChunkDescription.proto\"[\n\004Body\022\017\n\007chunk" +
+      "/ChunkDescription.proto\"{\n\004Body\022\017\n\007chunk" +
       "Id\030\001 \002(\t\022\020\n\010startRow\030\002 \002(\005\022\016\n\006endRow\030\003 \002" +
-      "(\005\022\020\n\010startCol\030\004 \002(\005\022\016\n\006endCol\030\005 \002(\005B%\n#" +
-      "it.unipr.aotlab.dmat.core.generated"
+      "(\005\022\020\n\010startCol\030\004 \002(\005\022\016\n\006endCol\030\005 \002(\005\022\036\n\006" +
+      "format\030\006 \002(\0162\007.Format:\005DENSE*>\n\006Format\022\022" +
+      "\n\016COMPRESSEDROWS\020\001\022\025\n\021COMPRESSEDCOLUMNS\020" +
+      "\002\022\t\n\005DENSE\020\003B%\n#it.unipr.aotlab.dmat.cor" +
+      "e.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -681,7 +830,7 @@ public final class ChunkDescription {
           internal_static_Body_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Body_descriptor,
-              new java.lang.String[] { "ChunkId", "StartRow", "EndRow", "StartCol", "EndCol", },
+              new java.lang.String[] { "ChunkId", "StartRow", "EndRow", "StartCol", "EndCol", "Format", },
               it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.class,
               it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.Builder.class);
           return null;

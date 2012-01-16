@@ -15,6 +15,8 @@ public class WorkingNode {
     String brokerName;
     Connector connector;
     Connection connection;
+    NodeState state;
+    NodeMessageDigester digester;
 
     public void connect() throws IOException {
         connection = connector.connection();
@@ -30,11 +32,14 @@ public class WorkingNode {
             QueueingConsumer.Delivery delivery = queueingConsumer
                     .nextDelivery();
             Message m = Messages.readMessage(delivery);
-            m.exec();
+            m.exec(digester);
         }
     }
 
     public WorkingNode(String nodeId, final String brokerName, Connector c) {
+        this.digester = new NodeMessageDigester(this);
+        this.state = new NodeState(this);
+
         this.nodeId = nodeId;
         this.brokerName = brokerName;
         this.connector = c;

@@ -1,5 +1,10 @@
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+    enum Format {
+        COMPRESSEDROWS = 1;
+        COMPRESSEDCOLUMNS = 2;
+        DENSE = 3;
+    }
 
 message Body {
     required string chunkId = 1;
@@ -7,5 +12,6 @@ message Body {
     required int32 endRow = 3;
     required int32 startCol = 4;
     required int32 endCol = 5;
+    required Format format = 6 [ default = DENSE ];
 }
 
