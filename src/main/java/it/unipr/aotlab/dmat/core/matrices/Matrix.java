@@ -22,25 +22,23 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
-import java.util.Vector;
-
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
-import it.unipr.aotlab.dmat.core.util.ElementType;
+
+import java.util.Vector;
 
 /**
- * User: enrico
- * Package: it.unipr.aotlab.dmat.core.matrices
- * Date: 10/17/11
- * Time: 2:51 PM
+ * User: enrico Package: it.unipr.aotlab.dmat.core.matrices Date: 10/17/11 Time:
+ * 2:51 PM
  */
 public class Matrix {
     int rows = 0;
     int cols = 0;
-    ElementType elementType = null;
+    ChunkDescription.ElementType elementType = null;
     Initializer init = null;
     SemiRing<?> semiring = null;
 
@@ -64,7 +62,7 @@ public class Matrix {
 
     /**
      * Initializes the matrix with the specified initializer.
-     *
+     * 
      * @return this
      */
     Matrix initialize() {

@@ -1,12 +1,15 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
-import it.unipr.aotlab.dmat.core.util.ElementType;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 
 public class SemiRingInt32 implements SemiRing<Integer> {
     static SemiRingInt32 theOne = new SemiRingInt32();
     static {
-        SemiRings.addDefaultSemiring(ElementType.INT32, theOne);
-        SemiRings.addDefaultSemiring(ElementType.UINT32, theOne);
+        SemiRings.defaultSemirings.put(ChunkDescription.ElementType.INT32,
+                theOne);
+        SemiRings.defaultSemirings.put(ChunkDescription.ElementType.UINT32,
+                theOne);
+        SemiRings.semirings.put(ChunkDescription.SemiRing.INT32ORDINARY, theOne);
     }
 
     static public SemiRing<Integer> get() {

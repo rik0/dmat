@@ -1,9 +1,15 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+
 public class SemiRingInt32Tropical implements SemiRing<Integer> {
     static final private Integer INFINITY = Integer.MAX_VALUE;
     static SemiRingInt32Tropical theOne = null;
 
+    static {
+        SemiRings.semirings.put(ChunkDescription.SemiRing.INT32TROPICAL, theOne);
+    }
+    
     public static SemiRing<Integer> get() {
         if (theOne == null)
             theOne = new SemiRingInt32Tropical();

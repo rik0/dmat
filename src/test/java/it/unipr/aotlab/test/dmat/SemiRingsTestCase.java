@@ -1,26 +1,25 @@
 package it.unipr.aotlab.test.dmat;
 
+import static junit.framework.Assert.assertEquals;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRingInt32Tropical;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
-import it.unipr.aotlab.dmat.core.util.ElementType;
 
-import org.junit.*;
-
-import static junit.framework.Assert.*;
+import org.junit.Test;
 
 public class SemiRingsTestCase {
     public static class Values<E> {
         E a;
         E b;
         E c;
-    } 
+    }
 
     @Test
     public void int32DefaultSemiRing() {
         @SuppressWarnings("unchecked")
         SemiRing<Integer> sr = ((SemiRing<Integer>) SemiRings
-                .defaultSemiring(ElementType.INT32));
+                .defaultSemiring(ChunkDescription.ElementType.INT32));
         Values<Integer> v = new Values<Integer>();
         v.a = 7;
         v.b = 11;
@@ -44,7 +43,7 @@ public class SemiRingsTestCase {
     public void booleanDefaultSemiRing() {
         @SuppressWarnings("unchecked")
         SemiRing<Boolean> sr = (SemiRing<Boolean>) SemiRings
-                .defaultSemiring(ElementType.BOOL);
+                .defaultSemiring(ChunkDescription.ElementType.BOOL);
         Values<Boolean> v = new Values<Boolean>();
         v.a = true;
         v.b = false;

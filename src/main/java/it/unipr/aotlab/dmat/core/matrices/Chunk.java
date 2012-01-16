@@ -22,7 +22,6 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
-import it.unipr.aotlab.dmat.core.formats.Format;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
@@ -35,7 +34,8 @@ import java.io.IOException;
  */
 
 public class Chunk {
-    Format format;
+    ChunkDescription.Format format;
+    ChunkDescription.ElementType elementType;
     String chunkId;
     int startRow;
     int endRow;
@@ -66,7 +66,8 @@ public class Chunk {
     public void assignChunkToNode(Node node) throws IOException {
         ChunkDescription.Body chunk = ChunkDescription.Body.newBuilder()
                 .setChunkId(chunkId).setEndCol(endCol).setEndRow(endRow)
-                .setStartCol(startCol).setStartRow(startRow).build();
+                .setStartCol(startCol).setStartRow(startRow)
+                .setFormat(format).build();
 
         node.sendMessage(new MessageAssignChunkToNode(chunk));
         assigned = true;
@@ -78,6 +79,7 @@ public class Chunk {
         this.endRow = m.getEndRow();
         this.startCol = m.getStartCol();
         this.endCol = m.getEndCol();
+        this.format = m.getFormat();
     }
 
     Chunk(String chunkId, int startRow, int endRow, int startCol, int endCol) {
@@ -86,6 +88,10 @@ public class Chunk {
         this.endRow = endRow;
         this.startCol = startCol;
         this.endCol = endCol;
+        
+        //filled-in later during matrix validation
+        this.format = null;
+        this.elementType = null;
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
@@ -111,9 +117,9 @@ public class Chunk {
 
     @Override
     public String toString() {
-        return super.toString() + " chunkId:" + chunkId + " startRow: " + startRow
-                + " endRow: " + endRow + " startCol: " + startCol + " endCol: "
-                + endCol;
+        return super.toString() + " chunkId:" + chunkId + " startRow: "
+                + startRow + " endRow: " + endRow + " startCol: " + startCol
+                + " endCol: " + endCol;
     }
 
 }

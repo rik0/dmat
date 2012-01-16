@@ -1,10 +1,32 @@
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
-    enum Format {
-        COMPRESSEDROWS = 1;
-        COMPRESSEDCOLUMNS = 2;
-        DENSE = 3;
-    }
+
+enum Format {
+    COMPRESSEDROWS = 1;
+    COMPRESSEDCOLUMNS = 2;
+    DENSE = 3;
+}
+
+enum ElementType {
+    BOOL = 1;
+    INT8 = 2;
+    INT16 = 3;
+    INT32 = 4;
+    INT64 = 5;
+    UINT8 = 6;
+    UINT16 = 7;
+    UINT32 = 8;
+    UINT64 = 9;
+    FLOAT32 = 10;
+    FLOAT64 = 11;
+}
+
+enum SemiRing {
+    DEFAULT = 1;
+    INT32ORDINARY = 2;
+    INT32TROPICAL = 3;
+    BOOLEANORDINARY = 4;
+}
 
 message Body {
     required string chunkId = 1;
@@ -13,5 +35,7 @@ message Body {
     required int32 startCol = 4;
     required int32 endCol = 5;
     required Format format = 6 [ default = DENSE ];
+    required ElementType elementType = 7 [ default = INT32 ];
+    required SemiRing semiRing = 8 [ default = DEFAULT ];
 }
 

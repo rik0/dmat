@@ -1,11 +1,12 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
-import it.unipr.aotlab.dmat.core.util.ElementType;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 
 public class SemiRingBoolean implements SemiRing<Boolean> {
     static SemiRingBoolean theOne = new SemiRingBoolean();
     static {
-        SemiRings.addDefaultSemiring(ElementType.BOOL, theOne);
+        SemiRings.defaultSemirings.put(ChunkDescription.ElementType.BOOL, theOne);
+        SemiRings.semirings.put(ChunkDescription.SemiRing.BOOLEANORDINARY, theOne);
     }
 
     public static SemiRing<Boolean> get() {
