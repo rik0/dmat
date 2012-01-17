@@ -12,6 +12,8 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
  * Time: 11:06 AM
  */
 public interface Node {
+    public String getNodeId(); 
+    
     public Chunk getChunck(String id) throws ChunkNotFound;
 
     public void sendMessage(Message m) throws IOException;

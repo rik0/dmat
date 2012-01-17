@@ -52,4 +52,9 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
                 channel.close();
         }
     }
+
+    @Override
+    public String getNodeId() {
+        return nodeId;
+    }
 }

@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 public class ForceLoadClasses {
-    static public void listFromFile(Class c, String filename) {
+    static public void listFromFile(Class<?> c, String filename) {
         try {
             ForceLoadClasses.listFromFileImpl(filename);
         } catch (ClassNotFoundException e) {

@@ -27,7 +27,6 @@ import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
-import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 
 import java.util.Vector;
 

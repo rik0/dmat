@@ -22,6 +22,7 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
+import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
@@ -42,7 +43,7 @@ public class Chunk {
     int endRow;
     int startCol;
     int endCol;
-    boolean assigned = false;
+    Node assignedTo;
 
     public int getStartRow() {
         return startRow;
@@ -64,14 +65,31 @@ public class Chunk {
         return chunkId;
     }
 
-    public void assignChunkToNode(Node node) throws IOException {
+    public ChunkDescription.Format getFormat() {
+        return format;
+    }
+
+    public ChunkDescription.ElementType getElementType() {
+        return elementType;
+    }
+
+    public ChunkDescription.SemiRing getSemiring() {
+        return semiring;
+    }
+
+    public void assignChunkToNode(Node node) throws IOException, DMatError {
+        if (assignedTo != null) {
+            throw new DMatError("This node has been already assigned to "
+                    + assignedTo.getNodeId() + ".");
+        }
+
         ChunkDescription.Body chunk = ChunkDescription.Body.newBuilder()
                 .setChunkId(chunkId).setEndCol(endCol).setEndRow(endRow)
-                .setStartCol(startCol).setStartRow(startRow)
-                .setFormat(format).build();
+                .setStartCol(startCol).setStartRow(startRow).setFormat(format)
+                .setElementType(elementType).setSemiRing(semiring).build();
 
         node.sendMessage(new MessageAssignChunkToNode(chunk));
-        assigned = true;
+        assignedTo = node;
     }
 
     public Chunk(ChunkDescription.Body m) {
@@ -89,7 +107,8 @@ public class Chunk {
         this.endRow = endRow;
         this.startCol = startCol;
         this.endCol = endCol;
-        
+        this.assignedTo = null;
+
         //filled-in later during matrix validation
         this.format = null;
         this.elementType = null;

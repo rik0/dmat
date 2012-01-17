@@ -21,6 +21,10 @@ public class SemiRings {
         return SemiRings.defaultSemirings.get(et);
     }
 
+    static public SemiRing<?> semiring(ChunkDescription.SemiRing et) {
+        return SemiRings.semirings.get(et);
+    }
+
     private SemiRings() {
     }
 }
