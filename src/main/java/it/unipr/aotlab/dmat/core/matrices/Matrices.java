@@ -47,6 +47,9 @@ public class Matrices {
 
     public Matrices splitHorizzontalyChuck(String splitsChuckName, int row,
             String oldChunkNewName, String newChunkName) throws ChunkNotFound {
+        if (splitsChuckName == null)
+            splitsChuckName = "default";
+
         Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
         Chunk newChunk = oldChunk.splitHorizzonally(newChunkName, row);
         buildingMatrix.chunks.add(newChunk);
@@ -58,9 +61,13 @@ public class Matrices {
 
     public Matrices splitVerticallyChuck(String splitsChuckName, int col,
             String oldChunkNewName, String newChunkName) throws ChunkNotFound {
+        if (splitsChuckName == null)
+            splitsChuckName = "default";
+
         Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
         Chunk newChunk = oldChunk.splitVertically(newChunkName, col);
         buildingMatrix.chunks.add(newChunk);
+
         oldChunk.chunkId = oldChunkNewName;
 
         return this;
@@ -117,7 +124,7 @@ public class Matrices {
 
         if (buildingMatrix.semiring == null)
             buildingMatrix.semiring = SemiRings
-                    .defaultSemiring(buildingMatrix.elementType);
+                    .defaultSemiring(buildingMatrix.elementType).valueOf();
 
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers
@@ -125,6 +132,7 @@ public class Matrices {
 
         for (Chunk c : buildingMatrix.chunks) {
             c.elementType = buildingMatrix.elementType;
+            c.semiring = buildingMatrix.semiring; 
             if (c.format == null) {
                 c.format = defaultFormat;
             }

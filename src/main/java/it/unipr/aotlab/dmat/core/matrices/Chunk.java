@@ -36,6 +36,7 @@ import java.io.IOException;
 public class Chunk {
     ChunkDescription.Format format;
     ChunkDescription.ElementType elementType;
+    ChunkDescription.SemiRing semiring;
     String chunkId;
     int startRow;
     int endRow;

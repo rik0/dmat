@@ -3,10 +3,11 @@ package it.unipr.aotlab.dmat.core.semirings;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 
 public class SemiRingBoolean implements SemiRing<Boolean> {
+    static ChunkDescription.SemiRing srtag = ChunkDescription.SemiRing.BOOLEANORDINARY; 
     static SemiRingBoolean theOne = new SemiRingBoolean();
     static {
         SemiRings.defaultSemirings.put(ChunkDescription.ElementType.BOOL, theOne);
-        SemiRings.semirings.put(ChunkDescription.SemiRing.BOOLEANORDINARY, theOne);
+        SemiRings.semirings.put(srtag, theOne);
     }
 
     public static SemiRing<Boolean> get() {
@@ -34,5 +35,10 @@ public class SemiRingBoolean implements SemiRing<Boolean> {
     }
 
     private SemiRingBoolean() {
+    }
+
+    @Override
+    public ChunkDescription.SemiRing valueOf() {
+        return srtag;
     }
 }

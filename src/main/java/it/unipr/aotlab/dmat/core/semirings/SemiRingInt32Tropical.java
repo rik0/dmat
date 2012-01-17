@@ -3,11 +3,12 @@ package it.unipr.aotlab.dmat.core.semirings;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 
 public class SemiRingInt32Tropical implements SemiRing<Integer> {
+    static final private ChunkDescription.SemiRing srtag = ChunkDescription.SemiRing.INT32TROPICAL;
     static final private Integer INFINITY = Integer.MAX_VALUE;
     static SemiRingInt32Tropical theOne = null;
 
     static {
-        SemiRings.semirings.put(ChunkDescription.SemiRing.INT32TROPICAL, theOne);
+        SemiRings.semirings.put(srtag, theOne);
     }
     
     public static SemiRing<Integer> get() {
@@ -40,5 +41,10 @@ public class SemiRingInt32Tropical implements SemiRing<Integer> {
     }
 
     private SemiRingInt32Tropical() {
+    }
+
+    @Override
+    public ChunkDescription.SemiRing valueOf() {
+        return srtag;
     }
 }

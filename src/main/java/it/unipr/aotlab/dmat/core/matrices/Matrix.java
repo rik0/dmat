@@ -40,7 +40,7 @@ public class Matrix {
     int cols = 0;
     ChunkDescription.ElementType elementType = null;
     Initializer init = null;
-    SemiRing<?> semiring = null;
+    ChunkDescription.SemiRing semiring = null;
 
     Vector<Chunk> chunks = new Vector<Chunk>();
 
