@@ -70,6 +70,10 @@ public class Matrix {
     }
 
     public Chunk getChunk(String chunkName) throws ChunkNotFound {
+        if (chunkName == null) {
+            chunkName = "default";
+        }
+
         // Linear search; there must be a better way. But
         // we need to be able to change the keys (chunkId)
         Chunk chunk = null;

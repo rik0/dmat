@@ -12,7 +12,7 @@ public class InNodeChunk<E> {
     ChunkAccessor<E> accessor;
 
     @SuppressWarnings("unchecked")
-    public InNodeChunk(Chunk chunk) {
+    InNodeChunk(Chunk chunk) {
         this.chunk = chunk;
         this.accessor = (ChunkAccessor<E>) Formats.setFormat(chunk.getElementType(), chunk.getFormat(), chunk);
         this.semiring = (SemiRing<E>) SemiRings.semiring(chunk.getSemiring());

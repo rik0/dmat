@@ -1,7 +1,10 @@
 package it.unipr.aotlab.dmat.core.formats;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.net.MatrixPiece;
+import it.unipr.aotlab.dmat.core.net.MatrixPieceTriplets;
 
 import java.util.Vector;
 
@@ -43,5 +46,34 @@ public class Dense<E> implements ChunkAccessor<E> {
         c -= hostChunk.getStartCol();
 
         return r * hostChunk.getEndCol() + c;
+    }
+
+    @Override
+    public MatrixPiece getPiece(int startRow, int endRow, int startCol,
+            int endCol) {
+        switch (hostChunk.getElementType()) {
+        case INT32:
+        case UINT32:
+            return getPieceInt32Triplets(startRow, endRow, startCol, endCol);
+        }
+
+        throw new DMatInternalError("Unknow type.");
+    }
+
+    public MatrixPiece getPieceInt32Triplets(int startRow, int endRow,
+            int startCol, int endCol) {
+        MatrixPieceTripletsInt32.Body.Builder pieceBuilder = MatrixPieceTripletsInt32.Body
+                .newBuilder();
+        for (int col = startCol; col < endCol; ++col) {
+            for (int row = startRow; row < endRow; ++row) {
+                Integer v = (Integer) get(row, col);
+                if (v != null) {
+                    pieceBuilder.addValues(MatrixPieceTripletsInt32.Triplet
+                            .newBuilder().setRow(row).setCol(col).setValue(v).build());
+                }
+            }
+        }
+
+        return new MatrixPieceTriplets(pieceBuilder.build());
     }
 }

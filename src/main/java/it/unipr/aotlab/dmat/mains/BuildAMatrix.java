@@ -1,30 +1,48 @@
 package it.unipr.aotlab.dmat.mains;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
+import it.unipr.aotlab.dmat.core.errors.DMatError;
+import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
+import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.NodeRegister;
+
+import java.io.IOException;
 
 public class BuildAMatrix {
-    @SuppressWarnings("unused")
     public static void main(String[] argv) {
-        try {
-            Matrices a = new Matrices();
-            Matrix c;
+        NodeRegister register = new NodeRegister();
+        Nodes nodes = new Nodes(register);
+        Connector connector = new Connector(new Address("127.0.0.1"));
 
-            c = a.setNofColumns(20)
-                    .setNofRows(20)
-                    .splitHorizzontalyChuck(null, 10, "top", "bottom")
-                    .splitVerticallyChuck("top", 10, "topleft", "topright")
-                    .setChunkFormat("topleft",
-                            ChunkDescription.Format.COMPRESSEDCOLUMNS)
-                    .setElementType(ChunkDescription.ElementType.BOOL)
+        Node node;
+        try {
+
+            Matrices a = new Matrices();
+            Matrix matrix = a.setNofColumns(20).setNofRows(20)
+                    .setElementType(ChunkDescription.ElementType.BOOL).build();
+
+            node = nodes.setNodeName("testNode").setConnector(connector)
                     .build();
 
-            int b = 0;
+            Chunk chunk = matrix.getChunk(null);
+            chunk.assignChunkToNode(node);
+
+            connector.connection().close();
         } catch (ChunkNotFound e) {
             e.printStackTrace();
+        } catch (IdNotUnique e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DMatError e) {
+            e.printStackTrace();
         }
-
     }
 }

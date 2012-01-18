@@ -15,6 +15,7 @@ public class WorkingNode {
     String brokerName;
     Connector connector;
     Connection connection;
+
     NodeState state;
     NodeMessageDigester digester;
 

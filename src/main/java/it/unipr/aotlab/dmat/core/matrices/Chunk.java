@@ -98,7 +98,9 @@ public class Chunk {
         this.endRow = m.getEndRow();
         this.startCol = m.getStartCol();
         this.endCol = m.getEndCol();
+        this.elementType = m.getElementType();
         this.format = m.getFormat();
+        this.semiring = m.getSemiRing();
     }
 
     Chunk(String chunkId, int startRow, int endRow, int startCol, int endCol) {
