@@ -24,8 +24,7 @@ public class BuildAMatrix {
         Node node;
         try {
 
-            Matrices a = new Matrices();
-            Matrix matrix = a.setNofColumns(20).setNofRows(20)
+            Matrix matrix = Matrices.newBuilder().setNofColumns(20).setNofRows(20)
                     .setElementType(ChunkDescription.ElementType.BOOL).build();
 
             node = nodes.setNodeName("testNode").setConnector(connector)

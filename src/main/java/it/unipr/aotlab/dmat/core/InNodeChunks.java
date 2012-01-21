@@ -14,7 +14,7 @@ public class InNodeChunks {
             return new InNodeChunk<Byte>(c);
         case INT16:
         case UINT16:
-            return new InNodeChunk<Character>(c);
+            return new InNodeChunk<Short>(c);
         case INT32:
         case UINT32:
             return new InNodeChunk<Integer>(c);
@@ -27,7 +27,7 @@ public class InNodeChunks {
         case FLOAT64:
             return new InNodeChunk<Double>(c);
         }
-        
+
         throw new DMatInternalError("Unknown Element Type. Chunk: " + c);
     }
 }

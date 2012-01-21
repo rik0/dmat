@@ -22,8 +22,8 @@ public class Matrices {
         this.defaultFormat = ChunkDescription.Format.DENSE;
     }
 
-    public Matrices() {
-        reset();
+    public static Matrices newBuilder() {
+        return new Matrices();
     }
 
     /* state & 1 means nof columns is set
@@ -118,13 +118,13 @@ public class Matrices {
         }
     }
 
-    private void validate() {
+    private void validateBuildingMatrix() {
         if (buildingMatrix.elementType == null)
             buildingMatrix.elementType = ChunkDescription.ElementType.INT32;
 
         if (buildingMatrix.semiring == null)
-            buildingMatrix.semiring = SemiRings
-                    .defaultSemiring(buildingMatrix.elementType).valueOf();
+            buildingMatrix.semiring = SemiRings.defaultSemiring(
+                    buildingMatrix.elementType).valueOf();
 
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers
@@ -132,7 +132,7 @@ public class Matrices {
 
         for (Chunk c : buildingMatrix.chunks) {
             c.elementType = buildingMatrix.elementType;
-            c.semiring = buildingMatrix.semiring; 
+            c.semiring = buildingMatrix.semiring;
             if (c.format == null) {
                 c.format = defaultFormat;
             }
@@ -140,11 +140,19 @@ public class Matrices {
     }
 
     public Matrix build() {
-        validate();
+        validateBuildingMatrix();
 
         Matrix builtMatrix = buildingMatrix;
-        reset();
+        invalidateThisFactory();
 
         return builtMatrix;
+    }
+
+    private Matrices() {
+        reset();
+    }
+
+    private void invalidateThisFactory() {
+        buildingMatrix = null;
     }
 }

@@ -17,10 +17,9 @@ public class MatricesTestCase {
     @Test
     public void buildMatrix() throws ChunkNotFound, SecurityException,
             NoSuchFieldException {
-        Matrices matrixFactory = new Matrices();
         Matrix matrix;
 
-        matrix = matrixFactory
+        matrix = Matrices.newBuilder()
                 .setNofColumns(20)
                 .setNofRows(30)
                 .splitHorizzontalyChuck(null, 15, "top", "bottom")

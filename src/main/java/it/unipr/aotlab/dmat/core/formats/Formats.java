@@ -17,7 +17,7 @@ public class Formats {
             return Formats.<Byte> setFormat(f, c);
         case INT16:
         case UINT16:
-            return Formats.<Character> setFormat(f, c);
+            return Formats.<Short> setFormat(f, c);
         case INT32:
         case UINT32:
             return Formats.<Integer> setFormat(f, c);
@@ -38,7 +38,7 @@ public class Formats {
             Chunk c) {
         switch (f) {
         case DENSE:
-            return new Dense<E>(c);
+            return new DeEnse<E>(c);
         }
 
         throw new DMatInternalError("Unknown format.");
