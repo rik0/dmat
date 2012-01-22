@@ -11,7 +11,7 @@ public abstract class DenseBase<E> implements ChunkAccessor<E> {
     protected Chunk hostChunk;
     protected TypeInfo typeInfo;
 
-    public DenseBase(Chunk hostChunk) {
+    protected DenseBase(Chunk hostChunk) {
         this.typeInfo = new TypeInfo(hostChunk.getElementType());
         this.hostChunk = hostChunk;
 

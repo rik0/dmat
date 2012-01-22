@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.formats;
 
-import it.unipr.aotlab.dmat.core.net.MatrixPiece;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 
 public interface ChunkAccessor<E> {
     abstract public E get(int row, int col);
@@ -9,5 +9,4 @@ public interface ChunkAccessor<E> {
 
     abstract public MatrixPiece getPiece(int startRow, int endRow,
             int startCol, int endCol);
-
 }

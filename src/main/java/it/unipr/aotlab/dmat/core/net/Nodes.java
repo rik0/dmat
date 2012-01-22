@@ -7,7 +7,7 @@ public interface Nodes {
     public Nodes setConnector(Connector connector);
 	public Nodes setNodeName(String nodeId);
     public Nodes addChunck(Chunk c);
-    public void reset();
+    public void resetFactory();
 
 	Node build() throws IdNotUnique;
 }

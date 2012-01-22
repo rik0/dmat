@@ -123,9 +123,8 @@ public class Matrices {
             buildingMatrix.elementType = ChunkDescription.ElementType.INT32;
 
         if (buildingMatrix.semiring == null)
-            buildingMatrix.semiring = SemiRings.defaultSemiring(
-                    buildingMatrix.elementType).valueOf();
-
+            buildingMatrix.semiring = ChunkDescription.SemiRing.DEFAULTSEMIRING;
+            
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers
                     .defaultInitializer(buildingMatrix.elementType);

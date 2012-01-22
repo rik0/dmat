@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.core.net;
+package it.unipr.aotlab.dmat.core.matrixPiece;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32;
 

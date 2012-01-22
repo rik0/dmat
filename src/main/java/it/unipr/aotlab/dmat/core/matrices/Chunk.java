@@ -114,6 +114,7 @@ public class Chunk {
         //filled-in later during matrix validation
         this.format = null;
         this.elementType = null;
+        this.semiring = null;
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {

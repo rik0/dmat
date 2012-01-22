@@ -33,10 +33,10 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
 
     @Override
     public Node build() throws IdNotUnique {
-        validate();
+        validateBuildingNode();
 
         Node builtNode = buildingNode;
-        reset();
+        resetFactory();
 
         return builtNode;
     }
@@ -48,11 +48,11 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     }
 
     @Override
-    public void reset() {
+    public void resetFactory() {
         buildingNode = new Node();
     }
 
-    public void validate() throws IdNotUnique {
+    void validateBuildingNode() throws IdNotUnique {
         if (buildingNode.nodeId == null)
             throw new InvalidNode("Node without ID.");
         if (buildingNode.connector == null)

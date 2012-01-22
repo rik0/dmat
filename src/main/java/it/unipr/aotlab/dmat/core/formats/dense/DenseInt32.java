@@ -1,11 +1,11 @@
-package it.unipr.aotlab.dmat.core.formats.Dense;
+package it.unipr.aotlab.dmat.core.formats.dense;
 
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
-import it.unipr.aotlab.dmat.core.net.MatrixPiece;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 
 public class DenseInt32 extends DenseBase<Integer> {
-    public DenseInt32(Chunk hostChunk) {
+    protected DenseInt32(Chunk hostChunk) {
         super(hostChunk);
     }
 

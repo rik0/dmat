@@ -1,14 +1,14 @@
-package it.unipr.aotlab.dmat.core.formats.Dense;
+package it.unipr.aotlab.dmat.core.formats.dense;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
-import it.unipr.aotlab.dmat.core.net.MatrixPiece;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 
 import java.nio.ByteBuffer;
 
 public class DenseBool extends DenseBase<Boolean> {
-    public DenseBool(Chunk hostChunk) {
+    protected DenseBool(Chunk hostChunk) {
         super(hostChunk);
     }
 
@@ -46,11 +46,11 @@ public class DenseBool extends DenseBase<Boolean> {
         return b == (b & bit);
     }
 
-    protected byte setBit(byte b, int value, int bitNo) {
-        if (value == 0)
-            b = (byte) (b & ~bitValue(bitNo));
-        else
+    protected byte setBit(byte b, boolean value, int bitNo) {
+        if (value)
             b = (byte) (b | bitValue(bitNo));
+        else
+            b = (byte) (b & ~bitValue(bitNo));
 
         return b;
     }
@@ -60,7 +60,7 @@ public class DenseBool extends DenseBase<Boolean> {
         int coord = convertCoods(row, col);
         int byteno = coord / 8;
         int bitno = coord % 8;
-        
+
         return getBit(array.get(byteno), bitno);
     }
 
@@ -69,10 +69,10 @@ public class DenseBool extends DenseBase<Boolean> {
         int coord = convertCoods(row, col);
         int byteno = coord / 8;
         int bitno = coord % 8;
-        
+
         byte oldByte = array.get(byteno);
-        
-        array.put(byteno, setBit(oldByte, value ? 1 : 0, bitno));
+
+        array.put(byteno, setBit(oldByte, value, bitno));
     }
 
     @Override

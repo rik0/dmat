@@ -178,13 +178,13 @@ public final class ChunkDescription {
   
   public enum SemiRing
       implements com.google.protobuf.ProtocolMessageEnum {
-    DEFAULT(0, 1),
+    DEFAULTSEMIRING(0, 1),
     INT32ORDINARY(1, 2),
     INT32TROPICAL(2, 3),
     BOOLEANORDINARY(3, 4),
     ;
     
-    public static final int DEFAULT_VALUE = 1;
+    public static final int DEFAULTSEMIRING_VALUE = 1;
     public static final int INT32ORDINARY_VALUE = 2;
     public static final int INT32TROPICAL_VALUE = 3;
     public static final int BOOLEANORDINARY_VALUE = 4;
@@ -194,7 +194,7 @@ public final class ChunkDescription {
     
     public static SemiRing valueOf(int value) {
       switch (value) {
-        case 1: return DEFAULT;
+        case 1: return DEFAULTSEMIRING;
         case 2: return INT32ORDINARY;
         case 3: return INT32TROPICAL;
         case 4: return BOOLEANORDINARY;
@@ -228,7 +228,7 @@ public final class ChunkDescription {
     }
     
     private static final SemiRing[] VALUES = {
-      DEFAULT, INT32ORDINARY, INT32TROPICAL, BOOLEANORDINARY, 
+      DEFAULTSEMIRING, INT32ORDINARY, INT32TROPICAL, BOOLEANORDINARY, 
     };
     
     public static SemiRing valueOf(
@@ -249,6 +249,75 @@ public final class ChunkDescription {
     }
     
     // @@protoc_insertion_point(enum_scope:SemiRing)
+  }
+  
+  public enum MatricesOnTheWire
+      implements com.google.protobuf.ProtocolMessageEnum {
+    DEFAULTMATRICESONTHEWIRE(0, 1),
+    INT32TRIPLETS(1, 2),
+    ;
+    
+    public static final int DEFAULTMATRICESONTHEWIRE_VALUE = 1;
+    public static final int INT32TRIPLETS_VALUE = 2;
+    
+    
+    public final int getNumber() { return value; }
+    
+    public static MatricesOnTheWire valueOf(int value) {
+      switch (value) {
+        case 1: return DEFAULTMATRICESONTHEWIRE;
+        case 2: return INT32TRIPLETS;
+        default: return null;
+      }
+    }
+    
+    public static com.google.protobuf.Internal.EnumLiteMap<MatricesOnTheWire>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<MatricesOnTheWire>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<MatricesOnTheWire>() {
+            public MatricesOnTheWire findValueByNumber(int number) {
+              return MatricesOnTheWire.valueOf(number);
+            }
+          };
+    
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return it.unipr.aotlab.dmat.core.generated.ChunkDescription.getDescriptor().getEnumTypes().get(3);
+    }
+    
+    private static final MatricesOnTheWire[] VALUES = {
+      DEFAULTMATRICESONTHEWIRE, INT32TRIPLETS, 
+    };
+    
+    public static MatricesOnTheWire valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+    
+    private final int index;
+    private final int value;
+    
+    private MatricesOnTheWire(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+    
+    // @@protoc_insertion_point(enum_scope:MatricesOnTheWire)
   }
   
   public interface BodyOrBuilder
@@ -282,9 +351,13 @@ public final class ChunkDescription {
     boolean hasElementType();
     it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType getElementType();
     
-    // required .SemiRing semiRing = 8 [default = DEFAULT];
+    // required .SemiRing semiRing = 8 [default = DEFAULTSEMIRING];
     boolean hasSemiRing();
     it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing getSemiRing();
+    
+    // required .MatricesOnTheWire matricesOnTheWire = 9 [default = DEFAULTMATRICESONTHEWIRE];
+    boolean hasMatricesOnTheWire();
+    it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire getMatricesOnTheWire();
   }
   public static final class Body extends
       com.google.protobuf.GeneratedMessage
@@ -407,7 +480,7 @@ public final class ChunkDescription {
       return elementType_;
     }
     
-    // required .SemiRing semiRing = 8 [default = DEFAULT];
+    // required .SemiRing semiRing = 8 [default = DEFAULTSEMIRING];
     public static final int SEMIRING_FIELD_NUMBER = 8;
     private it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing semiRing_;
     public boolean hasSemiRing() {
@@ -415,6 +488,16 @@ public final class ChunkDescription {
     }
     public it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing getSemiRing() {
       return semiRing_;
+    }
+    
+    // required .MatricesOnTheWire matricesOnTheWire = 9 [default = DEFAULTMATRICESONTHEWIRE];
+    public static final int MATRICESONTHEWIRE_FIELD_NUMBER = 9;
+    private it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire matricesOnTheWire_;
+    public boolean hasMatricesOnTheWire() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    public it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire getMatricesOnTheWire() {
+      return matricesOnTheWire_;
     }
     
     private void initFields() {
@@ -425,7 +508,8 @@ public final class ChunkDescription {
       endCol_ = 0;
       format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
       elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
-      semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULT;
+      semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
+      matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -464,6 +548,10 @@ public final class ChunkDescription {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasMatricesOnTheWire()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -494,6 +582,9 @@ public final class ChunkDescription {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         output.writeEnum(8, semiRing_.getNumber());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeEnum(9, matricesOnTheWire_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -535,6 +626,10 @@ public final class ChunkDescription {
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(8, semiRing_.getNumber());
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(9, matricesOnTheWire_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -674,8 +769,10 @@ public final class ChunkDescription {
         bitField0_ = (bitField0_ & ~0x00000020);
         elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
         bitField0_ = (bitField0_ & ~0x00000040);
-        semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULT;
+        semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
         bitField0_ = (bitField0_ & ~0x00000080);
+        matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
       
@@ -746,6 +843,10 @@ public final class ChunkDescription {
           to_bitField0_ |= 0x00000080;
         }
         result.semiRing_ = semiRing_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.matricesOnTheWire_ = matricesOnTheWire_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -786,6 +887,9 @@ public final class ChunkDescription {
         if (other.hasSemiRing()) {
           setSemiRing(other.getSemiRing());
         }
+        if (other.hasMatricesOnTheWire()) {
+          setMatricesOnTheWire(other.getMatricesOnTheWire());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -820,6 +924,10 @@ public final class ChunkDescription {
           return false;
         }
         if (!hasSemiRing()) {
+          
+          return false;
+        }
+        if (!hasMatricesOnTheWire()) {
           
           return false;
         }
@@ -904,6 +1012,17 @@ public final class ChunkDescription {
               } else {
                 bitField0_ |= 0x00000080;
                 semiRing_ = value;
+              }
+              break;
+            }
+            case 72: {
+              int rawValue = input.readEnum();
+              it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(9, rawValue);
+              } else {
+                bitField0_ |= 0x00000100;
+                matricesOnTheWire_ = value;
               }
               break;
             }
@@ -1081,8 +1200,8 @@ public final class ChunkDescription {
         return this;
       }
       
-      // required .SemiRing semiRing = 8 [default = DEFAULT];
-      private it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULT;
+      // required .SemiRing semiRing = 8 [default = DEFAULTSEMIRING];
+      private it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
       public boolean hasSemiRing() {
         return ((bitField0_ & 0x00000080) == 0x00000080);
       }
@@ -1100,7 +1219,31 @@ public final class ChunkDescription {
       }
       public Builder clearSemiRing() {
         bitField0_ = (bitField0_ & ~0x00000080);
-        semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULT;
+        semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
+        onChanged();
+        return this;
+      }
+      
+      // required .MatricesOnTheWire matricesOnTheWire = 9 [default = DEFAULTMATRICESONTHEWIRE];
+      private it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+      public boolean hasMatricesOnTheWire() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      public it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire getMatricesOnTheWire() {
+        return matricesOnTheWire_;
+      }
+      public Builder setMatricesOnTheWire(it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000100;
+        matricesOnTheWire_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearMatricesOnTheWire() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
         onChanged();
         return this;
       }
@@ -1131,20 +1274,24 @@ public final class ChunkDescription {
   static {
     java.lang.String[] descriptorData = {
       "\n=home/paolo/uni/dissertation/dmat/proto" +
-      "/ChunkDescription.proto\"\313\001\n\004Body\022\017\n\007chun" +
+      "/ChunkDescription.proto\"\234\002\n\004Body\022\017\n\007chun" +
       "kId\030\001 \002(\t\022\020\n\010startRow\030\002 \002(\005\022\016\n\006endRow\030\003 " +
       "\002(\005\022\020\n\010startCol\030\004 \002(\005\022\016\n\006endCol\030\005 \002(\005\022\036\n" +
       "\006format\030\006 \002(\0162\007.Format:\005DENSE\022(\n\013element" +
-      "Type\030\007 \002(\0162\014.ElementType:\005INT32\022$\n\010semiR" +
-      "ing\030\010 \002(\0162\t.SemiRing:\007DEFAULT*>\n\006Format\022" +
-      "\022\n\016COMPRESSEDROWS\020\001\022\025\n\021COMPRESSEDCOLUMNS" +
-      "\020\002\022\t\n\005DENSE\020\003*\213\001\n\013ElementType\022\010\n\004BOOL\020\001\022" +
-      "\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n\005INT64",
-      "\020\005\022\t\n\005UINT8\020\006\022\n\n\006UINT16\020\007\022\n\n\006UINT32\020\010\022\n\n" +
-      "\006UINT64\020\t\022\013\n\007FLOAT32\020\n\022\013\n\007FLOAT64\020\013*R\n\010S" +
-      "emiRing\022\013\n\007DEFAULT\020\001\022\021\n\rINT32ORDINARY\020\002\022" +
-      "\021\n\rINT32TROPICAL\020\003\022\023\n\017BOOLEANORDINARY\020\004B" +
-      "%\n#it.unipr.aotlab.dmat.core.generated"
+      "Type\030\007 \002(\0162\014.ElementType:\005INT32\022,\n\010semiR" +
+      "ing\030\010 \002(\0162\t.SemiRing:\017DEFAULTSEMIRING\022G\n" +
+      "\021matricesOnTheWire\030\t \002(\0162\022.MatricesOnThe" +
+      "Wire:\030DEFAULTMATRICESONTHEWIRE*>\n\006Format" +
+      "\022\022\n\016COMPRESSEDROWS\020\001\022\025\n\021COMPRESSEDCOLUMN",
+      "S\020\002\022\t\n\005DENSE\020\003*\213\001\n\013ElementType\022\010\n\004BOOL\020\001" +
+      "\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n\005INT6" +
+      "4\020\005\022\t\n\005UINT8\020\006\022\n\n\006UINT16\020\007\022\n\n\006UINT32\020\010\022\n" +
+      "\n\006UINT64\020\t\022\013\n\007FLOAT32\020\n\022\013\n\007FLOAT64\020\013*Z\n\010" +
+      "SemiRing\022\023\n\017DEFAULTSEMIRING\020\001\022\021\n\rINT32OR" +
+      "DINARY\020\002\022\021\n\rINT32TROPICAL\020\003\022\023\n\017BOOLEANOR" +
+      "DINARY\020\004*D\n\021MatricesOnTheWire\022\034\n\030DEFAULT" +
+      "MATRICESONTHEWIRE\020\001\022\021\n\rINT32TRIPLETS\020\002B%" +
+      "\n#it.unipr.aotlab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1156,7 +1303,7 @@ public final class ChunkDescription {
           internal_static_Body_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Body_descriptor,
-              new java.lang.String[] { "ChunkId", "StartRow", "EndRow", "StartCol", "EndCol", "Format", "ElementType", "SemiRing", },
+              new java.lang.String[] { "ChunkId", "StartRow", "EndRow", "StartCol", "EndCol", "Format", "ElementType", "SemiRing", "MatricesOnTheWire", },
               it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.class,
               it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.Builder.class);
           return null;

@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.core.net;
+package it.unipr.aotlab.dmat.core.matrixPiece;
 
 import java.util.Iterator;
 
