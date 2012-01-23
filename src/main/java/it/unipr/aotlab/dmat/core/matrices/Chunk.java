@@ -38,6 +38,7 @@ public class Chunk {
     ChunkDescription.Format format;
     ChunkDescription.ElementType elementType;
     ChunkDescription.SemiRing semiring;
+    ChunkDescription.MatricesOnTheWire matricesOnTheWire;
     String chunkId;
     int startRow;
     int endRow;
@@ -86,7 +87,8 @@ public class Chunk {
         ChunkDescription.Body chunk = ChunkDescription.Body.newBuilder()
                 .setChunkId(chunkId).setEndCol(endCol).setEndRow(endRow)
                 .setStartCol(startCol).setStartRow(startRow).setFormat(format)
-                .setElementType(elementType).setSemiRing(semiring).build();
+                .setElementType(elementType).setSemiRing(semiring)
+                .setMatricesOnTheWire(matricesOnTheWire).build();
 
         node.sendMessage(new MessageAssignChunkToNode(chunk));
         assignedTo = node;
@@ -115,6 +117,7 @@ public class Chunk {
         this.format = null;
         this.elementType = null;
         this.semiring = null;
+        this.matricesOnTheWire = null;
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {

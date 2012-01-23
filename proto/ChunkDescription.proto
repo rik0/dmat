@@ -22,10 +22,15 @@ enum ElementType {
 }
 
 enum SemiRing {
-    DEFAULT = 1;
+    DEFAULTSEMIRING = 1;
     INT32ORDINARY = 2;
     INT32TROPICAL = 3;
     BOOLEANORDINARY = 4;
+}
+
+enum MatricesOnTheWire {
+    DEFAULTMATRICESONTHEWIRE = 1;
+    INT32TRIPLETS = 2;
 }
 
 message Body {
@@ -36,6 +41,7 @@ message Body {
     required int32 endCol = 5;
     required Format format = 6 [ default = DENSE ];
     required ElementType elementType = 7 [ default = INT32 ];
-    required SemiRing semiRing = 8 [ default = DEFAULT ];
+    required SemiRing semiRing = 8 [ default = DEFAULTSEMIRING ];
+    required MatricesOnTheWire matricesOnTheWire = 9 [ default = DEFAULTMATRICESONTHEWIRE ];
 }
 

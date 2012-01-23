@@ -1,9 +1,10 @@
-package it.unipr.aotlab.dmat.core;
+package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.formats.Formats;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 
@@ -11,6 +12,7 @@ public class InNodeChunk<E> {
     Chunk chunk;
     SemiRing<E> semiring;
     ChunkAccessor<E> accessor;
+    MatrixPiece matrixPiece;
 
     @SuppressWarnings("unchecked")
     InNodeChunk(Chunk chunk) {

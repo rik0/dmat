@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.net;
 
-import it.unipr.aotlab.dmat.core.NodeMessageDigester;
+import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 abstract public class Message {
     public String contentType() {

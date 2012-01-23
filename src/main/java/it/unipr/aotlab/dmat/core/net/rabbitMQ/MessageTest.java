@@ -1,9 +1,9 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
-import it.unipr.aotlab.dmat.core.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody.Body;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageTest extends Message {
     public MessageTestBody.Body body;

@@ -1,8 +1,8 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
-import it.unipr.aotlab.dmat.core.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageAssignChunkToNode extends Message {
     public ChunkDescription.Body body;

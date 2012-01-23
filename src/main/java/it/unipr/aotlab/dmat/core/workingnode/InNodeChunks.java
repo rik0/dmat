@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.core;
+package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;

@@ -17,7 +17,7 @@ public class MatrixPieces {
     }
 
     public interface Builder {
-        MatrixPiece build(Object messageBody);
+        MatrixPiece build(Object messageBody); 
     }
 
     public static Builder defaultMatrixPiece(

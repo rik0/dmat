@@ -13,6 +13,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
 
     static {
         MatrixPieceTripletsInt32.Builder b = new Builder();
+
         MatrixPieces.defaultMatrixPieces.put(
                 ChunkDescription.ElementType.INT32, b);
         MatrixPieces.defaultMatrixPieces.put(
@@ -21,7 +22,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         MatrixPieces.matrixPieces.put(srtag, b);
     }
 
-    static class Builder implements MatrixPieces.Builder {
+    public static class Builder implements MatrixPieces.Builder {
         @Override
         public MatrixPiece build(Object messageBody) {
             return new MatrixPieceTripletsInt32(

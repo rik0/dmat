@@ -5,9 +5,14 @@ import static junit.framework.Assert.assertTrue;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
+
+import java.util.Iterator;
+
 import junitx.util.PrivateAccessor;
 
 import org.junit.Test;
@@ -19,7 +24,8 @@ public class MatricesTestCase {
             NoSuchFieldException {
         Matrix matrix;
 
-        matrix = Matrices.newBuilder()
+        matrix = Matrices
+                .newBuilder()
                 .setNofColumns(20)
                 .setNofRows(30)
                 .splitHorizzontalyChuck(null, 15, "top", "bottom")
@@ -91,5 +97,28 @@ public class MatricesTestCase {
 
         assertEquals(30, bottom.getEndRow());
         assertEquals(20, bottom.getEndCol());
+    }
+
+    @Test
+    public void makeAPieceSendIterate() {
+        MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
+                .newBuilder();
+        for (int i = 0; i < 10; ++i) {
+            b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
+                    .setCol(i*2).setRow(i*3).setValue(i*4).build());
+        }
+        MatrixPieceTripletsInt32Wire.Body messsageBody = b.build();
+
+        MatrixPieceTripletsInt32.Builder receiverBuilder = new MatrixPieceTripletsInt32.Builder();
+
+        Iterator<MatrixPieceTripletsInt32.Int32Triplet> resultsIterator = (Iterator<MatrixPieceTripletsInt32.Int32Triplet>) receiverBuilder
+                .build(messsageBody).matrixPieceIterator();
+
+        for (int i = 0; i < 10; ++i) {
+            MatrixPieceTripletsInt32.Int32Triplet r = resultsIterator.next();
+            assertEquals(r.col, i*2);
+            assertEquals(r.row, i*3);
+            assertEquals(r.value, i*4);
+        }
     }
 }
