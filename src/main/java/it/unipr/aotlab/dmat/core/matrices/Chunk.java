@@ -39,6 +39,7 @@ public class Chunk {
     ChunkDescription.ElementType elementType;
     ChunkDescription.SemiRing semiring;
     ChunkDescription.MatricesOnTheWire matricesOnTheWire;
+    String matrixId;
     String chunkId;
     int startRow;
     int endRow;
@@ -78,6 +79,10 @@ public class Chunk {
         return semiring;
     }
 
+    public ChunkDescription.MatricesOnTheWire getMatricesOnTheWire() {
+        return matricesOnTheWire;
+    }
+
     public void assignChunkToNode(Node node) throws IOException, DMatError {
         if (assignedTo != null) {
             throw new DMatError("This node has been already assigned to "
@@ -103,25 +108,29 @@ public class Chunk {
         this.elementType = m.getElementType();
         this.format = m.getFormat();
         this.semiring = m.getSemiRing();
+        this.matricesOnTheWire = m.getMatricesOnTheWire();
     }
 
-    Chunk(String chunkId, int startRow, int endRow, int startCol, int endCol) {
+    Chunk(String matrixId, String chunkId, int startRow, int endRow, int startCol, int endCol) {
+        this.matrixId = matrixId;
         this.chunkId = chunkId;
         this.startRow = startRow;
         this.endRow = endRow;
         this.startCol = startCol;
         this.endCol = endCol;
+        this.matricesOnTheWire = ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+
         this.assignedTo = null;
 
         //filled-in later during matrix validation
         this.format = null;
         this.elementType = null;
         this.semiring = null;
-        this.matricesOnTheWire = null;
+
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
-        Chunk newChunk = new Chunk(newChunkName, newChunkStartRow, endRow,
+        Chunk newChunk = new Chunk(matrixId, newChunkName, newChunkStartRow, endRow,
                 startCol, endCol);
         endRow = newChunkStartRow;
 
@@ -129,7 +138,7 @@ public class Chunk {
     }
 
     Chunk splitVertically(String newChunkName, int newChunkStartCol) {
-        Chunk newChunk = new Chunk(newChunkName, startRow, endRow,
+        Chunk newChunk = new Chunk(matrixId, newChunkName, startRow, endRow,
                 newChunkStartCol, endCol);
         endCol = newChunkStartCol;
 
@@ -148,4 +157,22 @@ public class Chunk {
                 + " endCol: " + endCol;
     }
 
+    void setIfUnsetFormat(Matrices factory) {
+        if (this.format == null) {
+            this.format = factory.defaultFormat;
+        }
+    }
+
+    void setIfUnsetMatricesOnTheWire() {
+        if (this.matricesOnTheWire == null) {
+            this.matricesOnTheWire = ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+        }
+    }
+
+    void validate(Matrices factory) {
+        this.elementType = factory.buildingMatrix.elementType;
+        this.semiring = factory.buildingMatrix.semiring;
+        setIfUnsetFormat(factory);
+        setIfUnsetMatricesOnTheWire();
+    }
 }

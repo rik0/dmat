@@ -323,39 +323,43 @@ public final class ChunkDescription {
   public interface BodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string chunkId = 1;
+    // required string matrixId = 1;
+    boolean hasMatrixId();
+    String getMatrixId();
+    
+    // required string chunkId = 2;
     boolean hasChunkId();
     String getChunkId();
     
-    // required int32 startRow = 2;
+    // required int32 startRow = 3;
     boolean hasStartRow();
     int getStartRow();
     
-    // required int32 endRow = 3;
+    // required int32 endRow = 4;
     boolean hasEndRow();
     int getEndRow();
     
-    // required int32 startCol = 4;
+    // required int32 startCol = 5;
     boolean hasStartCol();
     int getStartCol();
     
-    // required int32 endCol = 5;
+    // required int32 endCol = 6;
     boolean hasEndCol();
     int getEndCol();
     
-    // required .Format format = 6 [default = DENSE];
+    // required .Format format = 7 [default = DENSE];
     boolean hasFormat();
     it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format getFormat();
     
-    // required .ElementType elementType = 7 [default = INT32];
+    // required .ElementType elementType = 8 [default = INT32];
     boolean hasElementType();
     it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType getElementType();
     
-    // required .SemiRing semiRing = 8 [default = DEFAULTSEMIRING];
+    // required .SemiRing semiRing = 9 [default = DEFAULTSEMIRING];
     boolean hasSemiRing();
     it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing getSemiRing();
     
-    // required .MatricesOnTheWire matricesOnTheWire = 9 [default = DEFAULTMATRICESONTHEWIRE];
+    // required .MatricesOnTheWire matricesOnTheWire = 10 [default = DEFAULTMATRICESONTHEWIRE];
     boolean hasMatricesOnTheWire();
     it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire getMatricesOnTheWire();
   }
@@ -388,11 +392,43 @@ public final class ChunkDescription {
     }
     
     private int bitField0_;
-    // required string chunkId = 1;
-    public static final int CHUNKID_FIELD_NUMBER = 1;
+    // required string matrixId = 1;
+    public static final int MATRIXID_FIELD_NUMBER = 1;
+    private java.lang.Object matrixId_;
+    public boolean hasMatrixId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public String getMatrixId() {
+      java.lang.Object ref = matrixId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          matrixId_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getMatrixIdBytes() {
+      java.lang.Object ref = matrixId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        matrixId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required string chunkId = 2;
+    public static final int CHUNKID_FIELD_NUMBER = 2;
     private java.lang.Object chunkId_;
     public boolean hasChunkId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     public String getChunkId() {
       java.lang.Object ref = chunkId_;
@@ -420,87 +456,88 @@ public final class ChunkDescription {
       }
     }
     
-    // required int32 startRow = 2;
-    public static final int STARTROW_FIELD_NUMBER = 2;
+    // required int32 startRow = 3;
+    public static final int STARTROW_FIELD_NUMBER = 3;
     private int startRow_;
     public boolean hasStartRow() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     public int getStartRow() {
       return startRow_;
     }
     
-    // required int32 endRow = 3;
-    public static final int ENDROW_FIELD_NUMBER = 3;
+    // required int32 endRow = 4;
+    public static final int ENDROW_FIELD_NUMBER = 4;
     private int endRow_;
     public boolean hasEndRow() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     public int getEndRow() {
       return endRow_;
     }
     
-    // required int32 startCol = 4;
-    public static final int STARTCOL_FIELD_NUMBER = 4;
+    // required int32 startCol = 5;
+    public static final int STARTCOL_FIELD_NUMBER = 5;
     private int startCol_;
     public boolean hasStartCol() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     public int getStartCol() {
       return startCol_;
     }
     
-    // required int32 endCol = 5;
-    public static final int ENDCOL_FIELD_NUMBER = 5;
+    // required int32 endCol = 6;
+    public static final int ENDCOL_FIELD_NUMBER = 6;
     private int endCol_;
     public boolean hasEndCol() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     public int getEndCol() {
       return endCol_;
     }
     
-    // required .Format format = 6 [default = DENSE];
-    public static final int FORMAT_FIELD_NUMBER = 6;
+    // required .Format format = 7 [default = DENSE];
+    public static final int FORMAT_FIELD_NUMBER = 7;
     private it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format format_;
     public boolean hasFormat() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     public it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format getFormat() {
       return format_;
     }
     
-    // required .ElementType elementType = 7 [default = INT32];
-    public static final int ELEMENTTYPE_FIELD_NUMBER = 7;
+    // required .ElementType elementType = 8 [default = INT32];
+    public static final int ELEMENTTYPE_FIELD_NUMBER = 8;
     private it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType elementType_;
     public boolean hasElementType() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+      return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     public it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType getElementType() {
       return elementType_;
     }
     
-    // required .SemiRing semiRing = 8 [default = DEFAULTSEMIRING];
-    public static final int SEMIRING_FIELD_NUMBER = 8;
+    // required .SemiRing semiRing = 9 [default = DEFAULTSEMIRING];
+    public static final int SEMIRING_FIELD_NUMBER = 9;
     private it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing semiRing_;
     public boolean hasSemiRing() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000100) == 0x00000100);
     }
     public it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing getSemiRing() {
       return semiRing_;
     }
     
-    // required .MatricesOnTheWire matricesOnTheWire = 9 [default = DEFAULTMATRICESONTHEWIRE];
-    public static final int MATRICESONTHEWIRE_FIELD_NUMBER = 9;
+    // required .MatricesOnTheWire matricesOnTheWire = 10 [default = DEFAULTMATRICESONTHEWIRE];
+    public static final int MATRICESONTHEWIRE_FIELD_NUMBER = 10;
     private it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire matricesOnTheWire_;
     public boolean hasMatricesOnTheWire() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
+      return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     public it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire getMatricesOnTheWire() {
       return matricesOnTheWire_;
     }
     
     private void initFields() {
+      matrixId_ = "";
       chunkId_ = "";
       startRow_ = 0;
       endRow_ = 0;
@@ -516,6 +553,10 @@ public final class ChunkDescription {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
+      if (!hasMatrixId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasChunkId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -560,31 +601,34 @@ public final class ChunkDescription {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getChunkIdBytes());
+        output.writeBytes(1, getMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, startRow_);
+        output.writeBytes(2, getChunkIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, endRow_);
+        output.writeInt32(3, startRow_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, startCol_);
+        output.writeInt32(4, endRow_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, endCol_);
+        output.writeInt32(5, startCol_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeEnum(6, format_.getNumber());
+        output.writeInt32(6, endCol_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeEnum(7, elementType_.getNumber());
+        output.writeEnum(7, format_.getNumber());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeEnum(8, semiRing_.getNumber());
+        output.writeEnum(8, elementType_.getNumber());
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
-        output.writeEnum(9, matricesOnTheWire_.getNumber());
+        output.writeEnum(9, semiRing_.getNumber());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeEnum(10, matricesOnTheWire_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -597,39 +641,43 @@ public final class ChunkDescription {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getChunkIdBytes());
+          .computeBytesSize(1, getMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, startRow_);
+          .computeBytesSize(2, getChunkIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, endRow_);
+          .computeInt32Size(3, startRow_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, startCol_);
+          .computeInt32Size(4, endRow_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, endCol_);
+          .computeInt32Size(5, startCol_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(6, format_.getNumber());
+          .computeInt32Size(6, endCol_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(7, elementType_.getNumber());
+          .computeEnumSize(7, format_.getNumber());
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(8, semiRing_.getNumber());
+          .computeEnumSize(8, elementType_.getNumber());
       }
       if (((bitField0_ & 0x00000100) == 0x00000100)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(9, matricesOnTheWire_.getNumber());
+          .computeEnumSize(9, semiRing_.getNumber());
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(10, matricesOnTheWire_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -755,24 +803,26 @@ public final class ChunkDescription {
       
       public Builder clear() {
         super.clear();
-        chunkId_ = "";
+        matrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        startRow_ = 0;
+        chunkId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        endRow_ = 0;
+        startRow_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        startCol_ = 0;
+        endRow_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        endCol_ = 0;
+        startCol_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
+        endCol_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
+        format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
         bitField0_ = (bitField0_ & ~0x00000040);
-        semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
+        elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
         bitField0_ = (bitField0_ & ~0x00000080);
-        matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+        semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
         bitField0_ = (bitField0_ & ~0x00000100);
+        matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       
@@ -814,37 +864,41 @@ public final class ChunkDescription {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.chunkId_ = chunkId_;
+        result.matrixId_ = matrixId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.startRow_ = startRow_;
+        result.chunkId_ = chunkId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.endRow_ = endRow_;
+        result.startRow_ = startRow_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.startCol_ = startCol_;
+        result.endRow_ = endRow_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.endCol_ = endCol_;
+        result.startCol_ = startCol_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.format_ = format_;
+        result.endCol_ = endCol_;
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
-        result.elementType_ = elementType_;
+        result.format_ = format_;
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000080;
         }
-        result.semiRing_ = semiRing_;
+        result.elementType_ = elementType_;
         if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
           to_bitField0_ |= 0x00000100;
+        }
+        result.semiRing_ = semiRing_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
         }
         result.matricesOnTheWire_ = matricesOnTheWire_;
         result.bitField0_ = to_bitField0_;
@@ -863,6 +917,9 @@ public final class ChunkDescription {
       
       public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body other) {
         if (other == it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.getDefaultInstance()) return this;
+        if (other.hasMatrixId()) {
+          setMatrixId(other.getMatrixId());
+        }
         if (other.hasChunkId()) {
           setChunkId(other.getChunkId());
         }
@@ -895,6 +952,10 @@ public final class ChunkDescription {
       }
       
       public final boolean isInitialized() {
+        if (!hasMatrixId()) {
+          
+          return false;
+        }
         if (!hasChunkId()) {
           
           return false;
@@ -959,69 +1020,74 @@ public final class ChunkDescription {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              chunkId_ = input.readBytes();
+              matrixId_ = input.readBytes();
               break;
             }
-            case 16: {
+            case 18: {
               bitField0_ |= 0x00000002;
-              startRow_ = input.readInt32();
+              chunkId_ = input.readBytes();
               break;
             }
             case 24: {
               bitField0_ |= 0x00000004;
-              endRow_ = input.readInt32();
+              startRow_ = input.readInt32();
               break;
             }
             case 32: {
               bitField0_ |= 0x00000008;
-              startCol_ = input.readInt32();
+              endRow_ = input.readInt32();
               break;
             }
             case 40: {
               bitField0_ |= 0x00000010;
-              endCol_ = input.readInt32();
+              startCol_ = input.readInt32();
               break;
             }
             case 48: {
-              int rawValue = input.readEnum();
-              it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(6, rawValue);
-              } else {
-                bitField0_ |= 0x00000020;
-                format_ = value;
-              }
+              bitField0_ |= 0x00000020;
+              endCol_ = input.readInt32();
               break;
             }
             case 56: {
               int rawValue = input.readEnum();
-              it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.valueOf(rawValue);
+              it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(7, rawValue);
               } else {
                 bitField0_ |= 0x00000040;
-                elementType_ = value;
+                format_ = value;
               }
               break;
             }
             case 64: {
               int rawValue = input.readEnum();
-              it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.valueOf(rawValue);
+              it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(8, rawValue);
               } else {
                 bitField0_ |= 0x00000080;
-                semiRing_ = value;
+                elementType_ = value;
               }
               break;
             }
             case 72: {
               int rawValue = input.readEnum();
-              it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.valueOf(rawValue);
+              it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(9, rawValue);
               } else {
                 bitField0_ |= 0x00000100;
+                semiRing_ = value;
+              }
+              break;
+            }
+            case 80: {
+              int rawValue = input.readEnum();
+              it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire value = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(10, rawValue);
+              } else {
+                bitField0_ |= 0x00000200;
                 matricesOnTheWire_ = value;
               }
               break;
@@ -1032,10 +1098,46 @@ public final class ChunkDescription {
       
       private int bitField0_;
       
-      // required string chunkId = 1;
+      // required string matrixId = 1;
+      private java.lang.Object matrixId_ = "";
+      public boolean hasMatrixId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public String getMatrixId() {
+        java.lang.Object ref = matrixId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          matrixId_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setMatrixId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        matrixId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearMatrixId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        matrixId_ = getDefaultInstance().getMatrixId();
+        onChanged();
+        return this;
+      }
+      void setMatrixId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        matrixId_ = value;
+        onChanged();
+      }
+      
+      // required string chunkId = 2;
       private java.lang.Object chunkId_ = "";
       public boolean hasChunkId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       public String getChunkId() {
         java.lang.Object ref = chunkId_;
@@ -1051,111 +1153,111 @@ public final class ChunkDescription {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         chunkId_ = value;
         onChanged();
         return this;
       }
       public Builder clearChunkId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         chunkId_ = getDefaultInstance().getChunkId();
         onChanged();
         return this;
       }
       void setChunkId(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         chunkId_ = value;
         onChanged();
       }
       
-      // required int32 startRow = 2;
+      // required int32 startRow = 3;
       private int startRow_ ;
       public boolean hasStartRow() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       public int getStartRow() {
         return startRow_;
       }
       public Builder setStartRow(int value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         startRow_ = value;
         onChanged();
         return this;
       }
       public Builder clearStartRow() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         startRow_ = 0;
         onChanged();
         return this;
       }
       
-      // required int32 endRow = 3;
+      // required int32 endRow = 4;
       private int endRow_ ;
       public boolean hasEndRow() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       public int getEndRow() {
         return endRow_;
       }
       public Builder setEndRow(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         endRow_ = value;
         onChanged();
         return this;
       }
       public Builder clearEndRow() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         endRow_ = 0;
         onChanged();
         return this;
       }
       
-      // required int32 startCol = 4;
+      // required int32 startCol = 5;
       private int startCol_ ;
       public boolean hasStartCol() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       public int getStartCol() {
         return startCol_;
       }
       public Builder setStartCol(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         startCol_ = value;
         onChanged();
         return this;
       }
       public Builder clearStartCol() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         startCol_ = 0;
         onChanged();
         return this;
       }
       
-      // required int32 endCol = 5;
+      // required int32 endCol = 6;
       private int endCol_ ;
       public boolean hasEndCol() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       public int getEndCol() {
         return endCol_;
       }
       public Builder setEndCol(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         endCol_ = value;
         onChanged();
         return this;
       }
       public Builder clearEndCol() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         endCol_ = 0;
         onChanged();
         return this;
       }
       
-      // required .Format format = 6 [default = DENSE];
+      // required .Format format = 7 [default = DENSE];
       private it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
       public boolean hasFormat() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       public it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format getFormat() {
         return format_;
@@ -1164,22 +1266,22 @@ public final class ChunkDescription {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         format_ = value;
         onChanged();
         return this;
       }
       public Builder clearFormat() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
         onChanged();
         return this;
       }
       
-      // required .ElementType elementType = 7 [default = INT32];
+      // required .ElementType elementType = 8 [default = INT32];
       private it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
       public boolean hasElementType() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       public it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType getElementType() {
         return elementType_;
@@ -1188,22 +1290,22 @@ public final class ChunkDescription {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         elementType_ = value;
         onChanged();
         return this;
       }
       public Builder clearElementType() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
         onChanged();
         return this;
       }
       
-      // required .SemiRing semiRing = 8 [default = DEFAULTSEMIRING];
+      // required .SemiRing semiRing = 9 [default = DEFAULTSEMIRING];
       private it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
       public boolean hasSemiRing() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
+        return ((bitField0_ & 0x00000100) == 0x00000100);
       }
       public it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing getSemiRing() {
         return semiRing_;
@@ -1212,22 +1314,22 @@ public final class ChunkDescription {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000080;
+        bitField0_ |= 0x00000100;
         semiRing_ = value;
         onChanged();
         return this;
       }
       public Builder clearSemiRing() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        bitField0_ = (bitField0_ & ~0x00000100);
         semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
         onChanged();
         return this;
       }
       
-      // required .MatricesOnTheWire matricesOnTheWire = 9 [default = DEFAULTMATRICESONTHEWIRE];
+      // required .MatricesOnTheWire matricesOnTheWire = 10 [default = DEFAULTMATRICESONTHEWIRE];
       private it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
       public boolean hasMatricesOnTheWire() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       public it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire getMatricesOnTheWire() {
         return matricesOnTheWire_;
@@ -1236,13 +1338,13 @@ public final class ChunkDescription {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         matricesOnTheWire_ = value;
         onChanged();
         return this;
       }
       public Builder clearMatricesOnTheWire() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         matricesOnTheWire_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
         onChanged();
         return this;
@@ -1274,24 +1376,25 @@ public final class ChunkDescription {
   static {
     java.lang.String[] descriptorData = {
       "\n=home/paolo/uni/dissertation/dmat/proto" +
-      "/ChunkDescription.proto\"\234\002\n\004Body\022\017\n\007chun" +
-      "kId\030\001 \002(\t\022\020\n\010startRow\030\002 \002(\005\022\016\n\006endRow\030\003 " +
-      "\002(\005\022\020\n\010startCol\030\004 \002(\005\022\016\n\006endCol\030\005 \002(\005\022\036\n" +
-      "\006format\030\006 \002(\0162\007.Format:\005DENSE\022(\n\013element" +
-      "Type\030\007 \002(\0162\014.ElementType:\005INT32\022,\n\010semiR" +
-      "ing\030\010 \002(\0162\t.SemiRing:\017DEFAULTSEMIRING\022G\n" +
-      "\021matricesOnTheWire\030\t \002(\0162\022.MatricesOnThe" +
-      "Wire:\030DEFAULTMATRICESONTHEWIRE*>\n\006Format" +
-      "\022\022\n\016COMPRESSEDROWS\020\001\022\025\n\021COMPRESSEDCOLUMN",
-      "S\020\002\022\t\n\005DENSE\020\003*\213\001\n\013ElementType\022\010\n\004BOOL\020\001" +
-      "\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n\005INT6" +
-      "4\020\005\022\t\n\005UINT8\020\006\022\n\n\006UINT16\020\007\022\n\n\006UINT32\020\010\022\n" +
-      "\n\006UINT64\020\t\022\013\n\007FLOAT32\020\n\022\013\n\007FLOAT64\020\013*Z\n\010" +
-      "SemiRing\022\023\n\017DEFAULTSEMIRING\020\001\022\021\n\rINT32OR" +
-      "DINARY\020\002\022\021\n\rINT32TROPICAL\020\003\022\023\n\017BOOLEANOR" +
-      "DINARY\020\004*D\n\021MatricesOnTheWire\022\034\n\030DEFAULT" +
-      "MATRICESONTHEWIRE\020\001\022\021\n\rINT32TRIPLETS\020\002B%" +
-      "\n#it.unipr.aotlab.dmat.core.generated"
+      "/ChunkDescription.proto\"\256\002\n\004Body\022\020\n\010matr" +
+      "ixId\030\001 \002(\t\022\017\n\007chunkId\030\002 \002(\t\022\020\n\010startRow\030" +
+      "\003 \002(\005\022\016\n\006endRow\030\004 \002(\005\022\020\n\010startCol\030\005 \002(\005\022" +
+      "\016\n\006endCol\030\006 \002(\005\022\036\n\006format\030\007 \002(\0162\007.Format" +
+      ":\005DENSE\022(\n\013elementType\030\010 \002(\0162\014.ElementTy" +
+      "pe:\005INT32\022,\n\010semiRing\030\t \002(\0162\t.SemiRing:\017" +
+      "DEFAULTSEMIRING\022G\n\021matricesOnTheWire\030\n \002" +
+      "(\0162\022.MatricesOnTheWire:\030DEFAULTMATRICESO" +
+      "NTHEWIRE*>\n\006Format\022\022\n\016COMPRESSEDROWS\020\001\022\025",
+      "\n\021COMPRESSEDCOLUMNS\020\002\022\t\n\005DENSE\020\003*\213\001\n\013Ele" +
+      "mentType\022\010\n\004BOOL\020\001\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022" +
+      "\t\n\005INT32\020\004\022\t\n\005INT64\020\005\022\t\n\005UINT8\020\006\022\n\n\006UINT" +
+      "16\020\007\022\n\n\006UINT32\020\010\022\n\n\006UINT64\020\t\022\013\n\007FLOAT32\020" +
+      "\n\022\013\n\007FLOAT64\020\013*Z\n\010SemiRing\022\023\n\017DEFAULTSEM" +
+      "IRING\020\001\022\021\n\rINT32ORDINARY\020\002\022\021\n\rINT32TROPI" +
+      "CAL\020\003\022\023\n\017BOOLEANORDINARY\020\004*D\n\021MatricesOn" +
+      "TheWire\022\034\n\030DEFAULTMATRICESONTHEWIRE\020\001\022\021\n" +
+      "\rINT32TRIPLETS\020\002B%\n#it.unipr.aotlab.dmat" +
+      ".core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1303,7 +1406,7 @@ public final class ChunkDescription {
           internal_static_Body_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Body_descriptor,
-              new java.lang.String[] { "ChunkId", "StartRow", "EndRow", "StartCol", "EndCol", "Format", "ElementType", "SemiRing", "MatricesOnTheWire", },
+              new java.lang.String[] { "MatrixId", "ChunkId", "StartRow", "EndRow", "StartCol", "EndCol", "Format", "ElementType", "SemiRing", "MatricesOnTheWire", },
               it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.class,
               it.unipr.aotlab.dmat.core.generated.ChunkDescription.Body.Builder.class);
           return null;

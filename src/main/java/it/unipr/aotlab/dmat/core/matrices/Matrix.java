@@ -35,6 +35,7 @@ import java.util.Vector;
  * 2:51 PM
  */
 public class Matrix {
+    String id;
     int rows = 0;
     int cols = 0;
     ChunkDescription.ElementType elementType = null;

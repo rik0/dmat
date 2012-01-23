@@ -27,7 +27,8 @@ public class Matrices {
 
     /* state & 1 means nof columns is set
      * state & 2 means nof rows is set
-     * state & 4 means the default chunk has been created */
+     * state & 4 means the default chunk has been created 
+     * state & 8 means the matrix has a name */
     int state;
     Matrix buildingMatrix;
     ChunkDescription.Format defaultFormat;
@@ -72,19 +73,27 @@ public class Matrices {
         return this;
     }
 
+    public Matrices setName(String name) {
+        state |= 8;
+        buildingMatrix.id = new String(name);
+
+        createDefaultChunk();
+        return this;
+    }
+
     public Matrices setNofColumns(int nofColumns) {
         state |= 1;
         buildingMatrix.cols = nofColumns;
-        createDefaultChunk();
 
+        createDefaultChunk();
         return this;
     }
 
     public Matrices setNofRows(int nofRows) {
         state |= 2;
         buildingMatrix.rows = nofRows;
-        createDefaultChunk();
 
+        createDefaultChunk();
         return this;
     }
 
@@ -102,6 +111,15 @@ public class Matrices {
     public Matrices setChunkFormat(String chunkName,
             ChunkDescription.Format format) throws ChunkNotFound {
         buildingMatrix.getChunk(chunkName).format = format;
+
+        return this;
+    }
+
+    public Matrices setChunkMatrixOnTheWire(String chunkName,
+            ChunkDescription.MatricesOnTheWire matrixOnTheWire)
+            throws ChunkNotFound {
+        buildingMatrix.getChunk(chunkName).matricesOnTheWire = matrixOnTheWire;
+
         return this;
     }
 
@@ -110,9 +128,9 @@ public class Matrices {
             throw new InvalidMatricesCall();
         }
 
-        if ((state & 3) == 3) {
-            buildingMatrix.chunks.add(new Chunk("default", 0,
-                    buildingMatrix.rows, 0, buildingMatrix.cols));
+        if ((state & 11) == 11) {
+            buildingMatrix.chunks.add(new Chunk(buildingMatrix.id, "default",
+                    0, buildingMatrix.rows, 0, buildingMatrix.cols));
             state |= 4;
         }
     }
@@ -123,17 +141,13 @@ public class Matrices {
 
         if (buildingMatrix.semiring == null)
             buildingMatrix.semiring = ChunkDescription.SemiRing.DEFAULTSEMIRING;
-            
+
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers
                     .defaultInitializer(buildingMatrix.elementType);
 
         for (Chunk c : buildingMatrix.chunks) {
-            c.elementType = buildingMatrix.elementType;
-            c.semiring = buildingMatrix.semiring;
-            if (c.format == null) {
-                c.format = defaultFormat;
-            }
+            c.validate(this);
         }
     }
 
