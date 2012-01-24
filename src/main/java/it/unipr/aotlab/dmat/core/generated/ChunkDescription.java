@@ -254,11 +254,13 @@ public final class ChunkDescription {
   public enum MatricesOnTheWire
       implements com.google.protobuf.ProtocolMessageEnum {
     DEFAULTMATRICESONTHEWIRE(0, 1),
-    INT32TRIPLETS(1, 2),
+    BYTES(1, 2),
+    INT32TRIPLETS(2, 3),
     ;
     
     public static final int DEFAULTMATRICESONTHEWIRE_VALUE = 1;
-    public static final int INT32TRIPLETS_VALUE = 2;
+    public static final int BYTES_VALUE = 2;
+    public static final int INT32TRIPLETS_VALUE = 3;
     
     
     public final int getNumber() { return value; }
@@ -266,7 +268,8 @@ public final class ChunkDescription {
     public static MatricesOnTheWire valueOf(int value) {
       switch (value) {
         case 1: return DEFAULTMATRICESONTHEWIRE;
-        case 2: return INT32TRIPLETS;
+        case 2: return BYTES;
+        case 3: return INT32TRIPLETS;
         default: return null;
       }
     }
@@ -297,7 +300,7 @@ public final class ChunkDescription {
     }
     
     private static final MatricesOnTheWire[] VALUES = {
-      DEFAULTMATRICESONTHEWIRE, INT32TRIPLETS, 
+      DEFAULTMATRICESONTHEWIRE, BYTES, INT32TRIPLETS, 
     };
     
     public static MatricesOnTheWire valueOf(
@@ -1391,10 +1394,10 @@ public final class ChunkDescription {
       "16\020\007\022\n\n\006UINT32\020\010\022\n\n\006UINT64\020\t\022\013\n\007FLOAT32\020" +
       "\n\022\013\n\007FLOAT64\020\013*Z\n\010SemiRing\022\023\n\017DEFAULTSEM" +
       "IRING\020\001\022\021\n\rINT32ORDINARY\020\002\022\021\n\rINT32TROPI" +
-      "CAL\020\003\022\023\n\017BOOLEANORDINARY\020\004*D\n\021MatricesOn" +
-      "TheWire\022\034\n\030DEFAULTMATRICESONTHEWIRE\020\001\022\021\n" +
-      "\rINT32TRIPLETS\020\002B%\n#it.unipr.aotlab.dmat" +
-      ".core.generated"
+      "CAL\020\003\022\023\n\017BOOLEANORDINARY\020\004*O\n\021MatricesOn" +
+      "TheWire\022\034\n\030DEFAULTMATRICESONTHEWIRE\020\001\022\t\n" +
+      "\005BYTES\020\002\022\021\n\rINT32TRIPLETS\020\003B%\n#it.unipr." +
+      "aotlab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

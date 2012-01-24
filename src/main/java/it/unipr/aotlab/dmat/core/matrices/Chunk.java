@@ -84,19 +84,21 @@ public class Chunk {
     }
 
     public void assignChunkToNode(Node node) throws IOException, DMatError {
-        if (assignedTo != null) {
+        if (assignedTo != null)
             throw new DMatError("This node has been already assigned to "
                     + assignedTo.getNodeId() + ".");
-        }
 
-        ChunkDescription.Body chunk = ChunkDescription.Body.newBuilder()
-                .setChunkId(chunkId).setEndCol(endCol).setEndRow(endRow)
-                .setStartCol(startCol).setStartRow(startRow).setFormat(format)
-                .setElementType(elementType).setSemiRing(semiring)
-                .setMatricesOnTheWire(matricesOnTheWire).build();
-
-        node.sendMessage(new MessageAssignChunkToNode(chunk));
+        node.sendMessage(new MessageAssignChunkToNode(this));
         assignedTo = node;
+    }
+
+    public ChunkDescription.Body buildMessageBody() {
+        return ChunkDescription.Body.newBuilder().setChunkId(chunkId)
+                .setEndCol(endCol).setEndRow(endRow).setStartCol(startCol)
+                .setStartRow(startRow).setFormat(format)
+                .setElementType(elementType).setSemiRing(semiring)
+                .setMatrixId(matrixId).setMatricesOnTheWire(matricesOnTheWire)
+                .build();
     }
 
     public Chunk(ChunkDescription.Body m) {
@@ -109,9 +111,11 @@ public class Chunk {
         this.format = m.getFormat();
         this.semiring = m.getSemiRing();
         this.matricesOnTheWire = m.getMatricesOnTheWire();
+        this.matrixId = m.getMatrixId();
     }
 
-    Chunk(String matrixId, String chunkId, int startRow, int endRow, int startCol, int endCol) {
+    Chunk(String matrixId, String chunkId, int startRow, int endRow,
+            int startCol, int endCol) {
         this.matrixId = matrixId;
         this.chunkId = chunkId;
         this.startRow = startRow;
@@ -130,8 +134,8 @@ public class Chunk {
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
-        Chunk newChunk = new Chunk(matrixId, newChunkName, newChunkStartRow, endRow,
-                startCol, endCol);
+        Chunk newChunk = new Chunk(matrixId, newChunkName, newChunkStartRow,
+                endRow, startCol, endCol);
         endRow = newChunkStartRow;
 
         return newChunk;
@@ -157,13 +161,13 @@ public class Chunk {
                 + " endCol: " + endCol;
     }
 
-    void setIfUnsetFormat(Matrices factory) {
+    void setFormat(Matrices factory) {
         if (this.format == null) {
             this.format = factory.defaultFormat;
         }
     }
 
-    void setIfUnsetMatricesOnTheWire() {
+    void setMatricesOn() {
         if (this.matricesOnTheWire == null) {
             this.matricesOnTheWire = ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
         }
@@ -172,7 +176,7 @@ public class Chunk {
     void validate(Matrices factory) {
         this.elementType = factory.buildingMatrix.elementType;
         this.semiring = factory.buildingMatrix.semiring;
-        setIfUnsetFormat(factory);
-        setIfUnsetMatricesOnTheWire();
+        setFormat(factory);
+        setMatricesOn();
     }
 }

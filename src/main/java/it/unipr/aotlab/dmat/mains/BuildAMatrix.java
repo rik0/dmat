@@ -10,6 +10,7 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
@@ -24,8 +25,12 @@ public class BuildAMatrix {
         Node node;
         try {
 
-            Matrix matrix = Matrices.newBuilder().setNofColumns(20).setNofRows(20)
-                    .setElementType(ChunkDescription.ElementType.BOOL).build();
+            Matrix matrix = Matrices.newBuilder()
+                    .setName("A")
+                    .setNofColumns(21)
+                    .setNofRows(20)
+                    .setElementType(ChunkDescription.ElementType.BOOL)
+                    .build();
 
             node = nodes.setNodeName("testNode").setConnector(connector)
                     .build();

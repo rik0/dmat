@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValue;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageShutdown;
 
 public class NodeMessageDigester {
@@ -21,7 +22,8 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println("adding chunk to list of managed.");
 
-        InNodeChunk<?> newChunk = InNodeChunks.build(hostWorkingNode, new Chunk(message.body));
+        InNodeChunk<?> newChunk = InNodeChunks.build(hostWorkingNode,
+                new Chunk(message.body));
         hostWorkingNode.state.managedChunks.add(newChunk);
     }
 
@@ -35,5 +37,10 @@ public class NodeMessageDigester {
     public void accept(Message message) {
         debugMessage(message);
         System.err.println("ignoring.");
+    }
+
+    public void accept(MessageSetValue message) {
+        debugMessage(message);
+        System.err.println(message.toString());
     }
 }

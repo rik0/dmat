@@ -1,9 +1,9 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
 import it.unipr.aotlab.dmat.core.net.Message;
+
+import com.google.protobuf.InvalidProtocolBufferException;
 
 public class MessagesTest extends Messages {
     static {
@@ -13,9 +13,10 @@ public class MessagesTest extends Messages {
 
     private MessagesTest() {
     }
-    
+
     @Override
-    public Message parseMessage(byte[] rawMessage) throws InvalidProtocolBufferException {
+    public Message parseMessage(byte[] rawMessage)
+            throws InvalidProtocolBufferException {
         return new MessageTest(MessageTestBody.Body.parseFrom(rawMessage));
     }
 }

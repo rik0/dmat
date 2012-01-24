@@ -13,9 +13,9 @@ public class MessageTest extends Message {
     }
     
     @Override
-    public void exec(NodeMessageDigester state) {
-        if (state != null)
-            state.accept(this);
+    public void exec(NodeMessageDigester digester) {
+        if (digester != null)
+            digester.accept(this);
     }
 
     @Override

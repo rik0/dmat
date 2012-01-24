@@ -42,6 +42,6 @@ public abstract class DenseBase<E> implements ChunkAccessor<E> {
         r -= hostChunk.getStartRow();
         c -= hostChunk.getStartCol();
 
-        return typeInfo.sizeOf() * r * hostChunk.getEndCol() + c;
+        return typeInfo.sizeOf() * (r * hostChunk.getEndCol() + c);
     }
 }

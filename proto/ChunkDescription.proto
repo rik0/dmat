@@ -30,18 +30,20 @@ enum SemiRing {
 
 enum MatricesOnTheWire {
     DEFAULTMATRICESONTHEWIRE = 1;
-    INT32TRIPLETS = 2;
+    BYTES = 2;
+    INT32TRIPLETS = 3;
 }
 
 message Body {
-    required string chunkId = 1;
-    required int32 startRow = 2;
-    required int32 endRow = 3;
-    required int32 startCol = 4;
-    required int32 endCol = 5;
-    required Format format = 6 [ default = DENSE ];
-    required ElementType elementType = 7 [ default = INT32 ];
-    required SemiRing semiRing = 8 [ default = DEFAULTSEMIRING ];
-    required MatricesOnTheWire matricesOnTheWire = 9 [ default = DEFAULTMATRICESONTHEWIRE ];
+    required string matrixId = 1;
+    required string chunkId = 2;
+    required int32 startRow = 3;
+    required int32 endRow = 4;
+    required int32 startCol = 5;
+    required int32 endCol = 6;
+    required Format format = 7 [ default = DENSE ];
+    required ElementType elementType = 8 [ default = INT32 ];
+    required SemiRing semiRing = 9 [ default = DEFAULTSEMIRING ];
+    required MatricesOnTheWire matricesOnTheWire = 10 [ default = DEFAULTMATRICESONTHEWIRE ];
 }
 

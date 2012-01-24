@@ -26,6 +26,7 @@ public class MatricesTestCase {
 
         matrix = Matrices
                 .newBuilder()
+                .setName("A")
                 .setNofColumns(20)
                 .setNofRows(30)
                 .splitHorizzontalyChuck(null, 15, "top", "bottom")
@@ -103,9 +104,10 @@ public class MatricesTestCase {
     public void makeAPieceSendIterate() {
         MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
                 .newBuilder();
+        b.setMatrixName("A");
         for (int i = 0; i < 10; ++i) {
             b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
-                    .setCol(i*2).setRow(i*3).setValue(i*4).build());
+                    .setCol(i * 2).setRow(i * 3).setValue(i * 4).build());
         }
         MatrixPieceTripletsInt32Wire.Body messsageBody = b.build();
 
@@ -116,9 +118,9 @@ public class MatricesTestCase {
 
         for (int i = 0; i < 10; ++i) {
             MatrixPieceTripletsInt32.Int32Triplet r = resultsIterator.next();
-            assertEquals(r.col, i*2);
-            assertEquals(r.row, i*3);
-            assertEquals(r.value, i*4);
+            assertEquals(r.col, i * 2);
+            assertEquals(r.row, i * 3);
+            assertEquals(r.value, i * 4);
         }
     }
 }

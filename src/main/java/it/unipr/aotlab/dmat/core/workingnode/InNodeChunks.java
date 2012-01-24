@@ -18,14 +18,15 @@ public class InNodeChunks {
         case INT32:
         case UINT32: {
             InNodeChunkInt32 typedBuildingChunk = new InNodeChunkInt32(chunk);
-            InNodeChunks.<Integer> build(wn, chunk, typedBuildingChunk);
+            build(wn, chunk, typedBuildingChunk);
             buildingChunk = typedBuildingChunk;
         }
             break;
 
         case BOOL: {
-            InNodeChunkBoolean typedBuildingChunk = new InNodeChunkBoolean(chunk);
-            InNodeChunks.<Boolean> build(wn, chunk, typedBuildingChunk);
+            InNodeChunkBoolean typedBuildingChunk = new InNodeChunkBoolean(
+                    chunk);
+            build(wn, chunk, typedBuildingChunk);
             buildingChunk = typedBuildingChunk;
         }
             break;
@@ -51,7 +52,8 @@ public class InNodeChunks {
         return buildingChunk;
     }
 
-    private static <E> void build(WorkingNode wn, Chunk chunk, InNodeChunk<E> inNodeChunk) {
+    private static <E> void build(WorkingNode wn, Chunk chunk,
+            InNodeChunk<E> inNodeChunk) {
         inNodeChunk.hostNode = wn;
         inNodeChunk.chunk = chunk;
         inNodeChunk.accessor = (ChunkAccessor<E>) Formats.build(chunk);
@@ -62,6 +64,7 @@ public class InNodeChunks {
     private static <E> void setMatrixPiece(Chunk chunk,
             InNodeChunk<E> inNodeChunk) {
         MatricesOnTheWire matricesOnTheWireTag = chunk.getMatricesOnTheWire();
+
         if (matricesOnTheWireTag
                 .equals(ChunkDescription.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE))
             inNodeChunk.matrixPiece = MatrixPieces.defaultMatrixPiece(chunk

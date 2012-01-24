@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
@@ -9,6 +10,10 @@ public class MessageAssignChunkToNode extends Message {
 
     public MessageAssignChunkToNode(ChunkDescription.Body body) {
         this.body = body;
+    }
+
+    public MessageAssignChunkToNode(Chunk chunk) {
+        this.body = chunk.buildMessageBody();
     }
 
     @Override

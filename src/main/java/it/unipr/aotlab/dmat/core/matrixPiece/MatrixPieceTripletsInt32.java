@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.matrixPiece;
 
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 
 import java.util.Iterator;
@@ -72,5 +73,10 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     @Override
     public Int32TripletIterator matrixPieceIterator() {
         return new Int32TripletIterator();
+    }
+
+    @Override
+    public MatricesOnTheWire getTag() {
+        return srtag;
     }
 }
