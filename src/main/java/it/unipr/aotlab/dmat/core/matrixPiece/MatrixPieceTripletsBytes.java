@@ -62,7 +62,7 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         }
     }
 
-    MatrixPieceTripletsBytes(MatrixPieceTripletsBytesWire.Body int32Triples) {
+    public MatrixPieceTripletsBytes(MatrixPieceTripletsBytesWire.Body int32Triples) {
         this.int32Triples = int32Triples;
     }
 

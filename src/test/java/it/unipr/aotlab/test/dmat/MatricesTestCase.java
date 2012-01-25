@@ -116,7 +116,9 @@ public class MatricesTestCase {
         Iterator<MatrixPieceTripletsInt32.Int32Triplet> resultsIterator = (Iterator<MatrixPieceTripletsInt32.Int32Triplet>) receiverBuilder
                 .build(messsageBody).matrixPieceIterator();
 
-        for (int i = 0; i < 10; ++i) {
+        int i = 0;
+        while (resultsIterator.hasNext()) {
+            ++i;
             MatrixPieceTripletsInt32.Int32Triplet r = resultsIterator.next();
             assertEquals(r.col, i * 2);
             assertEquals(r.row, i * 3);

@@ -42,5 +42,19 @@ public class NodeMessageDigester {
     public void accept(MessageSetValue message) {
         debugMessage(message);
         System.err.println(message.toString());
+
+        int col = message.getColRep();
+        int row = message.getRowRep();
+
+        // TODO linear search, better solution?
+        if (row != -1)
+            for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
+                if (message.getMatrixName()
+                        .equals(inNodeChunk.chunk.getMatrixId())
+                        && inNodeChunk.chunk.doesManage(row, col)) {
+                    message.dispatch(inNodeChunk);
+                    break;
+                }
+            }
     }
 }

@@ -66,6 +66,10 @@ public class Chunk {
     public String getChunkId() {
         return chunkId;
     }
+    
+    public String getMatrixId() {
+        return matrixId;
+    }
 
     public ChunkDescription.Format getFormat() {
         return format;

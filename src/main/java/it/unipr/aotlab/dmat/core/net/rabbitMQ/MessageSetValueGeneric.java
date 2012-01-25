@@ -20,6 +20,11 @@ public class MessageSetValueGeneric extends MessageSetValue {
     public void exec(NodeMessageDigester digester) {
         digester.accept(this);
     }
+    
+    @Override
+    public void dispatch(InNodeChunk<?> node) {
+        node.accept(this);
+    }
 
     @Override
     public String toString() {
@@ -54,10 +59,5 @@ public class MessageSetValueGeneric extends MessageSetValue {
         }
 
         return -1;
-    }
-
-    @Override
-    public void dispatch(InNodeChunk<?> node) {
-        node.accept(this);
     }
 }
