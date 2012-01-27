@@ -4,13 +4,15 @@ import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.InvalidNode;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Connector;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Node;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
+
+import java.io.IOException;
 
 public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     Node buildingNode = new Node();
     NodeRegister register;
-    
+    private it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector connector;
+
     public Nodes(NodeRegister register) {
         this.register = register;
     }
@@ -18,7 +20,7 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     @Override
     public Nodes setConnector(Connector connector) {
         try {
-            buildingNode.connector = (it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector) connector;
+            this.connector = (it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector) connector;
         } catch (ClassCastException e) {
             throw new InvalidNode("This node needs a RabbitMQ connector.");
         }
@@ -32,7 +34,7 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     }
 
     @Override
-    public Node build() throws IdNotUnique {
+    public Node build() throws IdNotUnique, IOException {
         validateBuildingNode();
 
         Node builtNode = buildingNode;
@@ -52,12 +54,14 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
         buildingNode = new Node();
     }
 
-    void validateBuildingNode() throws IdNotUnique {
+    void validateBuildingNode() throws IdNotUnique, IOException {
+        buildingNode.connector = this.connector;
+
         if (buildingNode.nodeId == null)
             throw new InvalidNode("Node without ID.");
         if (buildingNode.connector == null)
             throw new InvalidNode("Node without a connector.");
-        
+
         register.registerNode(buildingNode.nodeId, buildingNode);
     }
 }

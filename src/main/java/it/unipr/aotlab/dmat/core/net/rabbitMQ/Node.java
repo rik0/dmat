@@ -39,18 +39,6 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
 
     @Override
     public void sendMessage(Message m) throws IOException {
-        //it might be better using the same channel multiple times?
-        Channel channel = connector.connection().createChannel();
-        try {
-            channel.queueDeclare(nodeId, false, false, false, null);
-            Builder propBuilder = new AMQP.BasicProperties.Builder();
-            propBuilder.contentType(m.contentType());
-            channel.basicPublish("", nodeId, propBuilder.build(),
-                    m.message());
-        } finally {
-            if (channel.isOpen())
-                channel.close();
-        }
     }
 
     @Override
