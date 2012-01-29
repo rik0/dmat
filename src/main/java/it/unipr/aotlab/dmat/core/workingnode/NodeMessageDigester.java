@@ -2,9 +2,10 @@ package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageAssignChunkToNode;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValue;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageShutdown;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
 
 public class NodeMessageDigester {
     WorkingNode hostWorkingNode;
@@ -39,7 +40,7 @@ public class NodeMessageDigester {
         System.err.println("ignoring.");
     }
 
-    public void accept(MessageSetValue message) {
+    public void accept(MessageMatrixValues message) {
         debugMessage(message);
         System.err.println(message.toString());
 
@@ -49,12 +50,18 @@ public class NodeMessageDigester {
         // TODO linear search, better solution?
         if (row != -1)
             for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-                if (message.getMatrixName()
-                        .equals(inNodeChunk.chunk.getMatrixId())
+                if (message.getMatrixName().equals(
+                        inNodeChunk.chunk.getMatrixId())
                         && inNodeChunk.chunk.doesManage(row, col)) {
                     message.dispatch(inNodeChunk);
                     break;
                 }
             }
+    }
+
+    public void accept(MessageSendMatrixPiece message) {
+        debugMessage(message);
+        System.err.println(message.toString());
+
     }
 }

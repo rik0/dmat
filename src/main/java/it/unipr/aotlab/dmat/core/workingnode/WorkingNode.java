@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Messages;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
 
 import java.io.IOException;
 

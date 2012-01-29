@@ -1,10 +1,10 @@
-package it.unipr.aotlab.dmat.core.net.rabbitMQ;
+package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
-public class MessageSetValueGeneric extends MessageSetValue {
+public class MessageSetValueGeneric extends MessageMatrixValues {
     public MatrixPieceTripletsBytesWire.Body body;
 
     public MessageSetValueGeneric(MatrixPieceTripletsBytesWire.Body body) {

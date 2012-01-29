@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.core.net.rabbitMQ;
+package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;

@@ -31,6 +31,11 @@ public class MessageSender implements
     public MessageSender(Connector c) {
         rabbitMQConnector = c.connectionFactory();
     }
+    
+    public static Connection getConnection() throws IOException {
+        inizializeConnection();
+        return connection;
+    }
 
     // TODO using a channel pool?
     @Override

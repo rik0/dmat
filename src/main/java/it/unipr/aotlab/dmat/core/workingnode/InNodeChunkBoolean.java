@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsBytes;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValueGeneric;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueGeneric;
 
 import java.util.Iterator;
 

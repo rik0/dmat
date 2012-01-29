@@ -6,8 +6,8 @@ import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValueGeneric;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValueInt32;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueGeneric;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueInt32;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 
 public abstract class InNodeChunk<E> {

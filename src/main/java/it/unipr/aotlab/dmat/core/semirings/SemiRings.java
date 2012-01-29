@@ -1,7 +1,7 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Messages;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
 import java.util.EnumMap;

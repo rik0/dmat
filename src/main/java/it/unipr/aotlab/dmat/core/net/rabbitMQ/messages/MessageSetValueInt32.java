@@ -1,10 +1,11 @@
-package it.unipr.aotlab.dmat.core.net.rabbitMQ;
+package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32WireSupport;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
-public class MessageSetValueInt32 extends MessageSetValue {
+public class MessageSetValueInt32 extends MessageMatrixValues {
     public MatrixPieceTripletsInt32Wire.Body body;
 
     public MessageSetValueInt32(MatrixPieceTripletsInt32Wire.Body body) {
@@ -23,37 +24,23 @@ public class MessageSetValueInt32 extends MessageSetValue {
 
     @Override
     public String toString() {
-        String m = super.toString() + " (" + body.getMatrixName() + ")";
-
-        if (body.getValuesCount() > 0) {
-            MatrixPieceTripletsInt32Wire.Triplet t = body.getValues(0);
-            m += " (" + t.getRow() + ", " + t.getCol() + ") : " + t.getValue();
-        }
-
-        return m;
+        return super.toString() + " (" + body.getMatrixName() + ")" +
+                MatrixPieceTripletsInt32WireSupport.sToString(body);
     }
 
     @Override
     public String getMatrixName() {
-        return body.getMatrixName();
+        return MatrixPieceTripletsInt32WireSupport.getMatrixName(body);
     }
 
     @Override
     public int getColRep() {
-        if (body.getValuesCount() > 0) {
-            return body.getValues(0).getCol();
-        }
-
-        return -1;
+        return MatrixPieceTripletsInt32WireSupport.getColRep(body);
     }
 
     @Override
     public int getRowRep() {
-        if (body.getValuesCount() > 0) {
-            return body.getValues(0).getRow();
-        }
-
-        return -1;
+        return MatrixPieceTripletsInt32WireSupport.getRowRep(body);
     }
     
     @Override

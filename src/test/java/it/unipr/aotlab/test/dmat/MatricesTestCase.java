@@ -118,11 +118,11 @@ public class MatricesTestCase {
 
         int i = 0;
         while (resultsIterator.hasNext()) {
-            ++i;
             MatrixPieceTripletsInt32.Int32Triplet r = resultsIterator.next();
             assertEquals(r.col, i * 2);
             assertEquals(r.row, i * 3);
             assertEquals(r.value, i * 4);
+            ++i;
         }
     }
 }

@@ -3,9 +3,10 @@ package it.unipr.aotlab.dmat.mains;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageShutdown;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
 import java.io.IOException;
@@ -13,15 +14,15 @@ import java.io.IOException;
 public class ShutdownANode {
     public static void main(String argv[]) {
         try {
-
-            Connector connector = new Connector(new Address("127.0.0.1"));
-            NodeRegister register = new NodeRegister(connector);
+            MessageSender messageSender = new MessageSender(new Connector(new Address("127.0.0.1")));
+            NodeRegister register = new NodeRegister(messageSender);
             Nodes nodes = new Nodes(register);
 
-            Node node = nodes.setNodeName("testNode").setConnector(connector)
-                    .build();
+            Node node = nodes.setNodeName("testNode").build();
+
             node.sendMessage(new MessageShutdown());
-            connector.connection().close();
+            
+            MessageSender.closeConnection();
 
         } catch (IdNotUnique e) {
             e.printStackTrace();

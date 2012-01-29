@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.core.net.rabbitMQ;
+package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.net.Message;
@@ -10,18 +10,15 @@ import java.util.Map;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.rabbitmq.client.QueueingConsumer;
 
-public class Messages {
+public abstract class Messages {
     static Map<String, Messages> messageFactories = new HashMap<String, Messages>();
 
     static {
         ForceLoad.listFromFile(Messages.class, "KindOfMessages");
     }
 
-    public Message parseMessage(byte[] rawMessage)
-            throws InvalidProtocolBufferException {
-        throw new DMatInternalError(
-                "Invalid call to parseMessage! Unknown message type?");
-    }
+    public abstract Message parseMessage(byte[] rawMessage)
+            throws InvalidProtocolBufferException;
 
     public static Messages getFactory(String contentType) {
         Messages m = messageFactories.get(contentType);

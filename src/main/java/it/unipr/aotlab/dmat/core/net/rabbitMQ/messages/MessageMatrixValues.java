@@ -1,9 +1,9 @@
-package it.unipr.aotlab.dmat.core.net.rabbitMQ;
+package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
-public abstract class MessageSetValue extends Message {
+public abstract class MessageMatrixValues extends Message {
     public abstract String getMatrixName();
 
     public abstract int getColRep();

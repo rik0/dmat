@@ -3,7 +3,6 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.InvalidNode;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
-import it.unipr.aotlab.dmat.core.net.Connector;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
 import java.io.IOException;
@@ -11,20 +10,9 @@ import java.io.IOException;
 public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     Node buildingNode = new Node();
     NodeRegister register;
-    private it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector connector;
 
     public Nodes(NodeRegister register) {
         this.register = register;
-    }
-
-    @Override
-    public Nodes setConnector(Connector connector) {
-        try {
-            this.connector = (it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector) connector;
-        } catch (ClassCastException e) {
-            throw new InvalidNode("This node needs a RabbitMQ connector.");
-        }
-        return this;
     }
 
     @Override
@@ -55,13 +43,11 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     }
 
     void validateBuildingNode() throws IdNotUnique, IOException {
-        buildingNode.connector = this.connector;
+        buildingNode.sender = register.messageSender();
 
         if (buildingNode.nodeId == null)
             throw new InvalidNode("Node without ID.");
-        if (buildingNode.connector == null)
-            throw new InvalidNode("Node without a connector.");
 
-        register.registerNode(buildingNode.nodeId, buildingNode);
+        register.registerNode(buildingNode);
     }
 }

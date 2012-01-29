@@ -5,8 +5,8 @@ import java.util.Iterator;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsBytes;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValueGeneric;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSetValueInt32;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueGeneric;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueInt32;
 
 public class InNodeChunkInt32 extends InNodeChunk<Integer> {
     InNodeChunkInt32(Chunk chunk) {
