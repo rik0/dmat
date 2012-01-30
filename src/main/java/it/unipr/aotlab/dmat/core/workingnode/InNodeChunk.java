@@ -4,6 +4,7 @@ import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueGeneric;
@@ -37,5 +38,10 @@ public abstract class InNodeChunk<E> {
     public void accept(MessageSetValueGeneric message) {
         throw new DMatInternalError("This node cannot accept "
                 + message.getClass().getCanonicalName());
+    }
+
+    public MatrixPiece getMatrixPieceint(int startRow, int endRow, int startCol,
+            int endCol) {
+        return accessor.getPiece(matrixPiece, startCol, endRow, startCol, endCol);
     }
 }

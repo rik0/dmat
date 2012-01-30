@@ -1,5 +1,7 @@
 package it.unipr.aotlab.test.dmat;
 
+import java.io.IOException;
+
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageTest;
@@ -23,7 +25,11 @@ public class MakeAndReadMessageTestCase {
         Message message = Messages.readMessage(
                 messageTestSent.contentType(), messageTestSent.message());
 
-        message.exec(null);
+        try {
+            message.exec(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         MessageTest messageTestReceived = (MessageTest) message;
         assertEquals(messageTestReceived.body.getMessage(), messageOnTheWire);

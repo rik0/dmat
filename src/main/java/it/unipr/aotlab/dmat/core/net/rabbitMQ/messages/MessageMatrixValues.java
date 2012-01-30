@@ -4,7 +4,7 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 public abstract class MessageMatrixValues extends Message {
-    public abstract String getMatrixName();
+    public abstract String getMatrixId();
 
     public abstract int getColRep();
 

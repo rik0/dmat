@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.core.matrixPiece;
 
+import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
@@ -17,7 +18,9 @@ public class MatrixPieces {
     }
 
     public interface Builder {
-        MatrixPiece build(Object messageBody); 
+        MatrixPiece buildFromMessageBody(Object messageBody); 
+        <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, int startRow, int startCol,
+                int endRow, int endCol);
     }
 
     public static Builder defaultMatrixPiece(

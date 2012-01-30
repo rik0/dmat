@@ -8,7 +8,7 @@ message Triplet {
 }
 
 message Body {
-    required string matrixName = 1;
+    required string matrixId = 1;
     repeated Triplet values = 2;
 }
 

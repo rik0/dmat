@@ -104,7 +104,7 @@ public class MatricesTestCase {
     public void makeAPieceSendIterate() {
         MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
                 .newBuilder();
-        b.setMatrixName("A");
+        b.setMatrixId("A");
         for (int i = 0; i < 10; ++i) {
             b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
                     .setCol(i * 2).setRow(i * 3).setValue(i * 4).build());
@@ -114,7 +114,7 @@ public class MatricesTestCase {
         MatrixPieceTripletsInt32.Builder receiverBuilder = new MatrixPieceTripletsInt32.Builder();
 
         Iterator<MatrixPieceTripletsInt32.Int32Triplet> resultsIterator = (Iterator<MatrixPieceTripletsInt32.Int32Triplet>) receiverBuilder
-                .build(messsageBody).matrixPieceIterator();
+                .buildFromMessageBody(messsageBody).matrixPieceIterator();
 
         int i = 0;
         while (resultsIterator.hasNext()) {

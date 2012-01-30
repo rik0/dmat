@@ -1,5 +1,8 @@
 package it.unipr.aotlab.dmat.core.matrixPiece;
 
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
+import it.unipr.aotlab.dmat.core.formats.dense.DenseInt32;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
@@ -21,9 +24,15 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
 
     public static class Builder implements MatrixPieces.Builder {
         @Override
-        public MatrixPiece build(Object messageBody) {
+        public MatrixPiece buildFromMessageBody(Object messageBody) {
             return new MatrixPieceTripletsBytes(
                     (MatrixPieceTripletsBytesWire.Body) messageBody);
+        }
+
+        @Override
+        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format,
+                int startRow, int startCol, int endRow, int endCol) {
+            throw new DMatInternalError(this.getClass().getCanonicalName() + " for " + format + "still unimplemented");
         }
     }
 

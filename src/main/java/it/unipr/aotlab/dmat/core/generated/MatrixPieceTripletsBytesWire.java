@@ -490,9 +490,9 @@ public final class MatrixPieceTripletsBytesWire {
   public interface BodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string matrixName = 1;
-    boolean hasMatrixName();
-    String getMatrixName();
+    // required string matrixId = 1;
+    boolean hasMatrixId();
+    String getMatrixId();
     
     // repeated .Triplet values = 2;
     java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire.Triplet> 
@@ -533,14 +533,14 @@ public final class MatrixPieceTripletsBytesWire {
     }
     
     private int bitField0_;
-    // required string matrixName = 1;
-    public static final int MATRIXNAME_FIELD_NUMBER = 1;
-    private java.lang.Object matrixName_;
-    public boolean hasMatrixName() {
+    // required string matrixId = 1;
+    public static final int MATRIXID_FIELD_NUMBER = 1;
+    private java.lang.Object matrixId_;
+    public boolean hasMatrixId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public String getMatrixName() {
-      java.lang.Object ref = matrixName_;
+    public String getMatrixId() {
+      java.lang.Object ref = matrixId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -548,17 +548,17 @@ public final class MatrixPieceTripletsBytesWire {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          matrixName_ = s;
+          matrixId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getMatrixNameBytes() {
-      java.lang.Object ref = matrixName_;
+    private com.google.protobuf.ByteString getMatrixIdBytes() {
+      java.lang.Object ref = matrixId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        matrixName_ = b;
+        matrixId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -587,7 +587,7 @@ public final class MatrixPieceTripletsBytesWire {
     }
     
     private void initFields() {
-      matrixName_ = "";
+      matrixId_ = "";
       values_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
@@ -595,7 +595,7 @@ public final class MatrixPieceTripletsBytesWire {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasMatrixName()) {
+      if (!hasMatrixId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -613,7 +613,7 @@ public final class MatrixPieceTripletsBytesWire {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getMatrixNameBytes());
+        output.writeBytes(1, getMatrixIdBytes());
       }
       for (int i = 0; i < values_.size(); i++) {
         output.writeMessage(2, values_.get(i));
@@ -629,7 +629,7 @@ public final class MatrixPieceTripletsBytesWire {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getMatrixNameBytes());
+          .computeBytesSize(1, getMatrixIdBytes());
       }
       for (int i = 0; i < values_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -760,7 +760,7 @@ public final class MatrixPieceTripletsBytesWire {
       
       public Builder clear() {
         super.clear();
-        matrixName_ = "";
+        matrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         if (valuesBuilder_ == null) {
           values_ = java.util.Collections.emptyList();
@@ -809,7 +809,7 @@ public final class MatrixPieceTripletsBytesWire {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.matrixName_ = matrixName_;
+        result.matrixId_ = matrixId_;
         if (valuesBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
             values_ = java.util.Collections.unmodifiableList(values_);
@@ -835,8 +835,8 @@ public final class MatrixPieceTripletsBytesWire {
       
       public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire.Body other) {
         if (other == it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire.Body.getDefaultInstance()) return this;
-        if (other.hasMatrixName()) {
-          setMatrixName(other.getMatrixName());
+        if (other.hasMatrixId()) {
+          setMatrixId(other.getMatrixId());
         }
         if (valuesBuilder_ == null) {
           if (!other.values_.isEmpty()) {
@@ -869,7 +869,7 @@ public final class MatrixPieceTripletsBytesWire {
       }
       
       public final boolean isInitialized() {
-        if (!hasMatrixName()) {
+        if (!hasMatrixId()) {
           
           return false;
         }
@@ -907,7 +907,7 @@ public final class MatrixPieceTripletsBytesWire {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              matrixName_ = input.readBytes();
+              matrixId_ = input.readBytes();
               break;
             }
             case 18: {
@@ -922,39 +922,39 @@ public final class MatrixPieceTripletsBytesWire {
       
       private int bitField0_;
       
-      // required string matrixName = 1;
-      private java.lang.Object matrixName_ = "";
-      public boolean hasMatrixName() {
+      // required string matrixId = 1;
+      private java.lang.Object matrixId_ = "";
+      public boolean hasMatrixId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public String getMatrixName() {
-        java.lang.Object ref = matrixName_;
+      public String getMatrixId() {
+        java.lang.Object ref = matrixId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          matrixName_ = s;
+          matrixId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setMatrixName(String value) {
+      public Builder setMatrixId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        matrixName_ = value;
+        matrixId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearMatrixName() {
+      public Builder clearMatrixId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        matrixName_ = getDefaultInstance().getMatrixName();
+        matrixId_ = getDefaultInstance().getMatrixId();
         onChanged();
         return this;
       }
-      void setMatrixName(com.google.protobuf.ByteString value) {
+      void setMatrixId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000001;
-        matrixName_ = value;
+        matrixId_ = value;
         onChanged();
       }
       
@@ -1177,9 +1177,9 @@ public final class MatrixPieceTripletsBytesWire {
       "\nIhome/paolo/uni/dissertation/dmat/proto" +
       "/MatrixPieceTripletsBytesWire.proto\"2\n\007T" +
       "riplet\022\013\n\003row\030\001 \002(\005\022\013\n\003col\030\002 \002(\005\022\r\n\005valu" +
-      "e\030\003 \002(\014\"4\n\004Body\022\022\n\nmatrixName\030\001 \002(\t\022\030\n\006v" +
-      "alues\030\002 \003(\0132\010.TripletB%\n#it.unipr.aotlab" +
-      ".dmat.core.generated"
+      "e\030\003 \002(\014\"2\n\004Body\022\020\n\010matrixId\030\001 \002(\t\022\030\n\006val" +
+      "ues\030\002 \003(\0132\010.TripletB%\n#it.unipr.aotlab.d" +
+      "mat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1199,7 +1199,7 @@ public final class MatrixPieceTripletsBytesWire {
           internal_static_Body_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Body_descriptor,
-              new java.lang.String[] { "MatrixName", "Values", },
+              new java.lang.String[] { "MatrixId", "Values", },
               it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire.Body.class,
               it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire.Body.Builder.class);
           return null;

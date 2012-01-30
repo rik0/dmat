@@ -28,7 +28,7 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
 
     @Override
     public String toString() {
-        String m = super.toString() + " (" + body.getMatrixName() + ")";
+        String m = super.toString() + " (" + body.getMatrixId() + ")";
 
         if (body.getValuesCount() > 0) {
             MatrixPieceTripletsBytesWire.Triplet t = body.getValues(0);
@@ -39,8 +39,8 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
     }
 
     @Override
-    public String getMatrixName() {
-        return body.getMatrixName();
+    public String getMatrixId() {
+        return body.getMatrixId();
     }
 
     @Override

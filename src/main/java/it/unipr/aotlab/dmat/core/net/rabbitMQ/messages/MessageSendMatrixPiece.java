@@ -1,5 +1,7 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
+import java.io.IOException;
+
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPiece;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
@@ -17,7 +19,8 @@ public class MessageSendMatrixPiece extends Message {
     }
 
     @Override
-    public void exec(NodeMessageDigester digester) {
+    public void exec(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
 }
+ 

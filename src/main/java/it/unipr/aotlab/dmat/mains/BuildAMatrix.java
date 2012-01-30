@@ -8,7 +8,6 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
-import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
@@ -18,12 +17,12 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueInt32;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 public class BuildAMatrix {
     public static void main(String[] argv) {
         try {
-            MessageSender messageSender = new MessageSender(new Connector(new Address("127.0.0.1")));
+            MessageSender messageSender = new MessageSender(new Connector(
+                    new Address("127.0.0.1")));
             NodeRegister register = new NodeRegister(messageSender);
             Nodes nodes = new Nodes(register);
 
@@ -35,15 +34,15 @@ public class BuildAMatrix {
 
             Chunk chunk = matrix.getChunk(null);
             chunk.assignChunkToNode(node);
-            
+
             MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
                     .newBuilder();
-            b.setMatrixName("A");
+            b.setMatrixId("A");
             for (int i = 0; i < 10; ++i) {
                 b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
                         .setCol(i).setRow(i).setValue(i).build());
             }
-            
+
             MatrixPieceTripletsInt32Wire.Body messsageBody = b.build();
             node.sendMessage(new MessageSetValueInt32(messsageBody));
 

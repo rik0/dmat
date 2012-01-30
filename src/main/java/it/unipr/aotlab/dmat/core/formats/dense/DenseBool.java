@@ -4,6 +4,7 @@ import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 
 import java.nio.ByteBuffer;
 
@@ -76,10 +77,14 @@ public class DenseBool extends DenseBase<Boolean> {
     }
 
     @Override
-    public MatrixPiece getPiece(int startRow, int endRow, int startCol,
-            int endCol) {
-        // TODO Auto-generated method stub
-        return null;
+    public Boolean getDefault() {
+        return false;
+    }
+
+    @Override
+    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece, int startRow, int endRow,
+            int startCol, int endCol) {
+        return matrixPiece.buildFromChunk(this, startRow, startCol, endRow, endCol);
     }
 
 }

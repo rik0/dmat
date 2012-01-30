@@ -24,12 +24,12 @@ public class MessageSetValueInt32 extends MessageMatrixValues {
 
     @Override
     public String toString() {
-        return super.toString() + " (" + body.getMatrixName() + ")" +
+        return super.toString() + " (" + body.getMatrixId() + ")" +
                 MatrixPieceTripletsInt32WireSupport.sToString(body);
     }
 
     @Override
-    public String getMatrixName() {
+    public String getMatrixId() {
         return MatrixPieceTripletsInt32WireSupport.getMatrixName(body);
     }
 

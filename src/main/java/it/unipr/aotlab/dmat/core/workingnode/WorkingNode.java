@@ -1,30 +1,23 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
 
-import java.io.IOException;
-
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.QueueingConsumer;
 
 public class WorkingNode {
     String nodeId;
     String brokerName;
-    Connector connector;
-    Connection connection;
 
     NodeState state;
     NodeMessageDigester digester;
-
-    public void connect() throws IOException {
-        connection = connector.connection();
-    }
+    MessageSender messageSender;
 
     public void consumerLoop() throws Exception {
-        Channel channel = connection.createChannel();
+        Channel channel = MessageSender.getConnection().createChannel();
+
         channel.queueDeclare(nodeId, false, false, false, null);
         QueueingConsumer queueingConsumer = new QueueingConsumer(channel);
         channel.basicConsume(nodeId, true, queueingConsumer);
@@ -37,12 +30,12 @@ public class WorkingNode {
         }
     }
 
-    public WorkingNode(String nodeId, final String brokerName, Connector c) {
+    public WorkingNode(String nodeId, final String brokerName, MessageSender messageSender) {
         this.digester = new NodeMessageDigester(this);
         this.state = new NodeState(this);
 
         this.nodeId = nodeId;
         this.brokerName = brokerName;
-        this.connector = c;
+        this.messageSender = messageSender;
     }
 }

@@ -9,7 +9,7 @@ public class Formats {
         switch (chunk.getFormat()) {
         case DENSE:
             return FormatsDense.build(chunk);
-            
+
         case COMPRESSEDCOLUMNS:
 
         case COMPRESSEDROWS:

@@ -5,6 +5,7 @@ import it.unipr.aotlab.dmat.core.net.Node;
 
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -16,7 +17,7 @@ public class MessageSender implements
     static ConnectionFactory rabbitMQConnector;
     static Connection connection = null;
 
-    static synchronized void inizializeConnection() throws IOException {
+    public static synchronized void inizializeConnection() throws IOException {
         if (connection == null) {
             connection = rabbitMQConnector.newConnection();
         }
@@ -61,16 +62,15 @@ public class MessageSender implements
     }
 
     @Override
-    public void broadCastMessage(Message m, String... nodesName)
+    public void broadCastMessage(Message m, Iterable<String> list)
             throws IOException {
         inizializeConnection();
         Channel channel = connection.createChannel();
 
         try {
-            Hashtable<String, Object> recipientList = new Hashtable<String, Object>(
-                    nodesName.length + 1, 1);
+            Hashtable<String, Object> recipientList = new Hashtable<String, Object>();
 
-            for (String nodeName : nodesName)
+            for (String nodeName : list)
                 recipientList.put(nodeName, "");
 
             AMQP.BasicProperties messageProperties = (new AMQP.BasicProperties.Builder())

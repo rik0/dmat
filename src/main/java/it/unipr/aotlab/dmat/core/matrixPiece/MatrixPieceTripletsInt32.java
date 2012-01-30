@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.core.matrixPiece;
 
+import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 
@@ -24,9 +25,26 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
 
     public static class Builder implements MatrixPieces.Builder {
         @Override
-        public MatrixPiece build(Object messageBody) {
+        public MatrixPiece buildFromMessageBody(Object messageBody) {
             return new MatrixPieceTripletsInt32(
                     (MatrixPieceTripletsInt32Wire.Body) messageBody);
+        }
+
+        @Override
+        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format,
+                int startRow, int startCol, int endRow, int endCol) {
+            MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
+                    .newBuilder();
+            int intDefault = (Integer) format.getDefault();
+            int v;
+            b.setMatrixId(format.hostChunk().getMatrixId());
+            for (int r = startRow; r < endRow; ++r)
+                for (int c = startCol; c < endCol; ++c) {
+                    if ((v = (Integer) format.get(r, c)) != intDefault)
+                        b.addValues(MatrixPieceTripletsInt32Wire.Triplet
+                                .newBuilder().setRow(r).setCol(c).setValue(v));
+                }
+            return new MatrixPieceTripletsInt32(b.build());
         }
     }
 
@@ -65,7 +83,8 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         }
     }
 
-    public MatrixPieceTripletsInt32(MatrixPieceTripletsInt32Wire.Body int32Triples) {
+    public MatrixPieceTripletsInt32(
+            MatrixPieceTripletsInt32Wire.Body int32Triples) {
         this.int32Triples = int32Triples;
     }
 

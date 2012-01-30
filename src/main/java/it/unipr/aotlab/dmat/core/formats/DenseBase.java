@@ -10,6 +10,10 @@ public abstract class DenseBase<E> implements ChunkAccessor<E> {
     protected ByteBuffer array;
     protected Chunk hostChunk;
     protected TypeInfo typeInfo;
+    
+    public Chunk hostChunk() {
+        return hostChunk;
+    }
 
     protected DenseBase(Chunk hostChunk) {
         this.typeInfo = new TypeInfo(hostChunk.getElementType());
