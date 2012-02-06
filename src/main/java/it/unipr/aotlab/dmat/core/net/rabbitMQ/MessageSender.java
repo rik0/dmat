@@ -5,7 +5,6 @@ import it.unipr.aotlab.dmat.core.net.Node;
 
 import java.io.IOException;
 import java.util.Hashtable;
-import java.util.List;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -32,7 +31,7 @@ public class MessageSender implements
     public MessageSender(Connector c) {
         rabbitMQConnector = c.connectionFactory();
     }
-    
+
     public static Connection getConnection() throws IOException {
         inizializeConnection();
         return connection;
@@ -40,14 +39,14 @@ public class MessageSender implements
 
     // TODO using a channel pool?
     @Override
-    public void sendMessage(Message m, String nodeName) throws IOException {
+    public void sendMessage(Message m, String destination) throws IOException {
         inizializeConnection();
         Channel channel = connection.createChannel();
 
         try {
             Hashtable<String, Object> recipientList = new Hashtable<String, Object>(
                     2, 1);
-            recipientList.put(nodeName, "");
+            recipientList.put(destination, "");
 
             AMQP.BasicProperties messageProperties = (new AMQP.BasicProperties.Builder())
                     .headers(recipientList).contentType(m.contentType())
@@ -62,7 +61,7 @@ public class MessageSender implements
     }
 
     @Override
-    public void broadCastMessage(Message m, Iterable<String> list)
+    public void broadcastMessage(Message m, Iterable<String> destinations)
             throws IOException {
         inizializeConnection();
         Channel channel = connection.createChannel();
@@ -70,7 +69,7 @@ public class MessageSender implements
         try {
             Hashtable<String, Object> recipientList = new Hashtable<String, Object>();
 
-            for (String nodeName : list)
+            for (String nodeName : destinations)
                 recipientList.put(nodeName, "");
 
             AMQP.BasicProperties messageProperties = (new AMQP.BasicProperties.Builder())
@@ -79,9 +78,9 @@ public class MessageSender implements
 
             channel.basicPublish("amq.match", "", messageProperties,
                     m.message());
+
         } finally {
-            if (channel != null && channel.isOpen())
-                channel.close();
+            closeChannel(channel);
         }
     }
 

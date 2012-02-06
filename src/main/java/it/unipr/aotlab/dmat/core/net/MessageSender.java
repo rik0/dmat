@@ -7,5 +7,5 @@ public interface MessageSender {
     
     void sendMessage(Message m, String nodeName) throws IOException;
 
-    void broadCastMessage(Message m, Iterable<String> list) throws IOException;
+    void broadcastMessage(Message m, Iterable<String> list) throws IOException;
 }

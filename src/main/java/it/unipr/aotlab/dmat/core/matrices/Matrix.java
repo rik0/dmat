@@ -28,6 +28,8 @@ import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -42,7 +44,7 @@ public class Matrix {
     Initializer init = null;
     ChunkDescription.SemiRing semiring = null;
 
-    Vector<Chunk> chunks = new Vector<Chunk>();
+    private Vector<Chunk> chunks = new Vector<Chunk>();
 
     public void checkCoords(int row, int col) {
         if (row < 0 || col < 0 || row >= rows || col >= cols)
@@ -106,5 +108,26 @@ public class Matrix {
             throw new DMatInternalError();
 
         return chunk;
+    }
+
+    public Vector<Chunk> getChunks() {
+        return chunks;
+    }
+
+    static public boolean intersect(Chunk c, int startRow, int endRow,
+            int startCol, int endCol) {
+        return !(c.getStartRow() >= endRow || startRow >= c.getEndRow()
+                || c.getStartCol() >= endCol || startCol >= c.getEndCol());
+    }
+
+    public List<Chunk> involvedChunks(int startRow, int endRow, int startCol,
+            int endCol) {
+        List<Chunk> involved = new LinkedList<Chunk>();
+
+        for (Chunk c : getChunks())
+            if (intersect(c, startCol, endRow, startCol, endCol))
+                involved.add(c);
+
+        return involved;
     }
 }

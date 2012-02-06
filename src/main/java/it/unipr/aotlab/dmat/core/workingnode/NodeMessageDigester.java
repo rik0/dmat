@@ -67,10 +67,10 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
-        int startRow = message.body.getStartRow();
-        int endRow = message.body.getEndRow();
-        int startCol = message.body.getStartCol();
-        int endCol = message.body.getEndCol();
+        int startRow = message.body.getNeededPiece().getStartRow();
+        int endRow = message.body.getNeededPiece().getEndRow();
+        int startCol = message.body.getNeededPiece().getStartCol();
+        int endCol = message.body.getNeededPiece().getEndCol();
         MatrixPiece piece = null;
         
         for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
@@ -84,6 +84,6 @@ public class NodeMessageDigester {
         if (piece == null)
             throw new DMatInternalError(hostWorkingNode + " received and invalid request. It does not manage " + message.body.getMatrixId() + " row: " + startRow + " col: " + startCol);
         
-        hostWorkingNode.messageSender.broadCastMessage(message, message.body.getRecipientList());
+        hostWorkingNode.messageSender.broadcastMessage(message, message.body.getRecipientList());
     }
 }

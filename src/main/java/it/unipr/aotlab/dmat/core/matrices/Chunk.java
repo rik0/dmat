@@ -24,6 +24,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.Rectangle;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 
@@ -62,13 +63,21 @@ public class Chunk {
     public int getEndCol() {
         return endCol;
     }
+    
+    public int nofElements() {
+        return (endRow - startRow) * (endCol - startRow);
+    }
 
     public String getChunkId() {
         return chunkId;
     }
-    
+
     public String getMatrixId() {
         return matrixId;
+    }
+    
+    public Node getAssignedNode() {
+        return assignedTo;
     }
 
     public ChunkDescription.Format getFormat() {
@@ -97,9 +106,12 @@ public class Chunk {
     }
 
     public ChunkDescription.Body buildMessageBody() {
+        Rectangle.RectangleBody position = Rectangle.RectangleBody.newBuilder()
+                .setStartRow(startRow).setEndRow(endRow).setEndCol(endCol)
+                .setStartCol(startCol).build();
+
         return ChunkDescription.Body.newBuilder().setChunkId(chunkId)
-                .setEndCol(endCol).setEndRow(endRow).setStartCol(startCol)
-                .setStartRow(startRow).setFormat(format)
+                .setPosition(position).setFormat(format)
                 .setElementType(elementType).setSemiRing(semiring)
                 .setMatrixId(matrixId).setMatricesOnTheWire(matricesOnTheWire)
                 .build();
@@ -107,10 +119,10 @@ public class Chunk {
 
     public Chunk(ChunkDescription.Body m) {
         this.chunkId = m.getChunkId();
-        this.startRow = m.getStartRow();
-        this.endRow = m.getEndRow();
-        this.startCol = m.getStartCol();
-        this.endCol = m.getEndCol();
+        this.startRow = m.getPosition().getStartRow();
+        this.endRow = m.getPosition().getEndRow();
+        this.startCol = m.getPosition().getStartCol();
+        this.endCol = m.getPosition().getEndCol();
         this.elementType = m.getElementType();
         this.format = m.getFormat();
         this.semiring = m.getSemiRing();

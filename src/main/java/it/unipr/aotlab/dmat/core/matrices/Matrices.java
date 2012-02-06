@@ -52,7 +52,7 @@ public class Matrices {
 
         Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
         Chunk newChunk = oldChunk.splitHorizzonally(newChunkName, row);
-        buildingMatrix.chunks.add(newChunk);
+        buildingMatrix.getChunks().add(newChunk);
 
         oldChunk.chunkId = oldChunkNewName;
 
@@ -66,7 +66,7 @@ public class Matrices {
 
         Chunk oldChunk = buildingMatrix.getChunk(splitsChuckName);
         Chunk newChunk = oldChunk.splitVertically(newChunkName, col);
-        buildingMatrix.chunks.add(newChunk);
+        buildingMatrix.getChunks().add(newChunk);
 
         oldChunk.chunkId = oldChunkNewName;
 
@@ -129,7 +129,7 @@ public class Matrices {
         }
 
         if ((state & 11) == 11) {
-            buildingMatrix.chunks.add(new Chunk(buildingMatrix.id, "default",
+            buildingMatrix.getChunks().add(new Chunk(buildingMatrix.id, "default",
                     0, buildingMatrix.rows, 0, buildingMatrix.cols));
             state |= 4;
         }
@@ -146,7 +146,7 @@ public class Matrices {
             buildingMatrix.init = Initializers
                     .defaultInitializer(buildingMatrix.elementType);
 
-        for (Chunk c : buildingMatrix.chunks) {
+        for (Chunk c : buildingMatrix.getChunks()) {
             c.validate(this);
         }
     }

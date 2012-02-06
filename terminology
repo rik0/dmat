@@ -1,13 +1,47 @@
-Cell: a single element of a Chunk.
-Type: type of elements. Type in memory and semiring operations.
-Format: how chunk cells are stored in memory.
-Partition: surjective function from a Cell to the <Node, Chunk> that contains it.
-Chunk: rectangular part of a matrix. Chunk type is the type of its elements, it is identified with a string.
-Message: a class instance to be sent to nodes.
-Node: a node receives messages, might contains chunks, might do computations, it is identified with a string.
-Matrix: a set of Chunk(s) of the same type, the union of the chunks must be a rectangle. The type of a matrix is the type of its chunks.
-Shape: peculiar shapes of matrices.
+Type: type of elements. Type in memory and semiring
+    operations.
 
+
+Format: how chunk cells are stored in memory.
+    At the moment only Dense, compressed columns and compressed row are
+    planned.
+
+Chunk: rectangular part of a matrix. Chunk type is the
+    type of its elements, it is identified with a string.
+
+Message: a class instance to be sent to nodes.
+
+Node: a node receives messages, might contains chunks,
+    might do computations, it is identified with a string.
+
+Computing node: a node devoted to computation (a node
+    can be both computing and storing).
+
+Storing node: a node devoted to memorizing.
+
+Working Zone: in the context of operations a working zone is a list of
+    chunks needed to update a part of the output matrix.
+    E.g. (Different letters means different nodes)
+
+    Product between a 4x2 and a 2x4 matrix:
+    C    = A  x B
+    aabb   aa
+    aabb   aa   cbbb
+    aabb   aa   cbbb
+    aabb   aa
+
+    Ca (0,1 - 0-4), Aa, Bc
+    Ca (1,2 - 0-4), Aa, Bb
+
+    are working zones to update the part of the matrix C that
+    reside in the node `a'.
+
+    To update the Cb part you have one working zone:
+    Cb (2,4 - 0-4), Aa, Bb
+
+Matrix: a set of Chunk(s) of the same type, the union
+    of the chunks must be a rectangle. The type of a matrix
+    is the type of its chunks.
 
 E.g.,
 
@@ -25,3 +59,7 @@ I     I      I
 We have one matrix (A), two nodes (N and M), three chunks (N.a, N.b and M.a).
 Two chunks are in the Node N, one chunk is in the node M.
 
+Concepts non used at the moment.
+Partition: surjective function from a Cell to the <Node, Chunk> that contains it.
+Cell: a single element of a Chunk.
+Shape: peculiar shapes of matrices.
