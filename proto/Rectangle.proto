@@ -1,0 +1,10 @@
+
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message RectangleBody {
+    required int32 startRow = 1;
+    required int32 endRow = 2;
+    required int32 startCol = 3;
+    required int32 endCol = 4;
+}
+
