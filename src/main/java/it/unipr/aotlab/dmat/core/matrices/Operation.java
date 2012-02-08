@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.Vector;
 
 public abstract class Operation {
@@ -41,9 +42,16 @@ public abstract class Operation {
     //what subset of the output chuck is computable with those set of chunks?
     protected abstract WorkZone markOutputZoneForChunk(List<Chunk> c);
 
-    //the user did not fill-in the computingNodes vector? What nodes do we use?
-    // fill-in it.
-    protected abstract void getDefaultComputingNodes();
+    //The user fails to set computing nodes, set the default.
+    protected TreeSet<Node> getDefaultComputingNodes() {
+        TreeSet<Node> workers = new TreeSet<Node>(new Node.NodeComparor());
+        
+        for (Matrix operand : operands)
+            for (Chunk chunk : operand.getChunks())
+                workers.add(chunk.getAssignedNode());
+        
+        return workers;
+    }
 
     protected abstract void sendOrdersToWorkers();
 
@@ -57,22 +65,24 @@ public abstract class Operation {
     }
 
     protected List<List<Chunk>> neededChunks() {
-        List<List<Chunk>> involvedChunks = new LinkedList<List<Chunk>>();
+        List<List<Chunk>> unmarkedWorkZones = new LinkedList<List<Chunk>>();
 
         for (Chunk c : getOutputMatrix().getChunks()) {
-            involvedChunks.add(neededChunksToUpdateThisChunk(c));
+            List<Chunk> unmarkedWorkZone = neededChunksToUpdateThisChunk(c);
+            unmarkedWorkZone.add(0, c);
+            unmarkedWorkZones.add(unmarkedWorkZone);
         }
 
-        return involvedChunks;
+        return unmarkedWorkZones;
     }
 
     public void setOperands(Collection<Matrix> operands) throws DMatError {
         this.operands.clear();
         this.operands.addAll(operands);
     }
-    
+
     public void setComputingNodes(Collection<Node> computingNodes) {
-        this.computingNodes = new Vector<Node>();
+        this.computingNodes = new TreeSet<Node>();
         this.computingNodes.addAll(computingNodes);
     }
 
@@ -97,11 +107,11 @@ public abstract class Operation {
 
                 for (Chunk wz : o1.involvedChunks)
                     diffValue -= wz.getAssignedNode().getNodeId()
-                            .equals(nodeId) ? 1 : 0;
+                    .equals(nodeId) ? 1 : 0;
 
                 for (Chunk wz : o2.involvedChunks)
                     diffValue += wz.getAssignedNode().getNodeId()
-                            .equals(nodeId) ? 1 : 0;
+                    .equals(nodeId) ? 1 : 0;
 
                 return diffValue;
             }
@@ -180,8 +190,9 @@ public abstract class Operation {
         sendOrdersToWorkers();
     }
 
-    protected Vector<Node> computingNodes = null;
+    protected TreeSet<Node> computingNodes = null;
     protected List<NodeWorkZonePair> workers = new LinkedList<NodeWorkZonePair>();
+    protected Vector<Matrix> operands = new Vector<Matrix>();
 
     public static class WorkZone {
         //output matrix influenced area
@@ -191,6 +202,10 @@ public abstract class Operation {
         public int endCol;
         public List<Chunk> involvedChunks;
         public boolean assigned = false;
+
+        public WorkZone(List<Chunk> involvedChunks) {
+            this.involvedChunks = involvedChunks;
+        }
 
         public WorkZone(WorkZone wz) {
             this.startRow = wz.startRow;
@@ -206,13 +221,13 @@ public abstract class Operation {
         public Node node;
         public List<WorkZone> workZone;
     }
-    
-    private Vector<Matrix> operands = new Vector<Matrix>();
+
+
     private List<WorkZone> workZones;
 
     private void fillinComputingNodes() {
         if (this.computingNodes == null) {
-            getDefaultComputingNodes();
+            this.computingNodes = getDefaultComputingNodes();
         }
     }
 

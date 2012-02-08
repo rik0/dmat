@@ -2,6 +2,8 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
+import java.util.LinkedList;
+
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
@@ -27,7 +29,7 @@ public class Matrices {
 
     /* state & 1 means nof columns is set
      * state & 2 means nof rows is set
-     * state & 4 means the default chunk has been created 
+     * state & 4 means the default chunk has been created
      * state & 8 means the matrix has a name */
     int state;
     Matrix buildingMatrix;
@@ -130,7 +132,7 @@ public class Matrices {
 
         if ((state & 11) == 11) {
             buildingMatrix.getChunks().add(new Chunk(buildingMatrix.id, "default",
-                    0, buildingMatrix.rows, 0, buildingMatrix.cols));
+                    Rectangle.build(0, buildingMatrix.rows, 0, buildingMatrix.cols), buildingMatrix));
             state |= 4;
         }
     }

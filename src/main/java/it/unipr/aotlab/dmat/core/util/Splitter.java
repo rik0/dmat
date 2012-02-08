@@ -1,7 +1,7 @@
 package it.unipr.aotlab.dmat.core.util;
 
-import it.unipr.aotlab.dmat.core.generated.Rectangle;
-import it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody;
+import it.unipr.aotlab.dmat.core.generated.RectangleWire;
+import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 
@@ -11,7 +11,7 @@ public class Splitter {
     public static class ChunkInfo {
         public Chunk first;
         public Chunk second;
-        public Rectangle.RectangleBody intersect;
+        public RectangleWire.RectangleBody intersect;
 
         public ChunkInfo(Chunk first, Chunk second, RectangleBody intersect) {
             this.first = first;
@@ -28,7 +28,7 @@ public class Splitter {
     }
 
     private static ChunkInfo intersection(Chunk first, Chunk second) {
-        Rectangle.RectangleBody intersection = Rectangle.RectangleBody
+        RectangleWire.RectangleBody intersection = RectangleWire.RectangleBody
                 .newBuilder()
                 .setStartRow(Math.max(first.getStartRow(), second.getStartRow()))
                 .setStartCol(Math.max(first.getStartCol(), second.getStartCol()))

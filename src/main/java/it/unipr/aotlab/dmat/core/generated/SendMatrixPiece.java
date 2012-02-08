@@ -17,8 +17,8 @@ public final class SendMatrixPiece {
     
     // required .RectangleBody neededPiece = 2;
     boolean hasNeededPiece();
-    it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody getNeededPiece();
-    it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder getNeededPieceOrBuilder();
+    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getNeededPiece();
+    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getNeededPieceOrBuilder();
     
     // repeated string recipient = 3;
     java.util.List<String> getRecipientList();
@@ -88,14 +88,14 @@ public final class SendMatrixPiece {
     
     // required .RectangleBody neededPiece = 2;
     public static final int NEEDEDPIECE_FIELD_NUMBER = 2;
-    private it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody neededPiece_;
+    private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody neededPiece_;
     public boolean hasNeededPiece() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody getNeededPiece() {
+    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getNeededPiece() {
       return neededPiece_;
     }
-    public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder getNeededPieceOrBuilder() {
+    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getNeededPieceOrBuilder() {
       return neededPiece_;
     }
     
@@ -115,7 +115,7 @@ public final class SendMatrixPiece {
     
     private void initFields() {
       matrixId_ = "";
-      neededPiece_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+      neededPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       recipient_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
@@ -305,7 +305,7 @@ public final class SendMatrixPiece {
         matrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         if (neededPieceBuilder_ == null) {
-          neededPiece_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+          neededPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
         } else {
           neededPieceBuilder_.clear();
         }
@@ -449,7 +449,7 @@ public final class SendMatrixPiece {
               break;
             }
             case 18: {
-              it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.newBuilder();
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder();
               if (hasNeededPiece()) {
                 subBuilder.mergeFrom(getNeededPiece());
               }
@@ -505,20 +505,20 @@ public final class SendMatrixPiece {
       }
       
       // required .RectangleBody neededPiece = 2;
-      private it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody neededPiece_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+      private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody neededPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder> neededPieceBuilder_;
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> neededPieceBuilder_;
       public boolean hasNeededPiece() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody getNeededPiece() {
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getNeededPiece() {
         if (neededPieceBuilder_ == null) {
           return neededPiece_;
         } else {
           return neededPieceBuilder_.getMessage();
         }
       }
-      public Builder setNeededPiece(it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody value) {
+      public Builder setNeededPiece(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
         if (neededPieceBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -532,7 +532,7 @@ public final class SendMatrixPiece {
         return this;
       }
       public Builder setNeededPiece(
-          it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder builderForValue) {
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder builderForValue) {
         if (neededPieceBuilder_ == null) {
           neededPiece_ = builderForValue.build();
           onChanged();
@@ -542,12 +542,12 @@ public final class SendMatrixPiece {
         bitField0_ |= 0x00000002;
         return this;
       }
-      public Builder mergeNeededPiece(it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody value) {
+      public Builder mergeNeededPiece(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
         if (neededPieceBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              neededPiece_ != it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance()) {
+              neededPiece_ != it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance()) {
             neededPiece_ =
-              it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.newBuilder(neededPiece_).mergeFrom(value).buildPartial();
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder(neededPiece_).mergeFrom(value).buildPartial();
           } else {
             neededPiece_ = value;
           }
@@ -560,7 +560,7 @@ public final class SendMatrixPiece {
       }
       public Builder clearNeededPiece() {
         if (neededPieceBuilder_ == null) {
-          neededPiece_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+          neededPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
           onChanged();
         } else {
           neededPieceBuilder_.clear();
@@ -568,12 +568,12 @@ public final class SendMatrixPiece {
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
-      public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder getNeededPieceBuilder() {
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder getNeededPieceBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
         return getNeededPieceFieldBuilder().getBuilder();
       }
-      public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder getNeededPieceOrBuilder() {
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getNeededPieceOrBuilder() {
         if (neededPieceBuilder_ != null) {
           return neededPieceBuilder_.getMessageOrBuilder();
         } else {
@@ -581,11 +581,11 @@ public final class SendMatrixPiece {
         }
       }
       private com.google.protobuf.SingleFieldBuilder<
-          it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder> 
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> 
           getNeededPieceFieldBuilder() {
         if (neededPieceBuilder_ == null) {
           neededPieceBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder>(
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder>(
                   neededPiece_,
                   getParentForChildren(),
                   isClean());
@@ -676,10 +676,11 @@ public final class SendMatrixPiece {
   static {
     java.lang.String[] descriptorData = {
       "\n<home/paolo/uni/dissertation/dmat/proto" +
-      "/SendMatrixPiece.proto\032\017Rectangle.proto\"" +
-      "P\n\004Body\022\020\n\010matrixId\030\001 \002(\t\022#\n\013neededPiece" +
-      "\030\002 \002(\0132\016.RectangleBody\022\021\n\trecipient\030\003 \003(" +
-      "\tB%\n#it.unipr.aotlab.dmat.core.generated"
+      "/SendMatrixPiece.proto\032\023RectangleWire.pr" +
+      "oto\"P\n\004Body\022\020\n\010matrixId\030\001 \002(\t\022#\n\013neededP" +
+      "iece\030\002 \002(\0132\016.RectangleBody\022\021\n\trecipient\030" +
+      "\003 \003(\tB%\n#it.unipr.aotlab.dmat.core.gener" +
+      "ated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -700,7 +701,7 @@ public final class SendMatrixPiece {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          it.unipr.aotlab.dmat.core.generated.Rectangle.getDescriptor(),
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.getDescriptor(),
         }, assigner);
   }
   

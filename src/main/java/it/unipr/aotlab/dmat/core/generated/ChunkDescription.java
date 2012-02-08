@@ -336,8 +336,8 @@ public final class ChunkDescription {
     
     // required .RectangleBody position = 3;
     boolean hasPosition();
-    it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody getPosition();
-    it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder getPositionOrBuilder();
+    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition();
+    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getPositionOrBuilder();
     
     // required .Format format = 4 [default = DENSE];
     boolean hasFormat();
@@ -450,14 +450,14 @@ public final class ChunkDescription {
     
     // required .RectangleBody position = 3;
     public static final int POSITION_FIELD_NUMBER = 3;
-    private it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody position_;
+    private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody position_;
     public boolean hasPosition() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
-    public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody getPosition() {
+    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition() {
       return position_;
     }
-    public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder getPositionOrBuilder() {
+    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getPositionOrBuilder() {
       return position_;
     }
     
@@ -504,7 +504,7 @@ public final class ChunkDescription {
     private void initFields() {
       matrixId_ = "";
       chunkId_ = "";
-      position_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+      position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       format_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.Format.DENSE;
       elementType_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.ElementType.INT32;
       semiRing_ = it.unipr.aotlab.dmat.core.generated.ChunkDescription.SemiRing.DEFAULTSEMIRING;
@@ -742,7 +742,7 @@ public final class ChunkDescription {
         chunkId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         if (positionBuilder_ == null) {
-          position_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+          position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
         } else {
           positionBuilder_.clear();
         }
@@ -936,7 +936,7 @@ public final class ChunkDescription {
               break;
             }
             case 26: {
-              it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.newBuilder();
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder();
               if (hasPosition()) {
                 subBuilder.mergeFrom(getPosition());
               }
@@ -1067,20 +1067,20 @@ public final class ChunkDescription {
       }
       
       // required .RectangleBody position = 3;
-      private it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody position_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+      private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder> positionBuilder_;
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> positionBuilder_;
       public boolean hasPosition() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody getPosition() {
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition() {
         if (positionBuilder_ == null) {
           return position_;
         } else {
           return positionBuilder_.getMessage();
         }
       }
-      public Builder setPosition(it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody value) {
+      public Builder setPosition(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
         if (positionBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1094,7 +1094,7 @@ public final class ChunkDescription {
         return this;
       }
       public Builder setPosition(
-          it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder builderForValue) {
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder builderForValue) {
         if (positionBuilder_ == null) {
           position_ = builderForValue.build();
           onChanged();
@@ -1104,12 +1104,12 @@ public final class ChunkDescription {
         bitField0_ |= 0x00000004;
         return this;
       }
-      public Builder mergePosition(it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody value) {
+      public Builder mergePosition(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
         if (positionBuilder_ == null) {
           if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              position_ != it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance()) {
+              position_ != it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance()) {
             position_ =
-              it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.newBuilder(position_).mergeFrom(value).buildPartial();
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder(position_).mergeFrom(value).buildPartial();
           } else {
             position_ = value;
           }
@@ -1122,7 +1122,7 @@ public final class ChunkDescription {
       }
       public Builder clearPosition() {
         if (positionBuilder_ == null) {
-          position_ = it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.getDefaultInstance();
+          position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
           onChanged();
         } else {
           positionBuilder_.clear();
@@ -1130,12 +1130,12 @@ public final class ChunkDescription {
         bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
-      public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder getPositionBuilder() {
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder getPositionBuilder() {
         bitField0_ |= 0x00000004;
         onChanged();
         return getPositionFieldBuilder().getBuilder();
       }
-      public it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder getPositionOrBuilder() {
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getPositionOrBuilder() {
         if (positionBuilder_ != null) {
           return positionBuilder_.getMessageOrBuilder();
         } else {
@@ -1143,11 +1143,11 @@ public final class ChunkDescription {
         }
       }
       private com.google.protobuf.SingleFieldBuilder<
-          it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder> 
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> 
           getPositionFieldBuilder() {
         if (positionBuilder_ == null) {
           positionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.Rectangle.RectangleBodyOrBuilder>(
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder>(
                   position_,
                   getParentForChildren(),
                   isClean());
@@ -1278,25 +1278,25 @@ public final class ChunkDescription {
   static {
     java.lang.String[] descriptorData = {
       "\n=home/paolo/uni/dissertation/dmat/proto" +
-      "/ChunkDescription.proto\032\017Rectangle.proto" +
-      "\"\214\002\n\004Body\022\020\n\010matrixId\030\001 \002(\t\022\017\n\007chunkId\030\002" +
-      " \002(\t\022 \n\010position\030\003 \002(\0132\016.RectangleBody\022\036" +
-      "\n\006format\030\004 \002(\0162\007.Format:\005DENSE\022(\n\013elemen" +
-      "tType\030\005 \002(\0162\014.ElementType:\005INT32\022,\n\010semi" +
-      "Ring\030\006 \002(\0162\t.SemiRing:\017DEFAULTSEMIRING\022G" +
-      "\n\021matricesOnTheWire\030\007 \002(\0162\022.MatricesOnTh" +
-      "eWire:\030DEFAULTMATRICESONTHEWIRE*>\n\006Forma" +
-      "t\022\022\n\016COMPRESSEDROWS\020\001\022\025\n\021COMPRESSEDCOLUM",
-      "NS\020\002\022\t\n\005DENSE\020\003*\213\001\n\013ElementType\022\010\n\004BOOL\020" +
-      "\001\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n\005INT" +
-      "64\020\005\022\t\n\005UINT8\020\006\022\n\n\006UINT16\020\007\022\n\n\006UINT32\020\010\022" +
-      "\n\n\006UINT64\020\t\022\013\n\007FLOAT32\020\n\022\013\n\007FLOAT64\020\013*Z\n" +
-      "\010SemiRing\022\023\n\017DEFAULTSEMIRING\020\001\022\021\n\rINT32O" +
-      "RDINARY\020\002\022\021\n\rINT32TROPICAL\020\003\022\023\n\017BOOLEANO" +
-      "RDINARY\020\004*O\n\021MatricesOnTheWire\022\034\n\030DEFAUL" +
-      "TMATRICESONTHEWIRE\020\001\022\t\n\005BYTES\020\002\022\021\n\rINT32" +
-      "TRIPLETS\020\003B%\n#it.unipr.aotlab.dmat.core." +
-      "generated"
+      "/ChunkDescription.proto\032\023RectangleWire.p" +
+      "roto\"\214\002\n\004Body\022\020\n\010matrixId\030\001 \002(\t\022\017\n\007chunk" +
+      "Id\030\002 \002(\t\022 \n\010position\030\003 \002(\0132\016.RectangleBo" +
+      "dy\022\036\n\006format\030\004 \002(\0162\007.Format:\005DENSE\022(\n\013el" +
+      "ementType\030\005 \002(\0162\014.ElementType:\005INT32\022,\n\010" +
+      "semiRing\030\006 \002(\0162\t.SemiRing:\017DEFAULTSEMIRI" +
+      "NG\022G\n\021matricesOnTheWire\030\007 \002(\0162\022.Matrices" +
+      "OnTheWire:\030DEFAULTMATRICESONTHEWIRE*>\n\006F" +
+      "ormat\022\022\n\016COMPRESSEDROWS\020\001\022\025\n\021COMPRESSEDC",
+      "OLUMNS\020\002\022\t\n\005DENSE\020\003*\213\001\n\013ElementType\022\010\n\004B" +
+      "OOL\020\001\022\010\n\004INT8\020\002\022\t\n\005INT16\020\003\022\t\n\005INT32\020\004\022\t\n" +
+      "\005INT64\020\005\022\t\n\005UINT8\020\006\022\n\n\006UINT16\020\007\022\n\n\006UINT3" +
+      "2\020\010\022\n\n\006UINT64\020\t\022\013\n\007FLOAT32\020\n\022\013\n\007FLOAT64\020" +
+      "\013*Z\n\010SemiRing\022\023\n\017DEFAULTSEMIRING\020\001\022\021\n\rIN" +
+      "T32ORDINARY\020\002\022\021\n\rINT32TROPICAL\020\003\022\023\n\017BOOL" +
+      "EANORDINARY\020\004*O\n\021MatricesOnTheWire\022\034\n\030DE" +
+      "FAULTMATRICESONTHEWIRE\020\001\022\t\n\005BYTES\020\002\022\021\n\rI" +
+      "NT32TRIPLETS\020\003B%\n#it.unipr.aotlab.dmat.c" +
+      "ore.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1317,7 +1317,7 @@ public final class ChunkDescription {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          it.unipr.aotlab.dmat.core.generated.Rectangle.getDescriptor(),
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.getDescriptor(),
         }, assigner);
   }
   

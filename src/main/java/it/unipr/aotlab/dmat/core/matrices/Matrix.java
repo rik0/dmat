@@ -23,7 +23,6 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
-import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
@@ -51,6 +50,18 @@ public class Matrix {
             throw new InvalidCoord();
     }
 
+    public int getNofRows() {
+        return rows;
+    }
+
+    public int getNofCols() {
+        return cols;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     /* TODO: define good format to specify initialization of matrix
      * we probably need something generic like:
      * 1. specifiy values directly
@@ -64,7 +75,7 @@ public class Matrix {
 
     /**
      * Initializes the matrix with the specified initializer.
-     * 
+     *
      * @return this
      */
     Matrix initialize() {
@@ -73,9 +84,8 @@ public class Matrix {
     }
 
     public Chunk getChunk(String chunkName) throws ChunkNotFound {
-        if (chunkName == null) {
+        if (chunkName == null)
             chunkName = "default";
-        }
 
         // Linear search; there must be a better way. But
         // we need to be able to change the keys (chunkId)
@@ -94,19 +104,18 @@ public class Matrix {
     }
 
     public Chunk getChunk(int row, int col) {
-        checkCoords(row, col);
-
         Chunk chunk = null;
-        for (Chunk t : chunks) {
-            if (row >= t.startRow && row < t.endRow && col >= t.startCol
-                    && col < t.endCol) {
-                chunk = t;
+
+        for (Chunk c : chunks) {
+            if (c.doesManage(row, col)) {
+                chunk = c;
                 break;
             }
         }
-        if (chunk == null)
-            throw new DMatInternalError();
-
+        if (chunk == null) {
+            throw new InvalidCoord();
+        }
+        
         return chunk;
     }
 
@@ -125,7 +134,7 @@ public class Matrix {
         List<Chunk> involved = new LinkedList<Chunk>();
 
         for (Chunk c : getChunks())
-            if (intersect(c, startCol, endRow, startCol, endCol))
+            if (intersect(c, startRow, endRow, startCol, endCol))
                 involved.add(c);
 
         return involved;

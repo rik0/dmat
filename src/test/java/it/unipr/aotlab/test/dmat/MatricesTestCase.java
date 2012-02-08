@@ -33,7 +33,8 @@ public class MatricesTestCase {
                 .splitVerticallyChuck("top", 10, "topleft", "topright")
                 .setChunkFormat("topleft",
                         ChunkDescription.Format.COMPRESSEDCOLUMNS)
-                .setElementType(ChunkDescription.ElementType.BOOL).build();
+                .setElementType(ChunkDescription.ElementType.BOOL)
+                .build();
 
         Chunk topleft = matrix.getChunk("topleft");
         Chunk topright = matrix.getChunk("topright");

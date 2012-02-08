@@ -1,4 +1,4 @@
-import "Rectangle.proto";
+import "RectangleWire.proto";
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
