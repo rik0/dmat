@@ -73,6 +73,10 @@ public class Chunk {
     public String getMatrixId() {
         return matrixId;
     }
+    
+    public Rectangle getArea() {
+        return new Rectangle(matrixArea); 
+    }
 
     public Node getAssignedNode() {
         return assignedTo;
@@ -190,7 +194,18 @@ public class Chunk {
         setMatricesOn();
     }
 
-    Rectangle intersection(Chunk c) {
+    public boolean doesIntersectWith(Chunk c) {
+        return ( ! (getStartRow() >= c.getEndRow()
+                 || c.getStartCol() >= getEndCol()
+                 || c.getStartRow() >= getEndRow()
+                 || getStartCol() >= c.getEndCol()));
+    }
+
+    public Rectangle intersection(Chunk c) {
+        if (!doesIntersectWith(c)) {
+            return null;
+        }
+
         Rectangle r = new Rectangle();
 
         r.startRow = Math.max(getStartRow(), c.getStartRow());

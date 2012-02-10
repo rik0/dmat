@@ -2,8 +2,6 @@
 
 package it.unipr.aotlab.dmat.core.matrices;
 
-import java.util.LinkedList;
-
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;

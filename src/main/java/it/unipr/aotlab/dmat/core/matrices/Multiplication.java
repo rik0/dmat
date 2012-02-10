@@ -1,10 +1,9 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
+import it.unipr.aotlab.dmat.core.matrices.Operation.WorkZone;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 public class Multiplication extends Operation {
 
@@ -28,7 +27,7 @@ public class Multiplication extends Operation {
     }
 
     @Override
-    protected List<Chunk> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
+    protected List<WorkZone> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
         Matrix firstOperand = operands.get(1);
         Matrix secondOperand = operands.get(2);
 
@@ -37,7 +36,7 @@ public class Multiplication extends Operation {
                                                 outputMatrixChunk.getEndRow(),
                                                 0,
                                                 firstOperand.getNofCols());
-        
+
         chunks.addAll(secondOperand
                         .involvedChunks(0,
                                         secondOperand.getNofRows(),
@@ -45,12 +44,6 @@ public class Multiplication extends Operation {
                                         outputMatrixChunk.getEndCol()));
 
         return chunks;
-    }
-
-    @Override
-    protected WorkZone markOutputZoneForChunk(List<Chunk> c) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

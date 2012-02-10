@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class AdditionAssignment extends Operation {
@@ -22,35 +23,28 @@ public class AdditionAssignment extends Operation {
     }
 
     @Override
-    protected List<Chunk> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
-        Matrix firstOperand = operands.get(1);
+    protected List<WorkZone> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
+        LinkedList<WorkZone> workZones = new LinkedList<WorkZone>();
         Matrix secondOperand = operands.get(2);
 
-        List<Chunk> chunks = firstOperand
-                                .involvedChunks(outputMatrixChunk.getStartRow(),
-                                                outputMatrixChunk.getEndRow(),
-                                                outputMatrixChunk.getStartCol(),
-                                                outputMatrixChunk.getEndCol());
+        for (Chunk chunk : secondOperand.involvedChunks(outputMatrixChunk.getArea())) {
+            updateWorkZones(workZones, outputMatrixChunk, chunk);
+        }
 
-        chunks.addAll(secondOperand.involvedChunks(outputMatrixChunk.getStartRow(),
-                                                outputMatrixChunk.getEndRow(),
-                                                outputMatrixChunk.getStartCol(),
-                                                outputMatrixChunk.getEndCol()));
-
-        return chunks;
+        return workZones;
     }
 
-    @Override
-    protected WorkZone markOutputZoneForChunk(List<Chunk> c) {
-        WorkZone wz = new WorkZone(c);
-        Chunk outputChunk = c.get(0);
+    private void updateWorkZones(LinkedList<WorkZone> workZones, Chunk firstOpChunk, Chunk secondOpChunk) {
+        Rectangle intersection;
 
-        wz.startRow = outputChunk.getStartRow();
-        wz.endRow = outputChunk.getEndRow();
-        wz.startCol = outputChunk.getStartCol();
-        wz.endCol = outputChunk.getEndCol();
+        if (null != (intersection = firstOpChunk.intersection(secondOpChunk))) {
+            List<Chunk> involvedChunks = new LinkedList<Chunk>();
+            involvedChunks.add(firstOpChunk);
+            involvedChunks.add(secondOpChunk);
+            WorkZone workzone = new WorkZone(intersection, involvedChunks);
 
-        return wz;
+            workZones.add(workzone);
+        }
     }
 
     @Override

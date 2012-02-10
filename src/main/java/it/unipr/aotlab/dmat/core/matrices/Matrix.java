@@ -128,6 +128,10 @@ public class Matrix {
         return !(c.getStartRow() >= endRow || startRow >= c.getEndRow()
                 || c.getStartCol() >= endCol || startCol >= c.getEndCol());
     }
+    
+    public List<Chunk> involvedChunks(Rectangle r) {
+        return involvedChunks(r.startRow, r.endRow, r.startCol, r.endCol);
+    }
 
     public List<Chunk> involvedChunks(int startRow, int endRow, int startCol,
             int endCol) {

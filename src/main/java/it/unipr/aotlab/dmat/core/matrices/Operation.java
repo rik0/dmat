@@ -35,12 +35,10 @@ public abstract class Operation {
     //check stuff like matrices size
     protected abstract void otherPreconditions() throws DMatError;
 
-    //what chunks do you need to update the argument chunk of the output matrix?
-    protected abstract List<Chunk> neededChunksToUpdateThisChunk(
+    //You have a chunk in the output matrix, prepare the list of
+    //needed chunks to update it.
+    protected abstract List<WorkZone> neededChunksToUpdateThisChunk(
             Chunk outputMatrixChunk);
-
-    //what subset of the output chuck is computable with those set of chunks?
-    protected abstract WorkZone markOutputZoneForChunk(List<Chunk> c);
 
     //The user fails to set computing nodes, set the default.
     protected TreeSet<Node> getDefaultComputingNodes() {
@@ -55,26 +53,17 @@ public abstract class Operation {
 
     protected abstract void sendOrdersToWorkers();
 
-    protected void prepareWorkZones(List<List<Chunk>> chunkSets) {
+    protected void neededChunks() {
         List<WorkZone> workZones = new LinkedList<WorkZone>();
 
-        for (List<Chunk> chunkset : chunkSets)
-            workZones.add(markOutputZoneForChunk(chunkset));
+        for (Chunk c : getOutputMatrix().getChunks()) {
+            List<WorkZone> newWorkZones = neededChunksToUpdateThisChunk(c);
+            workZones.addAll(newWorkZones);
+        }
 
         this.workZones = workZones;
     }
-
-    protected List<List<Chunk>> neededChunks() {
-        List<List<Chunk>> unmarkedWorkZones = new LinkedList<List<Chunk>>();
-
-        for (Chunk c : getOutputMatrix().getChunks()) {
-            List<Chunk> unmarkedWorkZone = neededChunksToUpdateThisChunk(c);
-            unmarkedWorkZone.add(0, c);
-            unmarkedWorkZones.add(unmarkedWorkZone);
-        }
-
-        return unmarkedWorkZones;
-    }
+    
 
     public void setOperands(Collection<Matrix> operands) throws DMatError {
         this.operands.clear();
@@ -179,7 +168,7 @@ public abstract class Operation {
     public void exec() throws DMatError {
         precondition();
 
-        prepareWorkZones(neededChunks());
+        neededChunks();
 
         associateNodesToWorkZones();
 
@@ -196,22 +185,17 @@ public abstract class Operation {
 
     public static class WorkZone {
         //output matrix influenced area
-        public int startRow;
-        public int endRow;
-        public int startCol;
-        public int endCol;
+        public Rectangle outputArea;
         public List<Chunk> involvedChunks;
         public boolean assigned = false;
 
-        public WorkZone(List<Chunk> involvedChunks) {
+        public WorkZone(Rectangle outputArea, List<Chunk> involvedChunks) {
+            this.outputArea = outputArea;
             this.involvedChunks = involvedChunks;
         }
 
         public WorkZone(WorkZone wz) {
-            this.startRow = wz.startRow;
-            this.endRow = wz.endRow;
-            this.startCol = wz.startCol;
-            this.endCol = wz.endCol;
+            this.outputArea = wz.outputArea;
             this.involvedChunks = wz.involvedChunks;
             this.assigned = wz.assigned;
         }
