@@ -17,6 +17,10 @@ public class Rectangle {
         this.endCol = that.endCol;
     }
     
+    public boolean isValid() {
+        return ! (endRow < startRow || endCol < startCol);
+    }
+    
     public static Rectangle build(int startRow, int endRow, int startCol, int endCol) {
         Rectangle r = new Rectangle();
 

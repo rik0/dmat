@@ -43,11 +43,11 @@ public abstract class Operation {
     //The user fails to set computing nodes, set the default.
     protected TreeSet<Node> getDefaultComputingNodes() {
         TreeSet<Node> workers = new TreeSet<Node>(new Node.NodeComparor());
-        
+
         for (Matrix operand : operands)
             for (Chunk chunk : operand.getChunks())
                 workers.add(chunk.getAssignedNode());
-        
+
         return workers;
     }
 
@@ -63,7 +63,7 @@ public abstract class Operation {
 
         this.workZones = workZones;
     }
-    
+
 
     public void setOperands(Collection<Matrix> operands) throws DMatError {
         this.operands.clear();
@@ -186,7 +186,9 @@ public abstract class Operation {
     public static class WorkZone {
         //output matrix influenced area
         public Rectangle outputArea;
+
         public List<Chunk> involvedChunks;
+
         public boolean assigned = false;
 
         public WorkZone(Rectangle outputArea, List<Chunk> involvedChunks) {

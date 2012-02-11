@@ -1,8 +1,11 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.matrices.Operation.WorkZone;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Multiplication extends Operation {
@@ -31,25 +34,55 @@ public class Multiplication extends Operation {
         Matrix firstOperand = operands.get(1);
         Matrix secondOperand = operands.get(2);
 
-        List<Chunk> chunks = firstOperand
-                                .involvedChunks(outputMatrixChunk.getStartRow(),
-                                                outputMatrixChunk.getEndRow(),
-                                                0,
-                                                firstOperand.getNofCols());
+        List<Chunk> firstOpChunks
+            = firstOperand.involvedChunks(outputMatrixChunk.getStartRow(),
+                                          outputMatrixChunk.getEndRow(),
+                                          0,
+                                          firstOperand.getNofCols());
 
-        chunks.addAll(secondOperand
-                        .involvedChunks(0,
-                                        secondOperand.getNofRows(),
-                                        outputMatrixChunk.getStartCol(),
-                                        outputMatrixChunk.getEndCol()));
+        Collections.sort(firstOpChunks, new Comparator<Chunk>() {
+            @Override
+            public int compare(Chunk o1, Chunk o2) {
+                int rv = o1.getStartRow() - o2.getStartRow();
+                if (rv == 0)
+                    rv = o1.getEndRow() - o2.getEndRow();
 
-        return chunks;
+                return rv;
+            }});
+
+        List<Chunk> secondOpChunks
+            = secondOperand.involvedChunks(0,
+                                           secondOperand.getNofRows(),
+                                           outputMatrixChunk.getStartCol(),
+                                           outputMatrixChunk.getEndCol());
+
+        Collections.sort(secondOpChunks, new Comparator<Chunk> () {
+            @Override
+            public int compare(Chunk o1, Chunk o2) {
+                int rv = o1.getStartCol() - o2.getStartCol();
+                if (rv == 0)
+                    rv = o1.getEndCol() - o2.getEndCol();
+
+                return rv;
+            }});
+
+        return makeWorkzones(outputMatrixChunk, firstOpChunks, secondOpChunks);
+    }
+
+    private List<WorkZone> makeWorkzones(Chunk outputMatrixChunk,
+                                         List<Chunk> firstOpChunks,
+                                         List<Chunk> secondOpChunks) {
+        Iterator<Chunk> firstOpIt = firstOpChunks.iterator();
+        Iterator<Chunk> secondOpIt = secondOpChunks.iterator();
+
+        List<Chunk> currentRowGroup = new LinkedList<Chunk>();
+        List<Chunk> currentColGroup = new LinkedList<Chunk>();
+
+        return null;
     }
 
     @Override
     protected void sendOrdersToWorkers() {
         // TODO Auto-generated method stub
-
     }
-
 }
