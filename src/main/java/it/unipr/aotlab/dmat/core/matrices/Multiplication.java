@@ -2,11 +2,9 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Multiplication extends Operation {
 
@@ -30,11 +28,11 @@ public class Multiplication extends Operation {
     }
 
     @Override
-    protected List<WorkZone> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
+    protected ArrayList<WorkZone> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
         Matrix firstOperand = operands.get(1);
         Matrix secondOperand = operands.get(2);
 
-        List<Chunk> firstOpChunks
+        ArrayList<Chunk> firstOpChunks
             = firstOperand.involvedChunks(outputMatrixChunk.getStartRow(),
                                           outputMatrixChunk.getEndRow(),
                                           0,
@@ -50,7 +48,7 @@ public class Multiplication extends Operation {
                 return rv;
             }});
 
-        List<Chunk> secondOpChunks
+        ArrayList<Chunk> secondOpChunks
             = secondOperand.involvedChunks(0,
                                            secondOperand.getNofRows(),
                                            outputMatrixChunk.getStartCol(),
@@ -69,17 +67,88 @@ public class Multiplication extends Operation {
         return makeWorkzones(outputMatrixChunk, firstOpChunks, secondOpChunks);
     }
 
-    private List<WorkZone> makeWorkzones(Chunk outputMatrixChunk,
-                                         List<Chunk> firstOpChunks,
-                                         List<Chunk> secondOpChunks) {
-        Iterator<Chunk> firstOpIt = firstOpChunks.iterator();
-        Iterator<Chunk> secondOpIt = secondOpChunks.iterator();
+    private ArrayList<WorkZone> makeWorkzones(Chunk outputMatrixChunk,
+                                              ArrayList<Chunk> firstOpChunks,
+                                              ArrayList<Chunk> secondOpChunks) {
+        Matrix firstOperand = operands.get(1);
+        Matrix secondOperand = operands.get(2);
 
-        List<Chunk> currentRowGroup = new LinkedList<Chunk>();
-        List<Chunk> currentColGroup = new LinkedList<Chunk>();
+        ArrayList<WorkZone> workZones = new ArrayList<WorkZone>();
 
-        return null;
+        int rowGroupIndex = 0;
+        int colGroupIndex = 0;
+
+        do {
+            rowGroupIndex = 0;
+            Chunk secondOpChunk = secondOpChunks.get(colGroupIndex);
+            ArrayList<Chunk> secondOpNeededChunks = secondOperand
+                    .involvedChunksAllRows(secondOpChunk.getStartCol(),
+                                           secondOpChunk.getEndRow());
+
+            do {
+                Chunk firstOpChunk = firstOpChunks.get(rowGroupIndex);
+                ArrayList<Chunk> neededChunks = new ArrayList<Chunk>();
+
+                neededChunks.add(outputMatrixChunk);
+                neededChunks.addAll(firstOperand
+                        .involvedChunksAllCols(firstOpChunk.getStartRow(),
+                                               firstOpChunk.getEndRow()));
+                neededChunks.addAll(secondOpNeededChunks);
+
+                Rectangle outputArea = Rectangle.build(firstOpChunk.getStartRow(),
+                                                       firstOpChunk.getEndRow(),
+                                                       secondOpChunk.getStartCol(),
+                                                       secondOpChunk.getEndCol());
+
+                workZones.add(new WorkZone(outputArea, neededChunks));
+            } while (-1 != (rowGroupIndex = getNextRowGroup(rowGroupIndex, firstOpChunks)));
+        } while (-1 != (colGroupIndex = getNextColGroup(colGroupIndex, secondOpChunks)));
+
+        return workZones;
     }
+
+    private int getNextRowGroup(int startFrom, ArrayList<Chunk> firstOpChunks) {
+        int end = firstOpChunks.size();
+        int currentEndRow = firstOpChunks.get(startFrom).getEndRow();
+        int currentStartRow;
+
+        int index = startFrom + 1;
+
+        while (index < end) {
+            currentStartRow = firstOpChunks.get(index).getStartRow();
+            if (currentEndRow <= currentStartRow) {
+                break;
+            }
+            ++index;
+        }
+
+        if (index >= end)
+            return -1;
+
+        return index;
+    }
+
+    private int getNextColGroup(int startFrom, ArrayList<Chunk> secondOpChunks) {
+        int end = secondOpChunks.size();
+        int currentEndCol = secondOpChunks.get(startFrom).getEndCol();
+        int currentStartCol;
+
+        int index = startFrom + 1;
+
+        while (index < end) {
+            currentStartCol = secondOpChunks.get(index).getStartCol();
+            if (currentEndCol <= currentStartCol) {
+                break;
+            }
+            ++index;
+        }
+
+        if (index >= end)
+            return -1;
+
+        return index;
+    }
+
 
     @Override
     protected void sendOrdersToWorkers() {

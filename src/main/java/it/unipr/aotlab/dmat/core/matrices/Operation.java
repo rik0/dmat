@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.net.Node;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -181,7 +182,7 @@ public abstract class Operation {
 
     protected TreeSet<Node> computingNodes = null;
     protected List<NodeWorkZonePair> workers = new LinkedList<NodeWorkZonePair>();
-    protected Vector<Matrix> operands = new Vector<Matrix>();
+    protected ArrayList<Matrix> operands = new ArrayList<Matrix>();
 
     public static class WorkZone {
         //output matrix influenced area

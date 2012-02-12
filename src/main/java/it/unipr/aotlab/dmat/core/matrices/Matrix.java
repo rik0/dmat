@@ -27,6 +27,7 @@ import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -43,7 +44,7 @@ public class Matrix {
     Initializer init = null;
     ChunkDescription.SemiRing semiring = null;
 
-    private Vector<Chunk> chunks = new Vector<Chunk>();
+    private ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 
     public void checkCoords(int row, int col) {
         if (row < 0 || col < 0 || row >= rows || col >= cols)
@@ -119,7 +120,7 @@ public class Matrix {
         return chunk;
     }
 
-    public Vector<Chunk> getChunks() {
+    public ArrayList<Chunk> getChunks() {
         return chunks;
     }
 
@@ -129,18 +130,26 @@ public class Matrix {
                 || c.getStartCol() >= endCol || startCol >= c.getEndCol());
     }
     
-    public List<Chunk> involvedChunks(Rectangle r) {
+    public ArrayList<Chunk> involvedChunks(Rectangle r) {
         return involvedChunks(r.startRow, r.endRow, r.startCol, r.endCol);
     }
 
-    public List<Chunk> involvedChunks(int startRow, int endRow, int startCol,
+    public ArrayList<Chunk> involvedChunks(int startRow, int endRow, int startCol,
             int endCol) {
-        List<Chunk> involved = new LinkedList<Chunk>();
+        ArrayList<Chunk> involved = new ArrayList<Chunk>();
 
         for (Chunk c : getChunks())
             if (intersect(c, startRow, endRow, startCol, endCol))
                 involved.add(c);
 
         return involved;
+    }
+    
+    public ArrayList<Chunk> involvedChunksAllRows(int startCol, int endCol) {
+        return involvedChunks(0, getNofRows(), startCol, endCol);
+    }
+    
+    public ArrayList<Chunk> involvedChunksAllCols(int startRow, int endRow) {
+        return involvedChunks(startRow, endRow, 0, getNofCols());       
     }
 }
