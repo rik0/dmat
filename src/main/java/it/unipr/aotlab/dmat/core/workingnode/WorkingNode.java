@@ -30,7 +30,7 @@ public class WorkingNode {
         }
     }
 
-    public WorkingNode(String nodeId, final String brokerName, MessageSender messageSender) {
+    public WorkingNode(String nodeId, String brokerName, MessageSender messageSender) {
         this.digester = new NodeMessageDigester(this);
         this.state = new NodeState(this);
 

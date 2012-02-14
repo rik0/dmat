@@ -64,20 +64,26 @@ public class MainNode {
         } catch (Error e) {
             mainReturnValue = 1;
             e.printStackTrace();
-            System.err.println("Caught Error.\n " + e.getClass()
-                    + ". Message: " + e.getMessage());
+            System.err.println("Caught Error.\n "
+                    + e.getClass()
+                    + ". Message: "
+                    + e.getMessage());
 
         } catch (Exception e) {
             mainReturnValue = 2;
             e.printStackTrace();
-            System.err.println("Caught Exception.\n " + e.getClass()
-                    + ". Message: " + e.getMessage());
+            System.err.println("Caught Exception.\n "
+                    + e.getClass()
+                    + ". Message: "
+                    + e.getMessage());
 
         } catch (Throwable e) {
             mainReturnValue = 3;
             e.printStackTrace();
-            System.err.println("Caught Throwable.\n " + e.getClass()
-                    + ". Message: " + e.getMessage());
+            System.err.println("Caught Throwable.\n "
+                    + e.getClass()
+                    + ". Message: "
+                    + e.getMessage());
         }
         return mainReturnValue;
     }

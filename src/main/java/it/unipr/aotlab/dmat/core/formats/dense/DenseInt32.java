@@ -29,8 +29,8 @@ public class DenseInt32 extends DenseBase<Integer> {
     }
 
     @Override
-    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece, int startRow, int endRow,
-            int startCol, int endCol) {
+    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece,
+            int startRow, int endRow, int startCol, int endCol) {
         return matrixPiece.buildFromChunk(this, startRow, startCol, endRow, endCol);
     }
 }

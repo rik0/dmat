@@ -17,12 +17,13 @@ public class InNodeChunkInt32 extends InNodeChunk<Integer> {
     public void accept(MessageSetValueInt32 message) {
         MatrixPieceTripletsInt32 triplets = new MatrixPieceTripletsInt32(
                 message.body);
-        Iterator<MatrixPieceTripletsInt32.Int32Triplet> tripletIterator = triplets
-                .matrixPieceIterator();
+        Iterator<MatrixPieceTripletsInt32.Int32Triplet>
+            tripletIterator = triplets.matrixPieceIterator();
 
         while (tripletIterator.hasNext()) {
-            MatrixPieceTripletsInt32.Int32Triplet triplet = tripletIterator
-                    .next();
+            MatrixPieceTripletsInt32
+                .Int32Triplet triplet = tripletIterator.next();
+
             accessor.set(triplet.value, triplet.row, triplet.col);
         }
     }
@@ -31,8 +32,8 @@ public class InNodeChunkInt32 extends InNodeChunk<Integer> {
     public void accept(MessageSetValueGeneric message) {
         MatrixPieceTripletsBytes triplets = new MatrixPieceTripletsBytes(
                 message.body);
-        Iterator<MatrixPieceTripletsBytes.BytesTriplet> tripletIterator = triplets
-                .matrixPieceIterator();
+        Iterator<MatrixPieceTripletsBytes.BytesTriplet>
+            tripletIterator = triplets.matrixPieceIterator();
 
         while (tripletIterator.hasNext()) {
             MatrixPieceTripletsBytes.BytesTriplet triplet = tripletIterator
@@ -42,4 +43,3 @@ public class InNodeChunkInt32 extends InNodeChunk<Integer> {
         }
     }
 }
-    

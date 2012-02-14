@@ -5,7 +5,9 @@ import java.io.IOException;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
@@ -74,16 +76,49 @@ public class NodeMessageDigester {
         MatrixPiece piece = null;
         
         for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-            if (message.body.getMatrixId().equals(
-                    inNodeChunk.chunk.getMatrixId())
+            if (message.body.getMatrixId()
+                    .equals(inNodeChunk.chunk.getMatrixId())
                     && inNodeChunk.chunk.doesManage(startRow, startCol)) {
-                piece = inNodeChunk.getMatrixPieceint(startRow, endRow, startCol, endCol);
+                piece = inNodeChunk.getMatrixPiece(startRow, endRow, startCol, endCol);
                 break;
             }
         }
         if (piece == null)
             throw new DMatInternalError(hostWorkingNode + " received and invalid request. It does not manage " + message.body.getMatrixId() + " row: " + startRow + " col: " + startCol);
         
+        //XXX wtf? this message has no sense!!!
         hostWorkingNode.messageSender.broadcastMessage(message, message.body.getRecipientList());
+    }
+    
+    public void accept(MessageAddAssign message) {
+        //A += B
+        debugMessage(message);
+        System.err.println(message.toString());
+
+        switch (message.body.getPresenceStatus()) {
+
+        case 0: {
+            //we do not have A or B
+
+        }
+            break;
+        case 1: {
+            //we have B, but not A
+
+        }
+            break;
+        case 2: {
+            //we have A, but not B
+
+        }
+            break;
+        case 3: {
+            //we have A and B
+
+        }
+            break;
+        default:
+            throw new DMatInternalError("Sum has at most two involved chunks! Invalid presenceStatus. Message " + message.toString() + ";  messageStatus: " + message.body.getPresenceStatus());
+        }
     }
 }

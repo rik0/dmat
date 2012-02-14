@@ -7,6 +7,7 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueGeneric;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueInt32;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
@@ -16,7 +17,7 @@ public abstract class InNodeChunk<E> {
     Chunk chunk = null;
     SemiRing<E> semiring = null;
     ChunkAccessor<E> accessor = null;
-    MatrixPieces.Builder matrixPiece = null;
+    MatrixPieces.Builder matrixPieceBuilder = null;
 
     InNodeChunk(Chunk chunk) {
     }
@@ -40,8 +41,8 @@ public abstract class InNodeChunk<E> {
                 + message.getClass().getCanonicalName());
     }
 
-    public MatrixPiece getMatrixPieceint(int startRow, int endRow, int startCol,
+    public MatrixPiece getMatrixPiece(int startRow, int endRow, int startCol,
             int endCol) {
-        return accessor.getPiece(matrixPiece, startCol, endRow, startCol, endCol);
+        return accessor.getPiece(matrixPieceBuilder, startCol, endRow, startCol, endCol);
     }
 }

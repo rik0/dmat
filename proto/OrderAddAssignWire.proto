@@ -1,0 +1,11 @@
+import "RectangleWire.proto";
+
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message OrderAddAssignBody {
+    required int32 presenceStatus = 1;
+    required string firstAddendumAssign = 2;
+    required string secondAddendum = 3;
+    required RectangleBody sumArea = 4;
+}
+

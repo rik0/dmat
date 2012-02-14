@@ -3,6 +3,9 @@ package it.unipr.aotlab.dmat.core.matrixPiece;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 
 import java.util.Iterator;
 
@@ -45,6 +48,12 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
                                 .newBuilder().setRow(r).setCol(c).setValue(v));
                 }
             return new MatrixPieceTripletsInt32(b.build());
+        }
+
+        @Override
+        public <E> MessageMatrixValues buildMessage(MatrixPiece matrixPieceUnt) {
+            MatrixPieceTripletsInt32 matrixPiece = (MatrixPieceTripletsInt32)matrixPieceUnt;
+            return new MessageMatrixPieceInt32(matrixPiece.int32Triples);
         }
     }
 

@@ -6,7 +6,6 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class MessagesMatrixPieceInt32 extends Messages {
-
     static {
         Messages.messageFactories.put(
                 MessageMatrixPieceInt32.class.getSimpleName(),
