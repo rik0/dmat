@@ -2,7 +2,7 @@ import "RectangleWire.proto";
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
-message Body {
+message SendMatrixPieceBody {
     required string matrixId = 1;
     required RectangleBody neededPiece = 2;
     repeated string recipient = 3;

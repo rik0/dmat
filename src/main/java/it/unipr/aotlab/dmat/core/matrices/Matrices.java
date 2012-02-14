@@ -4,7 +4,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.initializers.Initializers;
 
 /**
@@ -18,7 +18,7 @@ public class Matrices {
     public void reset() {
         this.state = 0;
         this.buildingMatrix = new Matrix();
-        this.defaultFormat = ChunkDescription.Format.DENSE;
+        this.defaultFormat = ChunkDescriptionWire.Format.DENSE;
     }
 
     public static Matrices newBuilder() {
@@ -31,7 +31,7 @@ public class Matrices {
      * state & 8 means the matrix has a name */
     int state;
     Matrix buildingMatrix;
-    ChunkDescription.Format defaultFormat;
+    ChunkDescriptionWire.Format defaultFormat;
 
     public Matrices splitHorizzontalyChuck(String splitsChuckName, int row,
             String newChunkName) throws ChunkNotFound {
@@ -97,26 +97,26 @@ public class Matrices {
         return this;
     }
 
-    public Matrices setElementType(ChunkDescription.ElementType elementType) {
+    public Matrices setElementType(ChunkDescriptionWire.ElementType elementType) {
         buildingMatrix.elementType = elementType;
 
         return this;
     }
 
-    public Matrices setDefaultChunkFormat(ChunkDescription.Format defaultFormat) {
+    public Matrices setDefaultChunkFormat(ChunkDescriptionWire.Format defaultFormat) {
         this.defaultFormat = defaultFormat;
         return this;
     }
 
     public Matrices setChunkFormat(String chunkName,
-            ChunkDescription.Format format) throws ChunkNotFound {
+            ChunkDescriptionWire.Format format) throws ChunkNotFound {
         buildingMatrix.getChunk(chunkName).format = format;
 
         return this;
     }
 
     public Matrices setChunkMatrixOnTheWire(String chunkName,
-            ChunkDescription.MatricesOnTheWire matrixOnTheWire)
+            ChunkDescriptionWire.MatricesOnTheWire matrixOnTheWire)
             throws ChunkNotFound {
         buildingMatrix.getChunk(chunkName).matricesOnTheWire = matrixOnTheWire;
 
@@ -137,10 +137,10 @@ public class Matrices {
 
     private void validateBuildingMatrix() {
         if (buildingMatrix.elementType == null)
-            buildingMatrix.elementType = ChunkDescription.ElementType.INT32;
+            buildingMatrix.elementType = ChunkDescriptionWire.ElementType.INT32;
 
         if (buildingMatrix.semiring == null)
-            buildingMatrix.semiring = ChunkDescription.SemiRing.DEFAULTSEMIRING;
+            buildingMatrix.semiring = ChunkDescriptionWire.SemiRing.DEFAULTSEMIRING;
 
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers

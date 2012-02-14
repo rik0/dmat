@@ -35,7 +35,7 @@ enum MatricesOnTheWire {
     INT32TRIPLETS = 3;
 }
 
-message Body {
+message ChunkDescriptionBody {
     required string matrixId = 1;
     required string chunkId = 2;
     required RectangleBody position = 3;

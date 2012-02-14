@@ -3,8 +3,8 @@ package it.unipr.aotlab.dmat.core.matrixPiece;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.formats.dense.DenseInt32;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription.MatricesOnTheWire;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
 
 import java.util.Iterator;
@@ -12,7 +12,7 @@ import java.util.Iterator;
 import com.google.protobuf.ByteString;
 
 public class MatrixPieceTripletsBytes implements MatrixPiece {
-    static ChunkDescription.MatricesOnTheWire srtag = ChunkDescription.MatricesOnTheWire.BYTES;
+    static ChunkDescriptionWire.MatricesOnTheWire srtag = ChunkDescriptionWire.MatricesOnTheWire.BYTES;
 
     private int index = 0;
     private MatrixPieceTripletsBytesWire.Body int32Triples;
@@ -83,5 +83,10 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
     @Override
     public MatricesOnTheWire getTag() {
         return srtag;
+    }
+
+    @Override
+    public String getMatrixId() {
+        return this.int32Triples.getMatrixId();
     }
 }

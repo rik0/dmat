@@ -1,15 +1,15 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 
 public class SemiRingInt32 implements SemiRing<Integer> {
-    static ChunkDescription.SemiRing srtag = ChunkDescription.SemiRing.INT32ORDINARY;
+    static ChunkDescriptionWire.SemiRing srtag = ChunkDescriptionWire.SemiRing.INT32ORDINARY;
     static SemiRingInt32 theOne = new SemiRingInt32();
 
     static {
-        SemiRings.defaultSemirings.put(ChunkDescription.ElementType.INT32,
+        SemiRings.defaultSemirings.put(ChunkDescriptionWire.ElementType.INT32,
                 theOne);
-        SemiRings.defaultSemirings.put(ChunkDescription.ElementType.UINT32,
+        SemiRings.defaultSemirings.put(ChunkDescriptionWire.ElementType.UINT32,
                 theOne);
         SemiRings.semirings.put(srtag, theOne);
     }
@@ -42,7 +42,7 @@ public class SemiRingInt32 implements SemiRing<Integer> {
     }
 
     @Override
-    public ChunkDescription.SemiRing valueOf() {
+    public ChunkDescriptionWire.SemiRing valueOf() {
         return srtag;
     }
 }

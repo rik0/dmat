@@ -1,24 +1,24 @@
 package it.unipr.aotlab.dmat.core.matrixPiece;
 
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 
 import java.util.Iterator;
 
 public class MatrixPieceTripletsInt32 implements MatrixPiece {
-    static ChunkDescription.MatricesOnTheWire srtag = ChunkDescription.MatricesOnTheWire.INT32TRIPLETS;
+    static ChunkDescriptionWire.MatricesOnTheWire srtag = ChunkDescriptionWire.MatricesOnTheWire.INT32TRIPLETS;
 
     private int index = 0;
-    private MatrixPieceTripletsInt32Wire.Body int32Triples;
+    private MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body int32Triples;
 
     static {
         MatrixPieceTripletsInt32.Builder b = new Builder();
 
         MatrixPieces.defaultMatrixPieces.put(
-                ChunkDescription.ElementType.INT32, b);
+                ChunkDescriptionWire.ElementType.INT32, b);
         MatrixPieces.defaultMatrixPieces.put(
-                ChunkDescription.ElementType.UINT32, b);
+                ChunkDescriptionWire.ElementType.UINT32, b);
 
         MatrixPieces.matrixPieces.put(srtag, b);
     }
@@ -27,13 +27,13 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         @Override
         public MatrixPiece buildFromMessageBody(Object messageBody) {
             return new MatrixPieceTripletsInt32(
-                    (MatrixPieceTripletsInt32Wire.Body) messageBody);
+                    (MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body) messageBody);
         }
 
         @Override
         public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format,
                 int startRow, int startCol, int endRow, int endCol) {
-            MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
+            MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
                     .newBuilder();
             int intDefault = (Integer) format.getDefault();
             int v;
@@ -84,7 +84,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     }
 
     public MatrixPieceTripletsInt32(
-            MatrixPieceTripletsInt32Wire.Body int32Triples) {
+            MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body int32Triples) {
         this.int32Triples = int32Triples;
     }
 
@@ -94,7 +94,12 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     }
 
     @Override
-    public ChunkDescription.MatricesOnTheWire getTag() {
+    public ChunkDescriptionWire.MatricesOnTheWire getTag() {
         return srtag;
+    }
+
+    @Override
+    public String getMatrixId() {
+        return this.int32Triples.getMatrixId();
     }
 }

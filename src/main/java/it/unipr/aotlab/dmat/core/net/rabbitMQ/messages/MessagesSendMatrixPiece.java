@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
-import it.unipr.aotlab.dmat.core.generated.SendMatrixPiece;
+import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -16,7 +16,7 @@ public class MessagesSendMatrixPiece extends Messages {
     public Message parseMessage(byte[] rawMessage)
             throws InvalidProtocolBufferException {
         return new MessageSendMatrixPiece(
-                SendMatrixPiece.Body.parseFrom(rawMessage));
+                SendMatrixPieceWire.SendMatrixPieceBody.parseFrom(rawMessage));
     }
 
     private MessagesSendMatrixPiece() {

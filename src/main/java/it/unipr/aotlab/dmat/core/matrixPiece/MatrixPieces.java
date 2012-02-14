@@ -1,17 +1,17 @@
 package it.unipr.aotlab.dmat.core.matrixPiece;
 
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
 import java.util.EnumMap;
 
 public class MatrixPieces {
-    static EnumMap<ChunkDescription.ElementType, MatrixPieces.Builder> defaultMatrixPieces = new EnumMap<ChunkDescription.ElementType, MatrixPieces.Builder>(
-            ChunkDescription.ElementType.class);
+    static EnumMap<ChunkDescriptionWire.ElementType, MatrixPieces.Builder> defaultMatrixPieces = new EnumMap<ChunkDescriptionWire.ElementType, MatrixPieces.Builder>(
+            ChunkDescriptionWire.ElementType.class);
 
-    static EnumMap<ChunkDescription.MatricesOnTheWire, MatrixPieces.Builder> matrixPieces = new EnumMap<ChunkDescription.MatricesOnTheWire, MatrixPieces.Builder>(
-            ChunkDescription.MatricesOnTheWire.class);
+    static EnumMap<ChunkDescriptionWire.MatricesOnTheWire, MatrixPieces.Builder> matrixPieces = new EnumMap<ChunkDescriptionWire.MatricesOnTheWire, MatrixPieces.Builder>(
+            ChunkDescriptionWire.MatricesOnTheWire.class);
 
     static {
         ForceLoad.listFromFile(MatrixPieces.class, "KindOfMatrixPieces");
@@ -24,12 +24,12 @@ public class MatrixPieces {
     }
 
     public static Builder defaultMatrixPiece(
-            ChunkDescription.ElementType elementType) {
+            ChunkDescriptionWire.ElementType elementType) {
         return defaultMatrixPieces.get(elementType);
     }
 
     public static Builder matrixPiece(
-            ChunkDescription.MatricesOnTheWire matricesOnTheWire) {
+            ChunkDescriptionWire.MatricesOnTheWire matricesOnTheWire) {
         return matrixPieces.get(matricesOnTheWire);
     }
 

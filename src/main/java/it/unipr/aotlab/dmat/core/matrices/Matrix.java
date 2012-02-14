@@ -24,7 +24,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
 
 import java.util.ArrayList;
@@ -40,9 +40,9 @@ public class Matrix {
     String id;
     int rows = 0;
     int cols = 0;
-    ChunkDescription.ElementType elementType = null;
+    ChunkDescriptionWire.ElementType elementType = null;
     Initializer init = null;
-    ChunkDescription.SemiRing semiring = null;
+    ChunkDescriptionWire.SemiRing semiring = null;
 
     private ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 

@@ -17,7 +17,7 @@ public class MessagesMatrixPieceInt32 extends Messages {
     public Message parseMessage(byte[] rawMessage)
             throws InvalidProtocolBufferException {
         return new MessageMatrixPieceInt32(
-                MatrixPieceTripletsInt32Wire.Body.parseFrom(rawMessage));
+                MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.parseFrom(rawMessage));
     }
 
     private MessagesMatrixPieceInt32() {

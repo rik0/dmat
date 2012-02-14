@@ -4,7 +4,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
@@ -32,8 +32,8 @@ public class MatricesTestCase {
                 .splitHorizzontalyChuck(null, 15, "top", "bottom")
                 .splitVerticallyChuck("top", 10, "topleft", "topright")
                 .setChunkFormat("topleft",
-                        ChunkDescription.Format.COMPRESSEDCOLUMNS)
-                .setElementType(ChunkDescription.ElementType.BOOL)
+                        ChunkDescriptionWire.Format.COMPRESSEDCOLUMNS)
+                .setElementType(ChunkDescriptionWire.ElementType.BOOL)
                 .build();
 
         Chunk topleft = matrix.getChunk("topleft");
@@ -71,7 +71,7 @@ public class MatricesTestCase {
         }
 
         assertEquals("topleft", topleft.getChunkId());
-        assertEquals(ChunkDescription.Format.COMPRESSEDCOLUMNS,
+        assertEquals(ChunkDescriptionWire.Format.COMPRESSEDCOLUMNS,
                 PrivateAccessor.getField(topleft, "format"));
 
         assertEquals(0, topleft.getStartRow());
@@ -81,7 +81,7 @@ public class MatricesTestCase {
         assertEquals(10, topleft.getEndCol());
 
         assertEquals("bottom", bottom.getChunkId());
-        assertEquals(ChunkDescription.Format.DENSE,
+        assertEquals(ChunkDescriptionWire.Format.DENSE,
                 PrivateAccessor.getField(bottom, "format"));
 
         assertEquals(0, topright.getStartRow());
@@ -90,7 +90,7 @@ public class MatricesTestCase {
         assertEquals(15, topright.getEndRow());
         assertEquals(20, topright.getEndCol());
 
-        assertEquals(ChunkDescription.Format.DENSE,
+        assertEquals(ChunkDescriptionWire.Format.DENSE,
                 PrivateAccessor.getField(topright, "format"));
         assertEquals("topright", topright.getChunkId());
 
@@ -103,14 +103,14 @@ public class MatricesTestCase {
 
     @Test
     public void makeAPieceSendIterate() {
-        MatrixPieceTripletsInt32Wire.Body.Builder b = MatrixPieceTripletsInt32Wire.Body
+        MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
                 .newBuilder();
         b.setMatrixId("A");
         for (int i = 0; i < 10; ++i) {
             b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
                     .setCol(i * 2).setRow(i * 3).setValue(i * 4).build());
         }
-        MatrixPieceTripletsInt32Wire.Body messsageBody = b.build();
+        MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body messsageBody = b.build();
 
         MatrixPieceTripletsInt32.Builder receiverBuilder = new MatrixPieceTripletsInt32.Builder();
 

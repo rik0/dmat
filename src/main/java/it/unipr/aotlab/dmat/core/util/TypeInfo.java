@@ -1,12 +1,12 @@
 package it.unipr.aotlab.dmat.core.util;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescription;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 
 public class TypeInfo {
-    ChunkDescription.ElementType type;
+    ChunkDescriptionWire.ElementType type;
 
-    public TypeInfo(ChunkDescription.ElementType type) {
+    public TypeInfo(ChunkDescriptionWire.ElementType type) {
         this.type = type;
     }
 

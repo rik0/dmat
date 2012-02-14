@@ -16,7 +16,7 @@ public class MessagesSetValueInt32 extends Messages {
     public Message parseMessage(byte[] rawMessage)
             throws InvalidProtocolBufferException {
         return new MessageSetValueInt32(
-                MatrixPieceTripletsInt32Wire.Body.parseFrom(rawMessage));
+                MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.parseFrom(rawMessage));
     }
 
     private MessagesSetValueInt32() {
