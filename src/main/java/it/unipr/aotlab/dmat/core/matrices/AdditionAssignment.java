@@ -1,7 +1,12 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
+import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,7 +53,20 @@ public class AdditionAssignment extends Operation {
     }
 
     @Override
-    protected void sendOrdersToWorkers() {
-        // TODO Auto-generated method stub
+    protected void sendOrdersToWorkers() throws IOException {
+        OrderAddAssignBody.Builder orderBuilder = OrderAddAssignBody.newBuilder()
+            .setFirstAddendumMatrixId(operands.get(0).getId())
+            .setSecondAddendumMatrixId(operands.get(1).getId());
+
+        for (NodeWorkZonePair nodeAndworkZone : workers) {
+            Node node = nodeAndworkZone.node;
+
+            for (WorkZone wz : nodeAndworkZone.workZone) {
+                orderBuilder.setFirstAddendumNodeId(wz.involvedChunks.get(0).chunkId)
+                    .setSecondAddendumNodeId(wz.involvedChunks.get(1).chunkId)
+                    .setOutputPiece(wz.outputArea.convertToProto());
+                node.sendMessage(new MessageAddAssign(orderBuilder.build()));
+            }
+        }
     }
 }

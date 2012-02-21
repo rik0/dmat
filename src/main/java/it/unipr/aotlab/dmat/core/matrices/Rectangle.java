@@ -42,4 +42,13 @@ public class Rectangle {
 
         return r;        
     }
+    
+    public RectangleBody convertToProto() {
+        return RectangleBody.newBuilder()
+                .setStartRow(startRow)
+                .setEndRow(endRow)
+                .setStartCol(startCol)
+                .setEndCol(endCol)
+                .build();
+    }
 }

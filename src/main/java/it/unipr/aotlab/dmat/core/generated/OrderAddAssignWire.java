@@ -11,22 +11,26 @@ public final class OrderAddAssignWire {
   public interface OrderAddAssignBodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required int32 presenceStatus = 1;
-    boolean hasPresenceStatus();
-    int getPresenceStatus();
+    // required string firstAddendumMatrixId = 1;
+    boolean hasFirstAddendumMatrixId();
+    String getFirstAddendumMatrixId();
     
-    // required string firstAddendumAssign = 2;
-    boolean hasFirstAddendumAssign();
-    String getFirstAddendumAssign();
+    // required string firstAddendumNodeId = 2;
+    boolean hasFirstAddendumNodeId();
+    String getFirstAddendumNodeId();
     
-    // required string secondAddendum = 3;
-    boolean hasSecondAddendum();
-    String getSecondAddendum();
+    // required string secondAddendumMatrixId = 3;
+    boolean hasSecondAddendumMatrixId();
+    String getSecondAddendumMatrixId();
     
-    // required .RectangleBody sumArea = 4;
-    boolean hasSumArea();
-    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getSumArea();
-    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getSumAreaOrBuilder();
+    // required string secondAddendumNodeId = 4;
+    boolean hasSecondAddendumNodeId();
+    String getSecondAddendumNodeId();
+    
+    // required .RectangleBody outputPiece = 5;
+    boolean hasOutputPiece();
+    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getOutputPiece();
+    it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getOutputPieceOrBuilder();
   }
   public static final class OrderAddAssignBody extends
       com.google.protobuf.GeneratedMessage
@@ -57,24 +61,46 @@ public final class OrderAddAssignWire {
     }
     
     private int bitField0_;
-    // required int32 presenceStatus = 1;
-    public static final int PRESENCESTATUS_FIELD_NUMBER = 1;
-    private int presenceStatus_;
-    public boolean hasPresenceStatus() {
+    // required string firstAddendumMatrixId = 1;
+    public static final int FIRSTADDENDUMMATRIXID_FIELD_NUMBER = 1;
+    private java.lang.Object firstAddendumMatrixId_;
+    public boolean hasFirstAddendumMatrixId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public int getPresenceStatus() {
-      return presenceStatus_;
+    public String getFirstAddendumMatrixId() {
+      java.lang.Object ref = firstAddendumMatrixId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          firstAddendumMatrixId_ = s;
+        }
+        return s;
+      }
+    }
+    private com.google.protobuf.ByteString getFirstAddendumMatrixIdBytes() {
+      java.lang.Object ref = firstAddendumMatrixId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        firstAddendumMatrixId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
     
-    // required string firstAddendumAssign = 2;
-    public static final int FIRSTADDENDUMASSIGN_FIELD_NUMBER = 2;
-    private java.lang.Object firstAddendumAssign_;
-    public boolean hasFirstAddendumAssign() {
+    // required string firstAddendumNodeId = 2;
+    public static final int FIRSTADDENDUMNODEID_FIELD_NUMBER = 2;
+    private java.lang.Object firstAddendumNodeId_;
+    public boolean hasFirstAddendumNodeId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public String getFirstAddendumAssign() {
-      java.lang.Object ref = firstAddendumAssign_;
+    public String getFirstAddendumNodeId() {
+      java.lang.Object ref = firstAddendumNodeId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -82,31 +108,31 @@ public final class OrderAddAssignWire {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          firstAddendumAssign_ = s;
+          firstAddendumNodeId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getFirstAddendumAssignBytes() {
-      java.lang.Object ref = firstAddendumAssign_;
+    private com.google.protobuf.ByteString getFirstAddendumNodeIdBytes() {
+      java.lang.Object ref = firstAddendumNodeId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        firstAddendumAssign_ = b;
+        firstAddendumNodeId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     
-    // required string secondAddendum = 3;
-    public static final int SECONDADDENDUM_FIELD_NUMBER = 3;
-    private java.lang.Object secondAddendum_;
-    public boolean hasSecondAddendum() {
+    // required string secondAddendumMatrixId = 3;
+    public static final int SECONDADDENDUMMATRIXID_FIELD_NUMBER = 3;
+    private java.lang.Object secondAddendumMatrixId_;
+    public boolean hasSecondAddendumMatrixId() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
-    public String getSecondAddendum() {
-      java.lang.Object ref = secondAddendum_;
+    public String getSecondAddendumMatrixId() {
+      java.lang.Object ref = secondAddendumMatrixId_;
       if (ref instanceof String) {
         return (String) ref;
       } else {
@@ -114,64 +140,101 @@ public final class OrderAddAssignWire {
             (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         if (com.google.protobuf.Internal.isValidUtf8(bs)) {
-          secondAddendum_ = s;
+          secondAddendumMatrixId_ = s;
         }
         return s;
       }
     }
-    private com.google.protobuf.ByteString getSecondAddendumBytes() {
-      java.lang.Object ref = secondAddendum_;
+    private com.google.protobuf.ByteString getSecondAddendumMatrixIdBytes() {
+      java.lang.Object ref = secondAddendumMatrixId_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8((String) ref);
-        secondAddendum_ = b;
+        secondAddendumMatrixId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     
-    // required .RectangleBody sumArea = 4;
-    public static final int SUMAREA_FIELD_NUMBER = 4;
-    private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody sumArea_;
-    public boolean hasSumArea() {
+    // required string secondAddendumNodeId = 4;
+    public static final int SECONDADDENDUMNODEID_FIELD_NUMBER = 4;
+    private java.lang.Object secondAddendumNodeId_;
+    public boolean hasSecondAddendumNodeId() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
-    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getSumArea() {
-      return sumArea_;
+    public String getSecondAddendumNodeId() {
+      java.lang.Object ref = secondAddendumNodeId_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+          secondAddendumNodeId_ = s;
+        }
+        return s;
+      }
     }
-    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getSumAreaOrBuilder() {
-      return sumArea_;
+    private com.google.protobuf.ByteString getSecondAddendumNodeIdBytes() {
+      java.lang.Object ref = secondAddendumNodeId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+        secondAddendumNodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    
+    // required .RectangleBody outputPiece = 5;
+    public static final int OUTPUTPIECE_FIELD_NUMBER = 5;
+    private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody outputPiece_;
+    public boolean hasOutputPiece() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getOutputPiece() {
+      return outputPiece_;
+    }
+    public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getOutputPieceOrBuilder() {
+      return outputPiece_;
     }
     
     private void initFields() {
-      presenceStatus_ = 0;
-      firstAddendumAssign_ = "";
-      secondAddendum_ = "";
-      sumArea_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
+      firstAddendumMatrixId_ = "";
+      firstAddendumNodeId_ = "";
+      secondAddendumMatrixId_ = "";
+      secondAddendumNodeId_ = "";
+      outputPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasPresenceStatus()) {
+      if (!hasFirstAddendumMatrixId()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasFirstAddendumAssign()) {
+      if (!hasFirstAddendumNodeId()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasSecondAddendum()) {
+      if (!hasSecondAddendumMatrixId()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasSumArea()) {
+      if (!hasSecondAddendumNodeId()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!getSumArea().isInitialized()) {
+      if (!hasOutputPiece()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getOutputPiece().isInitialized()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -183,16 +246,19 @@ public final class OrderAddAssignWire {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, presenceStatus_);
+        output.writeBytes(1, getFirstAddendumMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getFirstAddendumAssignBytes());
+        output.writeBytes(2, getFirstAddendumNodeIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getSecondAddendumBytes());
+        output.writeBytes(3, getSecondAddendumMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeMessage(4, sumArea_);
+        output.writeBytes(4, getSecondAddendumNodeIdBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeMessage(5, outputPiece_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -205,19 +271,23 @@ public final class OrderAddAssignWire {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, presenceStatus_);
+          .computeBytesSize(1, getFirstAddendumMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getFirstAddendumAssignBytes());
+          .computeBytesSize(2, getFirstAddendumNodeIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getSecondAddendumBytes());
+          .computeBytesSize(3, getSecondAddendumMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, sumArea_);
+          .computeBytesSize(4, getSecondAddendumNodeIdBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, outputPiece_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -335,7 +405,7 @@ public final class OrderAddAssignWire {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getSumAreaFieldBuilder();
+          getOutputPieceFieldBuilder();
         }
       }
       private static Builder create() {
@@ -344,18 +414,20 @@ public final class OrderAddAssignWire {
       
       public Builder clear() {
         super.clear();
-        presenceStatus_ = 0;
+        firstAddendumMatrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        firstAddendumAssign_ = "";
+        firstAddendumNodeId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        secondAddendum_ = "";
+        secondAddendumMatrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        if (sumAreaBuilder_ == null) {
-          sumArea_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
-        } else {
-          sumAreaBuilder_.clear();
-        }
+        secondAddendumNodeId_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        if (outputPieceBuilder_ == null) {
+          outputPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
+        } else {
+          outputPieceBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
       
@@ -397,22 +469,26 @@ public final class OrderAddAssignWire {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.presenceStatus_ = presenceStatus_;
+        result.firstAddendumMatrixId_ = firstAddendumMatrixId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.firstAddendumAssign_ = firstAddendumAssign_;
+        result.firstAddendumNodeId_ = firstAddendumNodeId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.secondAddendum_ = secondAddendum_;
+        result.secondAddendumMatrixId_ = secondAddendumMatrixId_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        if (sumAreaBuilder_ == null) {
-          result.sumArea_ = sumArea_;
+        result.secondAddendumNodeId_ = secondAddendumNodeId_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        if (outputPieceBuilder_ == null) {
+          result.outputPiece_ = outputPiece_;
         } else {
-          result.sumArea_ = sumAreaBuilder_.build();
+          result.outputPiece_ = outputPieceBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -430,40 +506,47 @@ public final class OrderAddAssignWire {
       
       public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody other) {
         if (other == it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDefaultInstance()) return this;
-        if (other.hasPresenceStatus()) {
-          setPresenceStatus(other.getPresenceStatus());
+        if (other.hasFirstAddendumMatrixId()) {
+          setFirstAddendumMatrixId(other.getFirstAddendumMatrixId());
         }
-        if (other.hasFirstAddendumAssign()) {
-          setFirstAddendumAssign(other.getFirstAddendumAssign());
+        if (other.hasFirstAddendumNodeId()) {
+          setFirstAddendumNodeId(other.getFirstAddendumNodeId());
         }
-        if (other.hasSecondAddendum()) {
-          setSecondAddendum(other.getSecondAddendum());
+        if (other.hasSecondAddendumMatrixId()) {
+          setSecondAddendumMatrixId(other.getSecondAddendumMatrixId());
         }
-        if (other.hasSumArea()) {
-          mergeSumArea(other.getSumArea());
+        if (other.hasSecondAddendumNodeId()) {
+          setSecondAddendumNodeId(other.getSecondAddendumNodeId());
+        }
+        if (other.hasOutputPiece()) {
+          mergeOutputPiece(other.getOutputPiece());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
-        if (!hasPresenceStatus()) {
+        if (!hasFirstAddendumMatrixId()) {
           
           return false;
         }
-        if (!hasFirstAddendumAssign()) {
+        if (!hasFirstAddendumNodeId()) {
           
           return false;
         }
-        if (!hasSecondAddendum()) {
+        if (!hasSecondAddendumMatrixId()) {
           
           return false;
         }
-        if (!hasSumArea()) {
+        if (!hasSecondAddendumNodeId()) {
           
           return false;
         }
-        if (!getSumArea().isInitialized()) {
+        if (!hasOutputPiece()) {
+          
+          return false;
+        }
+        if (!getOutputPiece().isInitialized()) {
           
           return false;
         }
@@ -493,28 +576,33 @@ public final class OrderAddAssignWire {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              presenceStatus_ = input.readInt32();
+              firstAddendumMatrixId_ = input.readBytes();
               break;
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              firstAddendumAssign_ = input.readBytes();
+              firstAddendumNodeId_ = input.readBytes();
               break;
             }
             case 26: {
               bitField0_ |= 0x00000004;
-              secondAddendum_ = input.readBytes();
+              secondAddendumMatrixId_ = input.readBytes();
               break;
             }
             case 34: {
+              bitField0_ |= 0x00000008;
+              secondAddendumNodeId_ = input.readBytes();
+              break;
+            }
+            case 42: {
               it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder();
-              if (hasSumArea()) {
-                subBuilder.mergeFrom(getSumArea());
+              if (hasOutputPiece()) {
+                subBuilder.mergeFrom(getOutputPiece());
               }
               input.readMessage(subBuilder, extensionRegistry);
-              setSumArea(subBuilder.buildPartial());
+              setOutputPiece(subBuilder.buildPartial());
               break;
             }
           }
@@ -523,187 +611,238 @@ public final class OrderAddAssignWire {
       
       private int bitField0_;
       
-      // required int32 presenceStatus = 1;
-      private int presenceStatus_ ;
-      public boolean hasPresenceStatus() {
+      // required string firstAddendumMatrixId = 1;
+      private java.lang.Object firstAddendumMatrixId_ = "";
+      public boolean hasFirstAddendumMatrixId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public int getPresenceStatus() {
-        return presenceStatus_;
-      }
-      public Builder setPresenceStatus(int value) {
-        bitField0_ |= 0x00000001;
-        presenceStatus_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearPresenceStatus() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        presenceStatus_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // required string firstAddendumAssign = 2;
-      private java.lang.Object firstAddendumAssign_ = "";
-      public boolean hasFirstAddendumAssign() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public String getFirstAddendumAssign() {
-        java.lang.Object ref = firstAddendumAssign_;
+      public String getFirstAddendumMatrixId() {
+        java.lang.Object ref = firstAddendumMatrixId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          firstAddendumAssign_ = s;
+          firstAddendumMatrixId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setFirstAddendumAssign(String value) {
+      public Builder setFirstAddendumMatrixId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        firstAddendumMatrixId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearFirstAddendumMatrixId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        firstAddendumMatrixId_ = getDefaultInstance().getFirstAddendumMatrixId();
+        onChanged();
+        return this;
+      }
+      void setFirstAddendumMatrixId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        firstAddendumMatrixId_ = value;
+        onChanged();
+      }
+      
+      // required string firstAddendumNodeId = 2;
+      private java.lang.Object firstAddendumNodeId_ = "";
+      public boolean hasFirstAddendumNodeId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public String getFirstAddendumNodeId() {
+        java.lang.Object ref = firstAddendumNodeId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          firstAddendumNodeId_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      public Builder setFirstAddendumNodeId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        firstAddendumAssign_ = value;
+        firstAddendumNodeId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearFirstAddendumAssign() {
+      public Builder clearFirstAddendumNodeId() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        firstAddendumAssign_ = getDefaultInstance().getFirstAddendumAssign();
+        firstAddendumNodeId_ = getDefaultInstance().getFirstAddendumNodeId();
         onChanged();
         return this;
       }
-      void setFirstAddendumAssign(com.google.protobuf.ByteString value) {
+      void setFirstAddendumNodeId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000002;
-        firstAddendumAssign_ = value;
+        firstAddendumNodeId_ = value;
         onChanged();
       }
       
-      // required string secondAddendum = 3;
-      private java.lang.Object secondAddendum_ = "";
-      public boolean hasSecondAddendum() {
+      // required string secondAddendumMatrixId = 3;
+      private java.lang.Object secondAddendumMatrixId_ = "";
+      public boolean hasSecondAddendumMatrixId() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public String getSecondAddendum() {
-        java.lang.Object ref = secondAddendum_;
+      public String getSecondAddendumMatrixId() {
+        java.lang.Object ref = secondAddendumMatrixId_;
         if (!(ref instanceof String)) {
           String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          secondAddendum_ = s;
+          secondAddendumMatrixId_ = s;
           return s;
         } else {
           return (String) ref;
         }
       }
-      public Builder setSecondAddendum(String value) {
+      public Builder setSecondAddendumMatrixId(String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000004;
-        secondAddendum_ = value;
+        secondAddendumMatrixId_ = value;
         onChanged();
         return this;
       }
-      public Builder clearSecondAddendum() {
+      public Builder clearSecondAddendumMatrixId() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        secondAddendum_ = getDefaultInstance().getSecondAddendum();
+        secondAddendumMatrixId_ = getDefaultInstance().getSecondAddendumMatrixId();
         onChanged();
         return this;
       }
-      void setSecondAddendum(com.google.protobuf.ByteString value) {
+      void setSecondAddendumMatrixId(com.google.protobuf.ByteString value) {
         bitField0_ |= 0x00000004;
-        secondAddendum_ = value;
+        secondAddendumMatrixId_ = value;
         onChanged();
       }
       
-      // required .RectangleBody sumArea = 4;
-      private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody sumArea_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> sumAreaBuilder_;
-      public boolean hasSumArea() {
+      // required string secondAddendumNodeId = 4;
+      private java.lang.Object secondAddendumNodeId_ = "";
+      public boolean hasSecondAddendumNodeId() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
-      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getSumArea() {
-        if (sumAreaBuilder_ == null) {
-          return sumArea_;
+      public String getSecondAddendumNodeId() {
+        java.lang.Object ref = secondAddendumNodeId_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          secondAddendumNodeId_ = s;
+          return s;
         } else {
-          return sumAreaBuilder_.getMessage();
+          return (String) ref;
         }
       }
-      public Builder setSumArea(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
-        if (sumAreaBuilder_ == null) {
+      public Builder setSecondAddendumNodeId(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        secondAddendumNodeId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearSecondAddendumNodeId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        secondAddendumNodeId_ = getDefaultInstance().getSecondAddendumNodeId();
+        onChanged();
+        return this;
+      }
+      void setSecondAddendumNodeId(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000008;
+        secondAddendumNodeId_ = value;
+        onChanged();
+      }
+      
+      // required .RectangleBody outputPiece = 5;
+      private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody outputPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> outputPieceBuilder_;
+      public boolean hasOutputPiece() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getOutputPiece() {
+        if (outputPieceBuilder_ == null) {
+          return outputPiece_;
+        } else {
+          return outputPieceBuilder_.getMessage();
+        }
+      }
+      public Builder setOutputPiece(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
+        if (outputPieceBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          sumArea_ = value;
+          outputPiece_ = value;
           onChanged();
         } else {
-          sumAreaBuilder_.setMessage(value);
+          outputPieceBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
-      public Builder setSumArea(
+      public Builder setOutputPiece(
           it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder builderForValue) {
-        if (sumAreaBuilder_ == null) {
-          sumArea_ = builderForValue.build();
+        if (outputPieceBuilder_ == null) {
+          outputPiece_ = builderForValue.build();
           onChanged();
         } else {
-          sumAreaBuilder_.setMessage(builderForValue.build());
+          outputPieceBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
-      public Builder mergeSumArea(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
-        if (sumAreaBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008) &&
-              sumArea_ != it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance()) {
-            sumArea_ =
-              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder(sumArea_).mergeFrom(value).buildPartial();
+      public Builder mergeOutputPiece(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
+        if (outputPieceBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              outputPiece_ != it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance()) {
+            outputPiece_ =
+              it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder(outputPiece_).mergeFrom(value).buildPartial();
           } else {
-            sumArea_ = value;
+            outputPiece_ = value;
           }
           onChanged();
         } else {
-          sumAreaBuilder_.mergeFrom(value);
+          outputPieceBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         return this;
       }
-      public Builder clearSumArea() {
-        if (sumAreaBuilder_ == null) {
-          sumArea_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
+      public Builder clearOutputPiece() {
+        if (outputPieceBuilder_ == null) {
+          outputPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
           onChanged();
         } else {
-          sumAreaBuilder_.clear();
+          outputPieceBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
-      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder getSumAreaBuilder() {
-        bitField0_ |= 0x00000008;
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder getOutputPieceBuilder() {
+        bitField0_ |= 0x00000010;
         onChanged();
-        return getSumAreaFieldBuilder().getBuilder();
+        return getOutputPieceFieldBuilder().getBuilder();
       }
-      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getSumAreaOrBuilder() {
-        if (sumAreaBuilder_ != null) {
-          return sumAreaBuilder_.getMessageOrBuilder();
+      public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getOutputPieceOrBuilder() {
+        if (outputPieceBuilder_ != null) {
+          return outputPieceBuilder_.getMessageOrBuilder();
         } else {
-          return sumArea_;
+          return outputPiece_;
         }
       }
       private com.google.protobuf.SingleFieldBuilder<
           it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> 
-          getSumAreaFieldBuilder() {
-        if (sumAreaBuilder_ == null) {
-          sumAreaBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          getOutputPieceFieldBuilder() {
+        if (outputPieceBuilder_ == null) {
+          outputPieceBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder>(
-                  sumArea_,
+                  outputPiece_,
                   getParentForChildren(),
                   isClean());
-          sumArea_ = null;
+          outputPiece_ = null;
         }
-        return sumAreaBuilder_;
+        return outputPieceBuilder_;
       }
       
       // @@protoc_insertion_point(builder_scope:OrderAddAssignBody)
@@ -733,11 +872,12 @@ public final class OrderAddAssignWire {
     java.lang.String[] descriptorData = {
       "\n?home/paolo/uni/dissertation/dmat/proto" +
       "/OrderAddAssignWire.proto\032\023RectangleWire" +
-      ".proto\"\202\001\n\022OrderAddAssignBody\022\026\n\016presenc" +
-      "eStatus\030\001 \002(\005\022\033\n\023firstAddendumAssign\030\002 \002" +
-      "(\t\022\026\n\016secondAddendum\030\003 \002(\t\022\037\n\007sumArea\030\004 " +
-      "\002(\0132\016.RectangleBodyB%\n#it.unipr.aotlab.d" +
-      "mat.core.generated"
+      ".proto\"\263\001\n\022OrderAddAssignBody\022\035\n\025firstAd" +
+      "dendumMatrixId\030\001 \002(\t\022\033\n\023firstAddendumNod" +
+      "eId\030\002 \002(\t\022\036\n\026secondAddendumMatrixId\030\003 \002(" +
+      "\t\022\034\n\024secondAddendumNodeId\030\004 \002(\t\022#\n\013outpu" +
+      "tPiece\030\005 \002(\0132\016.RectangleBodyB%\n#it.unipr" +
+      ".aotlab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -749,7 +889,7 @@ public final class OrderAddAssignWire {
           internal_static_OrderAddAssignBody_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_OrderAddAssignBody_descriptor,
-              new java.lang.String[] { "PresenceStatus", "FirstAddendumAssign", "SecondAddendum", "SumArea", },
+              new java.lang.String[] { "FirstAddendumMatrixId", "FirstAddendumNodeId", "SecondAddendumMatrixId", "SecondAddendumNodeId", "OutputPiece", },
               it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.class,
               it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.Builder.class);
           return null;

@@ -2,5 +2,8 @@ import "RectangleWire.proto";
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
-OrderAwaitUpdateBody {
+message OrderAwaitUpdateBody {
+    required string matrix = 1;
+    required RectangleBody outputPiece = 2;
 }
+

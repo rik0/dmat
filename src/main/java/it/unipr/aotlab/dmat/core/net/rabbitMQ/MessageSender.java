@@ -61,7 +61,7 @@ public class MessageSender implements
     }
 
     @Override
-    public void broadcastMessage(Message m, Iterable<String> destinations)
+    public void multicastMessage(Message m, Iterable<String> destinations)
             throws IOException {
         inizializeConnection();
         Channel channel = connection.createChannel();

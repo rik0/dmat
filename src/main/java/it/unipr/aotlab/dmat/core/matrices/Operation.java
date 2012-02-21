@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.net.Node;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,7 +13,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.Vector;
 
 public abstract class Operation {
     public abstract int arity();
@@ -52,7 +52,7 @@ public abstract class Operation {
         return workers;
     }
 
-    protected abstract void sendOrdersToWorkers();
+    protected abstract void sendOrdersToWorkers() throws IOException;
 
     protected void neededChunks() {
         List<WorkZone> workZones = new LinkedList<WorkZone>();
@@ -64,7 +64,6 @@ public abstract class Operation {
 
         this.workZones = workZones;
     }
-
 
     public void setOperands(Collection<Matrix> operands) throws DMatError {
         this.operands.clear();
@@ -84,7 +83,7 @@ public abstract class Operation {
         setOperands(Arrays.asList(operands));
     }
 
-    private void sortWorkZones(Node node, List<WorkZone> workZones) {
+    private void sortNodeFitness(Node node, List<WorkZone> workZones) {
         class WorkZonesComparator implements Comparator<WorkZone> {
             String nodeId;
 
@@ -97,11 +96,11 @@ public abstract class Operation {
 
                 for (Chunk wz : o1.involvedChunks)
                     diffValue -= wz.getAssignedNode().getNodeId()
-                    .equals(nodeId) ? 1 : 0;
+                            .equals(nodeId) ? 1 : 0;
 
                 for (Chunk wz : o2.involvedChunks)
                     diffValue += wz.getAssignedNode().getNodeId()
-                    .equals(nodeId) ? 1 : 0;
+                            .equals(nodeId) ? 1 : 0;
 
                 return diffValue;
             }
@@ -134,14 +133,15 @@ public abstract class Operation {
         Collections.sort(workZones, new WorkZonesComparator(node));
     }
 
-    private void associateNodesToWorkZones() {
+    private void nodeFitness() {
         workers.clear();
 
         for (Node node : computingNodes) {
             NodeWorkZonePair worker = new NodeWorkZonePair();
             worker.node = node;
             worker.workZone = new LinkedList<WorkZone>(workZones);
-            sortWorkZones(worker.node, worker.workZone);
+
+            sortNodeFitness(worker.node, worker.workZone);
             workers.add(worker);
         }
     }
@@ -159,21 +159,21 @@ public abstract class Operation {
     private void splitWork() {
         int nodeNo = 0;
 
-        for (NodeWorkZonePair node : workers) {
-            takeWorkZones(node, assign(nodeNo));
+        for (NodeWorkZonePair nodeNWorkzone : workers) {
+            takeWorkZones(nodeNWorkzone, assign(nodeNo));
 
             nodeNo += 1;
         }
     }
 
-    public void exec() throws DMatError {
+    public void exec() throws DMatError, IOException {
         precondition();
 
         neededChunks();
 
-        associateNodesToWorkZones();
-
         fillinComputingNodes();
+
+        nodeFitness();
 
         splitWork();
 
@@ -208,7 +208,6 @@ public abstract class Operation {
         public Node node;
         public List<WorkZone> workZone;
     }
-
 
     private List<WorkZone> workZones;
 

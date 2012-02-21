@@ -5,6 +5,8 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
+import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
@@ -20,7 +22,7 @@ import java.io.IOException;
 
 public class BuildAMatrix {
     public static void main(String[] argv) {
-        try {
+       try {
             MessageSender messageSender = new MessageSender(new Connector(
                     new Address("127.0.0.1")));
             NodeRegister register = new NodeRegister(messageSender);
