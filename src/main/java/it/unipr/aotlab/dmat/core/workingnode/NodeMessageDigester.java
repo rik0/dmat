@@ -57,9 +57,9 @@ public class NodeMessageDigester {
         // TODO linear search, better solution?
         if (row != -1)
             for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-                if (message.getMatrixId().equals(
-                        inNodeChunk.chunk.getMatrixId())
-                        && inNodeChunk.chunk.doesManage(row, col)) {
+                if (message.getMatrixId()
+                        .equals(inNodeChunk.chunk.getMatrixId())
+                             && inNodeChunk.chunk.doesManage(row, col)) {
                     message.dispatch(inNodeChunk);
                     break;
                 }
@@ -97,6 +97,5 @@ public class NodeMessageDigester {
         //A += B
         debugMessage(message);
         System.err.println(message.toString());
-        
     }
 }

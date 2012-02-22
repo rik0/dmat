@@ -1,0 +1,11 @@
+import "RectangleWire.proto" ;
+
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message MatrixPieceOwnerBody {
+    repeated string matrixId = 1;
+    repeated string chunkId = 2;
+    required RectangleBody piece = 3;
+    required string ownerNodeId = 4;
+}
+

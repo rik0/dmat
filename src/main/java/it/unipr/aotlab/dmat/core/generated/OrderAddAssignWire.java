@@ -8,7 +8,7 @@ public final class OrderAddAssignWire {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface OrderAddAssignBodyOrBuilder
+  public interface OrderAddAssignOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
     // required string firstAddendumMatrixId = 1;
@@ -32,32 +32,32 @@ public final class OrderAddAssignWire {
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getOutputPiece();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getOutputPieceOrBuilder();
   }
-  public static final class OrderAddAssignBody extends
+  public static final class OrderAddAssign extends
       com.google.protobuf.GeneratedMessage
-      implements OrderAddAssignBodyOrBuilder {
-    // Use OrderAddAssignBody.newBuilder() to construct.
-    private OrderAddAssignBody(Builder builder) {
+      implements OrderAddAssignOrBuilder {
+    // Use OrderAddAssign.newBuilder() to construct.
+    private OrderAddAssign(Builder builder) {
       super(builder);
     }
-    private OrderAddAssignBody(boolean noInit) {}
+    private OrderAddAssign(boolean noInit) {}
     
-    private static final OrderAddAssignBody defaultInstance;
-    public static OrderAddAssignBody getDefaultInstance() {
+    private static final OrderAddAssign defaultInstance;
+    public static OrderAddAssign getDefaultInstance() {
       return defaultInstance;
     }
     
-    public OrderAddAssignBody getDefaultInstanceForType() {
+    public OrderAddAssign getDefaultInstanceForType() {
       return defaultInstance;
     }
     
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_descriptor;
+      return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssign_descriptor;
     }
     
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_fieldAccessorTable;
+      return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssign_fieldAccessorTable;
     }
     
     private int bitField0_;
@@ -301,41 +301,41 @@ public final class OrderAddAssignWire {
       return super.writeReplace();
     }
     
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(byte[] data)
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(java.io.InputStream input)
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input, extensionRegistry)
                .buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseDelimitedFrom(java.io.InputStream input)
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       Builder builder = newBuilder();
       if (builder.mergeDelimitedFrom(input)) {
@@ -344,7 +344,7 @@ public final class OrderAddAssignWire {
         return null;
       }
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseDelimitedFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -355,12 +355,12 @@ public final class OrderAddAssignWire {
         return null;
       }
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -370,7 +370,7 @@ public final class OrderAddAssignWire {
     
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody prototype) {
+    public static Builder newBuilder(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -383,18 +383,18 @@ public final class OrderAddAssignWire {
     }
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBodyOrBuilder {
+       implements it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_descriptor;
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssign_descriptor;
       }
       
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_fieldAccessorTable;
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssign_fieldAccessorTable;
       }
       
-      // Construct using it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.newBuilder()
+      // Construct using it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -437,24 +437,24 @@ public final class OrderAddAssignWire {
       
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDescriptor();
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.getDescriptor();
       }
       
-      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody getDefaultInstanceForType() {
-        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDefaultInstance();
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign getDefaultInstanceForType() {
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.getDefaultInstance();
       }
       
-      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody build() {
-        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody result = buildPartial();
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign build() {
+        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
       
-      private it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody buildParsed()
+      private it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
-        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody result = buildPartial();
+        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(
             result).asInvalidProtocolBufferException();
@@ -462,8 +462,8 @@ public final class OrderAddAssignWire {
         return result;
       }
       
-      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody buildPartial() {
-        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody result = new it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody(this);
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign buildPartial() {
+        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign result = new it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -496,16 +496,16 @@ public final class OrderAddAssignWire {
       }
       
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody) {
-          return mergeFrom((it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody)other);
+        if (other instanceof it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign) {
+          return mergeFrom((it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
       
-      public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody other) {
-        if (other == it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDefaultInstance()) return this;
+      public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign other) {
+        if (other == it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.getDefaultInstance()) return this;
         if (other.hasFirstAddendumMatrixId()) {
           setFirstAddendumMatrixId(other.getFirstAddendumMatrixId());
         }
@@ -845,6 +845,854 @@ public final class OrderAddAssignWire {
         return outputPieceBuilder_;
       }
       
+      // @@protoc_insertion_point(builder_scope:OrderAddAssign)
+    }
+    
+    static {
+      defaultInstance = new OrderAddAssign(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:OrderAddAssign)
+  }
+  
+  public interface OrderAddAssignBodyOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // repeated .MatrixPieceOwnerBody missingPieces = 1;
+    java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> 
+        getMissingPiecesList();
+    it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody getMissingPieces(int index);
+    int getMissingPiecesCount();
+    java.util.List<? extends it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder> 
+        getMissingPiecesOrBuilderList();
+    it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder getMissingPiecesOrBuilder(
+        int index);
+    
+    // repeated .OrderAddAssign operation = 2;
+    java.util.List<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign> 
+        getOperationList();
+    it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign getOperation(int index);
+    int getOperationCount();
+    java.util.List<? extends it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder> 
+        getOperationOrBuilderList();
+    it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder getOperationOrBuilder(
+        int index);
+  }
+  public static final class OrderAddAssignBody extends
+      com.google.protobuf.GeneratedMessage
+      implements OrderAddAssignBodyOrBuilder {
+    // Use OrderAddAssignBody.newBuilder() to construct.
+    private OrderAddAssignBody(Builder builder) {
+      super(builder);
+    }
+    private OrderAddAssignBody(boolean noInit) {}
+    
+    private static final OrderAddAssignBody defaultInstance;
+    public static OrderAddAssignBody getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public OrderAddAssignBody getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_fieldAccessorTable;
+    }
+    
+    // repeated .MatrixPieceOwnerBody missingPieces = 1;
+    public static final int MISSINGPIECES_FIELD_NUMBER = 1;
+    private java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> missingPieces_;
+    public java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> getMissingPiecesList() {
+      return missingPieces_;
+    }
+    public java.util.List<? extends it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder> 
+        getMissingPiecesOrBuilderList() {
+      return missingPieces_;
+    }
+    public int getMissingPiecesCount() {
+      return missingPieces_.size();
+    }
+    public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody getMissingPieces(int index) {
+      return missingPieces_.get(index);
+    }
+    public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder getMissingPiecesOrBuilder(
+        int index) {
+      return missingPieces_.get(index);
+    }
+    
+    // repeated .OrderAddAssign operation = 2;
+    public static final int OPERATION_FIELD_NUMBER = 2;
+    private java.util.List<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign> operation_;
+    public java.util.List<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign> getOperationList() {
+      return operation_;
+    }
+    public java.util.List<? extends it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder> 
+        getOperationOrBuilderList() {
+      return operation_;
+    }
+    public int getOperationCount() {
+      return operation_.size();
+    }
+    public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign getOperation(int index) {
+      return operation_.get(index);
+    }
+    public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder getOperationOrBuilder(
+        int index) {
+      return operation_.get(index);
+    }
+    
+    private void initFields() {
+      missingPieces_ = java.util.Collections.emptyList();
+      operation_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      for (int i = 0; i < getMissingPiecesCount(); i++) {
+        if (!getMissingPieces(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getOperationCount(); i++) {
+        if (!getOperation(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < missingPieces_.size(); i++) {
+        output.writeMessage(1, missingPieces_.get(i));
+      }
+      for (int i = 0; i < operation_.size(); i++) {
+        output.writeMessage(2, operation_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      for (int i = 0; i < missingPieces_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, missingPieces_.get(i));
+      }
+      for (int i = 0; i < operation_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, operation_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBodyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.internal_static_OrderAddAssignBody_fieldAccessorTable;
+      }
+      
+      // Construct using it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getMissingPiecesFieldBuilder();
+          getOperationFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (missingPiecesBuilder_ == null) {
+          missingPieces_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          missingPiecesBuilder_.clear();
+        }
+        if (operationBuilder_ == null) {
+          operation_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          operationBuilder_.clear();
+        }
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDescriptor();
+      }
+      
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody getDefaultInstanceForType() {
+        return it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDefaultInstance();
+      }
+      
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody build() {
+        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody buildPartial() {
+        it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody result = new it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody(this);
+        int from_bitField0_ = bitField0_;
+        if (missingPiecesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            missingPieces_ = java.util.Collections.unmodifiableList(missingPieces_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.missingPieces_ = missingPieces_;
+        } else {
+          result.missingPieces_ = missingPiecesBuilder_.build();
+        }
+        if (operationBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            operation_ = java.util.Collections.unmodifiableList(operation_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.operation_ = operation_;
+        } else {
+          result.operation_ = operationBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody) {
+          return mergeFrom((it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody other) {
+        if (other == it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.getDefaultInstance()) return this;
+        if (missingPiecesBuilder_ == null) {
+          if (!other.missingPieces_.isEmpty()) {
+            if (missingPieces_.isEmpty()) {
+              missingPieces_ = other.missingPieces_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureMissingPiecesIsMutable();
+              missingPieces_.addAll(other.missingPieces_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.missingPieces_.isEmpty()) {
+            if (missingPiecesBuilder_.isEmpty()) {
+              missingPiecesBuilder_.dispose();
+              missingPiecesBuilder_ = null;
+              missingPieces_ = other.missingPieces_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              missingPiecesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getMissingPiecesFieldBuilder() : null;
+            } else {
+              missingPiecesBuilder_.addAllMessages(other.missingPieces_);
+            }
+          }
+        }
+        if (operationBuilder_ == null) {
+          if (!other.operation_.isEmpty()) {
+            if (operation_.isEmpty()) {
+              operation_ = other.operation_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureOperationIsMutable();
+              operation_.addAll(other.operation_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.operation_.isEmpty()) {
+            if (operationBuilder_.isEmpty()) {
+              operationBuilder_.dispose();
+              operationBuilder_ = null;
+              operation_ = other.operation_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              operationBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getOperationFieldBuilder() : null;
+            } else {
+              operationBuilder_.addAllMessages(other.operation_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        for (int i = 0; i < getMissingPiecesCount(); i++) {
+          if (!getMissingPieces(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getOperationCount(); i++) {
+          if (!getOperation(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.newBuilder();
+              input.readMessage(subBuilder, extensionRegistry);
+              addMissingPieces(subBuilder.buildPartial());
+              break;
+            }
+            case 18: {
+              it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.newBuilder();
+              input.readMessage(subBuilder, extensionRegistry);
+              addOperation(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // repeated .MatrixPieceOwnerBody missingPieces = 1;
+      private java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> missingPieces_ =
+        java.util.Collections.emptyList();
+      private void ensureMissingPiecesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          missingPieces_ = new java.util.ArrayList<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody>(missingPieces_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      
+      private com.google.protobuf.RepeatedFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder> missingPiecesBuilder_;
+      
+      public java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> getMissingPiecesList() {
+        if (missingPiecesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(missingPieces_);
+        } else {
+          return missingPiecesBuilder_.getMessageList();
+        }
+      }
+      public int getMissingPiecesCount() {
+        if (missingPiecesBuilder_ == null) {
+          return missingPieces_.size();
+        } else {
+          return missingPiecesBuilder_.getCount();
+        }
+      }
+      public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody getMissingPieces(int index) {
+        if (missingPiecesBuilder_ == null) {
+          return missingPieces_.get(index);
+        } else {
+          return missingPiecesBuilder_.getMessage(index);
+        }
+      }
+      public Builder setMissingPieces(
+          int index, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody value) {
+        if (missingPiecesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMissingPiecesIsMutable();
+          missingPieces_.set(index, value);
+          onChanged();
+        } else {
+          missingPiecesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      public Builder setMissingPieces(
+          int index, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder builderForValue) {
+        if (missingPiecesBuilder_ == null) {
+          ensureMissingPiecesIsMutable();
+          missingPieces_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          missingPiecesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addMissingPieces(it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody value) {
+        if (missingPiecesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMissingPiecesIsMutable();
+          missingPieces_.add(value);
+          onChanged();
+        } else {
+          missingPiecesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      public Builder addMissingPieces(
+          int index, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody value) {
+        if (missingPiecesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMissingPiecesIsMutable();
+          missingPieces_.add(index, value);
+          onChanged();
+        } else {
+          missingPiecesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      public Builder addMissingPieces(
+          it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder builderForValue) {
+        if (missingPiecesBuilder_ == null) {
+          ensureMissingPiecesIsMutable();
+          missingPieces_.add(builderForValue.build());
+          onChanged();
+        } else {
+          missingPiecesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addMissingPieces(
+          int index, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder builderForValue) {
+        if (missingPiecesBuilder_ == null) {
+          ensureMissingPiecesIsMutable();
+          missingPieces_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          missingPiecesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addAllMissingPieces(
+          java.lang.Iterable<? extends it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> values) {
+        if (missingPiecesBuilder_ == null) {
+          ensureMissingPiecesIsMutable();
+          super.addAll(values, missingPieces_);
+          onChanged();
+        } else {
+          missingPiecesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      public Builder clearMissingPieces() {
+        if (missingPiecesBuilder_ == null) {
+          missingPieces_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          missingPiecesBuilder_.clear();
+        }
+        return this;
+      }
+      public Builder removeMissingPieces(int index) {
+        if (missingPiecesBuilder_ == null) {
+          ensureMissingPiecesIsMutable();
+          missingPieces_.remove(index);
+          onChanged();
+        } else {
+          missingPiecesBuilder_.remove(index);
+        }
+        return this;
+      }
+      public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder getMissingPiecesBuilder(
+          int index) {
+        return getMissingPiecesFieldBuilder().getBuilder(index);
+      }
+      public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder getMissingPiecesOrBuilder(
+          int index) {
+        if (missingPiecesBuilder_ == null) {
+          return missingPieces_.get(index);  } else {
+          return missingPiecesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      public java.util.List<? extends it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder> 
+           getMissingPiecesOrBuilderList() {
+        if (missingPiecesBuilder_ != null) {
+          return missingPiecesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(missingPieces_);
+        }
+      }
+      public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder addMissingPiecesBuilder() {
+        return getMissingPiecesFieldBuilder().addBuilder(
+            it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.getDefaultInstance());
+      }
+      public it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder addMissingPiecesBuilder(
+          int index) {
+        return getMissingPiecesFieldBuilder().addBuilder(
+            index, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.getDefaultInstance());
+      }
+      public java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder> 
+           getMissingPiecesBuilderList() {
+        return getMissingPiecesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder> 
+          getMissingPiecesFieldBuilder() {
+        if (missingPiecesBuilder_ == null) {
+          missingPiecesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder>(
+                  missingPieces_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          missingPieces_ = null;
+        }
+        return missingPiecesBuilder_;
+      }
+      
+      // repeated .OrderAddAssign operation = 2;
+      private java.util.List<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign> operation_ =
+        java.util.Collections.emptyList();
+      private void ensureOperationIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          operation_ = new java.util.ArrayList<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign>(operation_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      
+      private com.google.protobuf.RepeatedFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder> operationBuilder_;
+      
+      public java.util.List<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign> getOperationList() {
+        if (operationBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(operation_);
+        } else {
+          return operationBuilder_.getMessageList();
+        }
+      }
+      public int getOperationCount() {
+        if (operationBuilder_ == null) {
+          return operation_.size();
+        } else {
+          return operationBuilder_.getCount();
+        }
+      }
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign getOperation(int index) {
+        if (operationBuilder_ == null) {
+          return operation_.get(index);
+        } else {
+          return operationBuilder_.getMessage(index);
+        }
+      }
+      public Builder setOperation(
+          int index, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign value) {
+        if (operationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOperationIsMutable();
+          operation_.set(index, value);
+          onChanged();
+        } else {
+          operationBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      public Builder setOperation(
+          int index, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder builderForValue) {
+        if (operationBuilder_ == null) {
+          ensureOperationIsMutable();
+          operation_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          operationBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addOperation(it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign value) {
+        if (operationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOperationIsMutable();
+          operation_.add(value);
+          onChanged();
+        } else {
+          operationBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      public Builder addOperation(
+          int index, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign value) {
+        if (operationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOperationIsMutable();
+          operation_.add(index, value);
+          onChanged();
+        } else {
+          operationBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      public Builder addOperation(
+          it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder builderForValue) {
+        if (operationBuilder_ == null) {
+          ensureOperationIsMutable();
+          operation_.add(builderForValue.build());
+          onChanged();
+        } else {
+          operationBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addOperation(
+          int index, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder builderForValue) {
+        if (operationBuilder_ == null) {
+          ensureOperationIsMutable();
+          operation_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          operationBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      public Builder addAllOperation(
+          java.lang.Iterable<? extends it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign> values) {
+        if (operationBuilder_ == null) {
+          ensureOperationIsMutable();
+          super.addAll(values, operation_);
+          onChanged();
+        } else {
+          operationBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      public Builder clearOperation() {
+        if (operationBuilder_ == null) {
+          operation_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          operationBuilder_.clear();
+        }
+        return this;
+      }
+      public Builder removeOperation(int index) {
+        if (operationBuilder_ == null) {
+          ensureOperationIsMutable();
+          operation_.remove(index);
+          onChanged();
+        } else {
+          operationBuilder_.remove(index);
+        }
+        return this;
+      }
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder getOperationBuilder(
+          int index) {
+        return getOperationFieldBuilder().getBuilder(index);
+      }
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder getOperationOrBuilder(
+          int index) {
+        if (operationBuilder_ == null) {
+          return operation_.get(index);  } else {
+          return operationBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      public java.util.List<? extends it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder> 
+           getOperationOrBuilderList() {
+        if (operationBuilder_ != null) {
+          return operationBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(operation_);
+        }
+      }
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder addOperationBuilder() {
+        return getOperationFieldBuilder().addBuilder(
+            it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.getDefaultInstance());
+      }
+      public it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder addOperationBuilder(
+          int index) {
+        return getOperationFieldBuilder().addBuilder(
+            index, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.getDefaultInstance());
+      }
+      public java.util.List<it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder> 
+           getOperationBuilderList() {
+        return getOperationFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder> 
+          getOperationFieldBuilder() {
+        if (operationBuilder_ == null) {
+          operationBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder, it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignOrBuilder>(
+                  operation_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          operation_ = null;
+        }
+        return operationBuilder_;
+      }
+      
       // @@protoc_insertion_point(builder_scope:OrderAddAssignBody)
     }
     
@@ -856,6 +1704,11 @@ public final class OrderAddAssignWire {
     // @@protoc_insertion_point(class_scope:OrderAddAssignBody)
   }
   
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_OrderAddAssign_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_OrderAddAssign_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_OrderAddAssignBody_descriptor;
   private static
@@ -872,24 +1725,35 @@ public final class OrderAddAssignWire {
     java.lang.String[] descriptorData = {
       "\n?home/paolo/uni/dissertation/dmat/proto" +
       "/OrderAddAssignWire.proto\032\023RectangleWire" +
-      ".proto\"\263\001\n\022OrderAddAssignBody\022\035\n\025firstAd" +
-      "dendumMatrixId\030\001 \002(\t\022\033\n\023firstAddendumNod" +
-      "eId\030\002 \002(\t\022\036\n\026secondAddendumMatrixId\030\003 \002(" +
-      "\t\022\034\n\024secondAddendumNodeId\030\004 \002(\t\022#\n\013outpu" +
-      "tPiece\030\005 \002(\0132\016.RectangleBodyB%\n#it.unipr" +
-      ".aotlab.dmat.core.generated"
+      ".proto\032\032MatrixPieceOwnerWire.proto\"\257\001\n\016O" +
+      "rderAddAssign\022\035\n\025firstAddendumMatrixId\030\001" +
+      " \002(\t\022\033\n\023firstAddendumNodeId\030\002 \002(\t\022\036\n\026sec" +
+      "ondAddendumMatrixId\030\003 \002(\t\022\034\n\024secondAdden" +
+      "dumNodeId\030\004 \002(\t\022#\n\013outputPiece\030\005 \002(\0132\016.R" +
+      "ectangleBody\"f\n\022OrderAddAssignBody\022,\n\rmi" +
+      "ssingPieces\030\001 \003(\0132\025.MatrixPieceOwnerBody" +
+      "\022\"\n\toperation\030\002 \003(\0132\017.OrderAddAssignB%\n#",
+      "it.unipr.aotlab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_OrderAddAssignBody_descriptor =
+          internal_static_OrderAddAssign_descriptor =
             getDescriptor().getMessageTypes().get(0);
+          internal_static_OrderAddAssign_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_OrderAddAssign_descriptor,
+              new java.lang.String[] { "FirstAddendumMatrixId", "FirstAddendumNodeId", "SecondAddendumMatrixId", "SecondAddendumNodeId", "OutputPiece", },
+              it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.class,
+              it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder.class);
+          internal_static_OrderAddAssignBody_descriptor =
+            getDescriptor().getMessageTypes().get(1);
           internal_static_OrderAddAssignBody_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_OrderAddAssignBody_descriptor,
-              new java.lang.String[] { "FirstAddendumMatrixId", "FirstAddendumNodeId", "SecondAddendumMatrixId", "SecondAddendumNodeId", "OutputPiece", },
+              new java.lang.String[] { "MissingPieces", "Operation", },
               it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.class,
               it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody.Builder.class);
           return null;
@@ -899,6 +1763,7 @@ public final class OrderAddAssignWire {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           it.unipr.aotlab.dmat.core.generated.RectangleWire.getDescriptor(),
+          it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.getDescriptor(),
         }, assigner);
   }
   

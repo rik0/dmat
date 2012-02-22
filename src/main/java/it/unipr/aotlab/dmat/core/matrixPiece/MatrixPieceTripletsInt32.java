@@ -18,10 +18,10 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     static {
         MatrixPieceTripletsInt32.Builder b = new Builder();
 
-        MatrixPieces.defaultMatrixPieces.put(
-                ChunkDescriptionWire.ElementType.INT32, b);
-        MatrixPieces.defaultMatrixPieces.put(
-                ChunkDescriptionWire.ElementType.UINT32, b);
+        MatrixPieces.defaultMatrixPieces
+            .put(ChunkDescriptionWire.ElementType.INT32, b);
+        MatrixPieces.defaultMatrixPieces
+            .put(ChunkDescriptionWire.ElementType.UINT32, b);
 
         MatrixPieces.matrixPieces.put(srtag, b);
     }

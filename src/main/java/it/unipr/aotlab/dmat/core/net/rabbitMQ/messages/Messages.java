@@ -23,7 +23,7 @@ public abstract class Messages {
     public static Messages getFactory(String contentType) {
         Messages m = messageFactories.get(contentType);
         if (m == null)
-            throw new DMatInternalError("Unknown content type:" + contentType);
+            throw new DMatInternalError("Unknown content type: " + contentType);
 
         return m;
     }

@@ -1,3 +1,4 @@
+it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesAddAssign
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesAssignChunkToNode
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMatrixPieceInt32
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesSendMatrixPiece

@@ -24,8 +24,8 @@ public class InNodeChunks {
             break;
 
         case BOOL: {
-            InNodeChunkBoolean typedBuildingChunk = new InNodeChunkBoolean(
-                    chunk);
+            InNodeChunkBoolean typedBuildingChunk
+                = new InNodeChunkBoolean(chunk);
             build(wn, chunk, typedBuildingChunk);
             buildingChunk = typedBuildingChunk;
         }
@@ -77,11 +77,11 @@ public class InNodeChunks {
     private static <E> void setSemiring(Chunk chunk, InNodeChunk<E> inNodeChunk) {
         ChunkDescriptionWire.SemiRing semiringTag = chunk.getSemiring();
         if (semiringTag.equals(ChunkDescriptionWire.SemiRing.DEFAULTSEMIRING))
-            inNodeChunk.semiring = (SemiRing<E>) SemiRings
-                    .defaultSemiring(chunk.getElementType());
+            inNodeChunk.semiring
+                = (SemiRing<E>) SemiRings.defaultSemiring(chunk.getElementType());
         else
-            inNodeChunk.semiring = (SemiRing<E>) SemiRings
-                    .semiring(semiringTag);
+            inNodeChunk.semiring
+                = (SemiRing<E>) SemiRings.semiring(semiringTag);
 
     }
 }

@@ -7,6 +7,7 @@ import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder;
+import it.unipr.aotlab.dmat.core.matrices.AdditionAssignment;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
@@ -31,22 +32,22 @@ public class BuildAMatrix {
             Matrix matrix = Matrices.newBuilder().setName("A")
                     .setNofColumns(10).setNofRows(10)
                     .setElementType(ChunkDescriptionWire.ElementType.INT32).build();
+            
+            Matrix matrix2 = Matrices.newBuilder().setName("B")
+                    .setNofColumns(10).setNofRows(10)
+                    .setElementType(ChunkDescriptionWire.ElementType.INT32).build();
 
             Node node = nodes.setNodeName("testNode").build();
 
             Chunk chunk = matrix.getChunk(null);
+            Chunk chunk2 = matrix2.getChunk(null);
+            
             chunk.assignChunkToNode(node);
-
-            MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
-                    .newBuilder();
-            b.setMatrixId("A");
-            for (int i = 0; i < 10; ++i) {
-                b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
-                        .setCol(i).setRow(i).setValue(i).build());
-            }
-
-            MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body messsageBody = b.build();
-            node.sendMessage(new MessageSetValueInt32(messsageBody));
+            chunk2.assignChunkToNode(node);
+            
+            AdditionAssignment r = new AdditionAssignment();
+            r.setOperands(matrix, matrix2);
+            r.exec();
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

@@ -1,14 +1,15 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
-import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
+import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
+import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 public class AdditionAssignment extends Operation {
     @Override
@@ -30,7 +31,7 @@ public class AdditionAssignment extends Operation {
     @Override
     protected List<WorkZone> neededChunksToUpdateThisChunk(Chunk outputMatrixChunk) {
         LinkedList<WorkZone> workZones = new LinkedList<WorkZone>();
-        Matrix secondOperand = operands.get(2);
+        Matrix secondOperand = operands.get(1);
 
         for (Chunk chunk : secondOperand.involvedChunks(outputMatrixChunk.getArea())) {
             updateWorkZones(workZones, outputMatrixChunk, chunk);
@@ -54,19 +55,22 @@ public class AdditionAssignment extends Operation {
 
     @Override
     protected void sendOrdersToWorkers() throws IOException {
-        OrderAddAssignBody.Builder orderBuilder = OrderAddAssignBody.newBuilder()
-            .setFirstAddendumMatrixId(operands.get(0).getId())
-            .setSecondAddendumMatrixId(operands.get(1).getId());
+        OrderAddAssign.Builder order = OrderAddAssign.newBuilder();
+        MatrixPieceOwnerBody.Builder missindMatrices = MatrixPieceOwnerBody.newBuilder();
+        RectangleBody.Builder areas = RectangleBody.newBuilder();
+        
+        TreeSet<String> involvedChunks = new TreeSet<String>();
 
         for (NodeWorkZonePair nodeAndworkZone : workers) {
             Node node = nodeAndworkZone.node;
 
             for (WorkZone wz : nodeAndworkZone.workZone) {
-                orderBuilder.setFirstAddendumNodeId(wz.involvedChunks.get(0).chunkId)
-                    .setSecondAddendumNodeId(wz.involvedChunks.get(1).chunkId)
-                    .setOutputPiece(wz.outputArea.convertToProto());
-                node.sendMessage(new MessageAddAssign(orderBuilder.build()));
+                for (Chunk c : wz.involvedChunks) {
+                    involvedChunks.add(c.matrixId + "." + c.chunkId);
+                }
             }
+
+            node.sendMessage(null);
         }
     }
 }
