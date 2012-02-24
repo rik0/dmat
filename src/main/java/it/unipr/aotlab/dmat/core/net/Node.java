@@ -23,6 +23,8 @@ public interface Node {
     public String getNodeId(); 
     
     public Chunk getChunck(String id) throws ChunkNotFound;
+    
+    public boolean doesManage(String chunkId);
 
     public void sendMessage(Message m) throws IOException;
 }

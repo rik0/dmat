@@ -3,10 +3,7 @@ package it.unipr.aotlab.dmat.mains;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
-import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
-import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.AdditionAssignment;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
@@ -16,9 +13,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueInt32;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
-
 import java.io.IOException;
 
 public class BuildAMatrix {
@@ -31,11 +26,11 @@ public class BuildAMatrix {
 
             Matrix matrix = Matrices.newBuilder().setName("A")
                     .setNofColumns(10).setNofRows(10)
-                    .setElementType(ChunkDescriptionWire.ElementType.INT32).build();
+                    .setElementType(TypeWire.ElementType.INT32).build();
             
             Matrix matrix2 = Matrices.newBuilder().setName("B")
                     .setNofColumns(10).setNofRows(10)
-                    .setElementType(ChunkDescriptionWire.ElementType.INT32).build();
+                    .setElementType(TypeWire.ElementType.INT32).build();
 
             Node node = nodes.setNodeName("testNode").build();
 

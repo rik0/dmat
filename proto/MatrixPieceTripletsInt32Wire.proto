@@ -9,7 +9,6 @@ message Triplet {
 }
 
 message MatrixPieceTripletsInt32Body {
-    required ChunkDescriptionBody typeInfo = 1;
     required string matrixId = 2;
     repeated Triplet values = 3;
 }

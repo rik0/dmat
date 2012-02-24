@@ -5,6 +5,7 @@ import static junit.framework.Assert.assertTrue;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
@@ -33,7 +34,7 @@ public class MatricesTestCase {
                 .splitVerticallyChuck("top", 10, "topleft", "topright")
                 .setChunkFormat("topleft",
                         ChunkDescriptionWire.Format.COMPRESSEDCOLUMNS)
-                .setElementType(ChunkDescriptionWire.ElementType.BOOL)
+                .setElementType(TypeWire.ElementType.BOOL)
                 .build();
 
         Chunk topleft = matrix.getChunk("topleft");

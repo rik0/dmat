@@ -25,6 +25,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 
@@ -37,8 +38,8 @@ import java.io.IOException;
 
 public class Chunk {
     ChunkDescriptionWire.Format format;
-    ChunkDescriptionWire.ElementType elementType;
-    ChunkDescriptionWire.SemiRing semiring;
+    TypeWire.ElementType elementType;
+    TypeWire.SemiRing semiring;
     ChunkDescriptionWire.MatricesOnTheWire matricesOnTheWire;
     String matrixId;
     String chunkId;
@@ -86,11 +87,11 @@ public class Chunk {
         return format;
     }
 
-    public ChunkDescriptionWire.ElementType getElementType() {
+    public TypeWire.ElementType getElementType() {
         return elementType;
     }
 
-    public ChunkDescriptionWire.SemiRing getSemiring() {
+    public TypeWire.SemiRing getSemiring() {
         return semiring;
     }
 
@@ -111,20 +112,25 @@ public class Chunk {
         RectangleWire.RectangleBody position = RectangleWire.RectangleBody.newBuilder()
                 .setStartRow(matrixArea.startRow).setEndRow(matrixArea.endRow).setEndCol(matrixArea.endCol)
                 .setStartCol(matrixArea.startCol).build();
+        
+        TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(elementType)
+                .setSemiRing(semiring).build();
 
-        return ChunkDescriptionWire.ChunkDescriptionBody.newBuilder().setChunkId(chunkId)
-                .setPosition(position).setFormat(format)
-                .setElementType(elementType).setSemiRing(semiring)
-                .setMatrixId(matrixId).setMatricesOnTheWire(matricesOnTheWire)
-                .build();
+        return ChunkDescriptionWire.ChunkDescriptionBody.newBuilder()
+                .setChunkId(chunkId)
+                .setPosition(position)
+                .setFormat(format)
+                .setType(type)
+                .setMatrixId(matrixId)
+                .setMatricesOnTheWire(matricesOnTheWire).build();
     }
 
     public Chunk(ChunkDescriptionWire.ChunkDescriptionBody m) {
         this.chunkId = m.getChunkId();
         this.matrixArea = Rectangle.build(m.getPosition());
-        this.elementType = m.getElementType();
+        this.elementType = m.getType().getElementType();
         this.format = m.getFormat();
-        this.semiring = m.getSemiRing();
+        this.semiring = m.getType().getSemiRing();
         this.matricesOnTheWire = m.getMatricesOnTheWire();
         this.matrixId = m.getMatrixId();
     }

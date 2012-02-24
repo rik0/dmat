@@ -4,6 +4,7 @@ import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.formats.Formats;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
@@ -75,8 +76,8 @@ public class InNodeChunks {
     }
 
     private static <E> void setSemiring(Chunk chunk, InNodeChunk<E> inNodeChunk) {
-        ChunkDescriptionWire.SemiRing semiringTag = chunk.getSemiring();
-        if (semiringTag.equals(ChunkDescriptionWire.SemiRing.DEFAULTSEMIRING))
+        TypeWire.SemiRing semiringTag = chunk.getSemiring();
+        if (semiringTag.equals(TypeWire.SemiRing.DEFAULTSEMIRING))
             inNodeChunk.semiring
                 = (SemiRing<E>) SemiRings.defaultSemiring(chunk.getElementType());
         else

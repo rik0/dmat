@@ -1,4 +1,5 @@
 import "RectangleWire.proto";
+import "TypeWire.proto";
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
@@ -6,27 +7,6 @@ enum Format {
     COMPRESSEDROWS = 1;
     COMPRESSEDCOLUMNS = 2;
     DENSE = 3;
-}
-
-enum ElementType {
-    BOOL = 1;
-    INT8 = 2;
-    INT16 = 3;
-    INT32 = 4;
-    INT64 = 5;
-    UINT8 = 6;
-    UINT16 = 7;
-    UINT32 = 8;
-    UINT64 = 9;
-    FLOAT32 = 10;
-    FLOAT64 = 11;
-}
-
-enum SemiRing {
-    DEFAULTSEMIRING = 1;
-    INT32ORDINARY = 2;
-    INT32TROPICAL = 3;
-    BOOLEANORDINARY = 4;
 }
 
 enum MatricesOnTheWire {
@@ -39,9 +19,8 @@ message ChunkDescriptionBody {
     required string matrixId = 1;
     required string chunkId = 2;
     required RectangleBody position = 3;
-    required Format format = 4 [ default = DENSE ];
-    required ElementType elementType = 5 [ default = INT32 ];
-    required SemiRing semiRing = 6 [ default = DEFAULTSEMIRING ];
-    required MatricesOnTheWire matricesOnTheWire = 7 [ default = DEFAULTMATRICESONTHEWIRE ];
+    required TypeBody type = 4;
+    required Format format = 5 [ default = DENSE ];
+    required MatricesOnTheWire matricesOnTheWire = 6 [ default = DEFAULTMATRICESONTHEWIRE ];
 }
 

@@ -1,20 +1,20 @@
 package it.unipr.aotlab.dmat.core.initializers;
 
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
 import java.util.EnumMap;
 
 public class Initializers {
-    static EnumMap<ChunkDescriptionWire.ElementType, Initializer> defaultInitializers = new EnumMap<ChunkDescriptionWire.ElementType, Initializer>(
-            ChunkDescriptionWire.ElementType.class);
+    static EnumMap<TypeWire.ElementType, Initializer> defaultInitializers = new EnumMap<TypeWire.ElementType, Initializer>(
+            TypeWire.ElementType.class);
 
-    static void addDefaultInitializer(ChunkDescriptionWire.ElementType type,
+    static void addDefaultInitializer(TypeWire.ElementType type,
             final Initializer init) {
         defaultInitializers.put(type, init);
     }
 
     static public Initializer defaultInitializer(
-            ChunkDescriptionWire.ElementType type) {
+            TypeWire.ElementType type) {
         return defaultInitializers.get(type);
     }
 }

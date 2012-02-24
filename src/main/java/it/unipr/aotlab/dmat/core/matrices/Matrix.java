@@ -24,13 +24,10 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
 
 /**
  * User: enrico Package: it.unipr.aotlab.dmat.core.matrices Date: 10/17/11 Time:
@@ -40,9 +37,9 @@ public class Matrix {
     String id;
     int rows = 0;
     int cols = 0;
-    ChunkDescriptionWire.ElementType elementType = null;
+    TypeWire.ElementType elementType = null;
     Initializer init = null;
-    ChunkDescriptionWire.SemiRing semiring = null;
+    TypeWire.SemiRing semiring = null;
 
     private ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 
@@ -59,7 +56,7 @@ public class Matrix {
         return cols;
     }
 
-    public String getId() {
+    public String getMatrixId() {
         return id;
     }
 
@@ -116,7 +113,7 @@ public class Matrix {
         if (chunk == null) {
             throw new InvalidCoord();
         }
-        
+
         return chunk;
     }
 
@@ -129,7 +126,7 @@ public class Matrix {
         return !(c.getStartRow() >= endRow || startRow >= c.getEndRow()
                 || c.getStartCol() >= endCol || startCol >= c.getEndCol());
     }
-    
+
     public ArrayList<Chunk> involvedChunks(Rectangle r) {
         return involvedChunks(r.startRow, r.endRow, r.startCol, r.endCol);
     }
@@ -144,12 +141,12 @@ public class Matrix {
 
         return involved;
     }
-    
+
     public ArrayList<Chunk> involvedChunksAllRows(int startCol, int endCol) {
         return involvedChunks(0, getNofRows(), startCol, endCol);
     }
-    
+
     public ArrayList<Chunk> involvedChunksAllCols(int startRow, int endRow) {
-        return involvedChunks(startRow, endRow, 0, getNofCols());       
+        return involvedChunks(startRow, endRow, 0, getNofCols());
     }
 }

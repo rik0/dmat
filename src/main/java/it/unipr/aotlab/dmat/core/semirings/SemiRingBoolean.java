@@ -1,12 +1,12 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
 public class SemiRingBoolean implements SemiRing<Boolean> {
-    static ChunkDescriptionWire.SemiRing srtag = ChunkDescriptionWire.SemiRing.BOOLEANORDINARY; 
+    static TypeWire.SemiRing srtag = TypeWire.SemiRing.BOOLEANORDINARY;
     static SemiRingBoolean theOne = new SemiRingBoolean();
     static {
-        SemiRings.defaultSemirings.put(ChunkDescriptionWire.ElementType.BOOL, theOne);
+        SemiRings.defaultSemirings.put(TypeWire.ElementType.BOOL, theOne);
         SemiRings.semirings.put(srtag, theOne);
     }
 
@@ -38,7 +38,7 @@ public class SemiRingBoolean implements SemiRing<Boolean> {
     }
 
     @Override
-    public ChunkDescriptionWire.SemiRing valueOf() {
+    public TypeWire.SemiRing valueOf() {
         return srtag;
     }
 }

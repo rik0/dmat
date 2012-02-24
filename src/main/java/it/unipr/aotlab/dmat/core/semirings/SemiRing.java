@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
 public interface SemiRing<E> {
     public E add(E firstAddendum, E secondAddendum);
@@ -11,5 +11,5 @@ public interface SemiRing<E> {
 
     public E one();
     
-    public ChunkDescriptionWire.SemiRing valueOf();
+    public TypeWire.SemiRing valueOf();
 }

@@ -1,13 +1,13 @@
 package it.unipr.aotlab.dmat.core.util;
 
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
 public class ElementType {
-    ChunkDescriptionWire.SemiRing semiring;
-    ChunkDescriptionWire.ElementType elementType;
+    TypeWire.SemiRing semiring;
+    TypeWire.ElementType elementType;
 
-    public ElementType(ChunkDescriptionWire.SemiRing semiring,
-            ChunkDescriptionWire.ElementType elementType) {
+    public ElementType(TypeWire.SemiRing semiring,
+            TypeWire.ElementType elementType) {
         this.semiring = semiring;
         this.elementType = elementType;
     }

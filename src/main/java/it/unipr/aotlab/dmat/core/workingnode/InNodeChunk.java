@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
@@ -22,7 +23,7 @@ public abstract class InNodeChunk<E> {
     InNodeChunk(Chunk chunk) {
     }
 
-    public ChunkDescriptionWire.ElementType getType() {
+    public TypeWire.ElementType getType() {
         return chunk.getElementType();
     }
 

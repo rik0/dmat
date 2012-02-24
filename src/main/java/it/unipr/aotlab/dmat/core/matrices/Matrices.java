@@ -5,6 +5,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.initializers.Initializers;
 
 /**
@@ -97,7 +98,7 @@ public class Matrices {
         return this;
     }
 
-    public Matrices setElementType(ChunkDescriptionWire.ElementType elementType) {
+    public Matrices setElementType(TypeWire.ElementType elementType) {
         buildingMatrix.elementType = elementType;
 
         return this;
@@ -137,10 +138,10 @@ public class Matrices {
 
     private void validateBuildingMatrix() {
         if (buildingMatrix.elementType == null)
-            buildingMatrix.elementType = ChunkDescriptionWire.ElementType.INT32;
+            buildingMatrix.elementType = TypeWire.ElementType.INT32;
 
         if (buildingMatrix.semiring == null)
-            buildingMatrix.semiring = ChunkDescriptionWire.SemiRing.DEFAULTSEMIRING;
+            buildingMatrix.semiring = TypeWire.SemiRing.DEFAULTSEMIRING;
 
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers

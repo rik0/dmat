@@ -42,4 +42,9 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
     public String getNodeId() {
         return nodeId;
     }
+
+    @Override
+    public boolean doesManage(String chunkId) {
+        return chunks.containsKey(chunkId);
+    }
 }

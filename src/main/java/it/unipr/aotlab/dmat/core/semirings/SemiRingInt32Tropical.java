@@ -1,16 +1,16 @@
 package it.unipr.aotlab.dmat.core.semirings;
 
-import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
 public class SemiRingInt32Tropical implements SemiRing<Integer> {
-    static final private ChunkDescriptionWire.SemiRing srtag = ChunkDescriptionWire.SemiRing.INT32TROPICAL;
+    static final private TypeWire.SemiRing srtag = TypeWire.SemiRing.INT32TROPICAL;
     static final private Integer INFINITY = Integer.MAX_VALUE;
     static SemiRingInt32Tropical theOne = null;
 
     static {
         SemiRings.semirings.put(srtag, theOne);
     }
-    
+
     public static SemiRing<Integer> get() {
         if (theOne == null)
             theOne = new SemiRingInt32Tropical();
@@ -44,7 +44,7 @@ public class SemiRingInt32Tropical implements SemiRing<Integer> {
     }
 
     @Override
-    public ChunkDescriptionWire.SemiRing valueOf() {
+    public TypeWire.SemiRing valueOf() {
         return srtag;
     }
 }

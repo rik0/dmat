@@ -33,15 +33,15 @@ public abstract class Operation {
         return operands.get(outputMatrixIndex());
     }
 
-    //check stuff like matrices size
+    // Check stuff like matrices size
     protected abstract void otherPreconditions() throws DMatError;
 
-    //You have a chunk in the output matrix, prepare the list of
-    //needed chunks to update it.
+    // You have a chunk in the output matrix, prepare the list of
+    // needed chunks to update it.
     protected abstract List<WorkZone> neededChunksToUpdateThisChunk(
             Chunk outputMatrixChunk);
 
-    //The user fails to set computing nodes, set the default.
+    // The user fails to set computing nodes, set the default.
     protected TreeSet<Node> getDefaultComputingNodes() {
         TreeSet<Node> workers = new TreeSet<Node>(new Node.NodeComparor());
 
@@ -52,6 +52,8 @@ public abstract class Operation {
         return workers;
     }
 
+    // You have the list of NodeWorkZonePair, where each working
+    // node is associate to is work. Send the orders.
     protected abstract void sendOrdersToWorkers() throws IOException;
 
     protected void neededChunks() {
@@ -138,10 +140,10 @@ public abstract class Operation {
 
         for (Node node : computingNodes) {
             NodeWorkZonePair worker = new NodeWorkZonePair();
-            worker.node = node;
+            worker.computingNode = node;
             worker.workZone = new LinkedList<WorkZone>(workZones);
 
-            sortNodeFitness(worker.node, worker.workZone);
+            sortNodeFitness(worker.computingNode, worker.workZone);
             workers.add(worker);
         }
     }
@@ -205,7 +207,7 @@ public abstract class Operation {
     }
 
     public static class NodeWorkZonePair {
-        public Node node;
+        public Node computingNode;
         public List<WorkZone> workZone;
     }
 

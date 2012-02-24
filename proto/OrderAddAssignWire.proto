@@ -5,12 +5,8 @@ option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderAddAssign {
     required string firstAddendumMatrixId = 1;
-    required string firstAddendumNodeId = 2;
-
-    required string secondAddendumMatrixId = 3;
-    required string secondAddendumNodeId = 4;
-
-    required RectangleBody outputPiece = 5;
+    required string secondAddendumMatrixId = 2;
+    required RectangleBody outputPiece = 3;
 }
 
 message OrderAddAssignBody {
