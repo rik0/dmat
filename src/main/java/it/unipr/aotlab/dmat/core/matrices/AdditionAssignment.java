@@ -4,8 +4,11 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
+import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire.SendMatrixPieceBody;
+import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -57,9 +60,14 @@ public class AdditionAssignment extends Operation {
     @Override
     protected void sendOrdersToWorkers() throws IOException {
         OrderAddAssign.Builder subOrder = OrderAddAssign.newBuilder();
+        Matrix firstOp = operands.get(0);
 
-        subOrder.setFirstAddendumMatrixId(operands.get(0).getMatrixId());
+        TypeBody type = TypeBody.newBuilder().setElementType(firstOp.getElementType())
+            .setSemiRing(firstOp.getSemiRing()).build();
+
+        subOrder.setFirstAddendumMatrixId(firstOp.getMatrixId());
         subOrder.setSecondAddendumMatrixId(operands.get(1).getMatrixId());
+        subOrder.setType(type);
 
         for (NodeWorkZonePair nodeAndworkZone : workers) {
             Node computingNode = nodeAndworkZone.computingNode;
@@ -78,13 +86,19 @@ public class AdditionAssignment extends Operation {
                             && missingChunks.add(c.matrixId + "." + c.chunkId)) {
                         missingMatrices.setChunkId(c.getChunkId());
                         missingMatrices.setMatrixId(c.getMatrixId());
+
+                        order.addMissingPieces(missingMatrices.build());
+
+                        SendMatrixPieceBody sendMatrixBody = SendMatrixPieceBody.newBuilder()
+                                .setMatrixId(c.matrixId)
+                                .setNeededPiece(c.getArea().convertToProto())
+                                .addRecipient(computingNode.getNodeId()).build();
+
+                        getMessageSender().sendMessage(new MessageSendMatrixPiece(sendMatrixBody) , c.assignedTo);
                     }
                 }
-                order.addMissingPieces(missingMatrices.build());
             }
 
-            // XXX we need to inform the node of the kind of
-            // semiring.
             computingNode.sendMessage(new MessageAddAssign(order.build()));
         }
     }

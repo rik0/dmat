@@ -60,6 +60,14 @@ public class Matrix {
         return id;
     }
 
+    public TypeWire.ElementType getElementType() {
+        return elementType;
+    }
+
+    public TypeWire.SemiRing getSemiRing() {
+        return semiring;
+    }
+
     /* TODO: define good format to specify initialization of matrix
      * we probably need something generic like:
      * 1. specifiy values directly

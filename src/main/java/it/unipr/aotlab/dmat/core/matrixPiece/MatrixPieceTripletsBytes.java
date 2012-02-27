@@ -17,7 +17,7 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
     static ChunkDescriptionWire.MatricesOnTheWire srtag = ChunkDescriptionWire.MatricesOnTheWire.BYTES;
 
     private int index = 0;
-    private MatrixPieceTripletsBytesWire.Body int32Triples;
+    private MatrixPieceTripletsBytesWire.MatrixPieceTripletsBytesBody int32Triples;
 
     static {
         MatrixPieceTripletsBytes.Builder b = new Builder();
@@ -28,7 +28,7 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         @Override
         public MatrixPiece buildFromMessageBody(Object messageBody) {
             return new MatrixPieceTripletsBytes(
-                    (MatrixPieceTripletsBytesWire.Body) messageBody);
+                    (MatrixPieceTripletsBytesWire.MatrixPieceTripletsBytesBody) messageBody);
         }
 
         @Override
@@ -78,7 +78,7 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         }
     }
 
-    public MatrixPieceTripletsBytes(MatrixPieceTripletsBytesWire.Body int32Triples) {
+    public MatrixPieceTripletsBytes(MatrixPieceTripletsBytesWire.MatrixPieceTripletsBytesBody int32Triples) {
         this.int32Triples = int32Triples;
     }
 

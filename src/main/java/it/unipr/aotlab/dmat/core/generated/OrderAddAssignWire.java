@@ -23,6 +23,11 @@ public final class OrderAddAssignWire {
     boolean hasOutputPiece();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getOutputPiece();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getOutputPieceOrBuilder();
+    
+    // required .TypeBody type = 4;
+    boolean hasType();
+    it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody getType();
+    it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBodyOrBuilder getTypeOrBuilder();
   }
   public static final class OrderAddAssign extends
       com.google.protobuf.GeneratedMessage
@@ -130,10 +135,24 @@ public final class OrderAddAssignWire {
       return outputPiece_;
     }
     
+    // required .TypeBody type = 4;
+    public static final int TYPE_FIELD_NUMBER = 4;
+    private it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody type_;
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody getType() {
+      return type_;
+    }
+    public it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBodyOrBuilder getTypeOrBuilder() {
+      return type_;
+    }
+    
     private void initFields() {
       firstAddendumMatrixId_ = "";
       secondAddendumMatrixId_ = "";
       outputPiece_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
+      type_ = it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -152,7 +171,15 @@ public final class OrderAddAssignWire {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!getOutputPiece().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getType().isInitialized()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -171,6 +198,9 @@ public final class OrderAddAssignWire {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(3, outputPiece_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, type_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -192,6 +222,10 @@ public final class OrderAddAssignWire {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, outputPiece_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, type_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -310,6 +344,7 @@ public final class OrderAddAssignWire {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getOutputPieceFieldBuilder();
+          getTypeFieldBuilder();
         }
       }
       private static Builder create() {
@@ -328,6 +363,12 @@ public final class OrderAddAssignWire {
           outputPieceBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
+        if (typeBuilder_ == null) {
+          type_ = it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.getDefaultInstance();
+        } else {
+          typeBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
       
@@ -382,6 +423,14 @@ public final class OrderAddAssignWire {
         } else {
           result.outputPiece_ = outputPieceBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (typeBuilder_ == null) {
+          result.type_ = type_;
+        } else {
+          result.type_ = typeBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -407,6 +456,9 @@ public final class OrderAddAssignWire {
         if (other.hasOutputPiece()) {
           mergeOutputPiece(other.getOutputPiece());
         }
+        if (other.hasType()) {
+          mergeType(other.getType());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -424,7 +476,15 @@ public final class OrderAddAssignWire {
           
           return false;
         }
+        if (!hasType()) {
+          
+          return false;
+        }
         if (!getOutputPiece().isInitialized()) {
+          
+          return false;
+        }
+        if (!getType().isInitialized()) {
           
           return false;
         }
@@ -471,6 +531,15 @@ public final class OrderAddAssignWire {
               }
               input.readMessage(subBuilder, extensionRegistry);
               setOutputPiece(subBuilder.buildPartial());
+              break;
+            }
+            case 34: {
+              it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.newBuilder();
+              if (hasType()) {
+                subBuilder.mergeFrom(getType());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setType(subBuilder.buildPartial());
               break;
             }
           }
@@ -639,6 +708,96 @@ public final class OrderAddAssignWire {
           outputPiece_ = null;
         }
         return outputPieceBuilder_;
+      }
+      
+      // required .TypeBody type = 4;
+      private it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody type_ = it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody, it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.Builder, it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBodyOrBuilder> typeBuilder_;
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody getType() {
+        if (typeBuilder_ == null) {
+          return type_;
+        } else {
+          return typeBuilder_.getMessage();
+        }
+      }
+      public Builder setType(it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody value) {
+        if (typeBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          type_ = value;
+          onChanged();
+        } else {
+          typeBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      public Builder setType(
+          it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.Builder builderForValue) {
+        if (typeBuilder_ == null) {
+          type_ = builderForValue.build();
+          onChanged();
+        } else {
+          typeBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      public Builder mergeType(it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody value) {
+        if (typeBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              type_ != it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.getDefaultInstance()) {
+            type_ =
+              it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.newBuilder(type_).mergeFrom(value).buildPartial();
+          } else {
+            type_ = value;
+          }
+          onChanged();
+        } else {
+          typeBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      public Builder clearType() {
+        if (typeBuilder_ == null) {
+          type_ = it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.getDefaultInstance();
+          onChanged();
+        } else {
+          typeBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      public it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.Builder getTypeBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getTypeFieldBuilder().getBuilder();
+      }
+      public it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBodyOrBuilder getTypeOrBuilder() {
+        if (typeBuilder_ != null) {
+          return typeBuilder_.getMessageOrBuilder();
+        } else {
+          return type_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody, it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.Builder, it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBodyOrBuilder> 
+          getTypeFieldBuilder() {
+        if (typeBuilder_ == null) {
+          typeBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody, it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody.Builder, it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBodyOrBuilder>(
+                  type_,
+                  getParentForChildren(),
+                  isClean());
+          type_ = null;
+        }
+        return typeBuilder_;
       }
       
       // @@protoc_insertion_point(builder_scope:OrderAddAssign)
@@ -1521,14 +1680,15 @@ public final class OrderAddAssignWire {
     java.lang.String[] descriptorData = {
       "\n?home/paolo/uni/dissertation/dmat/proto" +
       "/OrderAddAssignWire.proto\032\023RectangleWire" +
-      ".proto\032\032MatrixPieceOwnerWire.proto\"t\n\016Or" +
-      "derAddAssign\022\035\n\025firstAddendumMatrixId\030\001 " +
-      "\002(\t\022\036\n\026secondAddendumMatrixId\030\002 \002(\t\022#\n\013o" +
-      "utputPiece\030\003 \002(\0132\016.RectangleBody\"f\n\022Orde" +
-      "rAddAssignBody\022,\n\rmissingPieces\030\001 \003(\0132\025." +
-      "MatrixPieceOwnerBody\022\"\n\toperation\030\002 \003(\0132" +
-      "\017.OrderAddAssignB%\n#it.unipr.aotlab.dmat" +
-      ".core.generated"
+      ".proto\032\032MatrixPieceOwnerWire.proto\032\016Type" +
+      "Wire.proto\"\215\001\n\016OrderAddAssign\022\035\n\025firstAd" +
+      "dendumMatrixId\030\001 \002(\t\022\036\n\026secondAddendumMa" +
+      "trixId\030\002 \002(\t\022#\n\013outputPiece\030\003 \002(\0132\016.Rect" +
+      "angleBody\022\027\n\004type\030\004 \002(\0132\t.TypeBody\"f\n\022Or" +
+      "derAddAssignBody\022,\n\rmissingPieces\030\001 \003(\0132" +
+      "\025.MatrixPieceOwnerBody\022\"\n\toperation\030\002 \003(" +
+      "\0132\017.OrderAddAssignB%\n#it.unipr.aotlab.dm",
+      "at.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1540,7 +1700,7 @@ public final class OrderAddAssignWire {
           internal_static_OrderAddAssign_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_OrderAddAssign_descriptor,
-              new java.lang.String[] { "FirstAddendumMatrixId", "SecondAddendumMatrixId", "OutputPiece", },
+              new java.lang.String[] { "FirstAddendumMatrixId", "SecondAddendumMatrixId", "OutputPiece", "Type", },
               it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.class,
               it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign.Builder.class);
           internal_static_OrderAddAssignBody_descriptor =
@@ -1559,6 +1719,7 @@ public final class OrderAddAssignWire {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           it.unipr.aotlab.dmat.core.generated.RectangleWire.getDescriptor(),
           it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.getDescriptor(),
+          it.unipr.aotlab.dmat.core.generated.TypeWire.getDescriptor(),
         }, assigner);
   }
   

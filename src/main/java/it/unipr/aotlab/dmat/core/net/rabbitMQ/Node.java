@@ -16,7 +16,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
     Node() {
     }
 
-    Map<String, Chunk> Chunks() {
+    Map<String, Chunk> getChunks() {
         if (chunks == null)
             chunks = new HashMap<String, Chunk>();
 
@@ -25,7 +25,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
 
     @Override
     public Chunk getChunck(String id) throws ChunkNotFound {
-        Chunk chunk = chunks.get(id);
+        Chunk chunk = getChunks().get(id);
         if (chunk == null) {
             throw new ChunkNotFound();
         }
@@ -45,6 +45,16 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
 
     @Override
     public boolean doesManage(String chunkId) {
-        return chunks.containsKey(chunkId);
+        return getChunks().containsKey(chunkId);
+    }
+
+    @Override
+    public void addChunk(Chunk c) {
+        getChunks().put(c.getChunkId(), c);
+    }
+
+    @Override
+    public it.unipr.aotlab.dmat.core.net.MessageSender getMessageSender() {
+        return sender;
     }
 }

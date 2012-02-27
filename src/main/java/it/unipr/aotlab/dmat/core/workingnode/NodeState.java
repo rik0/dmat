@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceMarker;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 
 import java.util.ArrayList;
 
@@ -21,5 +22,9 @@ public class NodeState {
 
     NodeState(WorkingNode hostWorkingNode) {
         this.hostWorkingNode = hostWorkingNode;
+    }
+    
+    public void accept(MessageAddAssign addAssign) {
+        
     }
 }

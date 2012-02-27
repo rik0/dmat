@@ -15,7 +15,8 @@ public class MessagesSetValueGeneric extends Messages {
     @Override
     public Message parseMessage(byte[] rawMessage)
             throws InvalidProtocolBufferException {
-        return new MessageSetValueGeneric(MatrixPieceTripletsBytesWire.Body.parseFrom(rawMessage));
+        return new MessageSetValueGeneric(MatrixPieceTripletsBytesWire
+                .MatrixPieceTripletsBytesBody.parseFrom(rawMessage));
     }
 
     private MessagesSetValueGeneric() {

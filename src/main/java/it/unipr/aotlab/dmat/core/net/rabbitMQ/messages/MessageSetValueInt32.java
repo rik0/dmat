@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.support.MatrixPieceTripletsInt32WireSupport;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
@@ -33,17 +34,23 @@ public class MessageSetValueInt32 extends MessageMatrixValues {
     }
 
     @Override
-    public int getColRep() {
-        return MatrixPieceTripletsInt32WireSupport.getColRep(body);
+    public void dispatch(InNodeChunk<?> node) {
+        node.accept(this);
+    }
+
+    @Override
+    public Rectangle getArea() {
+        return Rectangle.build(body.getPosition());
     }
 
     @Override
     public int getRowRep() {
-        return MatrixPieceTripletsInt32WireSupport.getRowRep(body);
+        return body.getPosition().getStartRow();
     }
 
     @Override
-    public void dispatch(InNodeChunk<?> node) {
-        node.accept(this);
+    public int getColRep() {
+        return body.getPosition().getStartCol();
     }
+
 }

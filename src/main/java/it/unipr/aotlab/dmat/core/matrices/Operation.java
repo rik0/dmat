@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
+import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.Node;
 
 import java.io.IOException;
@@ -180,6 +181,10 @@ public abstract class Operation {
         splitWork();
 
         sendOrdersToWorkers();
+    }
+    
+    protected MessageSender getMessageSender() {
+        return computingNodes.first().getMessageSender();
     }
 
     protected TreeSet<Node> computingNodes = null;

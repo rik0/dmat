@@ -1,18 +1,17 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
-import java.io.IOException;
-
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
-import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces.Builder;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
+
+import java.io.IOException;
 
 public class NodeMessageDigester {
     WorkingNode hostWorkingNode;
@@ -51,19 +50,24 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
+        boolean weDontManageIt = true;
         int col = message.getColRep();
         int row = message.getRowRep();
 
         // TODO linear search, better solution?
-        if (row != -1)
-            for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-                if (message.getMatrixId()
-                        .equals(inNodeChunk.chunk.getMatrixId())
-                             && inNodeChunk.chunk.doesManage(row, col)) {
-                    message.dispatch(inNodeChunk);
-                    break;
-                }
+        for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
+            if (message.getMatrixId()
+                    .equals(inNodeChunk.chunk.getMatrixId())
+                    && inNodeChunk.chunk.doesManage(row, col)) {
+                weDontManageIt = false;
+
+                message.dispatch(inNodeChunk);
+                break;
             }
+        }
+        if (weDontManageIt) {
+
+        }
     }
 
     public void accept(MessageSendMatrixPiece message) throws IOException {
@@ -75,7 +79,7 @@ public class NodeMessageDigester {
         int startCol = message.body.getNeededPiece().getStartCol();
         int endCol = message.body.getNeededPiece().getEndCol();
         MatrixPiece piece = null;
-        
+
         for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
             if (message.body.getMatrixId().equals(inNodeChunk.chunk.getMatrixId())
                     && inNodeChunk.chunk.doesManage(startRow, startCol)) {
@@ -92,10 +96,11 @@ public class NodeMessageDigester {
         MatrixPieces.Builder mbuilder = MatrixPieces.matrixPiece(piece.getTag());
         hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body.getRecipientList());
     }
-    
+
     public void accept(MessageAddAssign message) {
         //A += B
         debugMessage(message);
         System.err.println(message.toString());
+        System.err.println(message.body.getMissingPiecesCount());
     }
 }

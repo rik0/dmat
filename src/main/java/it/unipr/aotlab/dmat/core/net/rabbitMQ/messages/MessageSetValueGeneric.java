@@ -1,13 +1,14 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageSetValueGeneric extends MessageMatrixValues {
-    public MatrixPieceTripletsBytesWire.Body body;
+    public MatrixPieceTripletsBytesWire.MatrixPieceTripletsBytesBody body;
 
-    public MessageSetValueGeneric(MatrixPieceTripletsBytesWire.Body body) {
+    public MessageSetValueGeneric(MatrixPieceTripletsBytesWire.MatrixPieceTripletsBytesBody body) {
         this.body = body;
     }
 
@@ -44,20 +45,17 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
     }
 
     @Override
-    public int getColRep() {
-        if (body.getValuesCount() > 0) {
-            return body.getValues(0).getCol();
-        }
+    public Rectangle getArea() {
+        return Rectangle.build(body.getPosition());
+    }
 
-        return -1;
+    @Override
+    public int getColRep() {
+        return body.getPosition().getStartCol();
     }
 
     @Override
     public int getRowRep() {
-        if (body.getValuesCount() > 0) {
-            return body.getValues(0).getRow();
-        }
-
-        return -1;
+        return body.getPosition().getStartRow();
     }
 }

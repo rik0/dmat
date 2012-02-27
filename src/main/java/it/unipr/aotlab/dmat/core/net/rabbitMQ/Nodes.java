@@ -17,7 +17,7 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
 
     @Override
     public Nodes addChunck(Chunk c) {
-        buildingNode.Chunks().put(c.getChunkId(), c);
+        buildingNode.getChunks().put(c.getChunkId(), c);
         return this;
     }
 

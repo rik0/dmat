@@ -74,9 +74,9 @@ public class Chunk {
     public String getMatrixId() {
         return matrixId;
     }
-    
+
     public Rectangle getArea() {
-        return new Rectangle(matrixArea); 
+        return new Rectangle(matrixArea);
     }
 
     public Node getAssignedNode() {
@@ -105,6 +105,8 @@ public class Chunk {
                     + assignedTo.getNodeId() + ".");
 
         node.sendMessage(new MessageAssignChunkToNode(this));
+
+        node.addChunk(this);
         assignedTo = node;
     }
 
@@ -112,7 +114,7 @@ public class Chunk {
         RectangleWire.RectangleBody position = RectangleWire.RectangleBody.newBuilder()
                 .setStartRow(matrixArea.startRow).setEndRow(matrixArea.endRow).setEndCol(matrixArea.endCol)
                 .setStartCol(matrixArea.startCol).build();
-        
+
         TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(elementType)
                 .setSemiRing(semiring).build();
 

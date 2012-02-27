@@ -1,4 +1,5 @@
-import "ChunkDescriptionWire.proto";
+import "ChunkDescriptionWire.proto" ;
+import "RectangleWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
@@ -9,7 +10,8 @@ message Triplet {
 }
 
 message MatrixPieceTripletsInt32Body {
-    required string matrixId = 2;
+    required string matrixId = 1;
+    required RectangleBody position = 2;
     repeated Triplet values = 3;
 }
 

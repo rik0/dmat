@@ -24,7 +24,11 @@ public interface Node {
     
     public Chunk getChunck(String id) throws ChunkNotFound;
     
+    public void addChunk(Chunk c);
+    
     public boolean doesManage(String chunkId);
 
     public void sendMessage(Message m) throws IOException;
+    
+    public MessageSender getMessageSender();
 }
