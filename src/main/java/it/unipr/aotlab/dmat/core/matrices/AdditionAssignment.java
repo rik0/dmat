@@ -59,15 +59,15 @@ public class AdditionAssignment extends Operation {
 
     @Override
     protected void sendOrdersToWorkers() throws IOException {
-        OrderAddAssign.Builder subOrder = OrderAddAssign.newBuilder();
+        OrderAddAssign.Builder operation = OrderAddAssign.newBuilder();
         Matrix firstOp = operands.get(0);
 
         TypeBody type = TypeBody.newBuilder().setElementType(firstOp.getElementType())
             .setSemiRing(firstOp.getSemiRing()).build();
 
-        subOrder.setFirstAddendumMatrixId(firstOp.getMatrixId());
-        subOrder.setSecondAddendumMatrixId(operands.get(1).getMatrixId());
-        subOrder.setType(type);
+        operation.setFirstAddendumMatrixId(firstOp.getMatrixId());
+        operation.setSecondAddendumMatrixId(operands.get(1).getMatrixId());
+        operation.setType(type);
 
         for (NodeWorkZonePair nodeAndworkZone : workers) {
             Node computingNode = nodeAndworkZone.computingNode;
@@ -78,8 +78,8 @@ public class AdditionAssignment extends Operation {
             TreeSet<String> missingChunks = new TreeSet<String>();
 
             for (WorkZone wz : nodeAndworkZone.workZone) {
-                subOrder.setOutputPiece(wz.outputArea.convertToProto());
-                order.addOperation(subOrder.build());
+                operation.setOutputPiece(wz.outputArea.convertToProto());
+                order.addOperation(operation.build());
 
                 for (Chunk c : wz.involvedChunks) {
                     if ( ! computingNode.doesManage(c.getChunkId())
@@ -90,6 +90,7 @@ public class AdditionAssignment extends Operation {
                         order.addMissingPieces(missingMatrices.build());
 
                         SendMatrixPieceBody sendMatrixBody = SendMatrixPieceBody.newBuilder()
+                                .setUpdate(false)
                                 .setMatrixId(c.matrixId)
                                 .setNeededPiece(c.getArea().convertToProto())
                                 .addRecipient(computingNode.getNodeId()).build();

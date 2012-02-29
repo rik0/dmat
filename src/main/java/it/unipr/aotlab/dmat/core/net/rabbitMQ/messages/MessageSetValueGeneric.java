@@ -18,7 +18,7 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
     }
 
     @Override
-    public void exec(NodeMessageDigester digester) {
+    public void accept(NodeMessageDigester digester) {
         digester.accept(this);
     }
     
@@ -57,5 +57,15 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
     @Override
     public int getRowRep() {
         return body.getPosition().getStartRow();
+    }
+
+    @Override
+    public boolean getUpdate() {
+        return body.getUpdate();
+    }
+
+    @Override
+    public String getChunkId() {
+        return body.getChunkId();
     }
 }

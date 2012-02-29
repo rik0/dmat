@@ -13,7 +13,7 @@ public class MessageTest extends Message {
     }
     
     @Override
-    public void exec(NodeMessageDigester digester) {
+    public void accept(NodeMessageDigester digester) {
         if (digester != null)
             digester.accept(this);
     }

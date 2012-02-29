@@ -10,8 +10,10 @@ message Triplet {
 }
 
 message MatrixPieceTripletsInt32Body {
-    required string matrixId = 1;
-    required RectangleBody position = 2;
-    repeated Triplet values = 3;
+    required bool update = 1;
+    required string matrixId = 2;
+    required string chunkId = 3;
+    required RectangleBody position = 4;
+    repeated Triplet values = 5;
 }
 

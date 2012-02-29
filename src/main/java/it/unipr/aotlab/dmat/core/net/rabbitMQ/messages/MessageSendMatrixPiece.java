@@ -19,7 +19,7 @@ public class MessageSendMatrixPiece extends Message {
     }
 
     @Override
-    public void exec(NodeMessageDigester digester) throws IOException {
+    public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
 }

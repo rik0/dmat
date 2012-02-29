@@ -5,6 +5,7 @@ option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 message SendMatrixPieceBody {
     required string matrixId = 1;
     required RectangleBody neededPiece = 2;
-    repeated string recipient = 3;
+    required bool update = 3;
+    repeated string recipient = 4;
 }
 

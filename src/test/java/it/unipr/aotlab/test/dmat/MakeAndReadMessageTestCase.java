@@ -26,7 +26,7 @@ public class MakeAndReadMessageTestCase {
                 messageTestSent.contentType(), messageTestSent.message());
 
         try {
-            message.exec(null);
+            message.accept(null);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,6 +6,7 @@ import it.unipr.aotlab.dmat.core.formats.dense.DenseInt32;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 
@@ -32,14 +33,13 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         }
 
         @Override
-        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format,
-                int startRow, int startCol, int endRow, int endCol) {
-            throw new DMatInternalError(this.getClass().getCanonicalName() + " for " + format + "still unimplemented");
+        public <E> MessageMatrixValues buildMessage(MatrixPiece matrixPiece) {
+            throw new DMatInternalError(this.getClass().getCanonicalName() + " still unimplemented");
         }
 
         @Override
-        public MessageMatrixValues buildMessage(MatrixPiece matrixPiece) {
-            throw new DMatInternalError(this.getClass().getCanonicalName() + " still unimplemented");
+        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate) {
+            throw new DMatInternalError(this.getClass().getCanonicalName() + " for " + format + "still unimplemented");
         }
     }
 

@@ -5,6 +5,7 @@ import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
@@ -42,8 +43,7 @@ public abstract class InNodeChunk<E> {
                 + message.getClass().getCanonicalName());
     }
 
-    public MatrixPiece getMatrixPiece(int startRow, int endRow, int startCol,
-            int endCol) {
-        return accessor.getPiece(matrixPieceBuilder, startCol, endRow, startCol, endCol);
+    public MatrixPiece getMatrixPiece(Rectangle position, boolean isUpdate) {
+        return accessor.getPiece(matrixPieceBuilder, position, isUpdate);
     }
 }

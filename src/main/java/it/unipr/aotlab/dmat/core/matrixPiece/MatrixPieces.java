@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.matrixPiece;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
@@ -22,10 +23,9 @@ public class MatrixPieces {
     public interface Builder {
         MatrixPiece buildFromMessageBody(Object messageBody);
 
-        <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, int startRow, int startCol,
-                int endRow, int endCol);
-        
         <E> MessageMatrixValues buildMessage(MatrixPiece matrixPiece);
+
+        <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate);
     }
 
     public static Builder defaultMatrixPiece(

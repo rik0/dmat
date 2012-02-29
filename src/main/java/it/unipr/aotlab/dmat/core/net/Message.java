@@ -11,5 +11,5 @@ abstract public class Message {
 
     public abstract byte[] message();
 
-    public abstract void exec(NodeMessageDigester digester) throws IOException;
+    public abstract void accept(NodeMessageDigester digester) throws IOException;
 }

@@ -26,7 +26,7 @@ public class WorkingNode {
             QueueingConsumer.Delivery delivery = queueingConsumer
                     .nextDelivery();
             Message m = Messages.readMessage(delivery);
-            m.exec(digester);
+            m.accept(digester);
         }
     }
 

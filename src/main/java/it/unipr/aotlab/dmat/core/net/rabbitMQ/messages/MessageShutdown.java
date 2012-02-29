@@ -10,7 +10,7 @@ public class MessageShutdown extends Message {
     }
 
     @Override
-    public void exec(NodeMessageDigester digester) {
+    public void accept(NodeMessageDigester digester) {
         digester.accept(this);
     }
 }

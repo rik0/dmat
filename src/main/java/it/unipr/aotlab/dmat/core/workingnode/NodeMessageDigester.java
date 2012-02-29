@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
@@ -50,23 +51,23 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
-        boolean weDontManageIt = true;
         int col = message.getColRep();
         int row = message.getRowRep();
 
-        // TODO linear search, better solution?
-        for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-            if (message.getMatrixId()
-                    .equals(inNodeChunk.chunk.getMatrixId())
-                    && inNodeChunk.chunk.doesManage(row, col)) {
-                weDontManageIt = false;
-
-                message.dispatch(inNodeChunk);
-                break;
+        if (message.getUpdate()) {
+            // TODO linear search, better solution?
+            for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
+                if (message.getMatrixId().equals(
+                        inNodeChunk.chunk.getMatrixId())
+                        && inNodeChunk.chunk.doesManage(row, col)) {
+                    message.dispatch(inNodeChunk);
+                    break;
+                }
             }
         }
-        if (weDontManageIt) {
-
+        else {
+            hostWorkingNode.state.chunkForOperations.add(message);
+            hostWorkingNode.state.eventuallyExecOperation();
         }
     }
 
@@ -74,16 +75,13 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
-        int startRow = message.body.getNeededPiece().getStartRow();
-        int endRow = message.body.getNeededPiece().getEndRow();
-        int startCol = message.body.getNeededPiece().getStartCol();
-        int endCol = message.body.getNeededPiece().getEndCol();
+        Rectangle neededPiece = Rectangle.build(message.body.getNeededPiece());
         MatrixPiece piece = null;
 
         for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
             if (message.body.getMatrixId().equals(inNodeChunk.chunk.getMatrixId())
-                    && inNodeChunk.chunk.doesManage(startRow, startCol)) {
-                piece = inNodeChunk.getMatrixPiece(startRow, endRow, startCol, endCol);
+                    && inNodeChunk.chunk.doesManage(neededPiece.startRow, neededPiece.startCol)) {
+                piece = inNodeChunk.getMatrixPiece(neededPiece, message.body.getUpdate());
                 break;
             }
         }
@@ -91,7 +89,7 @@ public class NodeMessageDigester {
             throw new DMatInternalError(hostWorkingNode
                     + " received and invalid request. It does not manage "
                     + message.body.getMatrixId()
-                    + " row: " + startRow + " col: " + startCol);
+                    + " row: " + neededPiece.startRow + " col: " + neededPiece.startCol);
 
         MatrixPieces.Builder mbuilder = MatrixPieces.matrixPiece(piece.getTag());
         hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body.getRecipientList());
@@ -101,6 +99,8 @@ public class NodeMessageDigester {
         //A += B
         debugMessage(message);
         System.err.println(message.toString());
-        System.err.println(message.body.getMissingPiecesCount());
+        hostWorkingNode.state.pendingOperations.add(message);
+
+        hostWorkingNode.state.eventuallyExecOperation();
     }
 }

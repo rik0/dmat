@@ -3,8 +3,9 @@ package it.unipr.aotlab.dmat.core.matrixPiece;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
-import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 
@@ -35,26 +36,30 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         }
 
         @Override
-        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format,
-                int startRow, int startCol, int endRow, int endCol) {
-            MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
-                    .newBuilder();
+        public <E> MessageMatrixValues buildMessage(MatrixPiece matrixPieceUnt) {
+            MatrixPieceTripletsInt32 matrixPiece = (MatrixPieceTripletsInt32)matrixPieceUnt;
+            return new MessageMatrixPieceInt32(matrixPiece.int32Triples);
+        }
+
+        @Override
+        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate) {
+            MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Body.newBuilder();
+
+            b.setUpdate(isUpdate);
+            b.setPosition(position.convertToProto());
+            b.setChunkId(format.hostChunk().getChunkId());
+
             int intDefault = (Integer) format.getDefault();
             int v;
+
             b.setMatrixId(format.hostChunk().getMatrixId());
-            for (int r = startRow; r < endRow; ++r)
-                for (int c = startCol; c < endCol; ++c) {
+            for (int r = position.startRow; r < position.endRow; ++r)
+                for (int c = position.startCol; c < position.endCol; ++c) {
                     if ((v = (Integer) format.get(r, c)) != intDefault)
                         b.addValues(MatrixPieceTripletsInt32Wire.Triplet
                                 .newBuilder().setRow(r).setCol(c).setValue(v));
                 }
             return new MatrixPieceTripletsInt32(b.build());
-        }
-
-        @Override
-        public <E> MessageMatrixValues buildMessage(MatrixPiece matrixPieceUnt) {
-            MatrixPieceTripletsInt32 matrixPiece = (MatrixPieceTripletsInt32)matrixPieceUnt;
-            return new MessageMatrixPieceInt32(matrixPiece.int32Triples);
         }
     }
 
