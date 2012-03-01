@@ -63,18 +63,6 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         }
     }
 
-    public static class Int32Triplet {
-        public int row;
-        public int col;
-        public int value;
-
-        public Int32Triplet(int row, int col, int value) {
-            this.row = row;
-            this.col = col;
-            this.value = value;
-        }
-    }
-
     private class Int32TripletIterator implements Iterator<Int32Triplet> {
         @Override
         public boolean hasNext() {

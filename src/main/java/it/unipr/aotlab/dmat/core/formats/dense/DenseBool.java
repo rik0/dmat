@@ -8,6 +8,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 
 import java.nio.ByteBuffer;
+import java.util.Iterator;
 
 public class DenseBool extends DenseBase<Boolean> {
     protected DenseBool(Chunk hostChunk) {
@@ -39,7 +40,7 @@ public class DenseBool extends DenseBase<Boolean> {
             return (byte) 0x80;
         }
 
-        throw new DMatInternalError("Invalid call to bitPow");
+        throw new DMatInternalError("Invalid call to bitValue");
     }
 
     protected boolean getBit(byte b, int bitNo) {
@@ -87,4 +88,8 @@ public class DenseBool extends DenseBase<Boolean> {
         return matrixPiece.buildFromChunk(this, position, isUpdate);
     }
 
+    @Override
+    public Iterator<?> matrixPieceIterator() {
+        throw new DMatInternalError(this.getClass().getCanonicalName() + " still unimplemented");
+    }
 }

@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsBytes;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetValueGeneric;
@@ -17,12 +18,11 @@ public class InNodeChunkInt32 extends InNodeChunk<Integer> {
     public void accept(MessageSetValueInt32 message) {
         MatrixPieceTripletsInt32 triplets = new MatrixPieceTripletsInt32(
                 message.body);
-        Iterator<MatrixPieceTripletsInt32.Int32Triplet>
+        Iterator<Int32Triplet>
             tripletIterator = triplets.matrixPieceIterator();
 
         while (tripletIterator.hasNext()) {
-            MatrixPieceTripletsInt32
-                .Int32Triplet triplet = tripletIterator.next();
+                Int32Triplet triplet = tripletIterator.next();
 
             accessor.set(triplet.value, triplet.row, triplet.col);
         }

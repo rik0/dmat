@@ -21,6 +21,11 @@ public class Rectangle {
         return ! (endRow < startRow || endCol < startCol);
     }
     
+    public boolean isInside(int row, int col) {
+        return (row >= startRow && row < endRow)
+                && (col >= startCol && col < endCol);
+    }
+    
     public static Rectangle build(int startRow, int endRow, int startCol, int endCol) {
         Rectangle r = new Rectangle();
 

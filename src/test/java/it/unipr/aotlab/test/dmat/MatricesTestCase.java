@@ -10,6 +10,7 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
+import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
 
 import java.util.Iterator;
@@ -115,12 +116,12 @@ public class MatricesTestCase {
 
         MatrixPieceTripletsInt32.Builder receiverBuilder = new MatrixPieceTripletsInt32.Builder();
 
-        Iterator<MatrixPieceTripletsInt32.Int32Triplet> resultsIterator = (Iterator<MatrixPieceTripletsInt32.Int32Triplet>) receiverBuilder
+        Iterator<Int32Triplet> resultsIterator = (Iterator<Int32Triplet>) receiverBuilder
                 .buildFromMessageBody(messsageBody).matrixPieceIterator();
 
         int i = 0;
         while (resultsIterator.hasNext()) {
-            MatrixPieceTripletsInt32.Int32Triplet r = resultsIterator.next();
+            Int32Triplet r = resultsIterator.next();
             assertEquals(r.col, i * 2);
             assertEquals(r.row, i * 3);
             assertEquals(r.value, i * 4);

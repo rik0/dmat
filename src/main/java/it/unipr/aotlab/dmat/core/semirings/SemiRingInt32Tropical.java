@@ -14,6 +14,7 @@ public class SemiRingInt32Tropical implements SemiRing<Integer> {
     public static SemiRing<Integer> get() {
         if (theOne == null)
             theOne = new SemiRingInt32Tropical();
+
         return theOne;
     }
 

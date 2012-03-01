@@ -1,12 +1,16 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
+import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceMarker;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Operation;
+import it.unipr.aotlab.dmat.core.semirings.SemiRing;
+import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NodeState {
     WorkingNode hostWorkingNode;
@@ -40,11 +44,20 @@ public class NodeState {
         ArrayList<MessageMatrixValues> missingPieces = getMissingPieces(messageAddAssign);
         if (missingPieces.size() == messageAddAssign.body.getMissingPiecesCount()) {
             System.err.println("Ready to do operation");
-            
+            for (OrderAddAssign order : messageAddAssign.body.getOperationList()) {
+                doTheSum(missingPieces, order);
+            }
         }
         else {
             System.err.println("Still missing pieces for operation " + messageAddAssign.toString());
         }
+    }
+
+    private void doTheSum(ArrayList<MessageMatrixValues> missingPieces, OrderAddAssign order) {
+        String firstMatrixId = order.getFirstAddendumMatrixId();
+        String secondMatrixId = order.getSecondAddendumMatrixId();
+        SemiRing<?> semiring = SemiRings.semiring(order.getType().getSemiRing());
+        
     }
 
     private ArrayList<MessageMatrixValues> getMissingPieces(MessageAddAssign messageAddAssign) {
