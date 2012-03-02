@@ -93,5 +93,4 @@ public class DenseInt32 extends DenseBase<Integer> {
             throw new UnsupportedOperationException();
         }
     }
-
 }

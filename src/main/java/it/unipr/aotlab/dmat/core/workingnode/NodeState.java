@@ -54,10 +54,17 @@ public class NodeState {
     }
 
     private void doTheSum(ArrayList<MessageMatrixValues> missingPieces, OrderAddAssign order) {
-        String firstMatrixId = order.getFirstAddendumMatrixId();
+        /*String firstMatrixId = order.getFirstAddendumMatrixId();
         String secondMatrixId = order.getSecondAddendumMatrixId();
         SemiRing<?> semiring = SemiRings.semiring(order.getType().getSemiRing());
-        
+        */
+        System.err.println("---------------");
+        System.err.println(order.getFirstAddendumMatrixId() + " += " + order.getSecondAddendumMatrixId());
+        for (MessageMatrixValues m : missingPieces) {
+            System.err.println("Id: " + m.getMatrixId() + " " + m.getArea());
+        }
+        System.err.println(order.getOutputPiece());
+        System.err.println("=================");
     }
 
     private ArrayList<MessageMatrixValues> getMissingPieces(MessageAddAssign messageAddAssign) {

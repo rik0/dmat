@@ -44,6 +44,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         @Override
         public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate) {
             MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Body.newBuilder();
+            MatrixPieceTripletsInt32Wire.Triplet.Builder trl = MatrixPieceTripletsInt32Wire.Triplet.newBuilder();
 
             b.setUpdate(isUpdate);
             b.setPosition(position.convertToProto());
@@ -56,9 +57,9 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
             for (int r = position.startRow; r < position.endRow; ++r)
                 for (int c = position.startCol; c < position.endCol; ++c) {
                     if ((v = (Integer) format.get(r, c)) != intDefault)
-                        b.addValues(MatrixPieceTripletsInt32Wire.Triplet
-                                .newBuilder().setRow(r).setCol(c).setValue(v));
+                        b.addValues(trl.setRow(r).setCol(c).setValue(v).build());
                 }
+
             return new MatrixPieceTripletsInt32(b.build());
         }
     }

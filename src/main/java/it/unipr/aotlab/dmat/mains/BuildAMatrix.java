@@ -27,28 +27,36 @@ public class BuildAMatrix {
 
             Matrix matrix = Matrices.newBuilder()
                     .setName("A")
-                    .setNofRows(10)
-                    .setNofColumns(10)
+                    .setNofRows(20)
+                    .setNofColumns(20)
+                    .splitHorizzontalyChuck(null, 10, "top", "bottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix matrix2 = Matrices.newBuilder()
                     .setName("B")
-                    .setNofColumns(10)
-                    .setNofRows(10)
+                    .setNofColumns(20)
+                    .setNofRows(20)
+                    .splitVerticallyChuck(null, 10, "left", "right")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
-            Node node = nodes.setNodeName("testNode").build();
-            Node node2 = nodes.setNodeName("testNode2").build();
+            Node testNode = nodes.setNodeName("testNode").build();
+            Node testNode2 = nodes.setNodeName("testNode2").build();
 
-            Chunk chunk = matrix.getChunk(null);
-            Chunk chunk2 = matrix2.getChunk(null);
+            Chunk ATop = matrix.getChunk("top");
+            Chunk ABottom = matrix.getChunk("bottom");
 
-            chunk.assignChunkToNode(node);
-            chunk2.assignChunkToNode(node);
+            Chunk BLeft = matrix2.getChunk("left");
+            Chunk BRight = matrix2.getChunk("right");
+
+            ATop.assignChunkToNode(testNode);
+            BLeft.assignChunkToNode(testNode);
+
+            ABottom.assignChunkToNode(testNode2);
+            BRight.assignChunkToNode(testNode2);
 
             AdditionAssignment r = new AdditionAssignment();
 
-            r.setComputingNodes(node2);
+            //r.setComputingNodes(testNode);
             r.setOperands(matrix, matrix2);
             r.exec();
 

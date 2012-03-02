@@ -31,6 +31,7 @@ public class MainNode {
         WorkingNode wn = new WorkingNode(args[0], args[1], rabbitMQConnector);
 
         try {
+            System.err.println("Started node: " + args[0]);
             wn.consumerLoop();
         }
         finally {

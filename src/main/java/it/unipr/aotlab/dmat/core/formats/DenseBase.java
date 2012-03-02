@@ -10,6 +10,7 @@ public abstract class DenseBase<E> implements ChunkAccessor<E> {
     protected ByteBuffer array;
     protected Chunk hostChunk;
     protected TypeInfo typeInfo;
+    protected int width;
     
     public Chunk hostChunk() {
         return hostChunk;
@@ -18,6 +19,7 @@ public abstract class DenseBase<E> implements ChunkAccessor<E> {
     protected DenseBase(Chunk hostChunk) {
         this.typeInfo = new TypeInfo(hostChunk.getElementType());
         this.hostChunk = hostChunk;
+        this.width = hostChunk.getEndCol() - hostChunk.getStartCol();
 
         allocateArray();
     }
@@ -46,6 +48,6 @@ public abstract class DenseBase<E> implements ChunkAccessor<E> {
         r -= hostChunk.getStartRow();
         c -= hostChunk.getStartCol();
 
-        return typeInfo.sizeOf() * (r * hostChunk.getEndCol() + c);
+        return typeInfo.sizeOf() * (r * width + c);
     }
 }
