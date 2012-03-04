@@ -23,9 +23,9 @@ public class MatrixPieces {
     public interface Builder {
         MatrixPiece buildFromMessageBody(Object messageBody);
 
-        <E> MessageMatrixValues buildMessage(MatrixPiece matrixPiece);
+        MessageMatrixValues buildMessage(MatrixPiece matrixPiece);
 
-        <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate);
+        MatrixPiece buildFromChunk(ChunkAccessor format, Rectangle position, boolean isUpdate);
     }
 
     public static Builder defaultMatrixPiece(

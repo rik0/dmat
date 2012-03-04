@@ -5,11 +5,12 @@ import static junit.framework.Assert.assertTrue;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
-import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
+import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
 
@@ -107,7 +108,12 @@ public class MatricesTestCase {
     public void makeAPieceSendIterate() {
         MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
                 .newBuilder();
+
         b.setMatrixId("A");
+        b.setUpdate(true);
+        b.setChunkId("");
+        b.setPosition(Rectangle.build(0, 0, 10, 10).convertToProto());
+
         for (int i = 0; i < 10; ++i) {
             b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()
                     .setCol(i * 2).setRow(i * 3).setValue(i * 4).build());

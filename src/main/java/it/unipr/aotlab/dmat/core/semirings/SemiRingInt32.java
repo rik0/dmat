@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.core.semirings;
 
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
-public class SemiRingInt32 implements SemiRing<Integer> {
+public class SemiRingInt32 implements SemiRing {
     static TypeWire.SemiRing srtag = TypeWire.SemiRing.INT32ORDINARY;
     static SemiRingInt32 theOne = new SemiRingInt32();
 
@@ -14,18 +14,18 @@ public class SemiRingInt32 implements SemiRing<Integer> {
         SemiRings.semirings.put(srtag, theOne);
     }
 
-    static public SemiRing<Integer> get() {
+    static public SemiRing get() {
         return theOne;
     }
 
     @Override
-    public Integer add(Integer firstAddendum, final Integer secondAddendum) {
-        return firstAddendum + secondAddendum;
+    public Integer add(Object firstAddendum, Object secondAddendum) {
+        return (Integer)firstAddendum + (Integer)secondAddendum;
     }
 
     @Override
-    public Integer times(Integer multiplicand, final Integer multiplier) {
-        return multiplicand * multiplier;
+    public Integer times(Object multiplicand, Object multiplier) {
+        return (Integer)multiplicand * (Integer)multiplier;
     }
 
     @Override

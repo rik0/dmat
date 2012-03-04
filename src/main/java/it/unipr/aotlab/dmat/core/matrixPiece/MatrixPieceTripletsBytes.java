@@ -33,12 +33,12 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         }
 
         @Override
-        public <E> MessageMatrixValues buildMessage(MatrixPiece matrixPiece) {
+        public MessageMatrixValues buildMessage(MatrixPiece matrixPiece) {
             throw new DMatInternalError(this.getClass().getCanonicalName() + " still unimplemented");
         }
 
         @Override
-        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate) {
+        public MatrixPiece buildFromChunk(ChunkAccessor format, Rectangle position, boolean isUpdate) {
             throw new DMatInternalError(this.getClass().getCanonicalName() + " for " + format + "still unimplemented");
         }
     }

@@ -2,14 +2,14 @@ package it.unipr.aotlab.dmat.core.semirings;
 
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 
-public interface SemiRing<E> {
-    public E add(E firstAddendum, E secondAddendum);
+public interface SemiRing {
+    public Object add(Object firstAddendum, Object secondAddendum);
 
-    public E times(E multiplicand, E multiplier);
+    public Object times(Object multiplicand, Object multiplier);
 
-    public E zero();
+    public Object zero();
 
-    public E one();
+    public Object one();
     
     public TypeWire.SemiRing valueOf();
 }

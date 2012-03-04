@@ -22,8 +22,22 @@ public class Rectangle {
     }
     
     public boolean isInside(int row, int col) {
-        return (row >= startRow && row < endRow)
+        return     (row >= startRow && row < endRow)
                 && (col >= startCol && col < endCol);
+    }
+    
+    public boolean intersect(Rectangle c) {
+        return         ! (startRow >= c.endRow
+                && c.startCol >= endCol
+                && c.startRow >= endRow
+                &&        startCol >= c.endCol);
+    }
+    
+    public boolean isSubset(Rectangle c) {
+        return    (startRow >= c.startRow
+                && c.endCol >= endCol
+                && c.endRow >= endRow
+                && startCol >= c.startCol);
     }
     
     public static Rectangle build(int startRow, int endRow, int startCol, int endCol) {

@@ -7,21 +7,21 @@ import it.unipr.aotlab.dmat.core.util.ForceLoad;
 import java.util.EnumMap;
 
 public class SemiRings {
-    static EnumMap<TypeWire.ElementType, SemiRing<?>> defaultSemirings = new EnumMap<TypeWire.ElementType, SemiRing<?>>(
+    static EnumMap<TypeWire.ElementType, SemiRing> defaultSemirings = new EnumMap<TypeWire.ElementType, SemiRing>(
             TypeWire.ElementType.class);
 
-    static EnumMap<TypeWire.SemiRing, SemiRing<?>> semirings = new EnumMap<TypeWire.SemiRing, SemiRing<?>>(
+    static EnumMap<TypeWire.SemiRing, SemiRing> semirings = new EnumMap<TypeWire.SemiRing, SemiRing>(
             TypeWire.SemiRing.class);
 
     static {
         ForceLoad.listFromFile(Messages.class, "KindOfSemiRings");
     }
 
-    static public SemiRing<?> defaultSemiring(TypeWire.ElementType et) {
+    static public SemiRing defaultSemiring(TypeWire.ElementType et) {
         return SemiRings.defaultSemirings.get(et);
     }
 
-    static public SemiRing<?> semiring(TypeWire.SemiRing et) {
+    static public SemiRing semiring(TypeWire.SemiRing et) {
         return SemiRings.semirings.get(et);
     }
 

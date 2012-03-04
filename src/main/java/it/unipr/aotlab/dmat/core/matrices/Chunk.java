@@ -203,10 +203,10 @@ public class Chunk {
     }
 
     public boolean doesIntersectWith(Chunk c) {
-        return ( ! (getStartRow() >= c.getEndRow()
-                 || c.getStartCol() >= getEndCol()
-                 || c.getStartRow() >= getEndRow()
-                 || getStartCol() >= c.getEndCol()));
+        return ( !   (getStartRow() >= c.getEndRow()
+                 || c.getStartCol() >=   getEndCol()
+                 || c.getStartRow() >=   getEndRow()
+                 ||   getStartCol() >= c.getEndCol()));
     }
 
     public Rectangle intersection(Chunk c) {

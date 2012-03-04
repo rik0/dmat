@@ -36,13 +36,13 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         }
 
         @Override
-        public <E> MessageMatrixValues buildMessage(MatrixPiece matrixPieceUnt) {
+        public MessageMatrixValues buildMessage(MatrixPiece matrixPieceUnt) {
             MatrixPieceTripletsInt32 matrixPiece = (MatrixPieceTripletsInt32)matrixPieceUnt;
             return new MessageMatrixPieceInt32(matrixPiece.int32Triples);
         }
 
         @Override
-        public <E> MatrixPiece buildFromChunk(ChunkAccessor<E> format, Rectangle position, boolean isUpdate) {
+        public MatrixPiece buildFromChunk(ChunkAccessor format, Rectangle position, boolean isUpdate) {
             MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Body.newBuilder();
             MatrixPieceTripletsInt32Wire.Triplet.Builder trl = MatrixPieceTripletsInt32Wire.Triplet.newBuilder();
 

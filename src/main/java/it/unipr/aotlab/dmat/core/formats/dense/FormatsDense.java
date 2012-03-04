@@ -5,7 +5,7 @@ import it.unipr.aotlab.dmat.core.formats.DenseBase;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 
 public class FormatsDense {
-    public static DenseBase<?> build(Chunk chunk) {
+    public static DenseBase build(Chunk chunk) {
         switch (chunk.getElementType()) {
         case INT32:
         case UINT32:

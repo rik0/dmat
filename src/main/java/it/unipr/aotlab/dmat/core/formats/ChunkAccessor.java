@@ -6,17 +6,18 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces.Builder;
+import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 
-public interface ChunkAccessor<E> {
+public interface ChunkAccessor {
     public Chunk hostChunk();
 
-    public E get(int row, int col);
+    public Object get(int row, int col);
 
-    public E getDefault();
+    public Object getDefault();
 
-    public void set(E value, int row, int col);
+    public void set(Object value, int row, int col);
 
     public MatrixPiece getPiece(Builder matrixPieceBuilder, Rectangle position, boolean isUpdate);
     
-    public Iterator<?> matrixPieceIterator();
+    public Iterator<Triplet> matrixPieceIterator(Rectangle r);
 }

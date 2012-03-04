@@ -17,8 +17,8 @@ import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 public abstract class InNodeChunk<E> {
     WorkingNode hostNode = null;
     Chunk chunk = null;
-    SemiRing<E> semiring = null;
-    ChunkAccessor<E> accessor = null;
+    SemiRing semiring = null;
+    ChunkAccessor accessor = null;
     MatrixPieces.Builder matrixPieceBuilder = null;
 
     InNodeChunk(Chunk chunk) {

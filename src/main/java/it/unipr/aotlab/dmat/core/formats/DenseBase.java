@@ -6,7 +6,7 @@ import it.unipr.aotlab.dmat.core.util.TypeInfo;
 
 import java.nio.ByteBuffer;
 
-public abstract class DenseBase<E> implements ChunkAccessor<E> {
+public abstract class DenseBase implements ChunkAccessor {
     protected ByteBuffer array;
     protected Chunk hostChunk;
     protected TypeInfo typeInfo;

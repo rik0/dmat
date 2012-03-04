@@ -6,11 +6,12 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
+import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
-public class DenseBool extends DenseBase<Boolean> {
+public class DenseBool extends DenseBase {
     protected DenseBool(Chunk hostChunk) {
         super(hostChunk);
     }
@@ -68,14 +69,16 @@ public class DenseBool extends DenseBase<Boolean> {
     }
 
     @Override
-    public void set(Boolean value, int row, int col) {
+    public void set(Object value, int row, int col) {
+        Boolean tvalue = (Boolean)value;
+
         int coord = convertCoods(row, col);
         int byteno = coord / 8;
         int bitno = coord % 8;
 
         byte oldByte = array.get(byteno);
 
-        array.put(byteno, setBit(oldByte, value, bitno));
+        array.put(byteno, setBit(oldByte, tvalue, bitno));
     }
 
     @Override
@@ -89,7 +92,8 @@ public class DenseBool extends DenseBase<Boolean> {
     }
 
     @Override
-    public Iterator<?> matrixPieceIterator() {
-        throw new DMatInternalError(this.getClass().getCanonicalName() + " still unimplemented");
+    public Iterator<Triplet> matrixPieceIterator(Rectangle r) {
+        throw new DMatInternalError("No matrix piece iterator yet for bools");
     }
+
 }

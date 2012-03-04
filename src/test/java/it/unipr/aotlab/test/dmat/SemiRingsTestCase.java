@@ -17,9 +17,7 @@ public class SemiRingsTestCase {
 
     @Test
     public void int32DefaultSemiRing() {
-        @SuppressWarnings("unchecked")
-        SemiRing<Integer> sr = ((SemiRing<Integer>) SemiRings
-                .defaultSemiring(TypeWire.ElementType.INT32));
+        SemiRing sr = SemiRings.defaultSemiring(TypeWire.ElementType.INT32);
         Values<Integer> v = new Values<Integer>();
         v.a = 7;
         v.b = 11;
@@ -30,7 +28,7 @@ public class SemiRingsTestCase {
 
     @Test
     public void int32TropicalSemiRing() {
-        SemiRing<Integer> sr = SemiRingInt32Tropical.get();
+        SemiRing sr = SemiRingInt32Tropical.get();
         Values<Integer> v = new Values<Integer>();
         v.a = 7;
         v.b = 11;
@@ -41,9 +39,7 @@ public class SemiRingsTestCase {
 
     @Test
     public void booleanDefaultSemiRing() {
-        @SuppressWarnings("unchecked")
-        SemiRing<Boolean> sr = (SemiRing<Boolean>) SemiRings
-                .defaultSemiring(TypeWire.ElementType.BOOL);
+        SemiRing sr = SemiRings.defaultSemiring(TypeWire.ElementType.BOOL);
         Values<Boolean> v = new Values<Boolean>();
         v.a = true;
         v.b = false;
@@ -53,7 +49,7 @@ public class SemiRingsTestCase {
         intSemiRingOps(v, sr, true, false);
     }
 
-    private static <E> void intSemiRingProps(Values<E> v, SemiRing<E> sr) {
+    private static <E> void intSemiRingProps(Values<E> v, SemiRing sr) {
         plusFormsCommutativeMonoid(v, sr);
         timesFormsMonoidWithId(v, sr);
         timesDistributesPlus(v, sr);
@@ -61,8 +57,9 @@ public class SemiRingsTestCase {
     }
 
     public static <E> void plusFormsCommutativeMonoid(Values<E> v,
-            SemiRing<E> sr) {
-        E d, dd;
+            SemiRing sr) {
+        Object d, dd;
+        
         d = sr.add(v.a, v.b);
         d = sr.add(d, v.c);
         dd = sr.add(v.b, v.c);
@@ -79,8 +76,8 @@ public class SemiRingsTestCase {
         assertEquals(d, dd);
     }
 
-    public static <E> void timesFormsMonoidWithId(Values<E> v, SemiRing<E> sr) {
-        E d, dd;
+    public static <E> void timesFormsMonoidWithId(Values<E> v, SemiRing sr) {
+        Object d, dd;
         d = sr.times(v.a, v.b);
         d = sr.times(d, v.c);
 
@@ -93,8 +90,8 @@ public class SemiRingsTestCase {
         assertEquals(dd, d);
     }
 
-    public static <E> void timesDistributesPlus(Values<E> v, SemiRing<E> sr) {
-        E d, dd, t;
+    public static <E> void timesDistributesPlus(Values<E> v, SemiRing sr) {
+        Object d, dd, t;
 
         d = sr.add(v.b, v.c);
         d = sr.times(v.a, d);
@@ -114,8 +111,8 @@ public class SemiRingsTestCase {
 
     }
 
-    public static <E> void zeroAnnihilatesTimes(Values<E> v, SemiRing<E> sr) {
-        E d, dd;
+    public static <E> void zeroAnnihilatesTimes(Values<E> v, SemiRing sr) {
+        Object d, dd;
 
         d = sr.times(v.a, sr.zero());
         dd = sr.times(sr.zero(), v.a);
@@ -124,7 +121,7 @@ public class SemiRingsTestCase {
         assertEquals(dd, sr.zero());
     }
 
-    public static <E> void intSemiRingOps(Values<E> v, SemiRing<E> sr,
+    public static <E> void intSemiRingOps(Values<E> v, SemiRing sr,
             E sumExp, E mulExp) {
         assertEquals(sumExp, sr.add(v.a, v.b));
         assertEquals(mulExp, sr.times(v.a, v.b));

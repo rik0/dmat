@@ -3,8 +3,13 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.support.MatrixPieceTripletsInt32WireSupport;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
+import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
+import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     public MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body body;
@@ -56,5 +61,42 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     @Override
     public String getChunkId() {
         return body.getChunkId();
+    }
+
+    
+    private class MessageMatrixIterator implements Iterator<Triplet> {
+        int end;
+        int current;
+
+        public MessageMatrixIterator() {
+            this.current = 0;
+            this.end = body.getValuesCount();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current < end;
+        }
+
+        @Override
+        public Int32Triplet next() {
+            if (hasNext()) {
+                MatrixPieceTripletsInt32Wire.Triplet t = body.getValues(current);
+                ++current;
+
+                return new Int32Triplet(t.getRow(), t.getCol(), t.getValue());
+            } else
+                throw new NoSuchElementException();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    @Override
+    public Iterator<Triplet> matrixPieceIterator() {
+        return new MessageMatrixIterator();
     }
 }
