@@ -31,7 +31,7 @@ public class NodeMessageDigester {
         System.err.println("adding chunk to list of managed.");
 
         InNodeChunk<?> newChunk = InNodeChunks.build(hostWorkingNode,
-                new Chunk(message.body));
+                new Chunk(message.body, hostWorkingNode.nodeId));
         hostWorkingNode.state.managedChunks.add(newChunk);
     }
 

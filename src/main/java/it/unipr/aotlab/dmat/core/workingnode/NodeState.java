@@ -76,6 +76,7 @@ public class NodeState {
                                    Rectangle interestedArea) {
         InNodeChunk<?> n = getChunk(matrixId, interestedArea);
         if (n != null) return n.accessor.matrixPieceIterator(interestedArea);
+        
 
         MessageMatrixValues m = getMessage(extraPieces, matrixId, interestedArea);
         if (m != null) return m.matrixPieceIterator();
@@ -103,6 +104,7 @@ public class NodeState {
         Rectangle interestedPosition = Rectangle.build(order.getOutputPiece());
 
         InNodeChunk<?> firstOp = getChunk(firstMatrixId, interestedPosition);
+        System.err.println(interestedPosition);
         if (firstOp != null) {
             //we have the output matrix piece.
             Iterator<Triplet> secondOp = getIterator(missingPieces, secondMatrixId, interestedPosition);

@@ -38,4 +38,8 @@ public class WorkingNode {
         this.brokerName = brokerName;
         this.messageSender = messageSender;
     }
+    
+    public String getNodeId() {
+        return nodeId;
+    }
 }

@@ -1,12 +1,12 @@
 package it.unipr.aotlab.dmat.core.formats;
 
-import java.util.Iterator;
-
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
-import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces.Builder;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
+
+import java.util.Iterator;
 
 public interface ChunkAccessor {
     public Chunk hostChunk();
@@ -17,7 +17,7 @@ public interface ChunkAccessor {
 
     public void set(Object value, int row, int col);
 
-    public MatrixPiece getPiece(Builder matrixPieceBuilder, Rectangle position, boolean isUpdate);
-    
+    public MatrixPiece getPiece(MatrixPieces.Builder matrixPieceBuilder, Rectangle position, boolean isUpdate);
+
     public Iterator<Triplet> matrixPieceIterator(Rectangle r);
 }

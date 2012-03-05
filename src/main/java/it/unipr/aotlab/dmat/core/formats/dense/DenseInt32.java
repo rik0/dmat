@@ -65,7 +65,7 @@ public class DenseInt32 extends DenseBase {
 
         public int findNext() {
             for (; currentRow < endRow; ++currentRow) {
-                for (; currentRow < endCol; ++currentCol) {
+                for (; currentCol < endCol; ++currentCol) {
                     if (get(currentRow, currentCol) != getDefault())
                         return 1;
                 }

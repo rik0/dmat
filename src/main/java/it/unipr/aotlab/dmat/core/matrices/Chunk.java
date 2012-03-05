@@ -45,7 +45,9 @@ public class Chunk {
     String chunkId;
     Matrix hostMatrix;
     Rectangle matrixArea;
-    Node assignedTo;
+
+    Node assignedTo; // non null for master node rep
+    String nodeId;   // non null for chunks on the nodes
 
     public int getStartRow() {
         return matrixArea.startRow;
@@ -67,12 +69,19 @@ public class Chunk {
         return (matrixArea.endRow - matrixArea.startRow) * (matrixArea.endCol - matrixArea.startCol);
     }
 
+    public String getMatrixId() {
+        return matrixId;
+    }
+
     public String getChunkId() {
         return chunkId;
     }
-
-    public String getMatrixId() {
-        return matrixId;
+    
+    public String getNodeId() {
+        if (nodeId != null)
+            return nodeId;
+        
+        return assignedTo.getNodeId();
     }
 
     public Rectangle getArea() {
@@ -127,7 +136,7 @@ public class Chunk {
                 .setMatricesOnTheWire(matricesOnTheWire).build();
     }
 
-    public Chunk(ChunkDescriptionWire.ChunkDescriptionBody m) {
+    public Chunk(ChunkDescriptionWire.ChunkDescriptionBody m, String nodeId) {
         this.chunkId = m.getChunkId();
         this.matrixArea = Rectangle.build(m.getPosition());
         this.elementType = m.getType().getElementType();
@@ -135,6 +144,7 @@ public class Chunk {
         this.semiring = m.getType().getSemiRing();
         this.matricesOnTheWire = m.getMatricesOnTheWire();
         this.matrixId = m.getMatrixId();
+        this.nodeId = nodeId;
     }
 
     Chunk(String matrixId, String chunkId, Rectangle matrixArea, Matrix hostMatrix) {

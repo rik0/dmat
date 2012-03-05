@@ -66,10 +66,9 @@ public class InNodeChunks {
             InNodeChunk<E> inNodeChunk) {
         MatricesOnTheWire matricesOnTheWireTag = chunk.getMatricesOnTheWire();
 
-        if (matricesOnTheWireTag
-                .equals(ChunkDescriptionWire.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE))
-            inNodeChunk.matrixPieceBuilder = MatrixPieces.defaultMatrixPiece(chunk
-                    .getElementType());
+        if (matricesOnTheWireTag.equals(ChunkDescriptionWire.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE))
+            inNodeChunk.matrixPieceBuilder = MatrixPieces
+                .defaultMatrixPiece(chunk.getElementType());
         else
             inNodeChunk.matrixPieceBuilder = MatrixPieces
                     .matrixPiece(matricesOnTheWireTag);

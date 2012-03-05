@@ -17,7 +17,7 @@ import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
 import java.io.IOException;
 
-public class BuildAMatrix {
+public class SumMatrices {
     public static void main(String[] argv) {
        try {
             MessageSender messageSender = new MessageSender(new Connector(
@@ -56,7 +56,7 @@ public class BuildAMatrix {
 
             AdditionAssignment r = new AdditionAssignment();
 
-            //r.setComputingNodes(testNode);
+            r.setComputingNodes(testNode);
             r.setOperands(matrix, matrix2);
             r.exec();
 
