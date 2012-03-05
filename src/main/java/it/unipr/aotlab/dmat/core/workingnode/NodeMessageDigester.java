@@ -47,7 +47,7 @@ public class NodeMessageDigester {
         System.err.println("ignoring.");
     }
 
-    public void accept(MessageMatrixValues message) {
+    public void accept(MessageMatrixValues message) throws IOException {
         debugMessage(message);
         System.err.println(message.toString());
 
@@ -95,7 +95,7 @@ public class NodeMessageDigester {
         hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body.getRecipientList());
     }
 
-    public void accept(MessageAddAssign message) {
+    public void accept(MessageAddAssign message) throws IOException {
         //A += B
         debugMessage(message);
         System.err.println(message.toString());

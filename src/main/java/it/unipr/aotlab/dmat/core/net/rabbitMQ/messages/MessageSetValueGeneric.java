@@ -1,10 +1,14 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces.Builder;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
@@ -22,7 +26,7 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
     }
 
     @Override
-    public void accept(NodeMessageDigester digester) {
+    public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
     
@@ -77,4 +81,15 @@ public class MessageSetValueGeneric extends MessageMatrixValues {
     public Iterator<Triplet> matrixPieceIterator() {
         throw new DMatInternalError("Wrong call?");
     }
+
+    @Override
+    public String getNodeId() {
+        return body.getNodeId();
+    }
+
+    @Override
+    public MatrixPieces.Builder getAppropriatedBuilder() {
+        throw new DMatInternalError("Unimplemented");
+    }
+
 }

@@ -9,6 +9,7 @@ import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 public class MatrixPieceTripletsInt32 implements MatrixPiece {
@@ -49,6 +50,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
             b.setUpdate(isUpdate);
             b.setPosition(position.convertToProto());
             b.setChunkId(format.hostChunk().getChunkId());
+            b.setNodeId(format.hostChunk().getAssignedNode().getNodeId());
 
             int intDefault = (Integer) format.getDefault();
             int v;
@@ -59,6 +61,32 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
                     if ((v = (Integer) format.get(r, c)) != intDefault)
                         b.addValues(trl.setRow(r).setCol(c).setValue(v).build());
                 }
+
+            return new MatrixPieceTripletsInt32(b.build());
+        }
+
+        @Override
+        public MatrixPiece buildFromTriplets(String matrixId,
+                String chunkId,
+                String nodeId,
+                Collection<Triplet> triplets,
+                Rectangle position,
+                boolean isUpdate) {
+
+            MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Body.newBuilder();
+            MatrixPieceTripletsInt32Wire.Triplet.Builder trl = MatrixPieceTripletsInt32Wire.Triplet.newBuilder();
+
+            b.setUpdate(isUpdate);
+            b.setPosition(position.convertToProto());
+            b.setChunkId(chunkId);
+            b.setNodeId(nodeId);
+
+            for (Triplet t : triplets) {
+                b.addValues(trl
+                        .setRow(t.row())
+                        .setCol(t.col())
+                        .setValue((Integer) t.value()).build());
+            }
 
             return new MatrixPieceTripletsInt32(b.build());
         }
@@ -105,5 +133,15 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     @Override
     public String getMatrixId() {
         return this.int32Triples.getMatrixId();
+    }
+
+    @Override
+    public String getChunkId() {
+        return this.int32Triples.getChunkId();
+    }
+
+    @Override
+    public String getNodeId() {
+        return this.int32Triples.getNodeId();
     }
 }

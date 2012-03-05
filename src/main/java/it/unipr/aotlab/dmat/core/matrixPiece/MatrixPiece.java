@@ -6,6 +6,9 @@ import java.util.Iterator;
 
 public interface MatrixPiece {
     public String getMatrixId();
+    public String getChunkId();
+    public String getNodeId();
+
     public ChunkDescriptionWire.MatricesOnTheWire getTag();
     public Iterator<?> matrixPieceIterator();
 }

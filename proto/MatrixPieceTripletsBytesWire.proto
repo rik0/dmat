@@ -13,7 +13,8 @@ message MatrixPieceTripletsBytesBody {
     required bool update = 1;
     required string matrixId = 2;
     required string chunkId = 3;
-    required RectangleBody position = 4;
-    repeated Triplet values = 5;
+    required string nodeId = 4;
+    required RectangleBody position = 5;
+    repeated Triplet values = 6;
 }
 

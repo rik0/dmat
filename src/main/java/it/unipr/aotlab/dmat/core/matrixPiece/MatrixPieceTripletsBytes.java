@@ -10,6 +10,7 @@ import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.protobuf.ByteString;
@@ -40,6 +41,13 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         @Override
         public MatrixPiece buildFromChunk(ChunkAccessor format, Rectangle position, boolean isUpdate) {
             throw new DMatInternalError(this.getClass().getCanonicalName() + " for " + format + "still unimplemented");
+        }
+
+        @Override
+        public MatrixPiece buildFromTriplets(String matrixId, String chunkId,
+                String nodeId, Collection<Triplet> triplets,
+                Rectangle position, boolean isUpdate) {
+            throw new DMatInternalError(this.getClass().getCanonicalName() + " for still unimplemented");
         }
     }
 
@@ -95,5 +103,15 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
     @Override
     public String getMatrixId() {
         return this.int32Triples.getMatrixId();
+    }
+
+    @Override
+    public String getChunkId() {
+        return this.int32Triples.getChunkId();
+    }
+
+    @Override
+    public String getNodeId() {
+        return this.int32Triples.getNodeId();
     }
 }

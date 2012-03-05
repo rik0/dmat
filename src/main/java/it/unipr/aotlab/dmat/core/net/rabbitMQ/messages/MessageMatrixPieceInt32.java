@@ -4,10 +4,14 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.support.MatrixPieceTripletsInt32WireSupport;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32.Builder;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -24,7 +28,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     }
 
     @Override
-    public void accept(NodeMessageDigester digester) {
+    public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
 
@@ -98,5 +102,15 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     @Override
     public Iterator<Triplet> matrixPieceIterator() {
         return new MessageMatrixIterator();
+    }
+
+    @Override
+    public String getNodeId() {
+        return body.getNodeId();
+    }
+
+    @Override
+    public MatrixPieces.Builder getAppropriatedBuilder() {
+        return new MatrixPieceTripletsInt32.Builder();
     }
 }

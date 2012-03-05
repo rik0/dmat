@@ -4,7 +4,9 @@ import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceMarker;
+import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
@@ -12,6 +14,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Operation;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -38,7 +41,7 @@ public class NodeState {
         this.hostWorkingNode = hostWorkingNode;
     }
 
-    public void eventuallyExecOperation() {
+    public void eventuallyExecOperation() throws IOException {
         for (Operation op : pendingOperations) {
             op.exec(this);
         }
@@ -80,7 +83,7 @@ public class NodeState {
         throw new DMatInternalError("Asked for an unmanaged and unreceived piece of matrix!");
     }
 
-    public void exec(MessageAddAssign messageAddAssign) {
+    public void exec(MessageAddAssign messageAddAssign) throws IOException {
         ArrayList<MessageMatrixValues> missingPieces = getMissingPieces(messageAddAssign);
         if (missingPieces.size() == messageAddAssign.body.getMissingPiecesCount()) {
             System.err.println("Ready to do operation");
@@ -93,7 +96,7 @@ public class NodeState {
         }
     }
 
-    private void doTheSum(ArrayList<MessageMatrixValues> missingPieces, OrderAddAssign order) {
+    private void doTheSum(ArrayList<MessageMatrixValues> missingPieces, OrderAddAssign order) throws IOException {
         String firstMatrixId = order.getFirstAddendumMatrixId();
         String secondMatrixId = order.getSecondAddendumMatrixId();
         SemiRing semiring = SemiRings.semiring(order.getType().getSemiRing());
@@ -114,29 +117,42 @@ public class NodeState {
         else {
             //we do not have the output matrix piece.
             TreeSet<Triplet> tree = new TreeSet<Triplet>(new Triplet.Comparator());
-            Iterator<Triplet> firstOpIt = getIterator(missingPieces, firstMatrixId, interestedPosition);
+
+            MessageMatrixValues firstOpMess = getMessage(missingPieces, firstMatrixId, interestedPosition);
+            Iterator<Triplet> firstOpIt = firstOpMess.matrixPieceIterator();
             Iterator<Triplet> secondOpIt = getIterator(missingPieces, secondMatrixId, interestedPosition);
 
             while (firstOpIt.hasNext()) {
                 Triplet fo = firstOpIt.next();
-                updateTree(tree, fo, semiring);
+                updateSumTree(tree, fo, semiring);
             }
 
             while (secondOpIt.hasNext()) {
                 Triplet so = secondOpIt.next();
-                updateTree(tree, so, semiring);
+                updateSumTree(tree, so, semiring);
             }
-            
-            //XXX now we must find a way to know where to send the piece!
+
+            sendOutputBack(tree, firstOpMess);
         }
     }
 
-    private static void updateTree(TreeSet<Triplet> tree, Triplet op, SemiRing semiring) {
-        Triplet.Comparator c = new Triplet.Comparator();
+    private void sendOutputBack(TreeSet<Triplet> tree, MessageMatrixValues firstOpMess) throws IOException {
+        MatrixPieces.Builder b = firstOpMess.getAppropriatedBuilder();
+
+        String matrixId = firstOpMess.getMatrixId();
+        String chunkId = firstOpMess.getChunkId();
+        String nodeId = firstOpMess.getNodeId();
+        Rectangle position = firstOpMess.getArea();
+        
+        MatrixPiece rawMessage = b.buildFromTriplets(matrixId, chunkId, nodeId, tree, position, true);
+        hostWorkingNode.messageSender.sendMessage(b.buildMessage(rawMessage), matrixId);
+    }
+
+    private static void updateSumTree(TreeSet<Triplet> tree, Triplet op, SemiRing semiring) {
         Triplet otherOpT = tree.tailSet(op).first();
         Object otherOp;
 
-        if (otherOpT != null && c.compare(op, otherOpT) == 0)
+        if (otherOpT != null && tree.comparator().compare(op, otherOpT) == 0)
             otherOp = otherOpT.value();
         else
             otherOp = semiring.zero();
@@ -146,7 +162,6 @@ public class NodeState {
         tree.add(op);
     }
 
-
     private ArrayList<MessageMatrixValues> getMissingPieces(MessageAddAssign messageAddAssign) {
         ArrayList<MessageMatrixValues> foundPieces = new ArrayList<MessageMatrixValues>();
 
@@ -155,8 +170,10 @@ public class NodeState {
                 MatrixPieceOwnerBody piece = messageAddAssign.body.getMissingPieces(c);
 
                 if (piece.getMatrixId().equals(chunk.getMatrixId())
-                        && piece.getChunkId().equals(chunk.getChunkId()))
+                        && piece.getChunkId().equals(chunk.getChunkId())) {
                     foundPieces.add(chunk);
+                    break;
+                }
             }
         }
 

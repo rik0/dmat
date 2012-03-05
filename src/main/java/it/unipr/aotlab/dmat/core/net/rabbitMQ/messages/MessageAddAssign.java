@@ -1,5 +1,7 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
+import java.io.IOException;
+
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
@@ -17,12 +19,12 @@ public class MessageAddAssign extends Operation {
     }
 
     @Override
-    public void accept(NodeMessageDigester digester) {
+    public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
 
     @Override
-    public void exec(NodeState nodeState) {
+    public void exec(NodeState nodeState) throws IOException {
         nodeState.exec(this);
     }
 }

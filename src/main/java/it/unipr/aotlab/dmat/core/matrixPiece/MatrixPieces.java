@@ -7,6 +7,7 @@ import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
+import java.util.Collection;
 import java.util.EnumMap;
 
 public class MatrixPieces {
@@ -26,6 +27,13 @@ public class MatrixPieces {
         MessageMatrixValues buildMessage(MatrixPiece matrixPiece);
 
         MatrixPiece buildFromChunk(ChunkAccessor format, Rectangle position, boolean isUpdate);
+        
+        MatrixPiece buildFromTriplets(String matrixId,
+                String chunkId,
+                String nodeId,
+                Collection<Triplet> triplets,
+                Rectangle position,
+                boolean isUpdate);
     }
 
     public static Builder defaultMatrixPiece(

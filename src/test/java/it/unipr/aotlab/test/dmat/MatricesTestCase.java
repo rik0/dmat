@@ -111,7 +111,8 @@ public class MatricesTestCase {
 
         b.setMatrixId("A");
         b.setUpdate(true);
-        b.setChunkId("");
+        b.setChunkId("unused");
+        b.setNodeId("unused");
         b.setPosition(Rectangle.build(0, 0, 10, 10).convertToProto());
 
         for (int i = 0; i < 10; ++i) {
