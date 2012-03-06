@@ -76,11 +76,11 @@ public class Chunk {
     public String getChunkId() {
         return chunkId;
     }
-    
+
     public String getNodeId() {
         if (nodeId != null)
             return nodeId;
-        
+
         return assignedTo.getNodeId();
     }
 
@@ -188,7 +188,7 @@ public class Chunk {
 
     @Override
     public String toString() {
-        return super.toString() + " chunkId:" + chunkId + " startRow: "
+        return super.toString() + "matrixId: " + matrixId + " chunkId:" + chunkId + " startRow: "
                 + matrixArea.startRow + " endRow: " + matrixArea.endRow + " startCol: " + matrixArea.startCol
                 + " endCol: " + matrixArea.endCol;
     }
@@ -233,5 +233,23 @@ public class Chunk {
         r.endCol = Math.min(getEndCol(), c.getEndCol());
 
         return r;
+    }
+
+    public static class RowsComparator implements java.util.Comparator<Chunk> {
+        @Override
+        public int compare(Chunk lhs, Chunk rhs) {
+            int rv = lhs.getStartRow() - rhs.getStartRow();
+            if (rv == 0) rv = lhs.getEndRow() - rhs.getEndRow();
+            return rv;
+        }
+    }
+
+    public static class ColumnsComparator implements java.util.Comparator<Chunk> {
+        @Override
+        public int compare(Chunk lhs, Chunk rhs) {
+            int rv = lhs.getStartCol() - rhs.getStartCol();
+            if (rv == 0) rv = lhs.getEndCol() - rhs.getEndCol();
+            return rv;
+        }
     }
 }

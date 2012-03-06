@@ -39,8 +39,8 @@ public abstract class Operation {
 
     // You have a chunk in the output matrix, prepare the list of
     // needed chunks to update it.
-    protected abstract List<WorkZone> neededChunksToUpdateThisChunk(
-            Chunk outputMatrixChunk);
+    protected abstract List<WorkZone>
+        neededChunksToUpdateThisChunk(Chunk outputMatrixChunk);
 
     // The user fails to set computing nodes, set the default.
     protected TreeSet<Node> getDefaultComputingNodes() {
@@ -209,11 +209,33 @@ public abstract class Operation {
             this.involvedChunks = wz.involvedChunks;
             this.assigned = wz.assigned;
         }
+        
+        public String toString() {
+            StringBuffer sb = new StringBuffer();
+            sb.append(super.toString());
+            
+            for (Chunk c : involvedChunks) {
+                sb.append("\nChunk: ");
+                sb.append(c);
+            }
+            
+            sb.append("\noutputArea: ");
+            sb.append(outputArea);
+            
+            sb.append("\nAppend: ");
+            sb.append(assigned);
+            
+            return sb.toString();
+        }
     }
 
     public static class NodeWorkZonePair {
         public Node computingNode;
         public List<WorkZone> workZone;
+        
+        public String toString() {
+            return computingNode.getNodeId() + " " + workZone;
+        }
     }
 
     private List<WorkZone> workZones;

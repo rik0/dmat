@@ -75,6 +75,6 @@ public class Rectangle {
         return super.toString() + ". StartRow: " + this.startRow
                 + " EndRow: " + this.endRow
                 + " StartCol: " + this.startCol
-                + " EndCol: " + this.endCol;
+                + " EndCol: " + this.endCol + ".";
     }
 }
