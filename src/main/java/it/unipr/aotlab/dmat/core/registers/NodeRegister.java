@@ -4,6 +4,7 @@ import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -53,5 +54,9 @@ public class NodeRegister {
             throw new NodeNotFound();
 
         return n;
+    }
+    
+    public void clearReceivedMatrixPieces() throws IOException {
+        messageSender.multicastMessage(new MessageClearReceivedMatrixPieces(), nodes.keySet());
     }
 }

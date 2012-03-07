@@ -4,13 +4,14 @@ import java.io.IOException;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
+import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 
-public class MessageAddAssign extends Operation {
-    public OrderAddAssignBody body;
+public class MessageMultiply extends Operation {
+    public OrderMultiplyBody body;
 
-    public MessageAddAssign(OrderAddAssignBody body) {
+    public MessageMultiply(OrderMultiplyBody body) {
         this.body = body;
     }
 

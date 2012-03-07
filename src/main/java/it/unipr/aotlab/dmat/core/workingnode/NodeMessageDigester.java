@@ -8,7 +8,9 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
 
@@ -95,12 +97,28 @@ public class NodeMessageDigester {
         hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body.getRecipientList());
     }
 
+    public void accept(MessageClearReceivedMatrixPieces message) {
+        debugMessage(message);
+        System.err.println(message.toString());
+        hostWorkingNode.state.chunkForOperations.clear();
+    }
+    
+    // CONSIDER: only one type of message for all operations?
     public void accept(MessageAddAssign message) throws IOException {
         //A += B
         debugMessage(message);
         System.err.println(message.toString());
-        hostWorkingNode.state.pendingOperations.add(message);
 
+        hostWorkingNode.state.pendingOperations.add(message);
+        hostWorkingNode.state.eventuallyExecOperation();
+    }
+
+    public void accept(MessageMultiply message) throws IOException {
+        //A *= B
+        debugMessage(message);
+        System.err.println(message.toString());
+
+        hostWorkingNode.state.pendingOperations.add(message);
         hostWorkingNode.state.eventuallyExecOperation();
     }
 }

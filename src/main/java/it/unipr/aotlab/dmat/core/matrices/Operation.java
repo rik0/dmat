@@ -16,6 +16,42 @@ import java.util.List;
 import java.util.TreeSet;
 
 public abstract class Operation {
+    public void exec() throws DMatError, IOException {
+        precondition();
+
+        neededChunks();
+
+        fillinComputingNodes();
+
+        nodeFitness();
+
+        splitWork();
+
+        sendMissingPiecesOrders();
+
+        sendOperationsOrders();
+    }
+
+    private void sendMissingPiecesOrders() {
+        TreeSet<String> sentChunks = new TreeSet<String>();
+
+        for (NodeWorkZonePair nodeAndworkZone : workers) {
+            Node computingNode = nodeAndworkZone.computingNode;
+
+            for (WorkZone workZone : nodeAndworkZone.workZone) {
+                for (NeededPieceOfChunk pc : workZone.involvedChunks) {
+                    String chunkFullName
+                            = computingNode.getNodeId()
+                            + "." + pc.chunk.getMatrixId()
+                            + "." + pc.chunk.getChunkId();
+
+                    // XXX working on it
+                }
+
+            }
+        }
+    }
+
     public abstract int arity();
 
     protected void precondition() throws DMatError {
@@ -55,7 +91,7 @@ public abstract class Operation {
 
     // You have the list of NodeWorkZonePair, where each working
     // node is associate to is work. Send the orders.
-    protected abstract void sendOrdersToWorkers() throws IOException;
+    protected abstract void sendOperationsOrders() throws IOException;
 
     protected void neededChunks() {
         List<WorkZone> workZones = new LinkedList<WorkZone>();
@@ -97,13 +133,13 @@ public abstract class Operation {
             public int compareNofLocalChunks(WorkZone o1, WorkZone o2) {
                 int diffValue = 0;
 
-                for (Chunk wz : o1.involvedChunks)
-                    diffValue -= wz.getAssignedNode().getNodeId()
-                            .equals(nodeId) ? 1 : 0;
+                for (NeededPieceOfChunk wz : o1.involvedChunks)
+                    diffValue -= wz.chunk.getAssignedNode().getNodeId()
+                        .equals(nodeId) ? 1 : 0;
 
-                for (Chunk wz : o2.involvedChunks)
-                    diffValue += wz.getAssignedNode().getNodeId()
-                            .equals(nodeId) ? 1 : 0;
+                for (NeededPieceOfChunk wz : o2.involvedChunks)
+                    diffValue += wz.chunk.getAssignedNode().getNodeId()
+                        .equals(nodeId) ? 1 : 0;
 
                 return diffValue;
             }
@@ -111,24 +147,20 @@ public abstract class Operation {
             public int compareSizes(WorkZone o1, WorkZone o2) {
                 int diffValue = 0;
 
-                for (Chunk wz : o1.involvedChunks)
-                    diffValue -= wz.nofElements();
+                for (NeededPieceOfChunk wz : o1.involvedChunks)
+                    diffValue -= wz.chunk.nofElements();
 
-                for (Chunk wz : o2.involvedChunks)
-                    diffValue += wz.nofElements();
+                for (NeededPieceOfChunk wz : o2.involvedChunks)
+                    diffValue += wz.chunk.nofElements();
 
                 return diffValue;
             }
 
             @Override
             public int compare(WorkZone o1, WorkZone o2) {
-                int diffValue = 0;
+                int diffValue = compareNofLocalChunks(o1, o2);
+                if (diffValue == 0) diffValue = compareSizes(o1, o2);
 
-                diffValue = compareNofLocalChunks(o1, o2);
-                if (diffValue != 0)
-                    return diffValue;
-
-                diffValue = compareSizes(o1, o2);
                 return diffValue;
             }
         }
@@ -150,11 +182,11 @@ public abstract class Operation {
     }
 
     private int assign(int nodeNo) {
-        int extraWorks = workZones.size() % computingNodes.size();
+        int extraWork = workZones.size() % computingNodes.size();
         int nofWorkZonesForNode = workZones.size() / computingNodes.size();
 
-        if (nodeNo < extraWorks)
-            nofWorkZonesForNode += 1;
+        if (nodeNo < extraWork)
+            ++nofWorkZonesForNode;
 
         return nofWorkZonesForNode;
     }
@@ -165,24 +197,11 @@ public abstract class Operation {
         for (NodeWorkZonePair nodeNWorkzone : workers) {
             takeWorkZones(nodeNWorkzone, assign(nodeNo));
 
-            nodeNo += 1;
+            ++nodeNo;
         }
     }
 
-    public void exec() throws DMatError, IOException {
-        precondition();
 
-        neededChunks();
-
-        fillinComputingNodes();
-
-        nodeFitness();
-
-        splitWork();
-
-        sendOrdersToWorkers();
-    }
-    
     protected MessageSender getMessageSender() {
         return computingNodes.first().getMessageSender();
     }
@@ -191,15 +210,32 @@ public abstract class Operation {
     protected List<NodeWorkZonePair> workers = new LinkedList<NodeWorkZonePair>();
     protected ArrayList<Matrix> operands = new ArrayList<Matrix>();
 
+    public static class NeededPieceOfChunk {
+        public Chunk chunk;
+        public Rectangle piece;
+
+        public NeededPieceOfChunk(Chunk chunk, Rectangle piece) {
+            this.chunk = chunk;
+            this.piece = piece;
+        }
+
+        @Override
+        public String toString() {
+            return super.toString()
+                    + "Chunk: " + chunk
+                    + "piece: " + piece;
+        }
+    }
+
     public static class WorkZone {
         //output matrix influenced area
         public Rectangle outputArea;
 
-        public List<Chunk> involvedChunks;
+        public List<NeededPieceOfChunk> involvedChunks;
 
-        public boolean assigned = false;
+        public boolean assignedToANode = false;
 
-        public WorkZone(Rectangle outputArea, List<Chunk> involvedChunks) {
+        public WorkZone(Rectangle outputArea, List<NeededPieceOfChunk> involvedChunks) {
             this.outputArea = outputArea;
             this.involvedChunks = involvedChunks;
         }
@@ -207,24 +243,25 @@ public abstract class Operation {
         public WorkZone(WorkZone wz) {
             this.outputArea = wz.outputArea;
             this.involvedChunks = wz.involvedChunks;
-            this.assigned = wz.assigned;
+            this.assignedToANode = wz.assignedToANode;
         }
-        
+
+        @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();
             sb.append(super.toString());
-            
-            for (Chunk c : involvedChunks) {
+
+            for (NeededPieceOfChunk c : involvedChunks) {
                 sb.append("\nChunk: ");
                 sb.append(c);
             }
-            
+
             sb.append("\noutputArea: ");
             sb.append(outputArea);
-            
+
             sb.append("\nAppend: ");
-            sb.append(assigned);
-            
+            sb.append(assignedToANode);
+
             return sb.toString();
         }
     }
@@ -232,7 +269,8 @@ public abstract class Operation {
     public static class NodeWorkZonePair {
         public Node computingNode;
         public List<WorkZone> workZone;
-        
+
+        @Override
         public String toString() {
             return computingNode.getNodeId() + " " + workZone;
         }
@@ -251,8 +289,8 @@ public abstract class Operation {
 
         while (wzi.hasNext()) {
             WorkZone wz = wzi.next();
-            if (!wz.assigned && nofWz > 0) {
-                wz.assigned = true;
+            if (!wz.assignedToANode && nofWz > 0) {
+                wz.assignedToANode = true;
                 --nofWz;
             } else
                 wzi.remove();

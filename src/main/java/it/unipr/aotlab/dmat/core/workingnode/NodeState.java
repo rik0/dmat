@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
+import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceMarker;
@@ -10,6 +11,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Operation;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
@@ -17,6 +19,8 @@ import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 public class NodeState {
@@ -25,7 +29,8 @@ public class NodeState {
     ArrayList<MatrixPieceMarker> awaitingUpdate = new ArrayList<MatrixPieceMarker>();
 
     ArrayList<MessageMatrixValues> chunkForOperations = new ArrayList<MessageMatrixValues>();
-    ArrayList<Operation> pendingOperations = new ArrayList<Operation>();
+    LinkedList<Operation> pendingOperations = new LinkedList<Operation>();
+    LinkedList<Operation> delayedOperations = new LinkedList<Operation>();
 
     public boolean doesManage(String matrixId, String chunkId) {
         for (InNodeChunk<?> c : managedChunks) {
@@ -42,9 +47,15 @@ public class NodeState {
     }
 
     public void eventuallyExecOperation() throws IOException {
-        for (Operation op : pendingOperations) {
-            op.exec(this);
-        }
+        try {
+            while (true) {
+                Operation op = pendingOperations.removeFirst();
+                op.exec(this);
+            }
+        } catch (NoSuchElementException e) {}
+
+        pendingOperations.addAll(delayedOperations);
+        delayedOperations.clear();
     }
 
     public InNodeChunk<?> getChunk(String matrixId, Rectangle interestedArea) {
@@ -76,7 +87,7 @@ public class NodeState {
                                    Rectangle interestedArea) {
         InNodeChunk<?> n = getChunk(matrixId, interestedArea);
         if (n != null) return n.accessor.matrixPieceIterator(interestedArea);
-        
+
 
         MessageMatrixValues m = getMessage(extraPieces, matrixId, interestedArea);
         if (m != null) return m.matrixPieceIterator();
@@ -84,17 +95,32 @@ public class NodeState {
         throw new DMatInternalError("Asked for an unmanaged and unreceived piece of matrix!");
     }
 
+    public void exec(MessageMultiply messageMultiply) throws IOException {
+        ArrayList<MessageMatrixValues> missingPieces = null;
+
+        if ((missingPieces = weGotAllPieces(messageMultiply)) != null)
+            for (OrderMultiply order : messageMultiply.body.getOperationList())
+                ;
+    }
+
     public void exec(MessageAddAssign messageAddAssign) throws IOException {
-        ArrayList<MessageMatrixValues> missingPieces = getMissingPieces(messageAddAssign);
-        if (missingPieces.size() == messageAddAssign.body.getMissingPiecesCount()) {
-            System.err.println("Ready to do operation");
-            for (OrderAddAssign order : messageAddAssign.body.getOperationList()) {
+        ArrayList<MessageMatrixValues> missingPieces = null;
+
+        if ((missingPieces = weGotAllPieces(messageAddAssign)) != null)
+            for (OrderAddAssign order : messageAddAssign.body.getOperationList())
                 doTheSum(missingPieces, order);
-            }
+    }
+
+    private ArrayList<MessageMatrixValues> weGotAllPieces(Operation op) {
+        ArrayList<MessageMatrixValues> missingPieces = getMissingPieces(op);
+        if (missingPieces.size() == op.nofMissingPieces()) {
+            System.err.println("Ready to do operation");
+            return missingPieces;
         }
-        else {
-            System.err.println("Still missing pieces for operation " + messageAddAssign.toString());
-        }
+
+        delayedOperations.addLast(op);
+        System.err.println("Still missing pieces for operation " + op.toString());
+        return null;
     }
 
     private void doTheSum(ArrayList<MessageMatrixValues> missingPieces, OrderAddAssign order) throws IOException {
@@ -145,7 +171,7 @@ public class NodeState {
         String chunkId = firstOpMess.getChunkId();
         String nodeId = firstOpMess.getNodeId();
         Rectangle position = firstOpMess.getArea();
-        
+
         MatrixPiece rawMessage = b.buildFromTriplets(matrixId, chunkId, nodeId, tree, position, true);
         hostWorkingNode.messageSender.sendMessage(b.buildMessage(rawMessage), matrixId);
     }
@@ -164,12 +190,12 @@ public class NodeState {
         tree.add(op);
     }
 
-    private ArrayList<MessageMatrixValues> getMissingPieces(MessageAddAssign messageAddAssign) {
+    private ArrayList<MessageMatrixValues> getMissingPieces(Operation messageAddAssign) {
         ArrayList<MessageMatrixValues> foundPieces = new ArrayList<MessageMatrixValues>();
 
         for (MessageMatrixValues chunk : chunkForOperations) {
-            for (int c = messageAddAssign.body.getMissingPiecesCount(); c-- > 0;) {
-                MatrixPieceOwnerBody piece = messageAddAssign.body.getMissingPieces(c);
+            for (int c = messageAddAssign.nofMissingPieces(); c-- > 0;) {
+                MatrixPieceOwnerBody piece = messageAddAssign.missingPiece(c);
 
                 if (piece.getMatrixId().equals(chunk.getMatrixId())
                         && piece.getChunkId().equals(chunk.getChunkId())) {

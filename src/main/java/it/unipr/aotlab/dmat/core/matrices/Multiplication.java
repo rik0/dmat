@@ -70,7 +70,6 @@ public class Multiplication extends Operation {
                 Chunk firstOpChunk = firstOpChunks.get(rowGroupIndex);
                 ArrayList<Chunk> neededChunks = new ArrayList<Chunk>();
 
-                neededChunks.add(outputMatrixChunk);
                 neededChunks.addAll(firstOperand
                         .involvedChunksAllCols(firstOpChunk.getStartRow(),
                                                firstOpChunk.getEndRow()));
@@ -137,6 +136,6 @@ public class Multiplication extends Operation {
 
 
     @Override
-    protected void sendOrdersToWorkers() {
+    protected void sendOperationsOrders() {
     }
 }

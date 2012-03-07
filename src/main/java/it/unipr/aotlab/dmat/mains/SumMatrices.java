@@ -59,6 +59,7 @@ public class SumMatrices {
             r.setComputingNodes(testNode);
             r.setOperands(matrix, matrix2);
             r.exec();
+            register.clearReceivedMatrixPieces();
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

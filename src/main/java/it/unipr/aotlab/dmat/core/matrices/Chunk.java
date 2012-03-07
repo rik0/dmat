@@ -121,8 +121,10 @@ public class Chunk {
 
     public ChunkDescriptionWire.ChunkDescriptionBody buildMessageBody() {
         RectangleWire.RectangleBody position = RectangleWire.RectangleBody.newBuilder()
-                .setStartRow(matrixArea.startRow).setEndRow(matrixArea.endRow).setEndCol(matrixArea.endCol)
-                .setStartCol(matrixArea.startCol).build();
+                .setStartRow(matrixArea.startRow)
+                .setEndRow(matrixArea.endRow)
+                .setStartCol(matrixArea.startCol)
+                .setEndCol(matrixArea.endCol).build();
 
         TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(elementType)
                 .setSemiRing(semiring).build();
@@ -160,7 +162,6 @@ public class Chunk {
         this.format = null;
         this.elementType = null;
         this.semiring = null;
-
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {

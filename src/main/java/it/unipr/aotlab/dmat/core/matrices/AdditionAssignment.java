@@ -19,7 +19,7 @@ public class AdditionAssignment extends ShapeFriendlyOp {
     }
 
     @Override
-    protected void sendOrdersToWorkers() throws IOException {
+    protected void sendOperationsOrders() throws IOException {
         OrderAddAssign.Builder operation = OrderAddAssign.newBuilder();
         Matrix firstOp = operands.get(0);
 
@@ -42,21 +42,21 @@ public class AdditionAssignment extends ShapeFriendlyOp {
                 operation.setOutputPiece(wz.outputArea.convertToProto());
                 order.addOperation(operation.build());
 
-                for (Chunk c : wz.involvedChunks) {
-                    if ( ! computingNode.doesManage(c.getChunkId())
-                            && missingChunks.add(c.matrixId + "." + c.chunkId)) {
-                        missingMatrices.setChunkId(c.getChunkId());
-                        missingMatrices.setMatrixId(c.getMatrixId());
+                for (NeededPieceOfChunk c : wz.involvedChunks) {
+                    if ( ! computingNode.doesManage(c.chunk.getChunkId())
+                            && missingChunks.add(c.chunk.matrixId + "." + c.chunk.chunkId)) {
+                        missingMatrices.setChunkId(c.chunk.getChunkId());
+                        missingMatrices.setMatrixId(c.chunk.getMatrixId());
 
                         order.addMissingPieces(missingMatrices.build());
 
                         SendMatrixPieceBody sendMatrixBody = SendMatrixPieceBody.newBuilder()
                                 .setUpdate(false)
-                                .setMatrixId(c.matrixId)
-                                .setNeededPiece(c.getArea().convertToProto())
+                                .setMatrixId(c.chunk.matrixId)
+                                .setNeededPiece(c.piece.convertToProto())
                                 .addRecipient(computingNode.getNodeId()).build();
 
-                        getMessageSender().sendMessage(new MessageSendMatrixPiece(sendMatrixBody) , c.assignedTo);
+                        getMessageSender().sendMessage(new MessageSendMatrixPiece(sendMatrixBody) , c.chunk.assignedTo);
                     }
                 }
             }

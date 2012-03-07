@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class ShapeFriendlyOp extends Operation {
-
     @Override
     protected void otherPreconditions() throws DMatError {
         Matrix firstOperand = operands.get(0);
@@ -33,11 +32,12 @@ public abstract class ShapeFriendlyOp extends Operation {
         Rectangle intersection;
 
         if (null != (intersection = firstOpChunk.intersection(secondOpChunk))) {
-            List<Chunk> involvedChunks = new LinkedList<Chunk>();
-            involvedChunks.add(firstOpChunk);
-            involvedChunks.add(secondOpChunk);
-            WorkZone workzone = new WorkZone(intersection, involvedChunks);
+            List<NeededPieceOfChunk> involvedChunks = new LinkedList<NeededPieceOfChunk>();
 
+            involvedChunks.add(new NeededPieceOfChunk(firstOpChunk, intersection));
+            involvedChunks.add(new NeededPieceOfChunk(secondOpChunk, intersection));
+
+            WorkZone workzone = new WorkZone(intersection, involvedChunks);
             workZones.add(workzone);
         }
     }

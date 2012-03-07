@@ -4,12 +4,9 @@ import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
-import it.unipr.aotlab.dmat.core.matrices.AdditionAssignment;
-import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
-import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
@@ -30,21 +27,25 @@ public class MulMatrices {
                     .setName("A")
                     .setNofRows(10)
                     .setNofColumns(20)
-                    .splitHorizzontalyChuck(null, 8, "top", "bottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix B = Matrices.newBuilder()
                     .setName("B")
                     .setNofRows(10)
-                    .setNofColumns(15)  
+                    .setNofColumns(15)
                     .splitVerticallyChuck(null, 10, "left", "right")
+                    .splitHorizzontalyChuck("right", 4, "right-top", "right-bottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
-            
+
             Matrix C = Matrices.newBuilder()
                     .setName("C")
                     .setNofRows(15)
                     .setNofColumns(20)
                     .splitVerticallyChuck(null, 10, "left", "right")
+                    .splitHorizzontalyChuck("left", 6, "left-top", "left-bottom")
+                    .splitVerticallyChuck("left-bottom", 5, "left-bottom-left", "left-bottom-left")
+                    .splitVerticallyChuck("right", 15, "right-left", "right-right")
+                    .splitHorizzontalyChuck("right-right", 4, "right-left-top", "right-right-bottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Multiplication r = new Multiplication();
