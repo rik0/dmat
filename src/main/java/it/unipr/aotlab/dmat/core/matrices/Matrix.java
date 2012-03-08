@@ -26,6 +26,7 @@ import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
+import it.unipr.aotlab.dmat.core.matrices.Operation.NeededPieceOfChunk;
 
 import java.util.ArrayList;
 
@@ -129,32 +130,37 @@ public class Matrix {
         return chunks;
     }
 
-    static public boolean intersect(Chunk c, int startRow, int endRow,
-            int startCol, int endCol) {
-        return !(c.getStartRow() >= endRow || startRow >= c.getEndRow()
-                || c.getStartCol() >= endCol || startCol >= c.getEndCol());
-    }
-
-    public ArrayList<Chunk> involvedChunks(Rectangle r) {
+    public ArrayList<NeededPieceOfChunk> involvedChunks(Rectangle r) {
         return involvedChunks(r.startRow, r.endRow, r.startCol, r.endCol);
     }
 
-    public ArrayList<Chunk> involvedChunks(int startRow, int endRow, int startCol,
-            int endCol) {
-        ArrayList<Chunk> involved = new ArrayList<Chunk>();
+    public ArrayList<NeededPieceOfChunk> involvedChunks(int startRow,
+                                                        int endRow,
+                                                        int startCol,
+                                                        int endCol) {
+        return involvedChunks(getChunks(), startRow, endRow, startCol, endCol);
+    }
 
-        for (Chunk c : getChunks())
-            if (intersect(c, startRow, endRow, startCol, endCol))
-                involved.add(c);
+    public static ArrayList<NeededPieceOfChunk> involvedChunks(Iterable<Chunk> list,
+                                                               int startRow,
+                                                               int endRow,
+                                                               int startCol,
+                                                               int endCol) {
+        ArrayList<NeededPieceOfChunk> involved = new ArrayList<NeededPieceOfChunk>();
+        Rectangle intersection;
+
+        for (Chunk c : list)
+            if (null != (intersection = c.intersection(startRow, endRow, startCol, endCol)))
+                involved.add(new NeededPieceOfChunk(c, intersection));
 
         return involved;
     }
 
-    public ArrayList<Chunk> involvedChunksAllRows(int startCol, int endCol) {
+    public ArrayList<NeededPieceOfChunk> involvedChunksAllRows(int startCol, int endCol) {
         return involvedChunks(0, getNofRows(), startCol, endCol);
     }
 
-    public ArrayList<Chunk> involvedChunksAllCols(int startRow, int endRow) {
+    public ArrayList<NeededPieceOfChunk> involvedChunksAllCols(int startRow, int endRow) {
         return involvedChunks(startRow, endRow, 0, getNofCols());
     }
 }

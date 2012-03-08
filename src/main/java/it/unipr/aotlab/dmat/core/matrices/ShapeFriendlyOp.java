@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
+import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,24 +22,25 @@ public abstract class ShapeFriendlyOp extends Operation {
         LinkedList<WorkZone> workZones = new LinkedList<WorkZone>();
         Matrix secondOperand = operands.get(1);
 
-        for (Chunk chunk : secondOperand.involvedChunks(outputMatrixChunk.getArea())) {
-            updateWorkZones(workZones, outputMatrixChunk, chunk);
+        for (NeededPieceOfChunk chunkAndInter : secondOperand.involvedChunks(outputMatrixChunk.getArea())) {
+            updateWorkZones(workZones, outputMatrixChunk, chunkAndInter);
         }
 
         return workZones;
     }
 
-    private static void updateWorkZones(LinkedList<WorkZone> workZones, Chunk firstOpChunk, Chunk secondOpChunk) {
-        Rectangle intersection;
+    private static void updateWorkZones(LinkedList<WorkZone> workZones,
+                                        Chunk firstOpChunk,
+                                        NeededPieceOfChunk secondOpChunkNInter) {
+        Rectangle intersection = secondOpChunkNInter.piece;
+        Assertion.isTrue(intersection != null, "Null intersection in ShapeFriendlyOp!");
 
-        if (null != (intersection = firstOpChunk.intersection(secondOpChunk))) {
-            List<NeededPieceOfChunk> involvedChunks = new LinkedList<NeededPieceOfChunk>();
+        List<NeededPieceOfChunk> involvedChunks = new LinkedList<NeededPieceOfChunk>();
 
-            involvedChunks.add(new NeededPieceOfChunk(firstOpChunk, intersection));
-            involvedChunks.add(new NeededPieceOfChunk(secondOpChunk, intersection));
+        involvedChunks.add(new NeededPieceOfChunk(firstOpChunk, intersection));
+        involvedChunks.add(secondOpChunkNInter);
 
-            WorkZone workzone = new WorkZone(intersection, involvedChunks);
-            workZones.add(workzone);
-        }
+        WorkZone workzone = new WorkZone(intersection, involvedChunks);
+        workZones.add(workzone);
     }
 }

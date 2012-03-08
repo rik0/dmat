@@ -214,43 +214,44 @@ public class Chunk {
     }
 
     public boolean doesIntersectWith(Chunk c) {
-        return ( !   (getStartRow() >= c.getEndRow()
-                 || c.getStartCol() >=   getEndCol()
-                 || c.getStartRow() >=   getEndRow()
-                 ||   getStartCol() >= c.getEndCol()));
+        return doesIntersectWith(c.matrixArea);
+    }
+
+    public boolean doesIntersectWith(Rectangle r) {
+        return doesIntersectWith(r.startRow, r.endRow, r.startCol, r.endCol);
+    }
+
+    public boolean doesIntersectWith(int startRow,
+                                     int endRow,
+                                     int startCol,
+                                     int endCol) {
+        return ! (getStartRow() >= endRow || startRow >= getEndRow()
+               || getStartCol() >= endCol || startCol >= getEndCol());
     }
 
     public Rectangle intersection(Chunk c) {
-        if (!doesIntersectWith(c)) {
+        return intersection(c.matrixArea);
+    }
+
+    public Rectangle intersection(Rectangle r) {
+        return intersection(r.startRow, r.endRow, r.startCol, r.endCol);
+    }
+
+    public Rectangle intersection(int startRow,
+                                  int endRow,
+                                  int startCol,
+                                  int endCol) {
+        if ( ! doesIntersectWith(startRow, endRow, startCol, endCol))
             return null;
-        }
 
-        Rectangle r = new Rectangle();
+        Rectangle or = new Rectangle();
 
-        r.startRow = Math.max(getStartRow(), c.getStartRow());
-        r.endRow = Math.min(getEndRow(), c.getEndRow());
+        or.startRow = Math.max(getStartRow(), startRow);
+        or.endRow = Math.min(getEndRow(), endRow);
 
-        r.startCol = Math.max(getStartCol(), c.getStartCol());
-        r.endCol = Math.min(getEndCol(), c.getEndCol());
+        or.startCol = Math.max(getStartCol(), startCol);
+        or.endCol = Math.min(getEndCol(), endCol);
 
-        return r;
-    }
-
-    public static class RowsComparator implements java.util.Comparator<Chunk> {
-        @Override
-        public int compare(Chunk lhs, Chunk rhs) {
-            int rv = lhs.getStartRow() - rhs.getStartRow();
-            if (rv == 0) rv = lhs.getEndRow() - rhs.getEndRow();
-            return rv;
-        }
-    }
-
-    public static class ColumnsComparator implements java.util.Comparator<Chunk> {
-        @Override
-        public int compare(Chunk lhs, Chunk rhs) {
-            int rv = lhs.getStartCol() - rhs.getStartCol();
-            if (rv == 0) rv = lhs.getEndCol() - rhs.getEndCol();
-            return rv;
-        }
+        return or;        
     }
 }

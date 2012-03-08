@@ -31,24 +31,37 @@ public class Multiplication extends Operation {
         Matrix firstOperand = operands.get(1);
         Matrix secondOperand = operands.get(2);
 
-        ArrayList<Chunk> firstOpChunks
+        ArrayList<NeededPieceOfChunk> firstOpChunks
             = firstOperand.involvedChunksAllCols(outputMatrixChunk.getStartRow(),
                                                  outputMatrixChunk.getEndRow());
 
-        Collections.sort(firstOpChunks, new Chunk.RowsComparator());
+        Collections.sort(firstOpChunks, new Comparator<NeededPieceOfChunk>() {
+            @Override
+            public int compare(NeededPieceOfChunk lhs, NeededPieceOfChunk rhs) {
+                int rv = lhs.chunk.getStartRow() - rhs.chunk.getStartRow();
+                if (rv == 0) rv = lhs.chunk.getEndRow() - rhs.chunk.getEndRow();
+                return rv;
+            }});
 
-        ArrayList<Chunk> secondOpChunks
+        ArrayList<NeededPieceOfChunk> secondOpChunks
             = secondOperand.involvedChunksAllRows(outputMatrixChunk.getStartCol(),
                                                   outputMatrixChunk.getEndCol());
 
-        Collections.sort(secondOpChunks, new Chunk.ColumnsComparator());
+        Collections.sort(secondOpChunks, new Comparator<NeededPieceOfChunk>() {
+            @Override
+            public int compare(NeededPieceOfChunk lhs, NeededPieceOfChunk rhs) {
+                int rv = lhs.chunk.getStartCol() - rhs.chunk.getStartCol();
+                if (rv == 0) rv = lhs.chunk.getEndCol() - rhs.chunk.getEndCol();
+                return rv;
+            }
+        });
 
         return makeWorkzones(outputMatrixChunk, firstOpChunks, secondOpChunks);
     }
 
     private ArrayList<WorkZone> makeWorkzones(Chunk outputMatrixChunk,
-                                              ArrayList<Chunk> firstOpChunks,
-                                              ArrayList<Chunk> secondOpChunks) {
+                                              ArrayList<NeededPieceOfChunk> firstOpChunks,
+                                              ArrayList<NeededPieceOfChunk> secondOpChunks) {
         /* Creates workzones using first operand row division and
          * second operand columns division. */
         Matrix firstOperand = operands.get(1);
@@ -58,51 +71,51 @@ public class Multiplication extends Operation {
 
         int rowGroupIndex = 0;
         int colGroupIndex = 0;
+        Rectangle outputArea = new Rectangle();
 
         do {
+            // loop over columns
             rowGroupIndex = 0;
-            Chunk secondOpChunk = secondOpChunks.get(colGroupIndex);
-            ArrayList<Chunk> secondOpNeededChunks = secondOperand
-                    .involvedChunksAllRows(secondOpChunk.getStartCol(),
-                                           secondOpChunk.getEndCol());
+            NeededPieceOfChunk secondOpChunk = secondOpChunks.get(colGroupIndex);
+            outputArea.startCol = Math.max(outputMatrixChunk.getStartCol(),
+                                           secondOpChunk.chunk.getStartCol());
+            outputArea.endCol = Math.min(outputMatrixChunk.getEndCol(),
+                                         secondOpChunk.chunk.getEndCol());
+
+            ArrayList<NeededPieceOfChunk> secondOpNeededChunks
+                = secondOperand.involvedChunksAllRows(outputArea.startCol,
+                                                      outputArea.endCol);
 
             do {
-                Chunk firstOpChunk = firstOpChunks.get(rowGroupIndex);
-                ArrayList<Chunk> neededChunks = new ArrayList<Chunk>();
+                // loop over rows
+                NeededPieceOfChunk firstOpChunk = firstOpChunks.get(rowGroupIndex);
+                outputArea.startRow = Math.max(outputMatrixChunk.getStartRow(),
+                                               firstOpChunk.chunk.getStartRow());
+                outputArea.endRow = Math.min(outputMatrixChunk.getEndRow(),
+                                             firstOpChunk.chunk.getEndRow());
+                ArrayList<NeededPieceOfChunk> neededChunks = new ArrayList<NeededPieceOfChunk>();
 
                 neededChunks.addAll(firstOperand
-                        .involvedChunksAllCols(firstOpChunk.getStartRow(),
-                                               firstOpChunk.getEndRow()));
+                        .involvedChunksAllCols(outputArea.startRow,
+                                               outputArea.endRow));
                 neededChunks.addAll(secondOpNeededChunks);
 
-                Rectangle outputArea = getOutputArea(outputMatrixChunk, firstOpChunk, secondOpChunk);
-
-                workZones.add(new WorkZone(outputArea, neededChunks));
+                workZones.add(new WorkZone(new Rectangle(outputArea), neededChunks));
             } while (-1 != (rowGroupIndex = getNextRowGroup(rowGroupIndex, firstOpChunks)));
         } while (-1 != (colGroupIndex = getNextColGroup(colGroupIndex, secondOpChunks)));
 
         return workZones;
     }
-    
-    private static Rectangle getOutputArea(Chunk output, Chunk first, Chunk second) {
-        int startRow = Math.max(output.getStartRow(), first.getStartRow());
-        int endRow   = Math.min(output.getEndRow(), first.getEndRow());
-        
-        int startCol = Math.max(output.getStartCol(), second.getStartCol());
-        int endCol   = Math.min(output.getEndCol(), second.getEndCol());
-        
-        return Rectangle.build(startRow, endRow, startCol, endCol);
-    }
 
-    private static int getNextRowGroup(int startFrom, ArrayList<Chunk> firstOpChunks) {
+    private static int getNextRowGroup(int startFrom, ArrayList<NeededPieceOfChunk> firstOpChunks) {
         int end = firstOpChunks.size();
-        int currentEndRow = firstOpChunks.get(startFrom).getEndRow();
+        int currentEndRow = firstOpChunks.get(startFrom).chunk.getEndRow();
         int currentStartRow;
 
         int index = startFrom + 1;
 
         while (index < end) {
-            currentStartRow = firstOpChunks.get(index).getStartRow();
+            currentStartRow = firstOpChunks.get(index).chunk.getStartRow();
             if (currentEndRow <= currentStartRow) {
                 break;
             }
@@ -114,15 +127,15 @@ public class Multiplication extends Operation {
         return index;
     }
 
-    private static int getNextColGroup(int startFrom, ArrayList<Chunk> secondOpChunks) {
+    private static int getNextColGroup(int startFrom, ArrayList<NeededPieceOfChunk> secondOpChunks) {
         int end = secondOpChunks.size();
-        int currentEndCol = secondOpChunks.get(startFrom).getEndCol();
+        int currentEndCol = secondOpChunks.get(startFrom).chunk.getEndCol();
         int currentStartCol;
 
         int index = startFrom + 1;
 
         while (index < end) {
-            currentStartCol = secondOpChunks.get(index).getStartCol();
+            currentStartCol = secondOpChunks.get(index).chunk.getStartCol();
             if (currentEndCol <= currentStartCol) {
                 break;
             }

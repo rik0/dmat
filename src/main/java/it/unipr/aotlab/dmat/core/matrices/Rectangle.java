@@ -8,38 +8,43 @@ public class Rectangle {
     public int startCol;
     public int endCol;
 
-    public Rectangle() {}
-    
+    public Rectangle() {
+        this.startRow = 0;
+        this.endRow = 0;
+        this.startCol = 0;
+        this.endCol = 0;
+    }
+
     public Rectangle(Rectangle that) {
         this.startRow = that.startRow;
         this.endRow = that.endRow;
         this.startCol = that.startCol;
         this.endCol = that.endCol;
     }
-    
+
     public boolean isValid() {
         return ! (endRow < startRow || endCol < startCol);
     }
-    
+
     public boolean isInside(int row, int col) {
         return     (row >= startRow && row < endRow)
                 && (col >= startCol && col < endCol);
     }
-    
+
     public boolean intersect(Rectangle c) {
         return         ! (startRow >= c.endRow
                 && c.startCol >= endCol
                 && c.startRow >= endRow
                 &&        startCol >= c.endCol);
     }
-    
+
     public boolean isSubset(Rectangle c) {
         return    (startRow >= c.startRow
                 && c.endCol >= endCol
                 && c.endRow >= endRow
                 && startCol >= c.startCol);
     }
-    
+
     public static Rectangle build(int startRow, int endRow, int startCol, int endCol) {
         Rectangle r = new Rectangle();
 
@@ -50,7 +55,7 @@ public class Rectangle {
 
         return r;
     }
-    
+
     public static Rectangle build(RectangleBody wireRectangle) {
         Rectangle r = new Rectangle();
 
@@ -59,9 +64,9 @@ public class Rectangle {
         r.startCol = wireRectangle.getStartCol();
         r.endCol = wireRectangle.getEndCol();
 
-        return r;        
+        return r;
     }
-    
+
     public RectangleBody convertToProto() {
         return RectangleBody.newBuilder()
                 .setStartRow(startRow)
@@ -70,7 +75,8 @@ public class Rectangle {
                 .setEndCol(endCol)
                 .build();
     }
-    
+
+    @Override
     public String toString() {
         return super.toString() + ". StartRow: " + this.startRow
                 + " EndRow: " + this.endRow
