@@ -56,10 +56,9 @@ public class SumMatrices {
 
             AdditionAssignment r = new AdditionAssignment();
 
-            r.setComputingNodes(testNode);
             r.setOperands(matrix, matrix2);
             r.exec();
-            register.clearReceivedMatrixPieces();
+            //register.clearReceivedMatrixPieces();
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

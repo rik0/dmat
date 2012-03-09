@@ -77,7 +77,7 @@ public class Chunk {
         return chunkId;
     }
 
-    public String getNodeId() {
+    public String getAssignedNodeId() {
         if (nodeId != null)
             return nodeId;
 

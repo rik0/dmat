@@ -40,7 +40,7 @@ public abstract class ShapeFriendlyOp extends Operation {
         involvedChunks.add(new NeededPieceOfChunk(firstOpChunk, intersection));
         involvedChunks.add(secondOpChunkNInter);
 
-        WorkZone workzone = new WorkZone(intersection, involvedChunks);
+        WorkZone workzone = new WorkZone(firstOpChunk, intersection, involvedChunks);
         workZones.add(workzone);
     }
 }

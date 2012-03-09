@@ -77,22 +77,16 @@ public class Multiplication extends Operation {
             // loop over columns
             rowGroupIndex = 0;
             NeededPieceOfChunk secondOpChunk = secondOpChunks.get(colGroupIndex);
-            outputArea.startCol = Math.max(outputMatrixChunk.getStartCol(),
-                                           secondOpChunk.chunk.getStartCol());
-            outputArea.endCol = Math.min(outputMatrixChunk.getEndCol(),
-                                         secondOpChunk.chunk.getEndCol());
+            fillInOutputCols(outputArea, outputMatrixChunk, secondOpChunk.chunk);
 
             ArrayList<NeededPieceOfChunk> secondOpNeededChunks
                 = secondOperand.involvedChunksAllRows(outputArea.startCol,
                                                       outputArea.endCol);
-
             do {
                 // loop over rows
                 NeededPieceOfChunk firstOpChunk = firstOpChunks.get(rowGroupIndex);
-                outputArea.startRow = Math.max(outputMatrixChunk.getStartRow(),
-                                               firstOpChunk.chunk.getStartRow());
-                outputArea.endRow = Math.min(outputMatrixChunk.getEndRow(),
-                                             firstOpChunk.chunk.getEndRow());
+                fillInOutputRows(outputArea, outputMatrixChunk, firstOpChunk.chunk);
+                
                 ArrayList<NeededPieceOfChunk> neededChunks = new ArrayList<NeededPieceOfChunk>();
 
                 neededChunks.addAll(firstOperand
@@ -100,11 +94,21 @@ public class Multiplication extends Operation {
                                                outputArea.endRow));
                 neededChunks.addAll(secondOpNeededChunks);
 
-                workZones.add(new WorkZone(new Rectangle(outputArea), neededChunks));
+                workZones.add(new WorkZone(outputMatrixChunk, new Rectangle(outputArea), neededChunks));
             } while (-1 != (rowGroupIndex = getNextRowGroup(rowGroupIndex, firstOpChunks)));
         } while (-1 != (colGroupIndex = getNextColGroup(colGroupIndex, secondOpChunks)));
 
         return workZones;
+    }
+    
+    private static void fillInOutputRows(Rectangle output, Chunk outputChunk, Chunk firstOp) {
+        output.startRow = Math.max(outputChunk.getStartRow(), firstOp.getStartRow());
+        output.endRow   = Math.min(outputChunk.getEndRow(), firstOp.getEndRow());
+    }
+
+    private static void fillInOutputCols(Rectangle output, Chunk outputChunk, Chunk secondOp) {
+        output.startCol = Math.max(outputChunk.getStartCol(), secondOp.getStartCol());
+        output.endCol   = Math.min(outputChunk.getEndCol(), secondOp.getEndCol());
     }
 
     private static int getNextRowGroup(int startFrom, ArrayList<NeededPieceOfChunk> firstOpChunks) {
