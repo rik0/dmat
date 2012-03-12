@@ -28,10 +28,10 @@ public class AdditionAssignment extends ShapeFriendlyOp {
         operation.setSecondAddendumMatrixId(operands.get(1).getMatrixId());
         operation.setType(type);
 
-        for (NodeWorkZonePair nodeAndworkZone : workers) {
+        for (NodeWorkZonePair nodeAndworkZone : tasks) {
             Node computingNode = nodeAndworkZone.computingNode;
 
-            MatrixPieceOwnerBody.Builder missingMatrices = MatrixPieceOwnerBody.newBuilder();
+            MatrixPieceOwnerBody.Builder missingPiece = MatrixPieceOwnerBody.newBuilder();
             OrderAddAssignBody.Builder order = OrderAddAssignBody.newBuilder();
 
             for (WorkZone wz : nodeAndworkZone.workZones) {
@@ -40,10 +40,11 @@ public class AdditionAssignment extends ShapeFriendlyOp {
 
                 for (NeededPieceOfChunk c : wz.involvedChunks) {
                     if ( ! computingNode.doesManage(c.chunk.getChunkId())) {
-                        missingMatrices.setChunkId(c.chunk.getChunkId());
-                        missingMatrices.setMatrixId(c.chunk.getMatrixId());
+                        missingPiece.setChunkId(c.chunk.getChunkId());
+                        missingPiece.setMatrixId(c.chunk.getMatrixId());
+                        missingPiece.setPosition(c.piece.convertToProto());
 
-                        order.addMissingPieces(missingMatrices.build());
+                        order.addMissingPieces(missingPiece.build());
                     }
                 }
             }

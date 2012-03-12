@@ -43,10 +43,10 @@ public class DenseInt32 extends DenseBase {
 
     @Override
     public Iterator<Triplet> matrixPieceIterator(Rectangle r) {
-        return new DenseInt32Iterator(r);
+        return new DenseInt32IteratorPosition(r);
     }
 
-    private class DenseInt32Iterator implements Iterator<Triplet> {
+    private class DenseInt32IteratorPosition implements Iterator<Triplet> {
         int currentRow;
         int currentCol;
         int value;
@@ -55,7 +55,7 @@ public class DenseInt32 extends DenseBase {
         int endRow;
         int endCol;
 
-        public DenseInt32Iterator(Rectangle r) {
+        public DenseInt32IteratorPosition(Rectangle r) {
             this.currentRow = r.startRow;
             this.currentCol = r.endRow;
             this.endRow = r.endRow;
@@ -96,5 +96,24 @@ public class DenseInt32 extends DenseBase {
         public void remove() {
             throw new UnsupportedOperationException();
         }
+    }
+
+    @Override
+    public Iterator<Triplet> matrixRowIterator(int rowNo) {
+        //TODO we can do better
+        Rectangle r = Rectangle.build(rowNo,
+                                      rowNo + 1,
+                                      hostChunk.getStartCol(),
+                                      hostChunk.getEndCol());
+        return new DenseInt32IteratorPosition(r);
+    }
+
+    @Override
+    public Iterator<Triplet> matrixColumnIterator(int colNo) {
+        Rectangle r = Rectangle.build(hostChunk.getStartCol(),
+                                      hostChunk.getEndCol(),
+                                      colNo,
+                                      colNo + 1);
+        return new DenseInt32IteratorPosition(r);
     }
 }

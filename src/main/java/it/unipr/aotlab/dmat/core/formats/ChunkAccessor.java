@@ -20,4 +20,8 @@ public interface ChunkAccessor {
     public MatrixPiece getPiece(MatrixPieces.Builder matrixPieceBuilder, Rectangle position, boolean isUpdate);
 
     public Iterator<Triplet> matrixPieceIterator(Rectangle r);
+    
+    public Iterator<Triplet> matrixRowIterator(int rowNo);
+    
+    public Iterator<Triplet> matrixColumnIterator(int columnNo);
 }

@@ -8,6 +8,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
@@ -53,18 +54,24 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
+        boolean done = false;
         int col = message.getColRep();
         int row = message.getRowRep();
 
         if (message.getUpdate()) {
             // TODO linear search, better solution?
             for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-                if (message.getMatrixId().equals(
-                        inNodeChunk.chunk.getMatrixId())
-                        && inNodeChunk.chunk.doesManage(row, col)) {
+                if (message.getMatrixId()
+                        .equals(inNodeChunk.chunk.getMatrixId())
+                     && inNodeChunk.chunk.doesManage(row, col)) {
                     message.dispatch(inNodeChunk);
+                    hostWorkingNode.state.checkUpdatingState();
+                    done = true;
                     break;
                 }
+            }
+            if ( ! done) {
+                throw new DMatInternalError("Receiving an update order for a non managed matrix!");
             }
         }
         else {
@@ -89,7 +96,7 @@ public class NodeMessageDigester {
         }
         if (piece == null)
             throw new DMatInternalError(hostWorkingNode
-                    + " received and invalid request. It does not manage "
+                    + " received an invalid request. It does not manage "
                     + message.body.getMatrixId()
                     + " row: " + neededPiece.startRow + " col: " + neededPiece.startCol);
 
@@ -102,7 +109,7 @@ public class NodeMessageDigester {
         System.err.println(message.toString());
         hostWorkingNode.state.chunkForOperations.clear();
     }
-    
+
     // CONSIDER: only one type of message for all operations?
     public void accept(MessageAddAssign message) throws IOException {
         //A += B
@@ -120,5 +127,13 @@ public class NodeMessageDigester {
 
         hostWorkingNode.state.pendingOperations.add(message);
         hostWorkingNode.state.eventuallyExecOperation();
+    }
+
+    public void accept(MessageAwaitUpdate message) {
+        debugMessage(message);
+        System.err.println(message.toString());
+
+        hostWorkingNode.state.awaitingUpdate.add(message);
+        hostWorkingNode.state.checkUpdatingState();
     }
 }

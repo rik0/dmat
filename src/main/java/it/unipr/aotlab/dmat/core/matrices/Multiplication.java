@@ -1,7 +1,14 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
+import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
+import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody;
+import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
+import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -86,7 +93,7 @@ public class Multiplication extends Operation {
                 // loop over rows
                 NeededPieceOfChunk firstOpChunk = firstOpChunks.get(rowGroupIndex);
                 fillInOutputRows(outputArea, outputMatrixChunk, firstOpChunk.chunk);
-                
+
                 ArrayList<NeededPieceOfChunk> neededChunks = new ArrayList<NeededPieceOfChunk>();
 
                 neededChunks.addAll(firstOperand
@@ -100,7 +107,7 @@ public class Multiplication extends Operation {
 
         return workZones;
     }
-    
+
     private static void fillInOutputRows(Rectangle output, Chunk outputChunk, Chunk firstOp) {
         output.startRow = Math.max(outputChunk.getStartRow(), firstOp.getStartRow());
         output.endRow   = Math.min(outputChunk.getEndRow(), firstOp.getEndRow());
@@ -153,6 +160,44 @@ public class Multiplication extends Operation {
 
 
     @Override
-    protected void sendOperationsOrders() {
+    protected void sendOperationsOrders() throws IOException {
+        OrderMultiplyBody.Builder order = OrderMultiplyBody.newBuilder();
+        OrderMultiply.Builder operation = OrderMultiply.newBuilder();
+        MatrixPieceOwnerBody.Builder missingPiece = MatrixPieceOwnerBody.newBuilder();
+
+        Matrix output   = operands.get(0);
+        Matrix firstOp  = operands.get(1);
+        Matrix secondOp = operands.get(2);
+
+        TypeBody type = TypeBody.newBuilder()
+                .setElementType(firstOp.getElementType())
+                .setSemiRing(firstOp.getSemiRing()).build();
+
+        operation.setOutputMatrixId(output.getMatrixId());
+        operation.setFirstFactorMatrixId(firstOp.getMatrixId());
+        operation.setSecondFactorMatrixId(secondOp.getMatrixId());
+        operation.setType(type);
+
+        for (NodeWorkZonePair nwzp : tasks) {
+            Node computingNode = nwzp.computingNode;
+
+            for (WorkZone wz : nwzp.workZones) {
+                operation.setOutputPiece(wz.outputArea.convertToProto());
+                order.addOperation(operation.build());
+
+                for (NeededPieceOfChunk c : wz.involvedChunks) {
+                    if ( ! computingNode.doesManage(c.chunk.chunkId)) {
+                        missingPiece.setChunkId(c.chunk.getChunkId());
+                        missingPiece.setMatrixId(c.chunk.getMatrixId());
+                        missingPiece.setPosition(c.piece.convertToProto());
+
+                        order.addMissingPieces(missingPiece.build());
+                    }
+                }
+            }
+
+            computingNode.sendMessage(new MessageMultiply(order.build()));
+        }
     }
 }
+

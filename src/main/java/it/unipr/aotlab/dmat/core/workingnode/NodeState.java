@@ -6,15 +6,16 @@ import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
-import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceMarker;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Operation;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
+import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.TreeSet;
 public class NodeState {
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
-    ArrayList<MatrixPieceMarker> awaitingUpdate = new ArrayList<MatrixPieceMarker>();
+    ArrayList<MessageAwaitUpdate> awaitingUpdate = new ArrayList<MessageAwaitUpdate>();
 
     ArrayList<MessageMatrixValues> chunkForOperations = new ArrayList<MessageMatrixValues>();
     LinkedList<Operation> pendingOperations = new LinkedList<Operation>();
@@ -100,7 +101,13 @@ public class NodeState {
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null)
             for (OrderMultiply order : messageMultiply.body.getOperationList())
-                ;
+                doTheMultiplication(missingPieces, order);
+    }
+
+    private void doTheMultiplication(ArrayList<MessageMatrixValues> missingPieces,
+                                     OrderMultiply order) {
+        Assertion.isTrue(false, "unmplemented");
+        //XXX find a way to get a column and a row iterator
     }
 
     public void exec(MessageAddAssign messageAddAssign) throws IOException {
@@ -190,12 +197,12 @@ public class NodeState {
         tree.add(op);
     }
 
-    private ArrayList<MessageMatrixValues> getMissingPieces(Operation messageAddAssign) {
+    private ArrayList<MessageMatrixValues> getMissingPieces(Operation message) {
         ArrayList<MessageMatrixValues> foundPieces = new ArrayList<MessageMatrixValues>();
 
         for (MessageMatrixValues chunk : chunkForOperations) {
-            for (int c = messageAddAssign.nofMissingPieces(); c-- > 0;) {
-                MatrixPieceOwnerBody piece = messageAddAssign.missingPiece(c);
+            for (int c = message.nofMissingPieces(); c-- > 0;) {
+                MatrixPieceOwnerBody piece = message.missingPiece(c);
 
                 if (piece.getMatrixId().equals(chunk.getMatrixId())
                         && piece.getChunkId().equals(chunk.getChunkId())) {
@@ -206,5 +213,185 @@ public class NodeState {
         }
 
         return foundPieces;
+    }
+
+    void checkUpdatingState() {
+        Assertion.isTrue(false, "unmplemented");
+        // XXX check
+    }
+
+    public class RowIterator implements java.util.Iterator<Triplet> {
+        String matrixId;
+        int row;
+        int nextChunkColumn = 0;
+
+        Iterator<Triplet> nextTriplets = null;
+        Triplet next = null;
+
+        public RowIterator(String matrixId, int row) {
+            this.matrixId = matrixId;
+            this.row = row;
+        }
+
+        private void tryIterator() {
+            if (nextTriplets != null && nextTriplets.hasNext()) {
+                next = nextTriplets.next();
+            }
+            else {
+                nextTriplets = null;
+                next = null;
+            }
+        }
+
+        private void searchManagedChunks() {
+            if (nextTriplets == null)
+                for (InNodeChunk<?> inc : managedChunks) {
+                    if (inc.chunk.getMatrixId().equals(matrixId)
+                            && inc.chunk.doesManage(row, nextChunkColumn)) {
+
+                        nextChunkColumn = inc.chunk.getEndCol();
+                        nextTriplets = inc.accessor.matrixRowIterator(row);
+                        break;
+                    }
+                }
+        }
+
+        private void searchMessages() {
+            if (nextTriplets == null)
+                for (MessageMatrixValues v : chunkForOperations) {
+                    if (v.getMatrixId().equals(matrixId)
+                            && v.doesManage(row, nextChunkColumn)) {
+
+                        nextChunkColumn = v.getArea().endCol;
+                        nextTriplets = v.matrixRowterator(row);
+                        break;
+                    }
+                }
+        }
+
+        private boolean getNextIterator() {
+            searchManagedChunks();
+            searchMessages();
+            
+            return nextTriplets != null;
+        }
+
+        private void findNext() {
+            while (next == null && getNextIterator()) {
+                tryIterator();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            findNext();
+
+            return next != null;
+        }
+
+        @Override
+        public Triplet next() {
+            if (hasNext()) {
+                Triplet rvNext = next;
+                next = null;
+                
+                return rvNext;
+            }
+
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+    
+
+    public class ColIterator implements java.util.Iterator<Triplet> {
+        String matrixId;
+        int col;
+        int nextChunkRow = 0;
+
+        Iterator<Triplet> nextTriplets = null;
+        Triplet next = null;
+
+        public ColIterator(String matrixId, int col) {
+            this.matrixId = matrixId;
+            this.col = col;
+        }
+
+        private void tryIterator() {
+            if (nextTriplets != null && nextTriplets.hasNext()) {
+                next = nextTriplets.next();
+            }
+            else {
+                nextTriplets = null;
+                next = null;
+            }
+        }
+
+        private void searchManagedChunks() {
+            if (nextTriplets == null)
+                for (InNodeChunk<?> inc : managedChunks) {
+                    if (inc.chunk.getMatrixId().equals(matrixId)
+                            && inc.chunk.doesManage(nextChunkRow, col)) {
+
+                        nextChunkRow = inc.chunk.getEndRow();
+                        nextTriplets = inc.accessor.matrixColumnIterator(col);
+                        break;
+                    }
+                }
+        }
+
+        private void searchMessages() {
+            if (nextTriplets == null)
+                for (MessageMatrixValues v : chunkForOperations) {
+                    if (v.getMatrixId().equals(matrixId)
+                            && v.doesManage(nextChunkRow, col)) {
+
+                        nextChunkRow = v.getArea().endCol;
+                        nextTriplets = v.matrixColumnIterator(col);
+                        break;
+                    }
+                }
+        }
+
+        private boolean getNextIterator() {
+            searchManagedChunks();
+            searchMessages();
+            
+            return nextTriplets != null;
+        }
+
+        private void findNext() {
+            while (next == null && getNextIterator()) {
+                tryIterator();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            findNext();
+
+            return next != null;
+        }
+
+        @Override
+        public Triplet next() {
+            if (hasNext()) {
+                Triplet rvNext = next;
+                next = null;
+                
+                return rvNext;
+            }
+
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

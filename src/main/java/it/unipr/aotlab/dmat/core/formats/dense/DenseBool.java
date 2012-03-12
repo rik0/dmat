@@ -96,4 +96,14 @@ public class DenseBool extends DenseBase {
         throw new DMatInternalError("No matrix piece iterator yet for bools");
     }
 
+    @Override
+    public Iterator<Triplet> matrixRowIterator(int columnNo) {
+        throw new DMatInternalError("No matrix columniterator yet for bools");
+    }
+
+    @Override
+    public Iterator<Triplet> matrixColumnIterator(int rowNo) {
+        throw new DMatInternalError("No matrix row iterator yet for bools");
+    }
+
 }

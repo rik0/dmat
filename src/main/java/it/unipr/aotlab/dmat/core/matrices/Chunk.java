@@ -44,29 +44,29 @@ public class Chunk {
     String matrixId;
     String chunkId;
     Matrix hostMatrix;
-    Rectangle matrixArea;
+    Rectangle matrixPosition;
 
     Node assignedTo; // non null for master node rep
     String nodeId;   // non null for chunks on the nodes
 
     public int getStartRow() {
-        return matrixArea.startRow;
+        return matrixPosition.startRow;
     }
 
     public int getEndRow() {
-        return matrixArea.endRow;
+        return matrixPosition.endRow;
     }
 
     public int getStartCol() {
-        return matrixArea.startCol;
+        return matrixPosition.startCol;
     }
 
     public int getEndCol() {
-        return matrixArea.endCol;
+        return matrixPosition.endCol;
     }
 
     public int nofElements() {
-        return (matrixArea.endRow - matrixArea.startRow) * (matrixArea.endCol - matrixArea.startCol);
+        return (matrixPosition.endRow - matrixPosition.startRow) * (matrixPosition.endCol - matrixPosition.startCol);
     }
 
     public String getMatrixId() {
@@ -85,7 +85,7 @@ public class Chunk {
     }
 
     public Rectangle getArea() {
-        return new Rectangle(matrixArea);
+        return new Rectangle(matrixPosition);
     }
 
     public Node getAssignedNode() {
@@ -120,12 +120,13 @@ public class Chunk {
     }
 
     public ChunkDescriptionWire.ChunkDescriptionBody buildMessageBody() {
-        RectangleWire.RectangleBody position = RectangleWire.RectangleBody.newBuilder()
-                .setStartRow(matrixArea.startRow)
-                .setEndRow(matrixArea.endRow)
-                .setStartCol(matrixArea.startCol)
-                .setEndCol(matrixArea.endCol).build();
-
+        RectangleWire.RectangleBody.Builder rb = RectangleWire.RectangleBody.newBuilder();
+        RectangleWire.RectangleBody position = rb
+                .setStartRow(matrixPosition.startRow)
+                .setEndRow(matrixPosition.endRow)
+                .setStartCol(matrixPosition.startCol)
+                .setEndCol(matrixPosition.endCol).build();
+        
         TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(elementType)
                 .setSemiRing(semiring).build();
 
@@ -140,7 +141,7 @@ public class Chunk {
 
     public Chunk(ChunkDescriptionWire.ChunkDescriptionBody m, String nodeId) {
         this.chunkId = m.getChunkId();
-        this.matrixArea = Rectangle.build(m.getPosition());
+        this.matrixPosition = Rectangle.build(m.getPosition());
         this.elementType = m.getType().getElementType();
         this.format = m.getFormat();
         this.semiring = m.getType().getSemiRing();
@@ -152,7 +153,7 @@ public class Chunk {
     Chunk(String matrixId, String chunkId, Rectangle matrixArea, Matrix hostMatrix) {
         this.matrixId = matrixId;
         this.chunkId = chunkId;
-        this.matrixArea = new Rectangle(matrixArea);
+        this.matrixPosition = new Rectangle(matrixArea);
         this.matricesOnTheWire = ChunkDescriptionWire.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
         this.hostMatrix = hostMatrix;
 
@@ -165,19 +166,19 @@ public class Chunk {
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
-        Chunk newChunk = new Chunk(matrixId, newChunkName, matrixArea, hostMatrix);
+        Chunk newChunk = new Chunk(matrixId, newChunkName, matrixPosition, hostMatrix);
 
-        newChunk.matrixArea.startRow = newChunkStartRow;
-        matrixArea.endRow = newChunkStartRow;
+        newChunk.matrixPosition.startRow = newChunkStartRow;
+        matrixPosition.endRow = newChunkStartRow;
 
         return newChunk;
     }
 
     Chunk splitVertically(String newChunkName, int newChunkStartCol) {
-        Chunk newChunk = new Chunk(matrixId, newChunkName, matrixArea, hostMatrix);
+        Chunk newChunk = new Chunk(matrixId, newChunkName, matrixPosition, hostMatrix);
 
-        newChunk.matrixArea.startCol = newChunkStartCol;
-        matrixArea.endCol = newChunkStartCol;
+        newChunk.matrixPosition.startCol = newChunkStartCol;
+        matrixPosition.endCol = newChunkStartCol;
 
         return newChunk;
     }
@@ -190,8 +191,8 @@ public class Chunk {
     @Override
     public String toString() {
         return super.toString() + "matrixId: " + matrixId + " chunkId:" + chunkId + " startRow: "
-                + matrixArea.startRow + " endRow: " + matrixArea.endRow + " startCol: " + matrixArea.startCol
-                + " endCol: " + matrixArea.endCol;
+                + matrixPosition.startRow + " endRow: " + matrixPosition.endRow + " startCol: " + matrixPosition.startCol
+                + " endCol: " + matrixPosition.endCol;
     }
 
     void setFormat(Matrices factory) {
@@ -214,7 +215,7 @@ public class Chunk {
     }
 
     public boolean doesIntersectWith(Chunk c) {
-        return doesIntersectWith(c.matrixArea);
+        return doesIntersectWith(c.matrixPosition);
     }
 
     public boolean doesIntersectWith(Rectangle r) {
@@ -230,7 +231,7 @@ public class Chunk {
     }
 
     public Rectangle intersection(Chunk c) {
-        return intersection(c.matrixArea);
+        return intersection(c.matrixPosition);
     }
 
     public Rectangle intersection(Rectangle r) {

@@ -83,4 +83,13 @@ public class Rectangle {
                 + " StartCol: " + this.startCol
                 + " EndCol: " + this.endCol + ".";
     }
+
+    public int compare(Rectangle rhs) {
+        int rv = startRow - rhs.startRow;
+        if (rv == 0) rv = endRow - rhs.endRow;
+        if (rv == 0) rv = startCol - rhs.startCol;
+        if (rv == 0) rv = endCol - rhs.endCol;
+
+        return rv;
+    }
 }

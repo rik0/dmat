@@ -15,6 +15,8 @@ public abstract class MessageMatrixValues extends Message {
     public abstract String getNodeId();
 
     public abstract Rectangle getArea();
+    
+    public abstract boolean doesManage(int row, int col);
 
     public abstract void dispatch(InNodeChunk<?> node);
 
@@ -26,5 +28,20 @@ public abstract class MessageMatrixValues extends Message {
     
     public abstract Iterator<Triplet> matrixPieceIterator();
     
+    public abstract Iterator<Triplet> matrixColumnIterator(int col);
+    
+    public abstract Iterator<Triplet> matrixRowterator(int row);
+    
     public abstract MatrixPieces.Builder getAppropriatedBuilder();
+    
+    public static class SimpleComparator implements java.util.Comparator<MessageMatrixValues> {
+        @Override
+        public int compare(MessageMatrixValues lhs, MessageMatrixValues rhs) {
+            int rv = lhs.getMatrixId().compareTo(rhs.getMatrixId());
+            if (rv == 0) rv = lhs.getChunkId().compareTo(rhs.getChunkId()); 
+            if (rv == 0) rv = lhs.getArea().compare(rhs.getArea()); 
+            
+            return rv;
+        }
+    }
 }

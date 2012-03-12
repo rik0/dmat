@@ -5,10 +5,11 @@ import "TypeWire.proto" ;
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderMultiply {
-    required string firstAddendumMatrixId = 1;
-    required string secondAddendumMatrixId = 2;
-    required RectangleBody outputPiece = 3;
-    required TypeBody type = 4;
+    required string outputMatrixId = 1;
+    required string firstFactorMatrixId = 2;
+    required string secondFactorMatrixId = 3;
+    required RectangleBody outputPiece = 4;
+    required TypeBody type = 5;
 }
 
 message OrderMultiplyBody {

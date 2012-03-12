@@ -58,7 +58,7 @@ public abstract class Operation {
             = new HashMap<PendingMissingPiecesMess, TreeSet<String>>();
 
         // for each computing node
-        for (NodeWorkZonePair nodeAndworkZone : workers) {
+        for (NodeWorkZonePair nodeAndworkZone : tasks) {
             Node computingNode = nodeAndworkZone.computingNode;
             String computingNodeId = computingNode.getNodeId();
 
@@ -67,7 +67,7 @@ public abstract class Operation {
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
                     awaitUpdate.setMatrix(workZone.outputChunk.chunkId);
                     awaitUpdate.setOutputPiece(workZone.outputArea.convertToProto());
-                    
+
                     getMessageSender()
                         .sendMessage(null, computingNode);
                 }
@@ -147,44 +147,54 @@ public abstract class Operation {
         setOperands(Arrays.asList(operands));
     }
 
-    private void sortNodeFitness(Node node, List<WorkZone> workZones) {
+    protected void sortNodeFitness(Node node, List<WorkZone> workZones) {
         class WorkZonesComparator implements Comparator<WorkZone> {
+            Node node;
             String nodeId;
 
             public WorkZonesComparator(Node node) {
+                this.node = node;
                 this.nodeId = node.getNodeId();
             }
 
-            public int compareNofLocalChunks(WorkZone o1, WorkZone o2) {
+            public int compareOutputChunkPresence(WorkZone lhs, WorkZone rhs) {
+                int rhsv = node.doesManage(rhs.outputChunk.chunkId) ? 1 : 0;
+                int lhsv = node.doesManage(lhs.outputChunk.chunkId) ? 1 : 0;
+
+                return rhsv - lhsv;
+            }
+
+            public int compareNofLocalChunks(WorkZone lhs, WorkZone rhs) {
                 int diffValue = 0;
 
-                for (NeededPieceOfChunk wz : o1.involvedChunks)
+                for (NeededPieceOfChunk wz : lhs.involvedChunks)
                     diffValue -= wz.chunk.getAssignedNode().getNodeId()
                         .equals(nodeId) ? 1 : 0;
 
-                for (NeededPieceOfChunk wz : o2.involvedChunks)
+                for (NeededPieceOfChunk wz : rhs.involvedChunks)
                     diffValue += wz.chunk.getAssignedNode().getNodeId()
                         .equals(nodeId) ? 1 : 0;
 
                 return diffValue;
             }
 
-            public int compareSizes(WorkZone o1, WorkZone o2) {
+            public int compareSizes(WorkZone lhs, WorkZone rhs) {
                 int diffValue = 0;
 
-                for (NeededPieceOfChunk wz : o1.involvedChunks)
+                for (NeededPieceOfChunk wz : lhs.involvedChunks)
                     diffValue -= wz.chunk.nofElements();
 
-                for (NeededPieceOfChunk wz : o2.involvedChunks)
+                for (NeededPieceOfChunk wz : rhs.involvedChunks)
                     diffValue += wz.chunk.nofElements();
 
                 return diffValue;
             }
 
             @Override
-            public int compare(WorkZone o1, WorkZone o2) {
-                int diffValue = compareNofLocalChunks(o1, o2);
-                if (diffValue == 0) diffValue = compareSizes(o1, o2);
+            public int compare(WorkZone lhs, WorkZone rhs) {
+                int diffValue = compareNofLocalChunks(lhs, rhs);
+                if (diffValue == 0) diffValue = compareOutputChunkPresence(lhs, rhs);
+                if (diffValue == 0) diffValue = compareSizes(lhs, rhs);
 
                 return diffValue;
             }
@@ -194,7 +204,7 @@ public abstract class Operation {
     }
 
     private void nodeFitness() {
-        workers.clear();
+        tasks.clear();
 
         for (Node node : computingNodes) {
             NodeWorkZonePair worker = new NodeWorkZonePair();
@@ -202,7 +212,7 @@ public abstract class Operation {
             worker.workZones = new LinkedList<WorkZone>(workZones);
 
             sortNodeFitness(worker.computingNode, worker.workZones);
-            workers.add(worker);
+            tasks.add(worker);
         }
     }
 
@@ -219,7 +229,7 @@ public abstract class Operation {
     private void splitWork() {
         int nodeNo = 0;
 
-        for (NodeWorkZonePair nodeNWorkzone : workers) {
+        for (NodeWorkZonePair nodeNWorkzone : tasks) {
             takeWorkZones(nodeNWorkzone, assign(nodeNo));
 
             ++nodeNo;
@@ -232,7 +242,7 @@ public abstract class Operation {
     }
 
     protected TreeSet<Node> computingNodes = null;
-    protected List<NodeWorkZonePair> workers = new LinkedList<NodeWorkZonePair>();
+    protected List<NodeWorkZonePair> tasks = new LinkedList<NodeWorkZonePair>();
     protected ArrayList<Matrix> operands = new ArrayList<Matrix>();
 
     public static class NeededPieceOfChunk {
@@ -355,7 +365,7 @@ public abstract class Operation {
 
         message.ownerNodeId = neededPiece.chunk.getAssignedNodeId();
         message.matrixId    = neededPiece.chunk.matrixId;
-        message.neededPiece = neededPiece.chunk.matrixArea;
+        message.neededPiece = neededPiece.chunk.matrixPosition;
 
         if ((destinationList = pendingMessages.get(message)) != null) {
             destinationList.add(destination);

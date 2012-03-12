@@ -5,5 +5,6 @@ option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 message MatrixPieceOwnerBody {
     required string matrixId = 1;
     required string chunkId = 2;
+    required RectangleBody position = 3;
 }
 
