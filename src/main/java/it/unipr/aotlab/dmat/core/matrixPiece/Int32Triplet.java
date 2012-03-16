@@ -32,4 +32,19 @@ public class Int32Triplet implements Triplet {
 
         value = tNewValue;
     }
+
+    @Override
+    public Triplet getCopy() {
+        return new Int32Triplet(row, col, value);
+    }
+
+    @Override
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    @Override
+    public void setCol(int col) {
+        this.col = col;
+    }
 }

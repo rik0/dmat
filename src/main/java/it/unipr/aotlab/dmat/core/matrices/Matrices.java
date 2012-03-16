@@ -6,6 +6,7 @@ import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidMatricesCall;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.initializers.Initializers;
 
 /**
@@ -20,6 +21,9 @@ public class Matrices {
         this.state = 0;
         this.buildingMatrix = new Matrix();
         this.defaultFormat = ChunkDescriptionWire.Format.DENSE;
+        this.elementType = null;
+        this.semiring = null;
+        this.type = null;
     }
 
     public static Matrices newBuilder() {
@@ -33,6 +37,9 @@ public class Matrices {
     int state;
     Matrix buildingMatrix;
     ChunkDescriptionWire.Format defaultFormat;
+    TypeWire.ElementType elementType;
+    TypeWire.SemiRing semiring;
+    TypeBody type;
 
     public Matrices splitHorizzontalyChuck(String splitsChuckName, int row,
             String newChunkName) throws ChunkNotFound {
@@ -99,7 +106,7 @@ public class Matrices {
     }
 
     public Matrices setElementType(TypeWire.ElementType elementType) {
-        buildingMatrix.elementType = elementType;
+        this.elementType = elementType;
 
         return this;
     }
@@ -137,15 +144,23 @@ public class Matrices {
     }
 
     private void validateBuildingMatrix() {
-        if (buildingMatrix.elementType == null)
-            buildingMatrix.elementType = TypeWire.ElementType.INT32;
+        TypeBody.Builder typeBodyFactory = TypeBody.newBuilder();
+        if (this.elementType != null)
+            typeBodyFactory.setElementType(this.elementType);
+        else
+            typeBodyFactory.setElementType(TypeWire.ElementType.INT32);
 
-        if (buildingMatrix.semiring == null)
-            buildingMatrix.semiring = TypeWire.SemiRing.DEFAULTSEMIRING;
+        if (this.semiring != null)
+            typeBodyFactory.setSemiRing(this.semiring);
+        else
+            typeBodyFactory.setSemiRing(TypeWire.SemiRing.DEFAULTSEMIRING);
+
+        type = typeBodyFactory.build();
+        buildingMatrix.type = type;
 
         if (buildingMatrix.init == null)
             buildingMatrix.init = Initializers
-                    .defaultInitializer(buildingMatrix.elementType);
+                    .defaultInitializer(buildingMatrix.type.getElementType());
 
         for (Chunk c : buildingMatrix.getChunks()) {
             c.validate(this);

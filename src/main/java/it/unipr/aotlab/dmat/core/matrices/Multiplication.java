@@ -161,7 +161,7 @@ public class Multiplication extends Operation {
 
     @Override
     protected void sendOperationsOrders() throws IOException {
-        OrderMultiplyBody.Builder order = OrderMultiplyBody.newBuilder();
+
         OrderMultiply.Builder operation = OrderMultiply.newBuilder();
         MatrixPieceOwnerBody.Builder missingPiece = MatrixPieceOwnerBody.newBuilder();
 
@@ -179,11 +179,15 @@ public class Multiplication extends Operation {
         operation.setType(type);
 
         for (NodeWorkZonePair nwzp : tasks) {
+            OrderMultiplyBody.Builder order = OrderMultiplyBody.newBuilder();
             Node computingNode = nwzp.computingNode;
 
             for (WorkZone wz : nwzp.workZones) {
-                operation.setOutputPiece(wz.outputArea.convertToProto());
-                order.addOperation(operation.build());
+                System.err.println("XXX " + computingNode + " workzone: " + wz);
+                Chunk outputChunk = output.getChunk(wz.outputArea.startRow, wz.outputArea.startCol);
+                operation.setOutputPosition(wz.outputArea.convertToProto());
+                operation.setOutputChunkId(outputChunk.getChunkId());
+                operation.setOutputNodeId(outputChunk.getAssignedNodeId());
 
                 for (NeededPieceOfChunk c : wz.involvedChunks) {
                     if ( ! computingNode.doesManage(c.chunk.chunkId)) {
@@ -194,6 +198,8 @@ public class Multiplication extends Operation {
                         order.addMissingPieces(missingPiece.build());
                     }
                 }
+
+                order.addOperation(operation.build());
             }
 
             computingNode.sendMessage(new MessageMultiply(order.build()));

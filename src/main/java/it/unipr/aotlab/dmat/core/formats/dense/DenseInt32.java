@@ -57,7 +57,7 @@ public class DenseInt32 extends DenseBase {
 
         public DenseInt32IteratorPosition(Rectangle r) {
             this.currentRow = r.startRow;
-            this.currentCol = r.endRow;
+            this.currentCol = r.startCol;
             this.endRow = r.endRow;
             this.endCol = r.endCol;
             this.doHasNext = -1;
@@ -110,10 +110,27 @@ public class DenseInt32 extends DenseBase {
 
     @Override
     public Iterator<Triplet> matrixColumnIterator(int colNo) {
-        Rectangle r = Rectangle.build(hostChunk.getStartCol(),
-                                      hostChunk.getEndCol(),
+        Rectangle r = Rectangle.build(hostChunk.getStartRow(),
+                                      hostChunk.getEndRow(),
                                       colNo,
                                       colNo + 1);
         return new DenseInt32IteratorPosition(r);
+    }
+
+    @Override
+    public void setPosition(Object value, Rectangle position) {
+        Integer tvalue = (Integer)value;
+
+        for (int r = position.startRow, er = position.endRow; r < er; ++r) {
+            for (int c = position.startCol, ec = position.endCol; c < ec; ++c) {
+                int cood = convertCoods(r, c);
+                array.putInt(cood, tvalue);
+            }
+        }
+    }
+
+    @Override
+    public void set(Triplet t) {
+        set(t.value(), t.row(), t.col());
     }
 }

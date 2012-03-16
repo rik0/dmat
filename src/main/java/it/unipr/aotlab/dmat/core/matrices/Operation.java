@@ -6,6 +6,7 @@ import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire.SendMatrixPieceBo
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
 import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
 
 import java.io.IOException;
@@ -65,11 +66,12 @@ public abstract class Operation {
             //for each output area it needs to be updated
             for (WorkZone workZone : nodeAndworkZone.workZones) {
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
-                    awaitUpdate.setMatrix(workZone.outputChunk.chunkId);
-                    awaitUpdate.setOutputPiece(workZone.outputArea.convertToProto());
+                    awaitUpdate.setMatrixId(workZone.outputChunk.chunkId);
+                    awaitUpdate.setUpdatingPosition(workZone.outputArea.convertToProto());
 
                     getMessageSender()
-                        .sendMessage(null, computingNode);
+                        .sendMessage(new MessageAwaitUpdate(awaitUpdate.build()),
+                                     operands.get(outputMatrixIndex()).id);
                 }
 
                 //for each (sub)chunk needed to update the output area
@@ -88,12 +90,12 @@ public abstract class Operation {
             throw new DMatError(this.getClass().getCanonicalName() + " needs "
                     + arity() + " operands.");
 
-        SemiRing t = operands.get(0).semiring;
+        SemiRing t = operands.get(0).getSemiRing();
         for (Matrix m : operands) {
-            if (t != m.semiring)
+            if (t != m.getSemiRing())
                 throw new DMatError("All the operands must be of the same type!");
 
-            t = m.semiring;
+            t = m.getSemiRing();
         }
 
         otherPreconditions();

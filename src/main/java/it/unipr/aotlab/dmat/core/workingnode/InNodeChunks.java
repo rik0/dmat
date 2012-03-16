@@ -75,13 +75,6 @@ public class InNodeChunks {
     }
 
     private static <E> void setSemiring(Chunk chunk, InNodeChunk<E> inNodeChunk) {
-        TypeWire.SemiRing semiringTag = chunk.getSemiring();
-        if (semiringTag.equals(TypeWire.SemiRing.DEFAULTSEMIRING))
-            inNodeChunk.semiring
-                = SemiRings.defaultSemiring(chunk.getElementType());
-        else
-            inNodeChunk.semiring
-                = SemiRings.semiring(semiringTag);
-
+        inNodeChunk.semiring = SemiRings.semiring(chunk.getType()); 
     }
 }

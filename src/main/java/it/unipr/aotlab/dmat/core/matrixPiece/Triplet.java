@@ -21,5 +21,10 @@ public interface Triplet {
     public int row();
     public int col();
     public Object value();
+    
     public void setValue(Object sv);
+    public void setRow(int row);
+    public void setCol(int col);
+
+    public Triplet getCopy();
 }

@@ -6,10 +6,12 @@ option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderMultiply {
     required string outputMatrixId = 1;
-    required string firstFactorMatrixId = 2;
-    required string secondFactorMatrixId = 3;
-    required RectangleBody outputPiece = 4;
-    required TypeBody type = 5;
+    required string outputChunkId = 2;
+    required string outputNodeId = 3;
+    required string firstFactorMatrixId = 4;
+    required string secondFactorMatrixId = 5;
+    required RectangleBody outputPosition = 6;
+    required TypeBody type = 7;
 }
 
 message OrderMultiplyBody {

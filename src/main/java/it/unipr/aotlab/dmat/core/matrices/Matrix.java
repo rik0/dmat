@@ -25,6 +25,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
+import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.initializers.Initializer;
 import it.unipr.aotlab.dmat.core.matrices.Operation.NeededPieceOfChunk;
 
@@ -38,9 +39,8 @@ public class Matrix {
     String id;
     int rows = 0;
     int cols = 0;
-    TypeWire.ElementType elementType = null;
     Initializer init = null;
-    TypeWire.SemiRing semiring = null;
+    TypeBody type = null;
 
     private ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 
@@ -62,11 +62,11 @@ public class Matrix {
     }
 
     public TypeWire.ElementType getElementType() {
-        return elementType;
+        return type.getElementType();
     }
 
     public TypeWire.SemiRing getSemiRing() {
-        return semiring;
+        return type.getSemiRing();
     }
 
     /* TODO: define good format to specify initialization of matrix

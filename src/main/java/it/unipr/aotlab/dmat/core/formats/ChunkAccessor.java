@@ -16,6 +16,10 @@ public interface ChunkAccessor {
     public Object getDefault();
 
     public void set(Object value, int row, int col);
+    
+    public void set(Triplet t);
+    
+    public void setPosition(Object value, Rectangle position);
 
     public MatrixPiece getPiece(MatrixPieces.Builder matrixPieceBuilder, Rectangle position, boolean isUpdate);
 

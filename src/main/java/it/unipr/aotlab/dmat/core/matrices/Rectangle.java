@@ -92,4 +92,13 @@ public class Rectangle {
 
         return rv;
     }
+    
+    public int compare(RectangleBody rhs) {
+        int rv = startRow - rhs.getStartRow();
+        if (rv == 0) rv = endRow - rhs.getEndRow();
+        if (rv == 0) rv = startCol - rhs.getStartCol();
+        if (rv == 0) rv = endCol - rhs.getEndCol();
+
+        return rv;        
+    }
 }

@@ -106,4 +106,14 @@ public class DenseBool extends DenseBase {
         throw new DMatInternalError("No matrix row iterator yet for bools");
     }
 
+    @Override
+    public void setPosition(Object value, Rectangle position) {
+        throw new DMatInternalError("Nothing yet for bools");
+    }
+
+    @Override
+    public void set(Triplet t) {
+        throw new DMatInternalError("Nothing yet for bools");
+    }
+
 }

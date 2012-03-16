@@ -11,6 +11,8 @@ import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -88,8 +90,9 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
                 ++current;
 
                 return new Int32Triplet(t.getRow(), t.getCol(), t.getValue());
-            } else
-                throw new NoSuchElementException();
+            }
+
+            throw new NoSuchElementException();
         }
 
         @Override
@@ -119,46 +122,39 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     }
 
     private class MessageRowIterator implements Iterator<Triplet> {
-        int current;
-        int end;
-        int row;
-        int hasNext = -1;
-        MatrixPieceTripletsInt32Wire.Triplet triplet;
+        // CONSIDER: we extract the whole row and sort it...
+        //           better way?
+        private class colComparator implements java.util.Comparator<Triplet> {
+            @Override
+            public int compare(Triplet lhs, Triplet rhs) {
+                return lhs.col() - rhs.col();
+            }
+        }
+        ArrayList<Triplet> row = new ArrayList<Triplet>();
+        Iterator<Triplet> iterator;
 
         public MessageRowIterator(int row) {
-            this.current = 0;
-            this.row = row;
-            this.end = body.getValuesCount();
-            this.triplet = null;
-        }
+            for (int r = 0, e = body.getValuesCount(); r < e; ++r) {
+                MatrixPieceTripletsInt32Wire.Triplet rawT = body.getValues(r);
 
-        private void findNext() {
-            hasNext = 0;
-            for (; current < end; ++current) {
-                triplet = body.getValues(current);
-                if (triplet.getRow() == row) {
-                    hasNext = 1;
-                    break;
-                }
+                if (row == rawT.getRow())
+                    this.row.add(new Int32Triplet(rawT.getRow(),
+                                                  rawT.getCol(),
+                                                  rawT.getValue()));
             }
+            Collections.sort(this.row, new colComparator());
+
+            iterator = this.row.iterator();
         }
 
         @Override
         public boolean hasNext() {
-            if (hasNext == -1)
-                findNext();
-
-            return hasNext != 0;
+            return iterator.hasNext();
         }
 
         @Override
-        public Int32Triplet next() {
-            if (hasNext()) {
-                hasNext = -1;
-
-                return new Int32Triplet(triplet.getRow(), triplet.getCol(), triplet.getValue());
-            }
-            throw new NoSuchElementException();
+        public Triplet next() {
+            return iterator.next();
         }
 
         @Override
@@ -166,48 +162,39 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
             throw new UnsupportedOperationException();
         }
     }
-    
+
     private class MessageColIterator implements Iterator<Triplet> {
-        int current;
-        int end;
-        int col;
-        int hasNext = -1;
-        MatrixPieceTripletsInt32Wire.Triplet triplet;
+        private class rowComparator implements java.util.Comparator<Triplet> {
+            @Override
+            public int compare(Triplet lhs, Triplet rhs) {
+                return lhs.row() - rhs.row();
+            }
+        }
+        ArrayList<Triplet> col = new ArrayList<Triplet>();
+        Iterator<Triplet> iterator;
 
         public MessageColIterator(int col) {
-            this.current = 0;
-            this.col = col;
-            this.end = body.getValuesCount();
-            this.triplet = null;
-        }
+            for (int r = 0, e = body.getValuesCount(); r < e; ++r) {
+                MatrixPieceTripletsInt32Wire.Triplet rawT = body.getValues(r);
 
-        private void findNext() {
-            hasNext = 0;
-            for (; current < end; ++current) {
-                triplet = body.getValues(current);
-                if (triplet.getCol() == col) {
-                    hasNext = 1;
-                    break;
-                }
+                if (col == rawT.getCol())
+                    this.col.add(new Int32Triplet(rawT.getRow(),
+                                                  rawT.getCol(),
+                                                  rawT.getValue()));
             }
+            Collections.sort(this.col, new rowComparator());
+
+            iterator = this.col.iterator();
         }
 
         @Override
         public boolean hasNext() {
-            if (hasNext == -1)
-                findNext();
-
-            return hasNext != 0;
+            return iterator.hasNext();
         }
 
         @Override
-        public Int32Triplet next() {
-            if (hasNext()) {
-                hasNext = -1;
-
-                return new Int32Triplet(triplet.getRow(), triplet.getCol(), triplet.getValue());
-            }
-            throw new NoSuchElementException();
+        public Triplet next() {
+            return iterator.next();
         }
 
         @Override

@@ -1,7 +1,9 @@
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesAddAssign
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesAssignChunkToNode
+it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesAwaitUpdate
+it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesClearReceivedMatrixPieces
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMatrixPieceInt32
+it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMultiply
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesSendMatrixPiece
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesShutdown
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesTest
-it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesClearReceivedMatrixPieces

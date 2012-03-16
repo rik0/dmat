@@ -38,8 +38,7 @@ import java.io.IOException;
 
 public class Chunk {
     ChunkDescriptionWire.Format format;
-    TypeWire.ElementType elementType;
-    TypeWire.SemiRing semiring;
+    TypeWire.TypeBody elementType;
     ChunkDescriptionWire.MatricesOnTheWire matricesOnTheWire;
     String matrixId;
     String chunkId;
@@ -63,6 +62,10 @@ public class Chunk {
 
     public int getEndCol() {
         return matrixPosition.endCol;
+    }
+    
+    public TypeWire.TypeBody getType() {
+        return elementType;
     }
 
     public int nofElements() {
@@ -97,11 +100,11 @@ public class Chunk {
     }
 
     public TypeWire.ElementType getElementType() {
-        return elementType;
+        return elementType.getElementType();
     }
 
     public TypeWire.SemiRing getSemiring() {
-        return semiring;
+        return elementType.getSemiRing();
     }
 
     public ChunkDescriptionWire.MatricesOnTheWire getMatricesOnTheWire() {
@@ -127,8 +130,8 @@ public class Chunk {
                 .setStartCol(matrixPosition.startCol)
                 .setEndCol(matrixPosition.endCol).build();
         
-        TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(elementType)
-                .setSemiRing(semiring).build();
+        TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(getElementType())
+                .setSemiRing(getSemiring()).build();
 
         return ChunkDescriptionWire.ChunkDescriptionBody.newBuilder()
                 .setChunkId(chunkId)
@@ -142,9 +145,8 @@ public class Chunk {
     public Chunk(ChunkDescriptionWire.ChunkDescriptionBody m, String nodeId) {
         this.chunkId = m.getChunkId();
         this.matrixPosition = Rectangle.build(m.getPosition());
-        this.elementType = m.getType().getElementType();
+        this.elementType = m.getType();
         this.format = m.getFormat();
-        this.semiring = m.getType().getSemiRing();
         this.matricesOnTheWire = m.getMatricesOnTheWire();
         this.matrixId = m.getMatrixId();
         this.nodeId = nodeId;
@@ -162,7 +164,6 @@ public class Chunk {
         //filled-in later during matrix validation
         this.format = null;
         this.elementType = null;
-        this.semiring = null;
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
@@ -208,8 +209,7 @@ public class Chunk {
     }
 
     void validate(Matrices factory) {
-        this.elementType = factory.buildingMatrix.elementType;
-        this.semiring = factory.buildingMatrix.semiring;
+        this.elementType = factory.type;
         setFormat(factory);
         setMatricesOn();
     }

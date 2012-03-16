@@ -25,6 +25,14 @@ public class SemiRings {
         return SemiRings.semirings.get(et);
     }
 
+    static public SemiRing semiring(TypeWire.TypeBody type) {
+        TypeWire.SemiRing sr = type.getSemiRing();
+        if (sr.compareTo(TypeWire.SemiRing.DEFAULTSEMIRING) == 0)
+            return SemiRings.defaultSemiring(type.getElementType());
+
+        return SemiRings.semiring(sr);
+    }
+
     private SemiRings() {
     }
 }

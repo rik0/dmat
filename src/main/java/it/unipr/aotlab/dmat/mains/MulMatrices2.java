@@ -16,7 +16,7 @@ import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
 import java.io.IOException;
 
-public class MulMatrices {
+public class MulMatrices2 {
     public static void main(String[] argv) {
        try {
             MessageSender messageSender = new MessageSender(new Connector(
@@ -38,7 +38,6 @@ public class MulMatrices {
                     .setNofRows(10)
                     .setNofColumns(15)
                     .splitVerticallyChuck(null, 10, "left", "right")
-                    .splitHorizzontalyChuck("right", 4, "right-top", "right-bottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix C = Matrices.newBuilder()
@@ -46,24 +45,15 @@ public class MulMatrices {
                     .setNofRows(15)
                     .setNofColumns(20)
                     .splitVerticallyChuck(null, 10, "left", "right")
-                    .splitHorizzontalyChuck("left", 6, "left-top", "left-bottom")
-                    .splitVerticallyChuck("left-bottom", 5, "left-bottom-left", "left-bottom-right")
-                    .splitVerticallyChuck("right", 15, "right-left", "right-right")
-                    .splitHorizzontalyChuck("right-right", 4, "right-right-top", "right-right-bottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             A.getChunk(null).assignChunkToNode(testNode);
 
             B.getChunk("left").assignChunkToNode(testNode2);
-            B.getChunk("right-top").assignChunkToNode(testNode);
-            B.getChunk("right-bottom").assignChunkToNode(testNode2);
+            B.getChunk("right").assignChunkToNode(testNode);
             
-            C.getChunk("left-top").assignChunkToNode(testNode);
-            C.getChunk("left-bottom-left").assignChunkToNode(testNode2);
-            C.getChunk("left-bottom-right").assignChunkToNode(testNode);
-            C.getChunk("right-left").assignChunkToNode(testNode2);
-            C.getChunk("right-right-top").assignChunkToNode(testNode);
-            C.getChunk("right-right-bottom").assignChunkToNode(testNode2);
+            C.getChunk("left").assignChunkToNode(testNode);
+            C.getChunk("right").assignChunkToNode(testNode2);
 
             Multiplication r = new Multiplication();
 

@@ -54,25 +54,9 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
-        boolean done = false;
-        int col = message.getColRep();
-        int row = message.getRowRep();
-
         if (message.getUpdate()) {
-            // TODO linear search, better solution?
-            for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-                if (message.getMatrixId()
-                        .equals(inNodeChunk.chunk.getMatrixId())
-                     && inNodeChunk.chunk.doesManage(row, col)) {
-                    message.dispatch(inNodeChunk);
-                    hostWorkingNode.state.checkUpdatingState();
-                    done = true;
-                    break;
-                }
-            }
-            if ( ! done) {
-                throw new DMatInternalError("Receiving an update order for a non managed matrix!");
-            }
+            hostWorkingNode.state.chunkForUpdating.add(message);
+            hostWorkingNode.state.checkUpdatingState();
         }
         else {
             hostWorkingNode.state.chunkForOperations.add(message);
