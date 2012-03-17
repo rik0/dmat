@@ -19,7 +19,7 @@ public class MatrixMarketTestCase {
     public void testMatrixMarketGeneralInteger() {
         StringBuffer sb = new StringBuffer();
 
-        sb.append("%%MatrixMarket matrix coordinate integer general\n");
+        sb.append("%%MatrixMarket Matrix coordiNAte iNTeger geneRAL\n");
         sb.append("%\n");
         sb.append("% Comment!\n");
         sb.append("\n");
@@ -155,6 +155,8 @@ public class MatrixMarketTestCase {
         } catch (DMatError e) {
             assertTrue(false);
         } catch (ClassCastException e) {
+            assertTrue(false);
+        } catch (ArrayIndexOutOfBoundsException e) {
             assertTrue(false);
         }
     }

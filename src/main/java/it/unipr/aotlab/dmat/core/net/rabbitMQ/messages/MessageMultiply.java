@@ -1,12 +1,11 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
-import java.io.IOException;
-
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
-import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
+
+import java.io.IOException;
 
 public class MessageMultiply extends Operation {
     public OrderMultiplyBody body;

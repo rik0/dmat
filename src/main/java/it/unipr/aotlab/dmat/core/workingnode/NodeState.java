@@ -1,9 +1,12 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
+import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
+import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
+import it.unipr.aotlab.dmat.core.loaders.MatrixMarket;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
@@ -13,12 +16,17 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Operation;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -76,6 +84,17 @@ public class NodeState {
         for (InNodeChunk<?> n : managedChunks) {
             if (n.chunk.getMatrixId().equals(matrixId)
                     && n.chunk.doesManage(row, col)) {
+                return n;
+            }
+        }
+
+        return null;
+    }
+    
+    public InNodeChunk<?> getChunk(String matrixId, String chunkId) {
+        for (InNodeChunk<?> n : managedChunks) {
+            if (n.chunk.getMatrixId().equals(matrixId)
+                    && n.chunk.getChunkId().equals(chunkId)) {
                 return n;
             }
         }
@@ -598,5 +617,40 @@ public class NodeState {
         }
 
         throw new DMatInternalError(hostWorkingNode.nodeId + " knows nothing of matrix " + matrixId + "! I cannot create MatrixPiece.Builder");
+    }
+
+    public void updateMatrix(MessageSetMatrix message) {
+        URI dataAddress;
+        InNodeChunk<?> chunk = getChunk(message.body.getMatrixId(), message.body.getChunkId());
+        if (chunk == null) {
+            throw new DMatInternalError("This node does not manage " + message.body.getMatrixId() + "." + message.body.getChunkId() + "!");            
+        }
+        try {
+            dataAddress = new URI(message.body.getURI());
+        } catch (URISyntaxException e) {
+            throw new DMatInternalError("Received an URI with a syntax error!");
+        }
+        RectangleBody rect = message.body.getPosition();
+        Rectangle position = rect != null ? Rectangle.build(rect) : chunk.chunk.getArea();
+        
+        try {
+            updateMatrixImpl(chunk, position, dataAddress);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            throw new DMatInternalError("The file does not exist!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DMatInternalError(e + " " + e.getMessage());
+        } catch (DMatError e) {
+            e.printStackTrace();
+            throw new DMatInternalError(e + " " + e.getMessage());
+        }
+    }
+
+    private void updateMatrixImpl(InNodeChunk<?> chunk,
+                                  Rectangle position,
+                                  URI dataAddress) throws IOException, DMatError {
+        FileInputStream a = new FileInputStream(dataAddress.getPath());
+        new MatrixMarket(a);
     }
 }

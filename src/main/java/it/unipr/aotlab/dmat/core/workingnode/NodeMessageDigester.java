@@ -13,6 +13,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatri
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
 
 import java.io.IOException;
@@ -119,5 +120,12 @@ public class NodeMessageDigester {
 
         hostWorkingNode.state.awaitingUpdate.add(message);
         hostWorkingNode.state.checkUpdatingState();
+    }
+
+    public void accept(MessageSetMatrix message) {
+        debugMessage(message);
+        System.err.println(message.toString());
+
+        hostWorkingNode.state.updateMatrix(message);
     }
 }

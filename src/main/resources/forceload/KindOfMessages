@@ -5,5 +5,6 @@ it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesClearReceivedMatrixPiece
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMatrixPieceInt32
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMultiply
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesSendMatrixPiece
+it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesSetMatrix
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesShutdown
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesTest
