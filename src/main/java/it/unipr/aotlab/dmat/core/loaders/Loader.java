@@ -6,4 +6,7 @@ import java.util.Iterator;
 
 public interface Loader {
     Iterator<Triplet> getIterator();
+    int getNofCols();
+    int getNofRows();
+    int getNofElements();
 }
