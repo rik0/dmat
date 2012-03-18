@@ -15,7 +15,7 @@ public final class OrderSetMatrixWire {
     boolean hasMatrixId();
     String getMatrixId();
     
-    // required string chunkId = 2;
+    // optional string chunkId = 2 [default = "default"];
     boolean hasChunkId();
     String getChunkId();
     
@@ -89,7 +89,7 @@ public final class OrderSetMatrixWire {
       }
     }
     
-    // required string chunkId = 2;
+    // optional string chunkId = 2 [default = "default"];
     public static final int CHUNKID_FIELD_NUMBER = 2;
     private java.lang.Object chunkId_;
     public boolean hasChunkId() {
@@ -168,7 +168,7 @@ public final class OrderSetMatrixWire {
     
     private void initFields() {
       matrixId_ = "";
-      chunkId_ = "";
+      chunkId_ = "default";
       position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       uRI_ = "";
     }
@@ -178,10 +178,6 @@ public final class OrderSetMatrixWire {
       if (isInitialized != -1) return isInitialized == 1;
       
       if (!hasMatrixId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasChunkId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -366,7 +362,7 @@ public final class OrderSetMatrixWire {
         super.clear();
         matrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        chunkId_ = "";
+        chunkId_ = "default";
         bitField0_ = (bitField0_ & ~0x00000002);
         if (positionBuilder_ == null) {
           position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
@@ -468,10 +464,6 @@ public final class OrderSetMatrixWire {
       
       public final boolean isInitialized() {
         if (!hasMatrixId()) {
-          
-          return false;
-        }
-        if (!hasChunkId()) {
           
           return false;
         }
@@ -577,8 +569,8 @@ public final class OrderSetMatrixWire {
         onChanged();
       }
       
-      // required string chunkId = 2;
-      private java.lang.Object chunkId_ = "";
+      // optional string chunkId = 2 [default = "default"];
+      private java.lang.Object chunkId_ = "default";
       public boolean hasChunkId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
@@ -766,10 +758,10 @@ public final class OrderSetMatrixWire {
     java.lang.String[] descriptorData = {
       "\n?home/paolo/uni/dissertation/dmat/proto" +
       "/OrderSetMatrixWire.proto\032\023RectangleWire" +
-      ".proto\"f\n\022OrderSetMatrixBody\022\020\n\010matrixId" +
-      "\030\001 \002(\t\022\017\n\007chunkId\030\002 \002(\t\022 \n\010position\030\003 \001(" +
-      "\0132\016.RectangleBody\022\013\n\003URI\030\004 \002(\tB%\n#it.uni" +
-      "pr.aotlab.dmat.core.generated"
+      ".proto\"o\n\022OrderSetMatrixBody\022\020\n\010matrixId" +
+      "\030\001 \002(\t\022\030\n\007chunkId\030\002 \001(\t:\007default\022 \n\010posi" +
+      "tion\030\003 \001(\0132\016.RectangleBody\022\013\n\003URI\030\004 \002(\tB" +
+      "%\n#it.unipr.aotlab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

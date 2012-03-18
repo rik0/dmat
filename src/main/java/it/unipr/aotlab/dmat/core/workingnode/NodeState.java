@@ -90,7 +90,7 @@ public class NodeState {
 
         return null;
     }
-    
+
     public InNodeChunk<?> getChunk(String matrixId, String chunkId) {
         for (InNodeChunk<?> n : managedChunks) {
             if (n.chunk.getMatrixId().equals(matrixId)
@@ -134,7 +134,7 @@ public class NodeState {
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null)
             for (OrderMultiply order : messageMultiply.body.getOperationList()) {
-                System.err.println("Starting " + order.getOutputMatrixId() + " = " + order.getFirstFactorMatrixId() 
+                System.err.println("Starting " + order.getOutputMatrixId() + " = " + order.getFirstFactorMatrixId()
                         + " * " + order.getSecondFactorMatrixId() + " for:\n" + order.getOutputPosition());
                 doTheMultiplication(missingPieces, order);
             }
@@ -274,6 +274,9 @@ public class NodeState {
                     Object product = sm.times(r.value(), c.value());
                     Object comulativeSum = sm.add(result.value(), product);
                     result.setValue(comulativeSum);
+
+                    r = rowIterator.next();
+                    c = colIterator.next();
                 }
             }
         } catch (NoSuchElementException e) {}
@@ -623,7 +626,7 @@ public class NodeState {
         URI dataAddress;
         InNodeChunk<?> chunk = getChunk(message.body.getMatrixId(), message.body.getChunkId());
         if (chunk == null) {
-            throw new DMatInternalError("This node does not manage " + message.body.getMatrixId() + "." + message.body.getChunkId() + "!");            
+            throw new DMatInternalError("This node does not manage " + message.body.getMatrixId() + "." + message.body.getChunkId() + "!");
         }
         try {
             dataAddress = new URI(message.body.getURI());
@@ -631,8 +634,8 @@ public class NodeState {
             throw new DMatInternalError("Received an URI with a syntax error!");
         }
         RectangleBody rect = message.body.getPosition();
-        Rectangle position = rect != null ? Rectangle.build(rect) : chunk.chunk.getArea();
-        
+        Rectangle position = rect.getEndRow() != 0 ? Rectangle.build(rect) : chunk.chunk.getArea();
+
         try {
             updateMatrixImpl(chunk, position, dataAddress);
         } catch (FileNotFoundException e) {
@@ -650,7 +653,16 @@ public class NodeState {
     private void updateMatrixImpl(InNodeChunk<?> chunk,
                                   Rectangle position,
                                   URI dataAddress) throws IOException, DMatError {
+        // TODO check dimensions?
         FileInputStream a = new FileInputStream(dataAddress.getPath());
-        new MatrixMarket(a);
+        MatrixMarket mm = new MatrixMarket(a);
+        Iterator<Triplet> mmi = mm.getIterator();
+
+        while (mmi.hasNext()) {
+            Triplet t = mmi.next();
+
+            if (position.contains(t.row(), t.col()))
+                chunk.accessor.set(t);
+        }
     }
 }

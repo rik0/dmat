@@ -5,11 +5,13 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
+import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
@@ -17,6 +19,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 public class NodeMessageDigester {
     WorkingNode hostWorkingNode;
@@ -106,7 +109,7 @@ public class NodeMessageDigester {
     }
 
     public void accept(MessageMultiply message) throws IOException {
-        //A *= B
+        //A = B * C
         debugMessage(message);
         System.err.println(message.toString());
 
@@ -127,5 +130,21 @@ public class NodeMessageDigester {
         System.err.println(message.toString());
 
         hostWorkingNode.state.updateMatrix(message);
+    }
+    
+    public void accept(MessageExposeValues message) {
+        debugMessage(message);
+        System.err.println(message.toString());
+        InNodeChunk<?> chunk = hostWorkingNode.state.getChunk(message.body.getMatrixId(), message.body.getChunkId());
+        if (chunk == null) {
+            System.err.println("This node knows nothing about " + message.body.getMatrixId() + "." + message.body.getChunkId());
+            return;
+        }
+        
+        Iterator<Triplet> i = chunk.accessor.matrixPieceIterator(null);
+        while (i.hasNext()) {
+            Triplet t = i.next();
+            System.err.println((t.row() + 1) + " " + (t.col() + 1) + " " + t.value());
+        }
     }
 }

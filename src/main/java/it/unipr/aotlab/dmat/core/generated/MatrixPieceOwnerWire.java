@@ -15,11 +15,11 @@ public final class MatrixPieceOwnerWire {
     boolean hasMatrixId();
     String getMatrixId();
     
-    // required string chunkId = 2;
+    // optional string chunkId = 2 [default = "default"];
     boolean hasChunkId();
     String getChunkId();
     
-    // required .RectangleBody position = 3;
+    // optional .RectangleBody position = 3;
     boolean hasPosition();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getPositionOrBuilder();
@@ -85,7 +85,7 @@ public final class MatrixPieceOwnerWire {
       }
     }
     
-    // required string chunkId = 2;
+    // optional string chunkId = 2 [default = "default"];
     public static final int CHUNKID_FIELD_NUMBER = 2;
     private java.lang.Object chunkId_;
     public boolean hasChunkId() {
@@ -117,7 +117,7 @@ public final class MatrixPieceOwnerWire {
       }
     }
     
-    // required .RectangleBody position = 3;
+    // optional .RectangleBody position = 3;
     public static final int POSITION_FIELD_NUMBER = 3;
     private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody position_;
     public boolean hasPosition() {
@@ -132,7 +132,7 @@ public final class MatrixPieceOwnerWire {
     
     private void initFields() {
       matrixId_ = "";
-      chunkId_ = "";
+      chunkId_ = "default";
       position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -144,17 +144,11 @@ public final class MatrixPieceOwnerWire {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasChunkId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPosition()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getPosition().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
+      if (hasPosition()) {
+        if (!getPosition().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -320,7 +314,7 @@ public final class MatrixPieceOwnerWire {
         super.clear();
         matrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        chunkId_ = "";
+        chunkId_ = "default";
         bitField0_ = (bitField0_ & ~0x00000002);
         if (positionBuilder_ == null) {
           position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
@@ -416,17 +410,11 @@ public final class MatrixPieceOwnerWire {
           
           return false;
         }
-        if (!hasChunkId()) {
-          
-          return false;
-        }
-        if (!hasPosition()) {
-          
-          return false;
-        }
-        if (!getPosition().isInitialized()) {
-          
-          return false;
+        if (hasPosition()) {
+          if (!getPosition().isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -515,8 +503,8 @@ public final class MatrixPieceOwnerWire {
         onChanged();
       }
       
-      // required string chunkId = 2;
-      private java.lang.Object chunkId_ = "";
+      // optional string chunkId = 2 [default = "default"];
+      private java.lang.Object chunkId_ = "default";
       public boolean hasChunkId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
@@ -551,7 +539,7 @@ public final class MatrixPieceOwnerWire {
         onChanged();
       }
       
-      // required .RectangleBody position = 3;
+      // optional .RectangleBody position = 3;
       private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> positionBuilder_;
@@ -668,10 +656,10 @@ public final class MatrixPieceOwnerWire {
     java.lang.String[] descriptorData = {
       "\nAhome/paolo/uni/dissertation/dmat/proto" +
       "/MatrixPieceOwnerWire.proto\032\023RectangleWi" +
-      "re.proto\"[\n\024MatrixPieceOwnerBody\022\020\n\010matr" +
-      "ixId\030\001 \002(\t\022\017\n\007chunkId\030\002 \002(\t\022 \n\010position\030" +
-      "\003 \002(\0132\016.RectangleBodyB%\n#it.unipr.aotlab" +
-      ".dmat.core.generated"
+      "re.proto\"d\n\024MatrixPieceOwnerBody\022\020\n\010matr" +
+      "ixId\030\001 \002(\t\022\030\n\007chunkId\030\002 \001(\t:\007default\022 \n\010" +
+      "position\030\003 \001(\0132\016.RectangleBodyB%\n#it.uni" +
+      "pr.aotlab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

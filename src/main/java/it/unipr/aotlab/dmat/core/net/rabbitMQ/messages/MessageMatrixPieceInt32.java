@@ -118,7 +118,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
 
     @Override
     public boolean doesManage(int row, int col) {
-        return getArea().isInside(row, col);
+        return getArea().contains(row, col);
     }
 
     private class MessageRowIterator implements Iterator<Triplet> {

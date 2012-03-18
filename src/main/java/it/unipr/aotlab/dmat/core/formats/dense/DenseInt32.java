@@ -43,11 +43,14 @@ public class DenseInt32 extends DenseBase {
 
     @Override
     public Iterator<Triplet> matrixPieceIterator(Rectangle r) {
+        if (r == null)
+            r = this.hostChunk.getArea();
         return new DenseInt32IteratorPosition(r);
     }
 
     private class DenseInt32IteratorPosition implements Iterator<Triplet> {
         int currentRow;
+        int startCol;
         int currentCol;
         int value;
 
@@ -57,19 +60,26 @@ public class DenseInt32 extends DenseBase {
 
         public DenseInt32IteratorPosition(Rectangle r) {
             this.currentRow = r.startRow;
-            this.currentCol = r.startCol;
+            this.currentCol = r.startCol - 1;
+            this.startCol = r.startCol;
             this.endRow = r.endRow;
             this.endCol = r.endCol;
             this.doHasNext = -1;
         }
 
         public int findNext() {
+            ++currentCol;
+
             for (; currentRow < endRow; ++currentRow) {
                 for (; currentCol < endCol; ++currentCol) {
-                    if (get(currentRow, currentCol) != getDefault())
+                    if ((value = get(currentRow, currentCol)) != getDefault()) {
                         return 1;
+                    }
                 }
+
+                currentCol = startCol;
             }
+
             return 0;
         }
 
@@ -77,7 +87,7 @@ public class DenseInt32 extends DenseBase {
         public boolean hasNext() {
             if (doHasNext == -1) doHasNext = findNext();
 
-            return doHasNext != 0 ? true : false;
+            return doHasNext != 0;
         }
 
         @Override

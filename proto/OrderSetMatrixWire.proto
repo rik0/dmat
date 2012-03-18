@@ -4,7 +4,7 @@ option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderSetMatrixBody {
     required string matrixId = 1;
-    required string chunkId = 2;
+    optional string chunkId = 2 [ default = "default" ];
     optional RectangleBody position = 3;
     required string URI = 4;
 }

@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.loaders;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.matrixPiece.DoubleTriplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.util.Assertion;
@@ -229,6 +230,10 @@ public class MatrixMarket implements Loader {
             fieldInterpreter = new IntegerField();
             return;
         }
+        if (field.equals("real")) {
+            fieldInterpreter = new RealField();
+            return;            
+        }
 
         throw new DMatError("DMat cannot read Matrix Market files with field  " + field);
     }
@@ -297,6 +302,32 @@ public class MatrixMarket implements Loader {
             return v;
         }
     }
+    
+    private class RealField implements FieldInterpreter {
+        @Override
+        public Triplet readValues(String[] valueLine) throws DMatError {
+            if (valueLine.length != 3)
+                throw new DMatError("Invalid Matrix Market File");
+
+            int currentRow = Integer.parseInt(valueLine[0]) - 1;
+            int currentCol = Integer.parseInt(valueLine[1]) - 1;
+            double currentValue = Double.parseDouble(valueLine[2]);
+
+            return new DoubleTriplet(currentRow, currentCol, currentValue);
+        }
+
+        @Override
+        public Object getAdditiveInverse(Object v) {
+            Double tv = (Double)v;
+            return -tv;
+        }
+
+        @Override
+        public Object getConjugate(Object v) {
+            return v;
+        }
+    }
+
 
     private class GeneralSymmetry implements SymmetryInterpreter {
         @Override

@@ -26,7 +26,7 @@ public class Rectangle {
         return ! (endRow < startRow || endCol < startCol);
     }
 
-    public boolean isInside(int row, int col) {
+    public boolean contains(int row, int col) {
         return     (row >= startRow && row < endRow)
                 && (col >= startCol && col < endCol);
     }
