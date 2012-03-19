@@ -265,9 +265,9 @@ public class NodeState {
             // semirings' zero annihilates with respect to multiplication
             // so we skip the 0*a or a*0 operations.
             for (;;) {
-                if (r.row() < c.col())
+                if (r.col() < c.row())
                     r = rowIterator.next();
-                else if (c.col() < r.row())
+                else if (c.row() < r.col())
                     c = colIterator.next();
                 else { // r.row() == c.col()
                     // WARNING: in general the product is not commutative
