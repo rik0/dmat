@@ -9,10 +9,8 @@ public interface Triplet {
         public int compare(Triplet lhs, Triplet rhs) {
             Assertion.isTrue(lhs != null && rhs != null, "Cannot compare nulls!");
 
-            int rv;
-
-            rv = lhs.row() - rhs.row();
-            if (rv == 0) rv = lhs.col() - lhs.col();
+            int rv = lhs.row() - rhs.row();
+            if (rv == 0) rv = lhs.col() - rhs.col();
 
             return rv;
         }

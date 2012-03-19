@@ -56,7 +56,6 @@ public class NodeMessageDigester {
 
     public void accept(MessageMatrixValues message) throws IOException {
         debugMessage(message);
-        System.err.println(message.getMatrixId() + "." + message.getChunkId() + ": " + message.getArea());
 
         if (message.getUpdate()) {
             hostWorkingNode.state.chunkForUpdating.add(message);
@@ -88,10 +87,6 @@ public class NodeMessageDigester {
                     + message.body.getMatrixId()
                     + " row: " + neededPiece.startRow + " col: " + neededPiece.startCol);
 
-        System.err.println("XXX " + message.body.getRecipientList() + " asked for: ");
-        System.err.println("XXX " + message.body.getMatrixId());
-        System.err.println("XXX " + Rectangle.build(message.body.getNeededPiece()));
-        
         MatrixPieces.Builder mbuilder = MatrixPieces.matrixPiece(piece.getTag());
         hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body.getRecipientList());
     }
@@ -135,7 +130,7 @@ public class NodeMessageDigester {
 
         hostWorkingNode.state.updateMatrix(message);
     }
-    
+
     public void accept(MessageExposeValues message) {
         debugMessage(message);
         System.err.println(message.toString());
@@ -144,7 +139,7 @@ public class NodeMessageDigester {
             System.err.println("This node knows nothing about " + message.body.getMatrixId() + "." + message.body.getChunkId());
             return;
         }
-        
+
         Iterator<Triplet> i = chunk.accessor.matrixPieceIterator(null);
         System.err.println(message.body.getMatrixId() + "." + message.body.getChunkId() + ":");
         while (i.hasNext()) {

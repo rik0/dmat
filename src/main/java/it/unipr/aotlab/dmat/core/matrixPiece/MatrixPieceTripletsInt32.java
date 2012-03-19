@@ -52,8 +52,6 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
             b.setChunkId(format.hostChunk().getChunkId());
             b.setNodeId(format.hostChunk().getAssignedNodeId());
 
-            System.err.println("XXX " + position);
-            
             int intDefault = (Integer) format.getDefault();
             int v;
 

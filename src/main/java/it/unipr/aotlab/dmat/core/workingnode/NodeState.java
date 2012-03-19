@@ -123,13 +123,11 @@ public class NodeState {
 
         InNodeChunk<?> n = getChunk(matrixId, interestedArea);
         if (n != null) {
-            System.err.println("XXX local chunk iterator");
             return n.accessor.matrixPieceIterator(interestedArea);
         }
 
         MessageMatrixValues m = getMessage(extraPieces, matrixId, interestedArea);
         if (m != null) {
-            System.err.println("XXX message chunk iterator");
             return m.matrixPieceIterator();
         }
 
@@ -294,9 +292,10 @@ public class NodeState {
     public void exec(MessageAddAssign messageAddAssign) throws IOException {
         ArrayList<MessageMatrixValues> missingPieces = null;
 
-        if ((missingPieces = weGotAllPieces(messageAddAssign)) != null)
+        if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
             for (OrderAddAssign order : messageAddAssign.body.getOperationList())
                 doTheSum(missingPieces, order);
+        }
     }
 
     private ArrayList<MessageMatrixValues> weGotAllPieces(Operation op) {
@@ -331,23 +330,21 @@ public class NodeState {
             }
         }
         else {
-            System.err.println("XXX remote op");
             //we do not have the output matrix piece.
             TreeSet<Triplet> tree = new TreeSet<Triplet>(new Triplet.Comparator());
 
             MessageMatrixValues firstOpMess = getMessage(missingPieces, firstMatrixId, interestedPosition);
+
             Iterator<Triplet> firstOpIt = firstOpMess.matrixPieceIterator();
             Iterator<Triplet> secondOpIt = getIterator(missingPieces, secondMatrixId, interestedPosition);
 
             while (firstOpIt.hasNext()) {
                 Triplet fo = firstOpIt.next();
-                System.err.println("XXX fo " + fo.row() + " " + fo.col() + " " + fo.value());
                 updateSumTree(tree, fo, semiring);
             }
 
             while (secondOpIt.hasNext()) {
                 Triplet so = secondOpIt.next();
-                System.err.println("XXX so " + so.row() + " " + so.col() + " " + so.value());
                 updateSumTree(tree, so, semiring);
             }
 
@@ -359,7 +356,7 @@ public class NodeState {
             MessageMatrixValues firstOpMess,
             String outputNodeId) throws IOException {
         MatrixPieces.Builder b = firstOpMess.getAppropriatedBuilder();
-        
+
 
         String matrixId = firstOpMess.getMatrixId();
         String chunkId = firstOpMess.getChunkId();
@@ -371,15 +368,17 @@ public class NodeState {
     }
 
     private static void updateSumTree(TreeSet<Triplet> tree, Triplet op, SemiRing semiring) {
-        Triplet otherOpT = tree.tailSet(op).first();
-        Object otherOp;
+        Triplet otherOp = null;
 
-        if (otherOpT != null && tree.comparator().compare(op, otherOpT) == 0)
-            otherOp = otherOpT.value();
-        else
-            otherOp = semiring.zero();
+        try {
+            otherOp = tree.tailSet(op).first();
+        } catch (java.util.NoSuchElementException t) {}
 
-        op.setValue(semiring.add(op.value(), otherOp));
+        // in semirings a + 0 = 0 + a = a
+        if (otherOp != null && tree.comparator().compare(op, otherOp) == 0) {
+            op.setValue(semiring.add(op.value(), otherOp.value()));
+            tree.remove(otherOp);
+        }
 
         tree.add(op);
     }
@@ -449,7 +448,7 @@ public class NodeState {
             al.clear();
         }
         else if (index == (size - 1)) {
-            al.remove(size - 1);            
+            al.remove(size - 1);
         }
         else {
             E last = al.remove(size - 1);

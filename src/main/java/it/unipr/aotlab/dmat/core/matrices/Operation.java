@@ -60,7 +60,6 @@ public abstract class Operation {
 
         // for each computing node
         for (NodeWorkZonePair nodeAndworkZone : tasks) {
-            System.err.println("XXX " + nodeAndworkZone);
             Node computingNode = nodeAndworkZone.computingNode;
             String computingNodeId = computingNode.getNodeId();
 
@@ -398,7 +397,6 @@ public abstract class Operation {
                        .setNeededPiece(message.neededPiece.convertToProto());
 
             for (String destination : destinations) {
-                System.err.println("XXX " + message.ownerNodeId + " must send " + message.matrixId + " " + message.neededPiece + " to " + destination);
                 messageBody.addRecipient(destination);
             }
 
