@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.net.ssl.HostnameVerifier;
+
 public class Multiplication extends Operation {
     @Override
     public int arity() {
@@ -183,7 +185,6 @@ public class Multiplication extends Operation {
             Node computingNode = nwzp.computingNode;
 
             for (WorkZone wz : nwzp.workZones) {
-                System.err.println("XXX " + computingNode + " workzone: " + wz);
                 Chunk outputChunk = output.getChunk(wz.outputArea.startRow, wz.outputArea.startCol);
                 operation.setOutputPosition(wz.outputArea.convertToProto());
                 operation.setOutputChunkId(outputChunk.getChunkId());

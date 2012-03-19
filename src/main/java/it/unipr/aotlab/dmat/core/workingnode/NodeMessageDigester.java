@@ -56,7 +56,7 @@ public class NodeMessageDigester {
 
     public void accept(MessageMatrixValues message) throws IOException {
         debugMessage(message);
-        System.err.println(message.toString());
+        System.err.println(message.getMatrixId() + "." + message.getChunkId() + ": " + message.getArea());
 
         if (message.getUpdate()) {
             hostWorkingNode.state.chunkForUpdating.add(message);
@@ -142,6 +142,7 @@ public class NodeMessageDigester {
         }
         
         Iterator<Triplet> i = chunk.accessor.matrixPieceIterator(null);
+        System.err.println(message.body.getMatrixId() + "." + message.body.getChunkId() + ":");
         while (i.hasNext()) {
             Triplet t = i.next();
             System.err.println((t.row() + 1) + " " + (t.col() + 1) + " " + t.value());

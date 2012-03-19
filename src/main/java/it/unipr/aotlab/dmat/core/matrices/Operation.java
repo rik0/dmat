@@ -65,19 +65,22 @@ public abstract class Operation {
 
             //for each output area it needs to be updated
             for (WorkZone workZone : nodeAndworkZone.workZones) {
+
+                //send ``awaiting update'' if needed.
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
-                    awaitUpdate.setMatrixId(workZone.outputChunk.chunkId);
+                    awaitUpdate.setMatrixId(workZone.outputChunk.matrixId);
                     awaitUpdate.setUpdatingPosition(workZone.outputArea.convertToProto());
 
                     getMessageSender()
                         .sendMessage(new MessageAwaitUpdate(awaitUpdate.build()),
-                                     operands.get(outputMatrixIndex()).id);
+                                     workZone.outputChunk.getAssignedNode());
                 }
 
                 //for each (sub)chunk needed to update the output area
                 for (NeededPieceOfChunk pc : workZone.involvedChunks) {
-                    if ( ! computingNode.doesManage(pc.chunk.chunkId))
+                    if ( ! computingNode.doesManage(pc.chunk.chunkId)) {
                         updatePendingMessage(pendingMessages, pc, computingNodeId);
+                    }
                 }
             }
         }
@@ -346,6 +349,11 @@ public abstract class Operation {
         public PendingMissingPiecesMess() {}
 
         @Override
+        public String toString() {
+            return " node:" + ownerNodeId + " matrix:" + matrixId + " piece:" + neededPiece;
+        }
+
+        @Override
         public int compareTo(PendingMissingPiecesMess rhs) {
             int rv = matrixId.compareTo(rhs.matrixId);
             if (rv == 0) rv = ownerNodeId.compareTo(rhs.ownerNodeId);
@@ -380,18 +388,20 @@ public abstract class Operation {
 
     private void doActualSending(HashMap<PendingMissingPiecesMess,
                                  TreeSet<String>> pendingMessages) throws IOException {
-        SendMatrixPieceBody.Builder messageBody = SendMatrixPieceBody.newBuilder();
-        messageBody.setUpdate(false);
-
         for (Entry<PendingMissingPiecesMess, TreeSet<String>> task : pendingMessages.entrySet()) {
+            SendMatrixPieceBody.Builder messageBody = SendMatrixPieceBody.newBuilder();
+            messageBody.setUpdate(false);
+
             PendingMissingPiecesMess message = task.getKey();
             TreeSet<String> destinations = task.getValue();
 
             messageBody.setMatrixId(message.matrixId)
                        .setNeededPiece(message.neededPiece.convertToProto());
 
-            for (String destination : destinations)
+            for (String destination : destinations) {
+                System.err.println("XXX " + message.ownerNodeId + " must send " + message.matrixId + " " + message.neededPiece + " to " + destination);
                 messageBody.addRecipient(destination);
+            }
 
             getMessageSender().sendMessage(new MessageSendMatrixPiece(messageBody.build()),
                                            message.ownerNodeId);

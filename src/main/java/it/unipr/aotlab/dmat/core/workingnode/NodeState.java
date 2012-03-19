@@ -394,7 +394,7 @@ public class NodeState {
             for (int iwaiting = 0; iwaiting < awaitingUpdate.size(); ++iwaiting) {
                 MessageMatrixValues values = chunkForUpdating.get(ivalues);
                 MessageAwaitUpdate waiting = awaitingUpdate.get(iwaiting);
-
+                
                 if (values.getMatrixId().equals(waiting.body.getMatrixId())
                         && values.getArea().compare(waiting.body.getUpdatingPosition()) == 0) {
                     removeElement(chunkForUpdating, ivalues);
@@ -412,14 +412,8 @@ public class NodeState {
         String matrixId = values.getMatrixId();
         String chunkId = values.getChunkId();
 
-        InNodeChunk<?> updatingNode = null;
-        for (InNodeChunk<?> n : managedChunks) {
-            if (n.chunk.getMatrixId().equals(matrixId)
-                    && n.chunk.getChunkId().equals(chunkId)) {
-                updatingNode = n;
-                break;
-            }
-        }
+        InNodeChunk<?> updatingNode = getChunk(matrixId, chunkId);
+
         Assertion.isTrue(updatingNode != null, "Requested updating of a non-managed node!");
         Assertion.isTrue(values.getArea().isSubset(updatingNode.chunk.getArea()),
                 "Invalid updating message has arrived!");
@@ -655,14 +649,18 @@ public class NodeState {
                                   URI dataAddress) throws IOException, DMatError {
         // TODO check dimensions?
         FileInputStream a = new FileInputStream(dataAddress.getPath());
-        MatrixMarket mm = new MatrixMarket(a);
-        Iterator<Triplet> mmi = mm.getIterator();
+        try {
+            MatrixMarket mm = new MatrixMarket(a);
+            Iterator<Triplet> mmi = mm.getIterator();
 
-        while (mmi.hasNext()) {
-            Triplet t = mmi.next();
+            while (mmi.hasNext()) {
+                Triplet t = mmi.next();
 
-            if (position.contains(t.row(), t.col()))
-                chunk.accessor.set(t);
+                if (position.contains(t.row(), t.col()))
+                    chunk.accessor.set(t);
+            }
+        } finally {
+            a.close();
         }
     }
 }

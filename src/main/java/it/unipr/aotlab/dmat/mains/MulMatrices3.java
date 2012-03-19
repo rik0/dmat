@@ -66,7 +66,7 @@ public class MulMatrices3 {
             r.setOperands(A, B, C);
             r.exec();
 
-            Thread.sleep(2000);
+            Thread.sleep(5000);
 
             MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").build()));

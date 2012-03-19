@@ -78,7 +78,7 @@ public class Rectangle {
 
     @Override
     public String toString() {
-        return super.toString() + ". StartRow: " + this.startRow
+        return "StartRow: " + this.startRow
                 + " EndRow: " + this.endRow
                 + " StartCol: " + this.startCol
                 + " EndCol: " + this.endCol + ".";
