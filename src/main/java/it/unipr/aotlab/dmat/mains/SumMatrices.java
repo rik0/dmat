@@ -1,8 +1,7 @@
 package it.unipr.aotlab.dmat.mains;
 
-import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
-import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
+import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.AdditionAssignment;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
@@ -13,9 +12,9 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
-
-import java.io.IOException;
 
 public class SumMatrices {
     public static void main(String[] argv) {
@@ -25,28 +24,28 @@ public class SumMatrices {
             NodeRegister register = new NodeRegister(messageSender);
             Nodes nodes = new Nodes(register);
 
-            Matrix matrix = Matrices.newBuilder()
+            Matrix A = Matrices.newBuilder()
                     .setName("A")
                     .setNofRows(20)
                     .setNofColumns(20)
-                    .splitHorizzontalyChuck(null, 10, "top", "bottom")
+                    .splitHorizzontalyChuck(null, 10, "Atop", "Abottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
-            Matrix matrix2 = Matrices.newBuilder()
+            Matrix B = Matrices.newBuilder()
                     .setName("B")
                     .setNofColumns(20)
                     .setNofRows(20)
-                    .splitVerticallyChuck(null, 10, "left", "right")
+                    .splitVerticallyChuck(null, 10, "Bleft", "Bright")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Node testNode = nodes.setNodeName("testNode").build();
             Node testNode2 = nodes.setNodeName("testNode2").build();
 
-            Chunk ATop = matrix.getChunk("top");
-            Chunk ABottom = matrix.getChunk("bottom");
+            Chunk ATop = A.getChunk("Atop");
+            Chunk ABottom = A.getChunk("Abottom");
 
-            Chunk BLeft = matrix2.getChunk("left");
-            Chunk BRight = matrix2.getChunk("right");
+            Chunk BLeft = B.getChunk("Bleft");
+            Chunk BRight = B.getChunk("Bright");
 
             ATop.assignChunkToNode(testNode);
             BLeft.assignChunkToNode(testNode);
@@ -54,20 +53,47 @@ public class SumMatrices {
             ABottom.assignChunkToNode(testNode2);
             BRight.assignChunkToNode(testNode2);
 
+            OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
+            b.setURI("file:///home/paolo/uni/dissertation/example_matrix");
+
+            b.setMatrixId("A").setChunkId("Atop");
+            testNode.sendMessage(new MessageSetMatrix(b.build()));
+
+            b.setMatrixId("A").setChunkId("Abottom");
+            testNode2.sendMessage(new MessageSetMatrix(b.build()));
+
+            b.setMatrixId("B").setChunkId("Bleft");
+            testNode.sendMessage(new MessageSetMatrix(b.build()));
+
+            b.setMatrixId("B").setChunkId("Bright");
+            testNode2.sendMessage(new MessageSetMatrix(b.build()));
+
+            Thread.sleep(2000);
+            MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Atop").build()));
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Abottom").build()));
+
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bleft").build()));
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bright").build()));
+            
+            Thread.sleep(2000);
+            
             AdditionAssignment r = new AdditionAssignment();
 
-            r.setOperands(matrix, matrix2);
+            r.setComputingNodes(testNode);
+            r.setOperands(A, B);
             r.exec();
-            //register.clearReceivedMatrixPieces();
+
+            Thread.sleep(2000);
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Atop").build()));
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Abottom").build()));
+            
+            Thread.sleep(2000);
+            register.clearReceivedMatrixPieces();
 
             MessageSender.closeConnection();
-        } catch (ChunkNotFound e) {
-            e.printStackTrace();
-        } catch (IdNotUnique e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DMatError e) {
+        } catch (Throwable e) {
+            System.err.println(e);
             e.printStackTrace();
         }
     }

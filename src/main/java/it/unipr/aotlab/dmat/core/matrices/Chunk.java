@@ -191,7 +191,7 @@ public class Chunk {
 
     @Override
     public String toString() {
-        return super.toString() + "Matrix.Chunk Id: " + matrixId + "." + chunkId + " startRow: "
+        return "Matrix.Chunk Id: " + matrixId + "." + chunkId + " startRow: "
                 + matrixPosition.startRow + " endRow: " + matrixPosition.endRow + " startCol: " + matrixPosition.startCol
                 + " endCol: " + matrixPosition.endCol;
     }

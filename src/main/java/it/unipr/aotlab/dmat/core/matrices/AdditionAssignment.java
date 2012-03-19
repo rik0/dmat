@@ -35,6 +35,8 @@ public class AdditionAssignment extends ShapeFriendlyOp {
             OrderAddAssignBody.Builder order = OrderAddAssignBody.newBuilder();
 
             for (WorkZone wz : nodeAndworkZone.workZones) {
+                operation.setFirstAddendumChunkId(wz.outputChunk.getChunkId());
+                operation.setFirstAddendumNodeId(wz.outputChunk.getAssignedNodeId());
                 operation.setOutputPiece(wz.outputArea.convertToProto());
                 order.addOperation(operation.build());
 

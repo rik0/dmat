@@ -149,9 +149,11 @@ public class Matrix {
         ArrayList<NeededPieceOfChunk> involved = new ArrayList<NeededPieceOfChunk>();
         Rectangle intersection;
 
-        for (Chunk c : list)
-            if (null != (intersection = c.intersection(startRow, endRow, startCol, endCol)))
-                involved.add(new NeededPieceOfChunk(c, intersection));
+        for (Chunk c : list) {
+            if (null != (intersection = c.intersection(startRow, endRow, startCol, endCol))) {
+                involved.add(new NeededPieceOfChunk(c, intersection));                
+            }
+        }
 
         return involved;
     }

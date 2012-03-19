@@ -88,6 +88,10 @@ public class NodeMessageDigester {
                     + message.body.getMatrixId()
                     + " row: " + neededPiece.startRow + " col: " + neededPiece.startCol);
 
+        System.err.println("XXX " + message.body.getRecipientList() + " asked for: ");
+        System.err.println("XXX " + message.body.getMatrixId());
+        System.err.println("XXX " + Rectangle.build(message.body.getNeededPiece()));
+        
         MatrixPieces.Builder mbuilder = MatrixPieces.matrixPiece(piece.getTag());
         hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body.getRecipientList());
     }

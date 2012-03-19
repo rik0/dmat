@@ -109,8 +109,9 @@ public class NodeState {
         if (messages == null) messages = chunkForOperations;
 
         for (MessageMatrixValues m : messages) {
-            if (m.getMatrixId().equals(matrixId) && interestedArea.isSubset(m.getArea()));
+            if (m.getMatrixId().equals(matrixId) && interestedArea.isSubset(m.getArea())) {
                 return m;
+            }
         }
 
         return null;
@@ -119,12 +120,18 @@ public class NodeState {
     public Iterator<Triplet> getIterator(ArrayList<MessageMatrixValues> extraPieces,
                                    String matrixId,
                                    Rectangle interestedArea) {
-        InNodeChunk<?> n = getChunk(matrixId, interestedArea);
-        if (n != null) return n.accessor.matrixPieceIterator(interestedArea);
 
+        InNodeChunk<?> n = getChunk(matrixId, interestedArea);
+        if (n != null) {
+            System.err.println("XXX local chunk iterator");
+            return n.accessor.matrixPieceIterator(interestedArea);
+        }
 
         MessageMatrixValues m = getMessage(extraPieces, matrixId, interestedArea);
-        if (m != null) return m.matrixPieceIterator();
+        if (m != null) {
+            System.err.println("XXX message chunk iterator");
+            return m.matrixPieceIterator();
+        }
 
         throw new DMatInternalError("Asked for an unmanaged and unreceived piece of matrix!");
     }
@@ -324,6 +331,7 @@ public class NodeState {
             }
         }
         else {
+            System.err.println("XXX remote op");
             //we do not have the output matrix piece.
             TreeSet<Triplet> tree = new TreeSet<Triplet>(new Triplet.Comparator());
 
@@ -333,20 +341,25 @@ public class NodeState {
 
             while (firstOpIt.hasNext()) {
                 Triplet fo = firstOpIt.next();
+                System.err.println("XXX fo " + fo.row() + " " + fo.col() + " " + fo.value());
                 updateSumTree(tree, fo, semiring);
             }
 
             while (secondOpIt.hasNext()) {
                 Triplet so = secondOpIt.next();
+                System.err.println("XXX so " + so.row() + " " + so.col() + " " + so.value());
                 updateSumTree(tree, so, semiring);
             }
 
-            sendOutputBack(tree, firstOpMess);
+            sendOutputBack(tree, firstOpMess, order.getFirstAddendumNodeId());
         }
     }
 
-    private void sendOutputBack(TreeSet<Triplet> tree, MessageMatrixValues firstOpMess) throws IOException {
+    private void sendOutputBack(TreeSet<Triplet> tree,
+            MessageMatrixValues firstOpMess,
+            String outputNodeId) throws IOException {
         MatrixPieces.Builder b = firstOpMess.getAppropriatedBuilder();
+        
 
         String matrixId = firstOpMess.getMatrixId();
         String chunkId = firstOpMess.getChunkId();
@@ -354,7 +367,7 @@ public class NodeState {
         Rectangle position = firstOpMess.getArea();
 
         MatrixPiece rawMessage = b.buildFromTriplets(matrixId, chunkId, nodeId, tree, position, true);
-        hostWorkingNode.messageSender.sendMessage(b.buildMessage(rawMessage), matrixId);
+        hostWorkingNode.messageSender.sendMessage(b.buildMessage(rawMessage), outputNodeId);
     }
 
     private static void updateSumTree(TreeSet<Triplet> tree, Triplet op, SemiRing semiring) {
@@ -390,22 +403,29 @@ public class NodeState {
     }
 
     void checkUpdatingState() {
+        ArrayList<Integer> toBeRemovedIva = new ArrayList<Integer>();
+        ArrayList<Integer> toBeRemovedIwa = new ArrayList<Integer>();
+
         for (int ivalues = 0; ivalues < chunkForUpdating.size(); ++ivalues) {
             for (int iwaiting = 0; iwaiting < awaitingUpdate.size(); ++iwaiting) {
                 MessageMatrixValues values = chunkForUpdating.get(ivalues);
                 MessageAwaitUpdate waiting = awaitingUpdate.get(iwaiting);
-                
+
                 if (values.getMatrixId().equals(waiting.body.getMatrixId())
                         && values.getArea().compare(waiting.body.getUpdatingPosition()) == 0) {
-                    removeElement(chunkForUpdating, ivalues);
-                    --ivalues;
-                    removeElement(awaitingUpdate, iwaiting);
-                    --iwaiting;
+                    toBeRemovedIva.add(ivalues);
+                    toBeRemovedIwa.add(iwaiting);
 
                     doTheUpdate(values);
                 }
             }
         }
+
+        for (Integer i : toBeRemovedIva)
+            removeElement(chunkForUpdating, i);
+
+        for (Integer i : toBeRemovedIwa)
+            removeElement(awaitingUpdate, i);
     }
 
     private void doTheUpdate(MessageMatrixValues values) {
@@ -423,11 +443,15 @@ public class NodeState {
 
     public static <E> void removeElement(ArrayList<E> al, int index) {
         int size = al.size();
-        Assertion.isTrue(index < size, "Wrong remove call!");
+        Assertion.isTrue(index < size, "Wrong removeElement call!");
 
         if (size == 1) {
             al.clear();
-        } else {
+        }
+        else if (index == (size - 1)) {
+            al.remove(size - 1);            
+        }
+        else {
             E last = al.remove(size - 1);
             al.set(index, last);
         }

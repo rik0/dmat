@@ -60,14 +60,15 @@ public abstract class Operation {
 
         // for each computing node
         for (NodeWorkZonePair nodeAndworkZone : tasks) {
+            System.err.println("XXX " + nodeAndworkZone);
             Node computingNode = nodeAndworkZone.computingNode;
             String computingNodeId = computingNode.getNodeId();
 
             //for each output area it needs to be updated
             for (WorkZone workZone : nodeAndworkZone.workZones) {
-
                 //send ``awaiting update'' if needed.
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
+                    
                     awaitUpdate.setMatrixId(workZone.outputChunk.matrixId);
                     awaitUpdate.setUpdatingPosition(workZone.outputArea.convertToProto());
 
@@ -261,9 +262,8 @@ public abstract class Operation {
 
         @Override
         public String toString() {
-            return super.toString()
-                    + "Chunk: " + chunk
-                    + "piece: " + piece;
+            return  this.getClass().getSimpleName() + " - Chunk: " + chunk
+                    + ", Piece: " + piece;
         }
     }
 
@@ -293,7 +293,6 @@ public abstract class Operation {
         @Override
         public String toString() {
             StringBuffer sb = new StringBuffer();
-            sb.append(super.toString());
 
             for (NeededPieceOfChunk c : involvedChunks) {
                 sb.append("\nChunk: ");
@@ -375,7 +374,7 @@ public abstract class Operation {
 
         message.ownerNodeId = neededPiece.chunk.getAssignedNodeId();
         message.matrixId    = neededPiece.chunk.matrixId;
-        message.neededPiece = neededPiece.chunk.matrixPosition;
+        message.neededPiece = neededPiece.piece;
 
         if ((destinationList = pendingMessages.get(message)) != null) {
             destinationList.add(destination);
