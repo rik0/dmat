@@ -270,11 +270,11 @@ public class NodeState {
             // semirings' zero annihilates with respect to multiplication
             // so we skip the 0*a or a*0 operations.
             for (;;) {
-                if (r.col() < c.row())
+                if (r.col() < c.row()) {
                     r = rowIterator.next();
-                else if (c.row() < r.col())
+                } else if (c.row() < r.col()) {
                     c = colIterator.next();
-                else { // r.row() == c.col()
+                } else { // r.row() == c.col()
                     // WARNING: in general the product is not commutative
                     Object product = sm.times(r.value(), c.value());
                     Object comulativeSum = sm.add(result.value(), product);
@@ -578,7 +578,7 @@ public class NodeState {
                     if (v.getMatrixId().equals(matrixId)
                             && v.doesManage(nextChunkRow, col)) {
 
-                        nextChunkRow = v.getArea().endCol;
+                        nextChunkRow = v.getArea().endRow;
                         nextTriplets = v.matrixColumnIterator(col);
                         break;
                     }
@@ -592,15 +592,11 @@ public class NodeState {
             return nextTriplets != null;
         }
 
-        private void findNext() {
+        @Override
+        public boolean hasNext() {
             while (next == null && getNextIterator()) {
                 tryIterator();
             }
-        }
-
-        @Override
-        public boolean hasNext() {
-            findNext();
 
             return next != null;
         }

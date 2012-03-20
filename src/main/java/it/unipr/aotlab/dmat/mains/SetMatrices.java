@@ -37,7 +37,7 @@ public class SetMatrices {
             
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
             b.setMatrixId(matrix.getMatrixId());
-            b.setURI("file:///home/paolo/uni/dissertation/example_matrix");
+            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
             
             testNode.sendMessage(new MessageSetMatrix(b.build()));
 

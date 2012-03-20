@@ -1,6 +1,5 @@
 package it.unipr.aotlab.dmat.mains;
 
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.AdditionAssignment;
@@ -12,7 +11,6 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.registers.NodeRegister;
 
@@ -54,7 +52,7 @@ public class SumMatrices {
             BRight.assignChunkToNode(testNode2);
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
-            b.setURI("file:///home/paolo/uni/dissertation/example_matrix");
+            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
 
             b.setMatrixId("A").setChunkId("Atop");
             testNode.sendMessage(new MessageSetMatrix(b.build()));
@@ -69,15 +67,15 @@ public class SumMatrices {
             testNode2.sendMessage(new MessageSetMatrix(b.build()));
 
             Thread.sleep(2000);
-            MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Atop").build()));
-            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Abottom").build()));
 
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bleft").build()));
-            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bright").build()));
-            
+            ATop.sendMessageExposeValues();
+            ABottom.sendMessageExposeValues();
+
+            BLeft.sendMessageExposeValues();
+            BRight.sendMessageExposeValues();
+
             Thread.sleep(2000);
-            
+
             AdditionAssignment r = new AdditionAssignment();
 
             r.setComputingNodes(testNode);
@@ -85,9 +83,10 @@ public class SumMatrices {
             r.exec();
 
             Thread.sleep(2000);
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Atop").build()));
-            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("Abottom").build()));
-            
+
+            ATop.sendMessageExposeValues();
+            ABottom.sendMessageExposeValues();
+
             Thread.sleep(2000);
             register.clearReceivedMatrixPieces();
 

@@ -61,7 +61,7 @@ public class MulMatrices2 {
             C.getChunk("Cright").assignChunkToNode(testNode2);
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
-            b.setURI("file:///home/paolo/uni/dissertation/e2");
+            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e2");
 
             b.setMatrixId(B.getMatrixId());
             b.setChunkId("Bleft");
@@ -70,7 +70,7 @@ public class MulMatrices2 {
             b.setChunkId("Bright");
             testNode.sendMessage(new MessageSetMatrix(b.build()));
 
-            b.setURI("file:///home/paolo/uni/dissertation/e1");
+            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e1");
             b.setMatrixId(C.getMatrixId());
             b.setChunkId("Cleft");
             testNode.sendMessage(new MessageSetMatrix(b.build()));

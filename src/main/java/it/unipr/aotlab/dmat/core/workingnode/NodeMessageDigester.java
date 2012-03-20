@@ -56,6 +56,7 @@ public class NodeMessageDigester {
 
     public void accept(MessageMatrixValues message) throws IOException {
         debugMessage(message);
+        System.err.println("");
 
         if (message.getUpdate()) {
             hostWorkingNode.state.chunkForUpdating.add(message);

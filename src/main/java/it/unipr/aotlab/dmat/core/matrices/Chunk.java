@@ -26,8 +26,10 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
 
 import java.io.IOException;
 
@@ -254,5 +256,10 @@ public class Chunk {
         or.endCol = Math.min(getEndCol(), endCol);
 
         return or;        
+    }
+    
+    public void sendMessageExposeValues() throws IOException {
+        MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
+        getAssignedNode().sendMessage(new MessageExposeValues(mp.setMatrixId(getMatrixId()).setChunkId(getChunkId()).build()));
     }
 }

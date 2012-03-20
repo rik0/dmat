@@ -52,8 +52,7 @@ public class MulMatrices3 {
             C.getChunk(null).assignChunkToNode(testNode);
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
-
-            b.setURI("file:///home/paolo/uni/dissertation/example_matrix");
+            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
 
             b.setMatrixId(B.getMatrixId());
             testNode.sendMessage(new MessageSetMatrix(b.build()));
