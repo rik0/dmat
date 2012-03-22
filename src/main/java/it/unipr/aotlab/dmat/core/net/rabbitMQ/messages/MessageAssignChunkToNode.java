@@ -8,7 +8,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 public class MessageAssignChunkToNode extends Message {
     public ChunkDescriptionWire.ChunkDescriptionBody body;
 
-    public MessageAssignChunkToNode(ChunkDescriptionWire.ChunkDescriptionBody body) {
+    public MessageAssignChunkToNode(ChunkDescriptionWire
+            .ChunkDescriptionBody body) {
         this.body = body;
     }
 

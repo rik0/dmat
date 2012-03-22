@@ -24,9 +24,9 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
@@ -43,12 +43,14 @@ public class Chunk {
     TypeWire.TypeBody elementType;
     ChunkDescriptionWire.MatricesOnTheWire matricesOnTheWire;
     String matrixId;
+    int matrixNofRows;
+    int matrixNofColumns;
     String chunkId;
     Matrix hostMatrix;
     Rectangle matrixPosition;
 
-    Node assignedTo; // non null for master node rep
-    String nodeId;   // non null for chunks on the nodes
+    Node assignedTo; // non-null for master node rep
+    String nodeId;   // non-null for chunks on the nodes
 
     public int getStartRow() {
         return matrixPosition.startRow;
@@ -65,13 +67,22 @@ public class Chunk {
     public int getEndCol() {
         return matrixPosition.endCol;
     }
-    
+
     public TypeWire.TypeBody getType() {
         return elementType;
     }
 
+    public int getMatrixNofRows() {
+        return matrixNofRows;
+    }
+
+    public int getMatrixNofColumns() {
+        return matrixNofColumns;
+    }
+
     public int nofElements() {
-        return (matrixPosition.endRow - matrixPosition.startRow) * (matrixPosition.endCol - matrixPosition.startCol);
+        return (matrixPosition.endRow - matrixPosition.startRow)
+                * (matrixPosition.endCol - matrixPosition.startCol);
     }
 
     public String getMatrixId() {
@@ -125,14 +136,15 @@ public class Chunk {
     }
 
     public ChunkDescriptionWire.ChunkDescriptionBody buildMessageBody() {
-        RectangleWire.RectangleBody.Builder rb = RectangleWire.RectangleBody.newBuilder();
-        RectangleWire.RectangleBody position = rb
+        RectangleWire.RectangleBody position
+                = RectangleWire.RectangleBody.newBuilder()
                 .setStartRow(matrixPosition.startRow)
                 .setEndRow(matrixPosition.endRow)
                 .setStartCol(matrixPosition.startCol)
                 .setEndCol(matrixPosition.endCol).build();
-        
-        TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder().setElementType(getElementType())
+
+        TypeWire.TypeBody type = TypeWire.TypeBody.newBuilder()
+                .setElementType(getElementType())
                 .setSemiRing(getSemiring()).build();
 
         return ChunkDescriptionWire.ChunkDescriptionBody.newBuilder()
@@ -141,6 +153,8 @@ public class Chunk {
                 .setFormat(format)
                 .setType(type)
                 .setMatrixId(matrixId)
+                .setMatrixNofRows(matrixNofRows)
+                .setMatrixNofColumns(matrixNofColumns)
                 .setMatricesOnTheWire(matricesOnTheWire).build();
     }
 
@@ -152,14 +166,22 @@ public class Chunk {
         this.matricesOnTheWire = m.getMatricesOnTheWire();
         this.matrixId = m.getMatrixId();
         this.nodeId = nodeId;
+        this.matrixNofRows = m.getMatrixNofRows();
+        this.matrixNofColumns = m.getMatrixNofColumns();
     }
 
-    Chunk(String matrixId, String chunkId, Rectangle matrixArea, Matrix hostMatrix) {
+    Chunk(String matrixId,
+          String chunkId,
+          Rectangle matrixArea,
+          Matrix hostMatrix) {
         this.matrixId = matrixId;
         this.chunkId = chunkId;
         this.matrixPosition = new Rectangle(matrixArea);
-        this.matricesOnTheWire = ChunkDescriptionWire.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+        this.matricesOnTheWire = ChunkDescriptionWire
+                .MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
         this.hostMatrix = hostMatrix;
+        this.matrixNofRows = hostMatrix.rows;
+        this.matrixNofColumns = hostMatrix.cols;
 
         this.assignedTo = null;
 
@@ -169,7 +191,10 @@ public class Chunk {
     }
 
     Chunk splitHorizzonally(String newChunkName, int newChunkStartRow) {
-        Chunk newChunk = new Chunk(matrixId, newChunkName, matrixPosition, hostMatrix);
+        Chunk newChunk = new Chunk(matrixId,
+                                   newChunkName,
+                                   matrixPosition,
+                                   hostMatrix);
 
         newChunk.matrixPosition.startRow = newChunkStartRow;
         matrixPosition.endRow = newChunkStartRow;
@@ -178,7 +203,10 @@ public class Chunk {
     }
 
     Chunk splitVertically(String newChunkName, int newChunkStartCol) {
-        Chunk newChunk = new Chunk(matrixId, newChunkName, matrixPosition, hostMatrix);
+        Chunk newChunk = new Chunk(matrixId,
+                                   newChunkName,
+                                   matrixPosition,
+                                   hostMatrix);
 
         newChunk.matrixPosition.startCol = newChunkStartCol;
         matrixPosition.endCol = newChunkStartCol;
@@ -193,8 +221,10 @@ public class Chunk {
 
     @Override
     public String toString() {
-        return "Matrix.Chunk Id: " + matrixId + "." + chunkId + " startRow: "
-                + matrixPosition.startRow + " endRow: " + matrixPosition.endRow + " startCol: " + matrixPosition.startCol
+        return "Matrix.Chunk Id: " + matrixId + "."+ chunkId + " startRow: "
+                + matrixPosition.startRow + " endRow: "
+                + matrixPosition.endRow + " startCol: "
+                + matrixPosition.startCol
                 + " endCol: " + matrixPosition.endCol;
     }
 
@@ -206,7 +236,8 @@ public class Chunk {
 
     void setMatricesOn() {
         if (this.matricesOnTheWire == null) {
-            this.matricesOnTheWire = ChunkDescriptionWire.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
+            this.matricesOnTheWire = ChunkDescriptionWire
+                    .MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE;
         }
     }
 
@@ -255,11 +286,13 @@ public class Chunk {
         or.startCol = Math.max(getStartCol(), startCol);
         or.endCol = Math.min(getEndCol(), endCol);
 
-        return or;        
+        return or;
     }
-    
+
     public void sendMessageExposeValues() throws IOException {
         MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
-        getAssignedNode().sendMessage(new MessageExposeValues(mp.setMatrixId(getMatrixId()).setChunkId(getChunkId()).build()));
+        getAssignedNode().sendMessage(new MessageExposeValues(
+                mp.setMatrixId(getMatrixId())
+                  .setChunkId(getChunkId()).build()));
     }
 }

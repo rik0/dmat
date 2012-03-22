@@ -36,10 +36,13 @@ import java.util.TreeSet;
 public class NodeState {
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
-    ArrayList<MessageAwaitUpdate> awaitingUpdate = new ArrayList<MessageAwaitUpdate>();
-    ArrayList<MessageMatrixValues> chunkForUpdating = new ArrayList<MessageMatrixValues>();
+    ArrayList<MessageAwaitUpdate> awaitingUpdate
+        = new ArrayList<MessageAwaitUpdate>();
+    ArrayList<MessageMatrixValues> chunkForUpdating
+        = new ArrayList<MessageMatrixValues>();
 
-    ArrayList<MessageMatrixValues> chunkForOperations = new ArrayList<MessageMatrixValues>();
+    ArrayList<MessageMatrixValues> chunkForOperations
+        = new ArrayList<MessageMatrixValues>();
     LinkedList<Operation> pendingOperations = new LinkedList<Operation>();
     LinkedList<Operation> delayedOperations = new LinkedList<Operation>();
 
@@ -103,13 +106,15 @@ public class NodeState {
     }
 
 
-    public MessageMatrixValues getMessage(ArrayList<MessageMatrixValues> messages,
+    public MessageMatrixValues getMessage(
+            ArrayList<MessageMatrixValues> messages,
             String matrixId,
             Rectangle interestedArea) {
         if (messages == null) messages = chunkForOperations;
 
         for (MessageMatrixValues m : messages) {
-            if (m.getMatrixId().equals(matrixId) && interestedArea.isSubset(m.getArea())) {
+            if (m.getMatrixId().equals(matrixId)
+                    && interestedArea.isSubset(m.getArea())) {
                 return m;
             }
         }
@@ -117,16 +122,19 @@ public class NodeState {
         return null;
     }
 
-    public Iterator<Triplet> getIterator(ArrayList<MessageMatrixValues> extraPieces,
-                                   String matrixId,
-                                   Rectangle interestedArea) {
+    public Iterator<Triplet> getIterator(
+            ArrayList<MessageMatrixValues> extraPieces,
+            String matrixId,
+            Rectangle interestedArea) {
 
         InNodeChunk<?> n = getChunk(matrixId, interestedArea);
         if (n != null) {
             return n.accessor.matrixPieceIterator(interestedArea);
         }
 
-        MessageMatrixValues m = getMessage(extraPieces, matrixId, interestedArea);
+        MessageMatrixValues m = getMessage(extraPieces,
+                                           matrixId,
+                                           interestedArea);
         if (m != null) {
             return m.matrixPieceIterator();
         }
@@ -139,27 +147,37 @@ public class NodeState {
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null)
             for (OrderMultiply order : messageMultiply.body.getOperationList()) {
-                System.err.println("Starting " + order.getOutputMatrixId() + " = " + order.getFirstFactorMatrixId()
-                        + " * " + order.getSecondFactorMatrixId() + " for:\n" + order.getOutputPosition());
+                System.err.println("Starting "
+                        + order.getOutputMatrixId()
+                        + " = " + order.getFirstFactorMatrixId()
+                        + " * " + order.getSecondFactorMatrixId()
+                        + " for:\n" + order.getOutputPosition());
+
                 doTheMultiplication(missingPieces, order);
             }
     }
 
-    private void doTheMultiplication(ArrayList<MessageMatrixValues> missingPieces,
-                                     OrderMultiply order) throws IOException {
+    private void doTheMultiplication(
+            ArrayList<MessageMatrixValues> missingPieces,
+            OrderMultiply order) throws IOException {
         String outputMatrixId = order.getOutputMatrixId();
-        Rectangle outputMatrixPosition = Rectangle.build(order.getOutputPosition());
+        Rectangle outputMatrixPosition = Rectangle
+                .build(order.getOutputPosition());
 
-        InNodeChunk<?> outputPiece = getChunk(outputMatrixId, outputMatrixPosition);
+        InNodeChunk<?> outputPiece = getChunk(outputMatrixId,
+                                              outputMatrixPosition);
         if (outputPiece != null) {
-            Assertion.isTrue(outputMatrixPosition.isSubset(outputPiece.chunk.getArea()),
+            Assertion.isTrue(outputMatrixPosition.isSubset(outputPiece
+                    .chunk.getArea()),
                     "Something wrong with multiplication.");
-            doTheMultImpl(missingPieces, order, MultOnLocalChunk.ref(order, outputPiece));
+            doTheMultImpl(missingPieces, order, MultOnLocalChunk
+                    .ref(order, outputPiece));
         }
         else {
-            doTheMultImpl(missingPieces, order, MulForRemoteNode.ref(order,
-                                                    getAppropriateBuilder(order.getFirstFactorMatrixId()),
-                                                    hostWorkingNode.messageSender));
+            doTheMultImpl(missingPieces, order, MulForRemoteNode
+                    .ref(order,
+                         getAppropriateBuilder(order.getFirstFactorMatrixId()),
+                         hostWorkingNode.messageSender));
         }
     }
 
@@ -174,7 +192,8 @@ public class NodeState {
         SemiRing sr;
         Rectangle outputPos;
 
-        public static MultOnLocalChunk ref(OrderMultiply order, InNodeChunk<?> outputPiece) {
+        public static MultOnLocalChunk ref(OrderMultiply order,
+                                           InNodeChunk<?> outputPiece) {
             MultOnLocalChunk rv = new MultOnLocalChunk();
             rv.outputPiece = outputPiece;
             rv.sr = SemiRings.semiring(order.getType());
@@ -219,13 +238,15 @@ public class NodeState {
 
         @Override
         public void postOperation() throws IOException {
-            MatrixPiece matrixPiece = mpBuilder.buildFromTriplets(order.getOutputMatrixId(),
+            MatrixPiece matrixPiece = mpBuilder
+                        .buildFromTriplets(order.getOutputMatrixId(),
                     order.getOutputChunkId(),
                     order.getOutputNodeId(),
                     results,
                     Rectangle.build(order.getOutputPosition()),
                     true);
-            messageSender.sendMessage(mpBuilder.buildMessage(matrixPiece), order.getOutputNodeId());
+            messageSender.sendMessage(mpBuilder.buildMessage(matrixPiece),
+                                      order.getOutputNodeId());
         }
 
         @Override
@@ -241,8 +262,12 @@ public class NodeState {
 
         eor.preOperation();
 
-        for (int row = order.getOutputPosition().getStartRow(); row < endRow; ++row) {
-            for (int col = order.getOutputPosition().getStartCol(); col < endCol; ++col) {
+        for (int row = order.getOutputPosition().getStartRow();
+                row < endRow;
+                ++row) {
+            for (int col = order.getOutputPosition().getStartCol();
+                    col < endCol;
+                    ++col) {
                 if ((element = doTheMulOneElement(row, col, order)) != null) {
                     eor.exec(element);
                 }
@@ -253,8 +278,10 @@ public class NodeState {
     }
 
     private Triplet doTheMulOneElement(int row, int col, OrderMultiply order) {
-        RowIterator rowIterator = new RowIterator(order.getFirstFactorMatrixId(), row);
-        ColIterator colIterator = new ColIterator(order.getSecondFactorMatrixId(), col);
+        RowIterator rowIterator
+            = new RowIterator(order.getFirstFactorMatrixId(), row);
+        ColIterator colIterator
+            = new ColIterator(order.getSecondFactorMatrixId(), col);
         SemiRing sm = SemiRings.semiring(order.getType());
         Triplet result = null;
 
@@ -632,14 +659,19 @@ public class NodeState {
             }
         }
 
-        throw new DMatInternalError(hostWorkingNode.nodeId + " knows nothing of matrix " + matrixId + "! I cannot create MatrixPiece.Builder");
+        throw new DMatInternalError(hostWorkingNode.nodeId
+                + " knows nothing of matrix "
+                + matrixId + "! I cannot create MatrixPiece.Builder");
     }
 
     public void updateMatrix(MessageSetMatrix message) {
         URI dataAddress;
-        InNodeChunk<?> chunk = getChunk(message.body.getMatrixId(), message.body.getChunkId());
+        InNodeChunk<?> chunk = getChunk(message.body.getMatrixId(),
+                                        message.body.getChunkId());
         if (chunk == null) {
-            throw new DMatInternalError("This node does not manage " + message.body.getMatrixId() + "." + message.body.getChunkId() + "!");
+            throw new DMatInternalError("This node does not manage "
+                    + message.body.getMatrixId()
+                    + "." + message.body.getChunkId() + "!");
         }
         try {
             dataAddress = new URI(message.body.getURI());
@@ -647,10 +679,11 @@ public class NodeState {
             throw new DMatInternalError("Received an URI with a syntax error!");
         }
         RectangleBody rect = message.body.getPosition();
-        Rectangle position = rect.getEndRow() != 0 ? Rectangle.build(rect) : chunk.chunk.getArea();
+        Rectangle position = rect.getEndRow() != 0
+                ? Rectangle.build(rect) : chunk.chunk.getArea();
 
         try {
-            updateMatrixImpl(chunk, position, dataAddress);
+            updateMatrixImpl(chunk, position, dataAddress, message);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw new DMatInternalError("The file does not exist!");
@@ -665,12 +698,20 @@ public class NodeState {
 
     private void updateMatrixImpl(InNodeChunk<?> chunk,
                                   Rectangle position,
-                                  URI dataAddress) throws IOException, DMatError {
-        // TODO check dimensions?
+                                  URI dataAddress,
+                                  MessageSetMatrix message)
+                                          throws IOException,
+                                                 DMatError {
         FileInputStream a = new FileInputStream(dataAddress.getPath());
         try {
             MatrixMarket mm = new MatrixMarket(a);
             Iterator<Triplet> mmi = mm.getIterator();
+
+            if (mm.getNofRows() != chunk.chunk.getMatrixNofRows()
+                    || mm.getNofCols() != chunk.chunk.getMatrixNofColumns()) {
+                throw new DMatInternalError(
+                        "Matrix on the file has wrong dimensions!");
+            }
 
             while (mmi.hasNext()) {
                 Triplet t = mmi.next();
