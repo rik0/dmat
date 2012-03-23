@@ -17,10 +17,13 @@ enum MatricesOnTheWire {
 
 message ChunkDescriptionBody {
     required string matrixId = 1;
-    required string chunkId = 2;
-    required RectangleBody position = 3;
-    required TypeBody type = 4;
-    required Format format = 5 [ default = DENSE ];
-    required MatricesOnTheWire matricesOnTheWire = 6 [ default = DEFAULTMATRICESONTHEWIRE ];
+    required int32 matrixNofRows = 2;
+    required int32 matrixNofColumns = 3;
+    required string chunkId = 4;
+    required RectangleBody matrixSizes = 5;
+    required RectangleBody position = 6;
+    required TypeBody type = 7;
+    required Format format = 8 [ default = DENSE ];
+    required MatricesOnTheWire matricesOnTheWire = 9 [ default = DEFAULTMATRICESONTHEWIRE ];
 }
 
