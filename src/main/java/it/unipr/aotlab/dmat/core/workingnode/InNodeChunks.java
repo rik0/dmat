@@ -55,10 +55,10 @@ public class InNodeChunks {
 
     private static <E> void build(WorkingNode wn, Chunk chunk,
             InNodeChunk<E> inNodeChunk) {
+        setSemiring(chunk, inNodeChunk);
         inNodeChunk.hostNode = wn;
         inNodeChunk.chunk = chunk;
-        inNodeChunk.accessor = (ChunkAccessor) Formats.build(chunk);
-        setSemiring(chunk, inNodeChunk);
+        inNodeChunk.accessor = (ChunkAccessor) Formats.build(inNodeChunk);
         setMatrixPiece(chunk, inNodeChunk);
     }
 
@@ -66,7 +66,8 @@ public class InNodeChunks {
             InNodeChunk<E> inNodeChunk) {
         MatricesOnTheWire matricesOnTheWireTag = chunk.getMatricesOnTheWire();
 
-        if (matricesOnTheWireTag.equals(ChunkDescriptionWire.MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE))
+        if (matricesOnTheWireTag.equals(ChunkDescriptionWire
+                .MatricesOnTheWire.DEFAULTMATRICESONTHEWIRE))
             inNodeChunk.matrixPieceBuilder = MatrixPieces
                 .defaultMatrixPiece(chunk.getElementType());
         else
@@ -74,7 +75,8 @@ public class InNodeChunks {
                     .matrixPiece(matricesOnTheWireTag);
     }
 
-    private static <E> void setSemiring(Chunk chunk, InNodeChunk<E> inNodeChunk) {
+    private static <E> void setSemiring(Chunk chunk,
+                                        InNodeChunk<E> inNodeChunk) {
         inNodeChunk.semiring = SemiRings.semiring(chunk.getType()); 
     }
 }

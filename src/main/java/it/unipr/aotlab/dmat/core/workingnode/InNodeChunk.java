@@ -15,11 +15,11 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 
 public abstract class InNodeChunk<E> {
-    WorkingNode hostNode = null;
-    Chunk chunk = null;
-    SemiRing semiring = null;
-    ChunkAccessor accessor = null;
-    MatrixPieces.Builder matrixPieceBuilder = null;
+    public WorkingNode hostNode = null;
+    public Chunk chunk = null;
+    public SemiRing semiring = null;
+    public ChunkAccessor accessor = null;
+    public MatrixPieces.Builder matrixPieceBuilder = null;
 
     InNodeChunk(Chunk chunk) {
     }

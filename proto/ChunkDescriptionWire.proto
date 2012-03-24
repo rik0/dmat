@@ -20,10 +20,9 @@ message ChunkDescriptionBody {
     required int32 matrixNofRows = 2;
     required int32 matrixNofColumns = 3;
     required string chunkId = 4;
-    required RectangleBody matrixSizes = 5;
-    required RectangleBody position = 6;
-    required TypeBody type = 7;
-    required Format format = 8 [ default = DENSE ];
-    required MatricesOnTheWire matricesOnTheWire = 9 [ default = DEFAULTMATRICESONTHEWIRE ];
+    required RectangleBody position = 5;
+    required TypeBody type = 6;
+    required Format format = 7 [ default = DENSE ];
+    required MatricesOnTheWire matricesOnTheWire = 8 [ default = DEFAULTMATRICESONTHEWIRE ];
 }
 

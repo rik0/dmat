@@ -2,17 +2,17 @@ package it.unipr.aotlab.dmat.core.formats.dense;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
-import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
+import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 
 public class DenseBool extends DenseBase {
-    protected DenseBool(Chunk hostChunk) {
+    protected DenseBool(InNodeChunk<?> hostChunk) {
         super(hostChunk);
     }
 
@@ -83,11 +83,12 @@ public class DenseBool extends DenseBase {
 
     @Override
     public Boolean getDefault() {
-        return false;
+        return (Boolean) hostChunk.semiring.zero();
     }
 
     @Override
-    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece, Rectangle position, boolean isUpdate) {
+    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece,
+                                Rectangle position, boolean isUpdate) {
         return matrixPiece.buildFromChunk(this, position, isUpdate);
     }
 
@@ -113,6 +114,16 @@ public class DenseBool extends DenseBase {
 
     @Override
     public void set(Triplet t) {
+        throw new DMatInternalError("Nothing yet for bools");
+    }
+
+    @Override
+    public void setPositionToZero(Rectangle position) {
+        throw new DMatInternalError("Nothing yet for bools");
+    }
+
+    @Override
+    public void resetToZero() {
         throw new DMatInternalError("Nothing yet for bools");
     }
 

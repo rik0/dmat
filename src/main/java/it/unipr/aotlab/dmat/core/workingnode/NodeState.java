@@ -34,6 +34,9 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 public class NodeState {
+    int nextMessageNo = 1;
+    int acceptableMessages = -1;
+
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
     ArrayList<MessageAwaitUpdate> awaitingUpdate
@@ -189,14 +192,12 @@ public class NodeState {
 
     private static class MultOnLocalChunk implements MultiplicationHandles {
         InNodeChunk<?> outputPiece;
-        SemiRing sr;
         Rectangle outputPos;
 
         public static MultOnLocalChunk ref(OrderMultiply order,
                                            InNodeChunk<?> outputPiece) {
             MultOnLocalChunk rv = new MultOnLocalChunk();
             rv.outputPiece = outputPiece;
-            rv.sr = SemiRings.semiring(order.getType());
             rv.outputPos = Rectangle.build(order.getOutputPosition());
             return rv;
         }
@@ -211,7 +212,7 @@ public class NodeState {
 
         @Override
         public void preOperation() {
-            outputPiece.accessor.setPosition(sr.zero(), outputPos);
+            outputPiece.accessor.setPositionToZero(outputPos);
         }
     }
 

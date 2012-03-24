@@ -37,27 +37,10 @@ public class MessageSender implements
         return connection;
     }
 
-    // TODO using a channel pool?
     @Override
-    public void sendMessage(Message m, String destination) throws IOException {
-        inizializeConnection();
-        Channel channel = connection.createChannel();
-
-        try {
-            Hashtable<String, Object> recipientList = new Hashtable<String, Object>(
-                    2, 1);
-            recipientList.put(destination, "");
-
-            AMQP.BasicProperties messageProperties = (new AMQP.BasicProperties.Builder())
-                    .headers(recipientList).contentType(m.contentType())
-                    .build();
-
-            channel.basicPublish("amq.match", "", messageProperties,
-                    m.message());
-
-        } finally {
-            closeChannel(channel);
-        }
+    public void sendMessage(Message m, String destination)
+            throws IOException {
+        sendMessage(m, destination, null);
     }
 
     @Override
@@ -67,17 +50,21 @@ public class MessageSender implements
         Channel channel = connection.createChannel();
 
         try {
-            Hashtable<String, Object> recipientList = new Hashtable<String, Object>();
+            Hashtable<String, Object> recipientList
+                = new Hashtable<String, Object>();
 
             for (String nodeName : destinations)
                 recipientList.put(nodeName, "");
 
-            AMQP.BasicProperties messageProperties = (new AMQP.BasicProperties.Builder())
-                    .headers(recipientList).contentType(m.contentType())
-                    .build();
+            AMQP.BasicProperties messageProperties
+                     = (new AMQP.BasicProperties.Builder())
+                        .headers(recipientList)
+                        .contentType(m.contentType()).build();
 
-            channel.basicPublish("amq.match", "", messageProperties,
-                    m.message());
+            channel.basicPublish("amq.match",
+                                 "",
+                                 messageProperties,
+                                 m.message());
 
         } finally {
             closeChannel(channel);
@@ -86,11 +73,42 @@ public class MessageSender implements
 
     @Override
     public void sendMessage(Message m, Node node) throws IOException {
-        sendMessage(m, node.getNodeId());
+        node.sendMessage(m);
     }
 
     public static void closeChannel(Channel channel) throws IOException {
         if (channel != null && channel.isOpen())
             channel.close();
+    }
+
+    // TODO using a channel pool?
+    @Override
+    public void sendMessage(Message m,
+                            String destination,
+                            Integer no)
+            throws IOException {
+        inizializeConnection();
+
+        Channel channel = connection.createChannel();
+
+        try {
+            Hashtable<String, Object> recipientList
+                = new Hashtable<String, Object>(2, 1);
+            recipientList.put(destination, "");
+
+            AMQP.BasicProperties messageProperties
+                = (new AMQP.BasicProperties.Builder())
+                    .headers(recipientList)
+                    .contentType(m.contentType())
+                    .priority(no)
+                    .build();
+
+            channel.basicPublish("amq.match",
+                                 "",
+                                 messageProperties,
+                                 m.message());
+        } finally {
+            closeChannel(channel);
+        }
     }
 }

@@ -63,8 +63,6 @@ public class MulMatrices {
             C.getChunk("Cright-right-top").assignChunkToNode(testNode);
             C.getChunk("Cright-right-bottom").assignChunkToNode(testNode2);
 
-            Thread.sleep(2000);
-
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e2");
             b.setMatrixId(B.getMatrixId());
@@ -97,14 +95,10 @@ public class MulMatrices {
             b.setChunkId("Cright-right-bottom");
             testNode2.sendMessage(new MessageSetMatrix(b.build()));
 
-            Thread.sleep(2000);
-
             Multiplication r = new Multiplication();
 
             r.setOperands(A, B, C);
             r.exec();
-
-            Thread.sleep(2000);
 
             A.getChunk(null).sendMessageExposeValues();
 

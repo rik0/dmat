@@ -1,42 +1,52 @@
 package it.unipr.aotlab.dmat.core.formats;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.util.TypeInfo;
+import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 import java.nio.ByteBuffer;
 
 public abstract class DenseBase implements ChunkAccessor {
     protected ByteBuffer array;
-    protected Chunk hostChunk;
+    protected InNodeChunk<?> hostChunk;
     protected TypeInfo typeInfo;
     protected int width;
-    
-    public Chunk hostChunk() {
+    protected SemiRing semiring;
+
+    @Override
+    public InNodeChunk<?> hostChunk() {
         return hostChunk;
     }
 
-    protected DenseBase(Chunk hostChunk) {
-        this.typeInfo = new TypeInfo(hostChunk.getElementType());
+    protected DenseBase(InNodeChunk<?> hostChunk) {
+        this.typeInfo = new TypeInfo(hostChunk.chunk.getElementType());
         this.hostChunk = hostChunk;
-        this.width = hostChunk.getEndCol() - hostChunk.getStartCol();
+        this.width = hostChunk.chunk.getEndCol()
+                - hostChunk.chunk.getStartCol();
 
         allocateArray();
+        resetToZero();
     }
 
     protected int nofElements() {
-        int nofElements = hostChunk.getEndRow() - hostChunk.getStartRow();
-        nofElements *= hostChunk.getEndCol() - hostChunk.getStartCol();
+        int nofElements = hostChunk.chunk.getEndRow()
+                - hostChunk.chunk.getStartRow();
+
+        nofElements *= hostChunk.chunk.getEndCol()
+                - hostChunk.chunk.getStartCol();
 
         return nofElements;
     }
 
     protected void allocateArray() {
-        this.array = ByteBuffer.allocateDirect(nofElements() * typeInfo.sizeOf());
+        this.array = ByteBuffer.allocateDirect(
+                nofElements() * typeInfo.sizeOf());
     }
 
     protected void doesManage(int r, int c) {
-        if (!hostChunk.doesManage(r, c)) {
+        if (!hostChunk.chunk.doesManage(r, c)) {
             throw new DMatInternalError("Chunk received invalid request! "
                     + hostChunk + " Requested: row " + r + " col " + c);
         }
@@ -45,8 +55,8 @@ public abstract class DenseBase implements ChunkAccessor {
     protected int convertCoods(int r, int c) {
         doesManage(r, c);
 
-        r -= hostChunk.getStartRow();
-        c -= hostChunk.getStartCol();
+        r -= hostChunk.chunk.getStartRow();
+        c -= hostChunk.chunk.getStartCol();
 
         return typeInfo.sizeOf() * (r * width + c);
     }

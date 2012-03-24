@@ -6,11 +6,11 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageAwaitUpdate extends Message {
     public OrderAwaitUpdateBody body;
-    
+
     public MessageAwaitUpdate(OrderAwaitUpdateBody body) {
         this.body = body;
     }
-    
+
     @Override
     public byte[] message() {
         return body.toByteArray();

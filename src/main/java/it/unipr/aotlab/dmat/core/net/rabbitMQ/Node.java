@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Node implements it.unipr.aotlab.dmat.core.net.Node {
+    int messageNo = 0;
     String nodeId;
     private Map<String, Chunk> chunks;
     MessageSender sender;
@@ -35,7 +36,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
 
     @Override
     public void sendMessage(Message m) throws IOException {
-        sender.sendMessage(m, this);
+        sender.sendMessage(m, getNodeId(), ++messageNo);
     }
 
     @Override

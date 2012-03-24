@@ -1,18 +1,18 @@
 package it.unipr.aotlab.dmat.core.formats.dense;
 
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
-import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
+import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class DenseInt32 extends DenseBase {
-    protected DenseInt32(Chunk hostChunk) {
+    protected DenseInt32(InNodeChunk<Integer> hostChunk) {
         super(hostChunk);
     }
 
@@ -32,11 +32,12 @@ public class DenseInt32 extends DenseBase {
 
     @Override
     public Integer getDefault() {
-        return 0;
+        return (Integer) hostChunk.semiring.zero();
     }
 
     @Override
-    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece, Rectangle position, boolean isUpdate) {
+    public MatrixPiece getPiece(MatrixPieces.Builder matrixPiece,
+                                Rectangle position, boolean isUpdate) {
         return matrixPiece.buildFromChunk(this, position, isUpdate);
 
     }
@@ -44,7 +45,7 @@ public class DenseInt32 extends DenseBase {
     @Override
     public Iterator<Triplet> matrixPieceIterator(Rectangle r) {
         if (r == null)
-            r = this.hostChunk.getArea();
+            r = this.hostChunk.chunk.getArea();
         return new DenseInt32IteratorPosition(r);
     }
 
@@ -113,15 +114,15 @@ public class DenseInt32 extends DenseBase {
         //TODO we can do better
         Rectangle r = Rectangle.build(rowNo,
                                       rowNo + 1,
-                                      hostChunk.getStartCol(),
-                                      hostChunk.getEndCol());
+                                      hostChunk.chunk.getStartCol(),
+                                      hostChunk.chunk.getEndCol());
         return new DenseInt32IteratorPosition(r);
     }
 
     @Override
     public Iterator<Triplet> matrixColumnIterator(int colNo) {
-        Rectangle r = Rectangle.build(hostChunk.getStartRow(),
-                                      hostChunk.getEndRow(),
+        Rectangle r = Rectangle.build(hostChunk.chunk.getStartRow(),
+                                      hostChunk.chunk.getEndRow(),
                                       colNo,
                                       colNo + 1);
         return new DenseInt32IteratorPosition(r);
@@ -142,5 +143,20 @@ public class DenseInt32 extends DenseBase {
     @Override
     public void set(Triplet t) {
         set(t.value(), t.row(), t.col());
+    }
+
+    @Override
+    public void resetToZero() {
+        int sizeOf = typeInfo.sizeOf();
+        int zero = (Integer) hostChunk.semiring.zero();
+
+        for (int i = 0; i < array.capacity(); i += sizeOf) {
+            array.putInt(i, zero);
+        }
+    }
+
+    @Override
+    public void setPositionToZero(Rectangle position) {
+        setPosition(hostChunk.semiring.zero(), position);
     }
 }

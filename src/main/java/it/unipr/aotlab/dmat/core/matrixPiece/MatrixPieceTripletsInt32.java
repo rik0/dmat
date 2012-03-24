@@ -49,13 +49,13 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
 
             b.setUpdate(isUpdate);
             b.setPosition(position.convertToProto());
-            b.setChunkId(format.hostChunk().getChunkId());
-            b.setNodeId(format.hostChunk().getAssignedNodeId());
+            b.setChunkId(format.hostChunk().chunk.getChunkId());
+            b.setNodeId(format.hostChunk().chunk.getAssignedNodeId());
 
             int intDefault = (Integer) format.getDefault();
             int v;
 
-            b.setMatrixId(format.hostChunk().getMatrixId());
+            b.setMatrixId(format.hostChunk().chunk.getMatrixId());
             for (int r = position.startRow; r < position.endRow; ++r)
                 for (int c = position.startCol; c < position.endCol; ++c) {
                     if ((v = (Integer) format.get(r, c)) != intDefault)

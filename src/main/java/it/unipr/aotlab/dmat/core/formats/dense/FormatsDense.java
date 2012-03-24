@@ -3,13 +3,15 @@ package it.unipr.aotlab.dmat.core.formats.dense;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 public class FormatsDense {
-    public static DenseBase build(Chunk chunk) {
-        switch (chunk.getElementType()) {
+    public static DenseBase build(InNodeChunk<?> chunk) {
+        switch (chunk.chunk.getElementType()) {
         case INT32:
         case UINT32:
-            return new DenseInt32(chunk);
+            InNodeChunk<Integer> tchunk = (InNodeChunk<Integer>) chunk;
+            return new DenseInt32(tchunk);
 
         case BOOL:
             return new DenseBool(chunk);
