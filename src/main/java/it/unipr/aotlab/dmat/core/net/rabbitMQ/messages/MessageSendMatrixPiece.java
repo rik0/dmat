@@ -1,10 +1,10 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
-import java.io.IOException;
-
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
+
+import java.io.IOException;
 
 public class MessageSendMatrixPiece extends Message {
     public SendMatrixPieceWire.SendMatrixPieceBody body;
@@ -22,5 +22,9 @@ public class MessageSendMatrixPiece extends Message {
     public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
+
+    @Override
+    public MessageKind messageType() {
+        return MessageKind.Operation;
+    }
 }
- 

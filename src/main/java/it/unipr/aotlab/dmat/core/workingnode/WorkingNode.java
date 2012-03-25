@@ -1,14 +1,18 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
+import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.QueueingConsumer.Delivery;
 
 public class WorkingNode {
     String nodeId;
@@ -44,23 +48,43 @@ public class WorkingNode {
         QueueingConsumer queueingConsumer = new QueueingConsumer(channel);
         channel.basicConsume(nodeId, true, queueingConsumer);
 
-        QueueingConsumer.Delivery delivery;
-        Integer priority;
         while (true) {
-            sortingBuffer.add(queueingConsumer.nextDelivery());
+            QueueingConsumer.Delivery delivery = queueingConsumer
+                    .nextDelivery();
 
-            delivery = sortingBuffer.first();
-            priority = delivery.getProperties().getPriority();
-            if (priority == null || priority == state.nextMessageNo) {
-                if (priority != null)
-                    ++state.nextMessageNo;
+            sortingBuffer.add(delivery);
 
-                sortingBuffer.pollFirst();
-
+            while ((delivery = findNextProcessableMessage()) != null) {
                 Message m = Messages.readMessage(delivery);
-                m.accept(digester);
+
+                Assertion.isTrue(m.messageType() == MessageKind.Order
+                        ? delivery.getProperties().getPriority() != null
+                        : delivery.getProperties().getPriority() == null,
+                        brokerName);
+
+                state.accept(digester, m);
             }
         }
+    }
+
+    private Delivery findNextProcessableMessage() {
+        Iterator<Delivery> i = sortingBuffer.iterator();
+        Delivery delivery = null;
+
+        while (delivery == null && i.hasNext()) {
+            Delivery possibleDelivery = i.next();
+
+            Integer priority = possibleDelivery.getProperties().getPriority();
+            Integer messageKind = possibleDelivery.getProperties()
+                    .getDeliveryMode();
+
+            if (state.isAcceptable(messageKind, priority)) {
+                delivery = possibleDelivery;
+                i.remove();
+            }
+        }
+
+        return delivery;
     }
 
     public WorkingNode(String nodeId,

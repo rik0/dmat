@@ -82,7 +82,6 @@ public class MessageSender implements
     }
 
     // TODO using a channel pool?
-    @Override
     public void sendMessage(Message m,
                             String destination,
                             Integer no)
@@ -100,6 +99,7 @@ public class MessageSender implements
                 = (new AMQP.BasicProperties.Builder())
                     .headers(recipientList)
                     .contentType(m.contentType())
+                    .deliveryMode(m.messageType().tag)
                     .priority(no)
                     .build();
 

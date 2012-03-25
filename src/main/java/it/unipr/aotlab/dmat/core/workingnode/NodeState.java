@@ -11,6 +11,7 @@ import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
@@ -148,7 +149,7 @@ public class NodeState {
     public void exec(MessageMultiply messageMultiply) throws IOException {
         ArrayList<MessageMatrixValues> missingPieces = null;
 
-        if ((missingPieces = weGotAllPieces(messageMultiply)) != null)
+        if ((missingPieces = weGotAllPieces(messageMultiply)) != null) {
             for (OrderMultiply order : messageMultiply.body.getOperationList()) {
                 System.err.println("Starting "
                         + order.getOutputMatrixId()
@@ -158,6 +159,9 @@ public class NodeState {
 
                 doTheMultiplication(missingPieces, order);
             }
+
+            orderExecuted();
+        }
     }
 
     private void doTheMultiplication(
@@ -321,8 +325,13 @@ public class NodeState {
         ArrayList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
-            for (OrderAddAssign order : messageAddAssign.body.getOperationList())
-                doTheSum(missingPieces, order);
+            try {
+                for (OrderAddAssign order : messageAddAssign.body.getOperationList())
+                    doTheSum(missingPieces, order);
+
+            } finally {
+                orderExecuted();
+            }
         }
     }
 
@@ -335,6 +344,7 @@ public class NodeState {
 
         delayedOperations.addLast(op);
         System.err.println("Still missing pieces for operation " + op.toString());
+
         return null;
     }
 
@@ -384,7 +394,6 @@ public class NodeState {
             MessageMatrixValues firstOpMess,
             String outputNodeId) throws IOException {
         MatrixPieces.Builder b = firstOpMess.getAppropriatedBuilder();
-
 
         String matrixId = firstOpMess.getMatrixId();
         String chunkId = firstOpMess.getChunkId();
@@ -723,5 +732,34 @@ public class NodeState {
         } finally {
             a.close();
         }
+    }
+
+    boolean isAcceptable(Integer messageKind, Integer priority) {
+        boolean rightKind = (messageKind == null
+                || ((messageKind & acceptableMessages) == messageKind));
+
+        boolean expected = (priority == null
+                || (priority == nextMessageNo));
+
+        return rightKind && expected;
+    }
+
+    private void busyExecutingOrders() {
+        acceptableMessages &= ~Message.MessageKind.Order.tag;
+    }
+
+    public void orderExecuted() {
+        Assertion.isTrue((acceptableMessages
+                & Message.MessageKind.Order.tag) == 0, "Executed an order while not in executing order mode!");
+        acceptableMessages = -1;
+    }
+
+    void accept(NodeMessageDigester digester, Message m) throws IOException {
+        if (m.messageType() == Message.MessageKind.Order) {
+            ++nextMessageNo;
+            busyExecutingOrders();
+        }
+
+        m.accept(digester);
     }
 }

@@ -32,7 +32,7 @@ public abstract class InNodeChunk<E> {
         throw new DMatInternalError("This node cannot accept "
                 + message.getClass().getCanonicalName());
     }
-    
+
     public void accept(MessageMatrixValues values) {
         Rectangle area = values.getArea();
         Iterator<Triplet> triplets = values.matrixPieceIterator();

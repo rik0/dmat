@@ -11,7 +11,7 @@ public class MessageTest extends Message {
     public MessageTest(Body body) {
         this.body = body;
     }
-    
+
     @Override
     public void accept(NodeMessageDigester digester) {
         if (digester != null)
@@ -21,5 +21,10 @@ public class MessageTest extends Message {
     @Override
     public byte[] message() {
         return body.toByteArray();
+    }
+
+    @Override
+    public MessageKind messageType() {
+        return MessageKind.Immediate;
     }
 }

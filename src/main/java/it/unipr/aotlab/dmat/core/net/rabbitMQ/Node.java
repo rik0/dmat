@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,7 +37,12 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
 
     @Override
     public void sendMessage(Message m) throws IOException {
-        sender.sendMessage(m, getNodeId(), ++messageNo);
+        Integer no = null;
+        if (m.messageType() == MessageKind.Order)
+            no = ++messageNo;
+
+        System.out.println("XXX " + this + " " + no);
+        sender.sendMessage(m, getNodeId(), no);
     }
 
     @Override

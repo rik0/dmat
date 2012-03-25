@@ -5,7 +5,7 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import java.io.IOException;
 
 public abstract class Message {
-    protected enum MessageKind {
+    public enum MessageKind {
         Immediate(0x0),
         Operation(0x1),
         Order(0x2);

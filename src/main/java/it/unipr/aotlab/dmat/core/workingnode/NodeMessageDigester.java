@@ -70,14 +70,16 @@ public class NodeMessageDigester {
 
     public void accept(MessageSendMatrixPiece message) throws IOException {
         debugMessage(message);
-        System.err.println(message.toString());
+        System.err.println("\n" + message.body.getMatrixId() + " " + message.body.getNeededPiece() + " ");
 
         Rectangle neededPiece = Rectangle.build(message.body.getNeededPiece());
         MatrixPiece piece = null;
 
         for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
+            System.err.println("XXX LL " + inNodeChunk.chunk );
             if (message.body.getMatrixId().equals(inNodeChunk.chunk.getMatrixId())
                     && inNodeChunk.chunk.doesManage(neededPiece.startRow, neededPiece.startCol)) {
+                System.err.println("XXX SS");
                 piece = inNodeChunk.getMatrixPiece(neededPiece, message.body.getUpdate());
                 break;
             }
