@@ -67,7 +67,7 @@ public abstract class Operation {
             for (WorkZone workZone : nodeAndworkZone.workZones) {
                 //send ``awaiting update'' if needed.
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
-                    
+
                     awaitUpdate.setMatrixId(workZone.outputChunk.matrixId);
                     awaitUpdate.setUpdatingPosition(workZone.outputArea.convertToProto());
 
@@ -273,7 +273,7 @@ public abstract class Operation {
 
         public List<NeededPieceOfChunk> involvedChunks;
 
-        public boolean assignedToANode = false;
+        boolean assignedToANode = false;
 
         public WorkZone(Chunk outputChunk,
                         Rectangle outputArea,

@@ -11,11 +11,6 @@ import java.io.IOException;
 
 public class AdditionAssignment extends ShapeFriendlyOp {
     @Override
-    public int arity() {
-        return 2;
-    }
-
-    @Override
     protected void sendOperationsOrders() throws IOException {
         OrderAddAssign.Builder operation = OrderAddAssign.newBuilder();
         Matrix firstOp = operands.get(0);

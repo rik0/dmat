@@ -55,7 +55,7 @@ public class NodeRegister {
 
         return n;
     }
-    
+
     public void clearReceivedMatrixPieces() throws IOException {
         messageSender.multicastMessage(new MessageClearReceivedMatrixPieces(), nodes.keySet());
     }

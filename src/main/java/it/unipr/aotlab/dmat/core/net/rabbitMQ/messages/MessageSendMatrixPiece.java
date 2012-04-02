@@ -22,9 +22,4 @@ public class MessageSendMatrixPiece extends Message {
     public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
     }
-
-    @Override
-    public MessageKind messageType() {
-        return MessageKind.Operation;
-    }
 }

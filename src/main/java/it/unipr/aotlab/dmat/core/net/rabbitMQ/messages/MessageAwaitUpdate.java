@@ -20,9 +20,4 @@ public class MessageAwaitUpdate extends Message {
     public void accept(NodeMessageDigester digester) {
         digester.accept(this);
     }
-
-    @Override
-    public MessageKind messageType() {
-        return MessageKind.Operation;
-    }
 }

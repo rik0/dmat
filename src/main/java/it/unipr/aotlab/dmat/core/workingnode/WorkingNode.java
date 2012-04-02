@@ -1,10 +1,8 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
-import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -57,11 +55,6 @@ public class WorkingNode {
             while ((delivery = findNextProcessableMessage()) != null) {
                 Message m = Messages.readMessage(delivery);
 
-                Assertion.isTrue(m.messageType() == MessageKind.Order
-                        ? delivery.getProperties().getPriority() != null
-                        : delivery.getProperties().getPriority() == null,
-                        brokerName);
-
                 state.accept(digester, m);
             }
         }
@@ -74,14 +67,9 @@ public class WorkingNode {
         while (delivery == null && i.hasNext()) {
             Delivery possibleDelivery = i.next();
 
-            Integer priority = possibleDelivery.getProperties().getPriority();
-            Integer messageKind = possibleDelivery.getProperties()
-                    .getDeliveryMode();
-
-            if (state.isAcceptable(messageKind, priority)) {
-                delivery = possibleDelivery;
-                i.remove();
-            }
+            //future sorter here
+            delivery = possibleDelivery;
+            i.remove();
         }
 
         return delivery;

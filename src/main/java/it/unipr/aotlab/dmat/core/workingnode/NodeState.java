@@ -36,7 +36,6 @@ import java.util.TreeSet;
 
 public class NodeState {
     int nextMessageNo = 1;
-    int acceptableMessages = -1;
 
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
@@ -159,8 +158,6 @@ public class NodeState {
 
                 doTheMultiplication(missingPieces, order);
             }
-
-            orderExecuted();
         }
     }
 
@@ -325,13 +322,8 @@ public class NodeState {
         ArrayList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
-            try {
-                for (OrderAddAssign order : messageAddAssign.body.getOperationList())
-                    doTheSum(missingPieces, order);
-
-            } finally {
-                orderExecuted();
-            }
+            for (OrderAddAssign order : messageAddAssign.body.getOperationList())
+                doTheSum(missingPieces, order);
         }
     }
 
@@ -734,32 +726,7 @@ public class NodeState {
         }
     }
 
-    boolean isAcceptable(Integer messageKind, Integer priority) {
-        boolean rightKind = (messageKind == null
-                || ((messageKind & acceptableMessages) == messageKind));
-
-        boolean expected = (priority == null
-                || (priority == nextMessageNo));
-
-        return rightKind && expected;
-    }
-
-    private void busyExecutingOrders() {
-        acceptableMessages &= ~Message.MessageKind.Order.tag;
-    }
-
-    public void orderExecuted() {
-        Assertion.isTrue((acceptableMessages
-                & Message.MessageKind.Order.tag) == 0, "Executed an order while not in executing order mode!");
-        acceptableMessages = -1;
-    }
-
     void accept(NodeMessageDigester digester, Message m) throws IOException {
-        if (m.messageType() == Message.MessageKind.Order) {
-            ++nextMessageNo;
-            busyExecutingOrders();
-        }
-
         m.accept(digester);
     }
 }

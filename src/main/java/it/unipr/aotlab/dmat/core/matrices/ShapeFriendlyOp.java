@@ -8,6 +8,11 @@ import java.util.List;
 
 public abstract class ShapeFriendlyOp extends Operation {
     @Override
+    public int arity() {
+        return 2;
+    }
+
+    @Override
     protected void otherPreconditions() throws DMatError {
         Matrix firstOperand = operands.get(0);
         Matrix secondOperand = operands.get(1);

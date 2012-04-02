@@ -44,6 +44,7 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
 
     void validateBuildingNode() throws IdNotUnique, IOException {
         buildingNode.sender = register.messageSender();
+        buildingNode.register = register;
 
         if (buildingNode.nodeId == null)
             throw new InvalidNode("Node without ID.");

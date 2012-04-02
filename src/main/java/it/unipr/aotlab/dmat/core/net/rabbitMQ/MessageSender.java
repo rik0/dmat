@@ -38,12 +38,6 @@ public class MessageSender implements
     }
 
     @Override
-    public void sendMessage(Message m, String destination)
-            throws IOException {
-        sendMessage(m, destination, null);
-    }
-
-    @Override
     public void multicastMessage(Message m, Iterable<String> destinations)
             throws IOException {
         inizializeConnection();
@@ -82,9 +76,9 @@ public class MessageSender implements
     }
 
     // TODO using a channel pool?
+    @Override
     public void sendMessage(Message m,
-                            String destination,
-                            Integer no)
+                            String destination)
             throws IOException {
         inizializeConnection();
 
@@ -99,8 +93,6 @@ public class MessageSender implements
                 = (new AMQP.BasicProperties.Builder())
                     .headers(recipientList)
                     .contentType(m.contentType())
-                    .deliveryMode(m.messageType().tag)
-                    .priority(no)
                     .build();
 
             channel.basicPublish("amq.match",

@@ -45,9 +45,4 @@ public abstract class MessageMatrixValues extends Message {
             return rv;
         }
     }
-
-    @Override
-    public MessageKind messageType() {
-        return MessageKind.Operation;
-    }
 }

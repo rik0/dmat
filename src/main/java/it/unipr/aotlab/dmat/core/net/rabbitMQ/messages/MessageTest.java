@@ -22,9 +22,4 @@ public class MessageTest extends Message {
     public byte[] message() {
         return body.toByteArray();
     }
-
-    @Override
-    public MessageKind messageType() {
-        return MessageKind.Immediate;
-    }
 }
