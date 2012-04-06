@@ -7,7 +7,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
-import it.unipr.aotlab.dmat.core.registers.NodeRegister;
+import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public class ShutdownANode {
     public static void main(String argv[]) {
         try {
             MessageSender messageSender = new MessageSender(new Connector(new Address("127.0.0.1")));
-            NodeRegister register = new NodeRegister(messageSender);
+            NodeWorkGroup register = new NodeWorkGroup(messageSender);
             Nodes nodes = new Nodes(register);
 
             Node node = nodes.setNodeName("testNode").build();

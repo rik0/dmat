@@ -14,7 +14,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.registers.NodeRegister;
+import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class SetMatrices {
        try {
             MessageSender messageSender = new MessageSender(new Connector(
                     new Address("127.0.0.1")));
-            NodeRegister register = new NodeRegister(messageSender);
+            NodeWorkGroup register = new NodeWorkGroup(messageSender);
             Nodes nodes = new Nodes(register);
 
             Matrix matrix = Matrices.newBuilder()

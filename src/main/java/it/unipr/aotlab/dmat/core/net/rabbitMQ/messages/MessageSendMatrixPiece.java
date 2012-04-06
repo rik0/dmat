@@ -1,12 +1,12 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire;
-import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
 
-public class MessageSendMatrixPiece extends Message {
+public class MessageSendMatrixPiece extends MessageSupport {
     public SendMatrixPieceWire.SendMatrixPieceBody body;
 
     public MessageSendMatrixPiece(SendMatrixPieceWire.SendMatrixPieceBody body) {

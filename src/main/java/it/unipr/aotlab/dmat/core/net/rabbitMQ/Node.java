@@ -3,7 +3,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.registers.NodeRegister;
+import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
     String nodeId;
     private Map<String, Chunk> chunks;
     MessageSender sender;
-    NodeRegister register;
+    NodeWorkGroup register;
 
     Node() {
     }

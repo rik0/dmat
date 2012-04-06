@@ -1,10 +1,10 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.OrderAwaitUpdateWire.OrderAwaitUpdateBody;
-import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
-public class MessageAwaitUpdate extends Message {
+public class MessageAwaitUpdate extends MessageSupport {
     public OrderAwaitUpdateBody body;
 
     public MessageAwaitUpdate(OrderAwaitUpdateBody body) {

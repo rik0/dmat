@@ -4,11 +4,12 @@ import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 import java.util.Iterator;
 
-public abstract class MessageMatrixValues extends Message {
+public abstract class MessageMatrixValues extends MessageSupport {
     public abstract String getMatrixId();
 
     public abstract String getChunkId();

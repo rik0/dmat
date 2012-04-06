@@ -3,15 +3,15 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.InvalidNode;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
-import it.unipr.aotlab.dmat.core.registers.NodeRegister;
+import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
 import java.io.IOException;
 
 public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     Node buildingNode = new Node();
-    NodeRegister register;
+    NodeWorkGroup register;
 
-    public Nodes(NodeRegister register) {
+    public Nodes(NodeWorkGroup register) {
         this.register = register;
     }
 

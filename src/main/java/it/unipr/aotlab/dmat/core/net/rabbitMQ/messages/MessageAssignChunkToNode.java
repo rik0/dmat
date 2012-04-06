@@ -2,10 +2,10 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
-import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
-public class MessageAssignChunkToNode extends Message {
+public class MessageAssignChunkToNode extends MessageOrder {
     public ChunkDescriptionWire.ChunkDescriptionBody body;
 
     public MessageAssignChunkToNode(ChunkDescriptionWire

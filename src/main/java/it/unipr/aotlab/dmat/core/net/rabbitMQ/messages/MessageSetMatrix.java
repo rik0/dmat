@@ -1,10 +1,10 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
-import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
-public class MessageSetMatrix extends Message {
+public class MessageSetMatrix extends MessageOrder {
     public OrderSetMatrixBody body;
 
     public MessageSetMatrix(OrderSetMatrixBody body) {
