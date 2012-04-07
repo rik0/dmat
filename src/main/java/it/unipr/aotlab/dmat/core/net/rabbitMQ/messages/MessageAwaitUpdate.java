@@ -5,15 +5,29 @@ import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageAwaitUpdate extends MessageSupport {
-    public OrderAwaitUpdateBody body;
+    private OrderAwaitUpdateBody realBody;
+    public OrderAwaitUpdateBody.Builder builder;
 
-    public MessageAwaitUpdate(OrderAwaitUpdateBody body) {
-        this.body = body;
+    MessageAwaitUpdate(OrderAwaitUpdateBody body) {
+        this.realBody = body;
+    }
+
+    public MessageAwaitUpdate(OrderAwaitUpdateBody.Builder builder) {
+        this.builder = builder;
+    }
+
+    public OrderAwaitUpdateBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override

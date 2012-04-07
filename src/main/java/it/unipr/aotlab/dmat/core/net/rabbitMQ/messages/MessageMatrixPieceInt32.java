@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body;
 import it.unipr.aotlab.dmat.core.generated.support.MatrixPieceTripletsInt32WireSupport;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
@@ -17,16 +18,29 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class MessageMatrixPieceInt32 extends MessageMatrixValues {
-    public MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body body;
+    private MatrixPieceTripletsInt32Body realBody;
+    public MatrixPieceTripletsInt32Body.Builder builder;
 
-    public MessageMatrixPieceInt32(MatrixPieceTripletsInt32Wire
-            .MatrixPieceTripletsInt32Body body) {
-        this.body = body;
+    MessageMatrixPieceInt32(MatrixPieceTripletsInt32Body body) {
+        this.realBody = body;
+    }
+
+    public MessageMatrixPieceInt32(MatrixPieceTripletsInt32Body.Builder builder) {
+        this.builder = builder;
+    }
+
+    public MatrixPieceTripletsInt32Body body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override
@@ -36,7 +50,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
 
     @Override
     public String getMatrixId() {
-        return MatrixPieceTripletsInt32WireSupport.getMatrixId(body);
+        return MatrixPieceTripletsInt32WireSupport.getMatrixId(body());
     }
 
     @Override
@@ -46,27 +60,27 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
 
     @Override
     public Rectangle getArea() {
-        return Rectangle.build(body.getPosition());
+        return Rectangle.build(body().getPosition());
     }
 
     @Override
     public int getColRep() {
-        return body.getPosition().getStartCol();
+        return body().getPosition().getStartCol();
     }
 
     @Override
     public int getRowRep() {
-        return body.getPosition().getStartRow();
+        return body().getPosition().getStartRow();
     }
 
     @Override
     public boolean getUpdate() {
-        return body.getUpdate();
+        return body().getUpdate();
     }
 
     @Override
     public String getChunkId() {
-        return body.getChunkId();
+        return body().getChunkId();
     }
 
 
@@ -76,7 +90,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
 
         public MessageMatrixIterator() {
             this.current = 0;
-            this.end = body.getValuesCount();
+            this.end = body().getValuesCount();
         }
 
         @Override
@@ -87,7 +101,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
         @Override
         public Int32Triplet next() {
             if (hasNext()) {
-                MatrixPieceTripletsInt32Wire.Triplet t = body.getValues(current);
+                MatrixPieceTripletsInt32Wire.Triplet t = body().getValues(current);
                 ++current;
 
                 return new Int32Triplet(t.getRow(), t.getCol(), t.getValue());
@@ -109,7 +123,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
 
     @Override
     public String getNodeId() {
-        return body.getNodeId();
+        return body().getNodeId();
     }
 
     @Override
@@ -135,8 +149,8 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
         Iterator<Triplet> iterator;
 
         public MessageRowIterator(int row) {
-            for (int r = 0, e = body.getValuesCount(); r < e; ++r) {
-                MatrixPieceTripletsInt32Wire.Triplet rawT = body.getValues(r);
+            for (int r = 0, e = body().getValuesCount(); r < e; ++r) {
+                MatrixPieceTripletsInt32Wire.Triplet rawT = body().getValues(r);
 
                 if (row == rawT.getRow())
                     this.row.add(new Int32Triplet(rawT.getRow(),
@@ -175,8 +189,8 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
         Iterator<Triplet> iterator;
 
         public MessageColIterator(int col) {
-            for (int r = 0, e = body.getValuesCount(); r < e; ++r) {
-                MatrixPieceTripletsInt32Wire.Triplet rawT = body.getValues(r);
+            for (int r = 0, e = body().getValuesCount(); r < e; ++r) {
+                MatrixPieceTripletsInt32Wire.Triplet rawT = body().getValues(r);
 
                 if (col == rawT.getCol())
                     this.col.add(new Int32Triplet(rawT.getRow(),

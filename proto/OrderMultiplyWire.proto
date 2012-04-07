@@ -1,3 +1,4 @@
+import "NodeListWire.proto" ;
 import "RectangleWire.proto" ;
 import "MatrixPieceOwnerWire.proto" ;
 import "TypeWire.proto" ;
@@ -15,7 +16,8 @@ message OrderMultiply {
 }
 
 message OrderMultiplyBody {
-    repeated MatrixPieceOwnerBody missingPieces = 1 ;
-    repeated OrderMultiply operation = 2;
+    required NodeListBody destination = 1;
+    repeated MatrixPieceOwnerBody missingPieces = 2 ;
+    repeated OrderMultiply operation = 3;
 }
 

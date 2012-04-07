@@ -1,5 +1,6 @@
 import "RectangleWire.proto" ;
 import "TypeWire.proto" ;
+import "NodeListWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
@@ -16,13 +17,15 @@ enum MatricesOnTheWire {
 }
 
 message ChunkDescriptionBody {
-    required string matrixId = 1;
-    required int32 matrixNofRows = 2;
-    required int32 matrixNofColumns = 3;
-    required string chunkId = 4;
-    required RectangleBody position = 5;
-    required TypeBody type = 6;
-    required Format format = 7 [ default = DENSE ];
-    required MatricesOnTheWire matricesOnTheWire = 8 [ default = DEFAULTMATRICESONTHEWIRE ];
+    required NodeListBody destination = 1;
+
+    required string matrixId = 2;
+    required int32 matrixNofRows = 3;
+    required int32 matrixNofColumns = 4;
+    required string chunkId = 5;
+    required RectangleBody position = 6;
+    required TypeBody type = 7;
+    required Format format = 8 [ default = DENSE ];
+    required MatricesOnTheWire matricesOnTheWire = 9 [ default = DEFAULTMATRICESONTHEWIRE ];
 }
 

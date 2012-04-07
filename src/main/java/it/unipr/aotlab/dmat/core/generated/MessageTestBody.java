@@ -11,7 +11,12 @@ public final class MessageTestBody {
   public interface BodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // optional string message = 1;
+    // required .NodeListBody destination = 1;
+    boolean hasDestination();
+    it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination();
+    it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder();
+    
+    // optional string message = 2;
     boolean hasMessage();
     String getMessage();
   }
@@ -44,11 +49,24 @@ public final class MessageTestBody {
     }
     
     private int bitField0_;
-    // optional string message = 1;
-    public static final int MESSAGE_FIELD_NUMBER = 1;
+    // required .NodeListBody destination = 1;
+    public static final int DESTINATION_FIELD_NUMBER = 1;
+    private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_;
+    public boolean hasDestination() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination() {
+      return destination_;
+    }
+    public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder() {
+      return destination_;
+    }
+    
+    // optional string message = 2;
+    public static final int MESSAGE_FIELD_NUMBER = 2;
     private java.lang.Object message_;
     public boolean hasMessage() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     public String getMessage() {
       java.lang.Object ref = message_;
@@ -77,6 +95,7 @@ public final class MessageTestBody {
     }
     
     private void initFields() {
+      destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
       message_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -84,6 +103,10 @@ public final class MessageTestBody {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
+      if (!hasDestination()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -92,7 +115,10 @@ public final class MessageTestBody {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getMessageBytes());
+        output.writeMessage(1, destination_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMessageBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -105,7 +131,11 @@ public final class MessageTestBody {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getMessageBytes());
+          .computeMessageSize(1, destination_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMessageBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -223,6 +253,7 @@ public final class MessageTestBody {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getDestinationFieldBuilder();
         }
       }
       private static Builder create() {
@@ -231,8 +262,14 @@ public final class MessageTestBody {
       
       public Builder clear() {
         super.clear();
-        message_ = "";
+        if (destinationBuilder_ == null) {
+          destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+        } else {
+          destinationBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        message_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       
@@ -274,6 +311,14 @@ public final class MessageTestBody {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
+        if (destinationBuilder_ == null) {
+          result.destination_ = destination_;
+        } else {
+          result.destination_ = destinationBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
         result.message_ = message_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -291,6 +336,9 @@ public final class MessageTestBody {
       
       public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.MessageTestBody.Body other) {
         if (other == it.unipr.aotlab.dmat.core.generated.MessageTestBody.Body.getDefaultInstance()) return this;
+        if (other.hasDestination()) {
+          mergeDestination(other.getDestination());
+        }
         if (other.hasMessage()) {
           setMessage(other.getMessage());
         }
@@ -299,6 +347,10 @@ public final class MessageTestBody {
       }
       
       public final boolean isInitialized() {
+        if (!hasDestination()) {
+          
+          return false;
+        }
         return true;
       }
       
@@ -326,7 +378,16 @@ public final class MessageTestBody {
               break;
             }
             case 10: {
-              bitField0_ |= 0x00000001;
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.newBuilder();
+              if (hasDestination()) {
+                subBuilder.mergeFrom(getDestination());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setDestination(subBuilder.buildPartial());
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
               message_ = input.readBytes();
               break;
             }
@@ -336,10 +397,100 @@ public final class MessageTestBody {
       
       private int bitField0_;
       
-      // optional string message = 1;
+      // required .NodeListBody destination = 1;
+      private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> destinationBuilder_;
+      public boolean hasDestination() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination() {
+        if (destinationBuilder_ == null) {
+          return destination_;
+        } else {
+          return destinationBuilder_.getMessage();
+        }
+      }
+      public Builder setDestination(it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody value) {
+        if (destinationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          destination_ = value;
+          onChanged();
+        } else {
+          destinationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setDestination(
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder builderForValue) {
+        if (destinationBuilder_ == null) {
+          destination_ = builderForValue.build();
+          onChanged();
+        } else {
+          destinationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeDestination(it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody value) {
+        if (destinationBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              destination_ != it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance()) {
+            destination_ =
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.newBuilder(destination_).mergeFrom(value).buildPartial();
+          } else {
+            destination_ = value;
+          }
+          onChanged();
+        } else {
+          destinationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearDestination() {
+        if (destinationBuilder_ == null) {
+          destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+          onChanged();
+        } else {
+          destinationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder getDestinationBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getDestinationFieldBuilder().getBuilder();
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder() {
+        if (destinationBuilder_ != null) {
+          return destinationBuilder_.getMessageOrBuilder();
+        } else {
+          return destination_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> 
+          getDestinationFieldBuilder() {
+        if (destinationBuilder_ == null) {
+          destinationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder>(
+                  destination_,
+                  getParentForChildren(),
+                  isClean());
+          destination_ = null;
+        }
+        return destinationBuilder_;
+      }
+      
+      // optional string message = 2;
       private java.lang.Object message_ = "";
       public boolean hasMessage() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       public String getMessage() {
         java.lang.Object ref = message_;
@@ -355,19 +506,19 @@ public final class MessageTestBody {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
         return this;
       }
       public Builder clearMessage() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         message_ = getDefaultInstance().getMessage();
         onChanged();
         return this;
       }
       void setMessage(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         message_ = value;
         onChanged();
       }
@@ -398,9 +549,10 @@ public final class MessageTestBody {
   static {
     java.lang.String[] descriptorData = {
       "\n<home/paolo/uni/dissertation/dmat/proto" +
-      "/MessageTestBody.proto\"\027\n\004Body\022\017\n\007messag" +
-      "e\030\001 \001(\tB%\n#it.unipr.aotlab.dmat.core.gen" +
-      "erated"
+      "/MessageTestBody.proto\032\022NodeListWire.pro" +
+      "to\";\n\004Body\022\"\n\013destination\030\001 \002(\0132\r.NodeLi" +
+      "stBody\022\017\n\007message\030\002 \001(\tB%\n#it.unipr.aotl" +
+      "ab.dmat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -412,7 +564,7 @@ public final class MessageTestBody {
           internal_static_Body_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Body_descriptor,
-              new java.lang.String[] { "Message", },
+              new java.lang.String[] { "Destination", "Message", },
               it.unipr.aotlab.dmat.core.generated.MessageTestBody.Body.class,
               it.unipr.aotlab.dmat.core.generated.MessageTestBody.Body.Builder.class);
           return null;
@@ -421,6 +573,7 @@ public final class MessageTestBody {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.getDescriptor(),
         }, assigner);
   }
   

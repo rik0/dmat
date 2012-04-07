@@ -11,15 +11,20 @@ public final class MatrixPieceOwnerWire {
   public interface MatrixPieceOwnerBodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string matrixId = 1;
+    // required .NodeListBody destination = 1;
+    boolean hasDestination();
+    it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination();
+    it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder();
+    
+    // required string matrixId = 2;
     boolean hasMatrixId();
     String getMatrixId();
     
-    // optional string chunkId = 2 [default = "default"];
+    // optional string chunkId = 3 [default = "default"];
     boolean hasChunkId();
     String getChunkId();
     
-    // optional .RectangleBody position = 3;
+    // optional .RectangleBody position = 4;
     boolean hasPosition();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition();
     it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder getPositionOrBuilder();
@@ -53,11 +58,24 @@ public final class MatrixPieceOwnerWire {
     }
     
     private int bitField0_;
-    // required string matrixId = 1;
-    public static final int MATRIXID_FIELD_NUMBER = 1;
+    // required .NodeListBody destination = 1;
+    public static final int DESTINATION_FIELD_NUMBER = 1;
+    private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_;
+    public boolean hasDestination() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination() {
+      return destination_;
+    }
+    public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder() {
+      return destination_;
+    }
+    
+    // required string matrixId = 2;
+    public static final int MATRIXID_FIELD_NUMBER = 2;
     private java.lang.Object matrixId_;
     public boolean hasMatrixId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     public String getMatrixId() {
       java.lang.Object ref = matrixId_;
@@ -85,11 +103,11 @@ public final class MatrixPieceOwnerWire {
       }
     }
     
-    // optional string chunkId = 2 [default = "default"];
-    public static final int CHUNKID_FIELD_NUMBER = 2;
+    // optional string chunkId = 3 [default = "default"];
+    public static final int CHUNKID_FIELD_NUMBER = 3;
     private java.lang.Object chunkId_;
     public boolean hasChunkId() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     public String getChunkId() {
       java.lang.Object ref = chunkId_;
@@ -117,11 +135,11 @@ public final class MatrixPieceOwnerWire {
       }
     }
     
-    // optional .RectangleBody position = 3;
-    public static final int POSITION_FIELD_NUMBER = 3;
+    // optional .RectangleBody position = 4;
+    public static final int POSITION_FIELD_NUMBER = 4;
     private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody position_;
     public boolean hasPosition() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition() {
       return position_;
@@ -131,6 +149,7 @@ public final class MatrixPieceOwnerWire {
     }
     
     private void initFields() {
+      destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
       matrixId_ = "";
       chunkId_ = "default";
       position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
@@ -140,6 +159,10 @@ public final class MatrixPieceOwnerWire {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
+      if (!hasDestination()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasMatrixId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -158,13 +181,16 @@ public final class MatrixPieceOwnerWire {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getMatrixIdBytes());
+        output.writeMessage(1, destination_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getChunkIdBytes());
+        output.writeBytes(2, getMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, position_);
+        output.writeBytes(3, getChunkIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, position_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -177,15 +203,19 @@ public final class MatrixPieceOwnerWire {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getMatrixIdBytes());
+          .computeMessageSize(1, destination_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getChunkIdBytes());
+          .computeBytesSize(2, getMatrixIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, position_);
+          .computeBytesSize(3, getChunkIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, position_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -303,6 +333,7 @@ public final class MatrixPieceOwnerWire {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getDestinationFieldBuilder();
           getPositionFieldBuilder();
         }
       }
@@ -312,16 +343,22 @@ public final class MatrixPieceOwnerWire {
       
       public Builder clear() {
         super.clear();
-        matrixId_ = "";
+        if (destinationBuilder_ == null) {
+          destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+        } else {
+          destinationBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000001);
-        chunkId_ = "default";
+        matrixId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        chunkId_ = "default";
+        bitField0_ = (bitField0_ & ~0x00000004);
         if (positionBuilder_ == null) {
           position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
         } else {
           positionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
       
@@ -363,13 +400,21 @@ public final class MatrixPieceOwnerWire {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.matrixId_ = matrixId_;
+        if (destinationBuilder_ == null) {
+          result.destination_ = destination_;
+        } else {
+          result.destination_ = destinationBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.chunkId_ = chunkId_;
+        result.matrixId_ = matrixId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
+        }
+        result.chunkId_ = chunkId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
         if (positionBuilder_ == null) {
           result.position_ = position_;
@@ -392,6 +437,9 @@ public final class MatrixPieceOwnerWire {
       
       public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody other) {
         if (other == it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.getDefaultInstance()) return this;
+        if (other.hasDestination()) {
+          mergeDestination(other.getDestination());
+        }
         if (other.hasMatrixId()) {
           setMatrixId(other.getMatrixId());
         }
@@ -406,6 +454,10 @@ public final class MatrixPieceOwnerWire {
       }
       
       public final boolean isInitialized() {
+        if (!hasDestination()) {
+          
+          return false;
+        }
         if (!hasMatrixId()) {
           
           return false;
@@ -443,16 +495,25 @@ public final class MatrixPieceOwnerWire {
               break;
             }
             case 10: {
-              bitField0_ |= 0x00000001;
-              matrixId_ = input.readBytes();
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.newBuilder();
+              if (hasDestination()) {
+                subBuilder.mergeFrom(getDestination());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setDestination(subBuilder.buildPartial());
               break;
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              chunkId_ = input.readBytes();
+              matrixId_ = input.readBytes();
               break;
             }
             case 26: {
+              bitField0_ |= 0x00000004;
+              chunkId_ = input.readBytes();
+              break;
+            }
+            case 34: {
               it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder();
               if (hasPosition()) {
                 subBuilder.mergeFrom(getPosition());
@@ -467,10 +528,100 @@ public final class MatrixPieceOwnerWire {
       
       private int bitField0_;
       
-      // required string matrixId = 1;
+      // required .NodeListBody destination = 1;
+      private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> destinationBuilder_;
+      public boolean hasDestination() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination() {
+        if (destinationBuilder_ == null) {
+          return destination_;
+        } else {
+          return destinationBuilder_.getMessage();
+        }
+      }
+      public Builder setDestination(it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody value) {
+        if (destinationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          destination_ = value;
+          onChanged();
+        } else {
+          destinationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setDestination(
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder builderForValue) {
+        if (destinationBuilder_ == null) {
+          destination_ = builderForValue.build();
+          onChanged();
+        } else {
+          destinationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeDestination(it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody value) {
+        if (destinationBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              destination_ != it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance()) {
+            destination_ =
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.newBuilder(destination_).mergeFrom(value).buildPartial();
+          } else {
+            destination_ = value;
+          }
+          onChanged();
+        } else {
+          destinationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearDestination() {
+        if (destinationBuilder_ == null) {
+          destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+          onChanged();
+        } else {
+          destinationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder getDestinationBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getDestinationFieldBuilder().getBuilder();
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder() {
+        if (destinationBuilder_ != null) {
+          return destinationBuilder_.getMessageOrBuilder();
+        } else {
+          return destination_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> 
+          getDestinationFieldBuilder() {
+        if (destinationBuilder_ == null) {
+          destinationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder>(
+                  destination_,
+                  getParentForChildren(),
+                  isClean());
+          destination_ = null;
+        }
+        return destinationBuilder_;
+      }
+      
+      // required string matrixId = 2;
       private java.lang.Object matrixId_ = "";
       public boolean hasMatrixId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       public String getMatrixId() {
         java.lang.Object ref = matrixId_;
@@ -486,27 +637,27 @@ public final class MatrixPieceOwnerWire {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         matrixId_ = value;
         onChanged();
         return this;
       }
       public Builder clearMatrixId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         matrixId_ = getDefaultInstance().getMatrixId();
         onChanged();
         return this;
       }
       void setMatrixId(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         matrixId_ = value;
         onChanged();
       }
       
-      // optional string chunkId = 2 [default = "default"];
+      // optional string chunkId = 3 [default = "default"];
       private java.lang.Object chunkId_ = "default";
       public boolean hasChunkId() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       public String getChunkId() {
         java.lang.Object ref = chunkId_;
@@ -522,29 +673,29 @@ public final class MatrixPieceOwnerWire {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         chunkId_ = value;
         onChanged();
         return this;
       }
       public Builder clearChunkId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         chunkId_ = getDefaultInstance().getChunkId();
         onChanged();
         return this;
       }
       void setChunkId(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         chunkId_ = value;
         onChanged();
       }
       
-      // optional .RectangleBody position = 3;
+      // optional .RectangleBody position = 4;
       private it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody position_ = it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder, it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBodyOrBuilder> positionBuilder_;
       public boolean hasPosition() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody getPosition() {
         if (positionBuilder_ == null) {
@@ -563,7 +714,7 @@ public final class MatrixPieceOwnerWire {
         } else {
           positionBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         return this;
       }
       public Builder setPosition(
@@ -574,12 +725,12 @@ public final class MatrixPieceOwnerWire {
         } else {
           positionBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         return this;
       }
       public Builder mergePosition(it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody value) {
         if (positionBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
               position_ != it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.getDefaultInstance()) {
             position_ =
               it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.newBuilder(position_).mergeFrom(value).buildPartial();
@@ -590,7 +741,7 @@ public final class MatrixPieceOwnerWire {
         } else {
           positionBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         return this;
       }
       public Builder clearPosition() {
@@ -600,11 +751,11 @@ public final class MatrixPieceOwnerWire {
         } else {
           positionBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
       public it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody.Builder getPositionBuilder() {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         onChanged();
         return getPositionFieldBuilder().getBuilder();
       }
@@ -655,11 +806,13 @@ public final class MatrixPieceOwnerWire {
   static {
     java.lang.String[] descriptorData = {
       "\nAhome/paolo/uni/dissertation/dmat/proto" +
-      "/MatrixPieceOwnerWire.proto\032\023RectangleWi" +
-      "re.proto\"d\n\024MatrixPieceOwnerBody\022\020\n\010matr" +
-      "ixId\030\001 \002(\t\022\030\n\007chunkId\030\002 \001(\t:\007default\022 \n\010" +
-      "position\030\003 \001(\0132\016.RectangleBodyB%\n#it.uni" +
-      "pr.aotlab.dmat.core.generated"
+      "/MatrixPieceOwnerWire.proto\032\022NodeListWir" +
+      "e.proto\032\023RectangleWire.proto\"\210\001\n\024MatrixP" +
+      "ieceOwnerBody\022\"\n\013destination\030\001 \002(\0132\r.Nod" +
+      "eListBody\022\020\n\010matrixId\030\002 \002(\t\022\030\n\007chunkId\030\003" +
+      " \001(\t:\007default\022 \n\010position\030\004 \001(\0132\016.Rectan" +
+      "gleBodyB%\n#it.unipr.aotlab.dmat.core.gen" +
+      "erated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -671,7 +824,7 @@ public final class MatrixPieceOwnerWire {
           internal_static_MatrixPieceOwnerBody_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_MatrixPieceOwnerBody_descriptor,
-              new java.lang.String[] { "MatrixId", "ChunkId", "Position", },
+              new java.lang.String[] { "Destination", "MatrixId", "ChunkId", "Position", },
               it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.class,
               it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder.class);
           return null;
@@ -680,6 +833,7 @@ public final class MatrixPieceOwnerWire {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.getDescriptor(),
           it.unipr.aotlab.dmat.core.generated.RectangleWire.getDescriptor(),
         }, assigner);
   }

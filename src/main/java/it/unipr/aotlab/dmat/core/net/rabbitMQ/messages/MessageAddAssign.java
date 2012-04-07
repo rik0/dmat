@@ -1,22 +1,36 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
-import java.io.IOException;
-
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 
-public class MessageAddAssign extends Operation {
-    public OrderAddAssignBody body;
+import java.io.IOException;
 
-    public MessageAddAssign(OrderAddAssignBody body) {
-        this.body = body;
+public class MessageAddAssign extends Operation {
+    private OrderAddAssignBody realBody = null;
+    public OrderAddAssignBody.Builder builder = null;
+
+    MessageAddAssign(OrderAddAssignBody body) {
+        this.realBody = body;
+    }
+
+    public MessageAddAssign(OrderAddAssignBody.Builder builder) {
+        this.builder = builder;
+    }
+
+    public OrderAddAssignBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override
@@ -31,11 +45,11 @@ public class MessageAddAssign extends Operation {
 
     @Override
     public int nofMissingPieces() {
-        return body.getMissingPiecesCount();
+        return body().getMissingPiecesCount();
     }
 
     @Override
     public MatrixPieceOwnerBody missingPiece(int n) {
-        return body.getMissingPieces(n);
+        return body().getMissingPieces(n);
     }
 }

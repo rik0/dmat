@@ -30,8 +30,12 @@ public abstract class Messages {
 
     public static Message readMessage(QueueingConsumer.Delivery envelopedMessage)
             throws InvalidProtocolBufferException {
-        return readMessage(envelopedMessage.getProperties().getContentType(),
+        Message m = readMessage(envelopedMessage.getProperties().getContentType(),
                 envelopedMessage.getBody());
+
+        m.serialNo(envelopedMessage.getProperties().getPriority());
+
+        return m;
     }
 
     public static Message readMessage(String contentType, byte[] rawMessage)

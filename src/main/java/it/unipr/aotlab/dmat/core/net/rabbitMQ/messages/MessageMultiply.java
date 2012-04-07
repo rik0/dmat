@@ -8,15 +8,29 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 import java.io.IOException;
 
 public class MessageMultiply extends Operation {
-    public OrderMultiplyBody body;
+    public OrderMultiplyBody.Builder builder;
+    private OrderMultiplyBody realBody;
 
-    public MessageMultiply(OrderMultiplyBody body) {
-        this.body = body;
+    MessageMultiply(OrderMultiplyBody body) {
+        this.realBody = body;
+    }
+
+    public MessageMultiply(OrderMultiplyBody.Builder builder) {
+        this.builder = builder;
+    }
+
+    public OrderMultiplyBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override
@@ -31,11 +45,11 @@ public class MessageMultiply extends Operation {
 
     @Override
     public int nofMissingPieces() {
-        return body.getMissingPiecesCount();
+        return body().getMissingPiecesCount();
     }
 
     @Override
     public MatrixPieceOwnerBody missingPiece(int n) {
-        return body.getMissingPieces(n);
+        return body().getMissingPieces(n);
     }
 }

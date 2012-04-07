@@ -1,11 +1,12 @@
 package it.unipr.aotlab.dmat.core.net;
 
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
 
 public abstract class Message {
-    int serialNo = 0;
+    int serialNo = -1;
 
     public enum MessageKind {
         IMMEDIATE(0x0),
@@ -31,6 +32,9 @@ public abstract class Message {
     }
 
     public int serialNo() {
+        if (serialNo == -1)
+            throw new DMatInternalError("serialNo still unset!");
+
         return serialNo;
     }
 

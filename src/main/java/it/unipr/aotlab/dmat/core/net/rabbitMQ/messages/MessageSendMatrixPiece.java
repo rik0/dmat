@@ -1,21 +1,35 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
-import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire;
+import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire.SendMatrixPieceBody;
 import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
 
 public class MessageSendMatrixPiece extends MessageSupport {
-    public SendMatrixPieceWire.SendMatrixPieceBody body;
+    public SendMatrixPieceBody.Builder builder = null;
+    private SendMatrixPieceBody realBody = null;
 
-    public MessageSendMatrixPiece(SendMatrixPieceWire.SendMatrixPieceBody body) {
-        this.body = body;
+    MessageSendMatrixPiece(SendMatrixPieceBody body) {
+        this.realBody = body;
+    }
+
+    public MessageSendMatrixPiece(SendMatrixPieceBody.Builder builder) {
+        this.builder = builder;
+    }
+
+    public SendMatrixPieceBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override

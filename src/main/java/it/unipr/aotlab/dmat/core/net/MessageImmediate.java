@@ -10,8 +10,7 @@ public abstract class MessageImmediate extends Message {
 
     @Override
     public void serialNo(int serialNo) {
-        throw new DMatInternalError(
-                "Immediate massages always have serialNo of 0!");
+        //Immediate messages always have serialNo of 0
     }
 
     @Override

@@ -24,6 +24,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.ChunkDescriptionBody;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
@@ -135,7 +136,7 @@ public class Chunk {
         assignedTo = node;
     }
 
-    public ChunkDescriptionWire.ChunkDescriptionBody buildMessageBody() {
+    public ChunkDescriptionBody.Builder buildMessageBuilder() {
         RectangleWire.RectangleBody position
                 = RectangleWire.RectangleBody.newBuilder()
                 .setStartRow(matrixPosition.startRow)
@@ -147,7 +148,7 @@ public class Chunk {
                 .setElementType(getElementType())
                 .setSemiRing(getSemiring()).build();
 
-        return ChunkDescriptionWire.ChunkDescriptionBody.newBuilder()
+        return ChunkDescriptionBody.newBuilder()
                 .setChunkId(chunkId)
                 .setPosition(position)
                 .setFormat(format)
@@ -155,7 +156,7 @@ public class Chunk {
                 .setMatrixId(matrixId)
                 .setMatrixNofRows(matrixNofRows)
                 .setMatrixNofColumns(matrixNofColumns)
-                .setMatricesOnTheWire(matricesOnTheWire).build();
+                .setMatricesOnTheWire(matricesOnTheWire);
     }
 
     public Chunk(ChunkDescriptionWire.ChunkDescriptionBody m, String nodeId) {

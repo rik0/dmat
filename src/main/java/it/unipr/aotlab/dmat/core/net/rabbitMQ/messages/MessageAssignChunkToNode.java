@@ -1,25 +1,36 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
+import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.ChunkDescriptionBody;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageAssignChunkToNode extends MessageOrder {
-    public ChunkDescriptionWire.ChunkDescriptionBody body;
+    private ChunkDescriptionBody realBody = null;
+    public ChunkDescriptionBody.Builder builder = null;
 
-    public MessageAssignChunkToNode(ChunkDescriptionWire
+    MessageAssignChunkToNode(ChunkDescriptionWire
             .ChunkDescriptionBody body) {
-        this.body = body;
+        this.realBody = body;
     }
 
     public MessageAssignChunkToNode(Chunk chunk) {
-        this.body = chunk.buildMessageBody();
+        this.builder = chunk.buildMessageBuilder();
+    }
+
+    public ChunkDescriptionBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override

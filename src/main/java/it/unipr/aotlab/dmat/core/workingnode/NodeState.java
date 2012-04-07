@@ -35,7 +35,7 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 public class NodeState {
-    int nextMessageNo = 1;
+    int currentOrderSerialNo = 1;
 
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
@@ -149,7 +149,7 @@ public class NodeState {
         ArrayList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null) {
-            for (OrderMultiply order : messageMultiply.body.getOperationList()) {
+            for (OrderMultiply order : messageMultiply.body().getOperationList()) {
                 System.err.println("Starting "
                         + order.getOutputMatrixId()
                         + " = " + order.getFirstFactorMatrixId()
@@ -322,7 +322,7 @@ public class NodeState {
         ArrayList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
-            for (OrderAddAssign order : messageAddAssign.body.getOperationList())
+            for (OrderAddAssign order : messageAddAssign.body().getOperationList())
                 doTheSum(missingPieces, order);
         }
     }
@@ -439,8 +439,10 @@ public class NodeState {
                 MessageMatrixValues values = chunkForUpdating.get(ivalues);
                 MessageAwaitUpdate waiting = awaitingUpdate.get(iwaiting);
 
-                if (values.getMatrixId().equals(waiting.body.getMatrixId())
-                        && values.getArea().compare(waiting.body.getUpdatingPosition()) == 0) {
+                if (values.getMatrixId().equals(waiting.body()
+                            .getMatrixId())
+                        && values.getArea().compare(waiting.body()
+                                .getUpdatingPosition()) == 0) {
                     toBeRemovedIva.add(ivalues);
                     toBeRemovedIwa.add(iwaiting);
 
@@ -668,19 +670,19 @@ public class NodeState {
 
     public void updateMatrix(MessageSetMatrix message) {
         URI dataAddress;
-        InNodeChunk<?> chunk = getChunk(message.body.getMatrixId(),
-                                        message.body.getChunkId());
+        InNodeChunk<?> chunk = getChunk(message.body().getMatrixId(),
+                                        message.body().getChunkId());
         if (chunk == null) {
             throw new DMatInternalError("This node does not manage "
-                    + message.body.getMatrixId()
-                    + "." + message.body.getChunkId() + "!");
+                    + message.body().getMatrixId()
+                    + "." + message.body().getChunkId() + "!");
         }
         try {
-            dataAddress = new URI(message.body.getURI());
+            dataAddress = new URI(message.body().getURI());
         } catch (URISyntaxException e) {
             throw new DMatInternalError("Received an URI with a syntax error!");
         }
-        RectangleBody rect = message.body.getPosition();
+        RectangleBody rect = message.body().getPosition();
         Rectangle position = rect.getEndRow() != 0
                 ? Rectangle.build(rect) : chunk.chunk.getArea();
 

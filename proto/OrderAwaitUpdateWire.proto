@@ -1,9 +1,11 @@
+import "NodeListWire.proto" ;
 import "RectangleWire.proto";
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderAwaitUpdateBody {
-    required string matrixId = 1;
-    required RectangleBody updatingPosition = 2;
+    required NodeListBody destination = 1;
+    required string matrixId = 2;
+    required RectangleBody updatingPosition = 3;
 }
 

@@ -3,7 +3,6 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
-import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 

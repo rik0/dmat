@@ -1120,7 +1120,12 @@ public final class OrderMultiplyWire {
   public interface OrderMultiplyBodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // repeated .MatrixPieceOwnerBody missingPieces = 1;
+    // required .NodeListBody destination = 1;
+    boolean hasDestination();
+    it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination();
+    it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder();
+    
+    // repeated .MatrixPieceOwnerBody missingPieces = 2;
     java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> 
         getMissingPiecesList();
     it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody getMissingPieces(int index);
@@ -1130,7 +1135,7 @@ public final class OrderMultiplyWire {
     it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder getMissingPiecesOrBuilder(
         int index);
     
-    // repeated .OrderMultiply operation = 2;
+    // repeated .OrderMultiply operation = 3;
     java.util.List<it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply> 
         getOperationList();
     it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply getOperation(int index);
@@ -1168,8 +1173,22 @@ public final class OrderMultiplyWire {
       return it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.internal_static_OrderMultiplyBody_fieldAccessorTable;
     }
     
-    // repeated .MatrixPieceOwnerBody missingPieces = 1;
-    public static final int MISSINGPIECES_FIELD_NUMBER = 1;
+    private int bitField0_;
+    // required .NodeListBody destination = 1;
+    public static final int DESTINATION_FIELD_NUMBER = 1;
+    private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_;
+    public boolean hasDestination() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination() {
+      return destination_;
+    }
+    public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder() {
+      return destination_;
+    }
+    
+    // repeated .MatrixPieceOwnerBody missingPieces = 2;
+    public static final int MISSINGPIECES_FIELD_NUMBER = 2;
     private java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> missingPieces_;
     public java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> getMissingPiecesList() {
       return missingPieces_;
@@ -1189,8 +1208,8 @@ public final class OrderMultiplyWire {
       return missingPieces_.get(index);
     }
     
-    // repeated .OrderMultiply operation = 2;
-    public static final int OPERATION_FIELD_NUMBER = 2;
+    // repeated .OrderMultiply operation = 3;
+    public static final int OPERATION_FIELD_NUMBER = 3;
     private java.util.List<it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply> operation_;
     public java.util.List<it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply> getOperationList() {
       return operation_;
@@ -1211,6 +1230,7 @@ public final class OrderMultiplyWire {
     }
     
     private void initFields() {
+      destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
       missingPieces_ = java.util.Collections.emptyList();
       operation_ = java.util.Collections.emptyList();
     }
@@ -1219,6 +1239,10 @@ public final class OrderMultiplyWire {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
+      if (!hasDestination()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       for (int i = 0; i < getMissingPiecesCount(); i++) {
         if (!getMissingPieces(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -1238,11 +1262,14 @@ public final class OrderMultiplyWire {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, destination_);
+      }
       for (int i = 0; i < missingPieces_.size(); i++) {
-        output.writeMessage(1, missingPieces_.get(i));
+        output.writeMessage(2, missingPieces_.get(i));
       }
       for (int i = 0; i < operation_.size(); i++) {
-        output.writeMessage(2, operation_.get(i));
+        output.writeMessage(3, operation_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1253,13 +1280,17 @@ public final class OrderMultiplyWire {
       if (size != -1) return size;
     
       size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, destination_);
+      }
       for (int i = 0; i < missingPieces_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, missingPieces_.get(i));
+          .computeMessageSize(2, missingPieces_.get(i));
       }
       for (int i = 0; i < operation_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, operation_.get(i));
+          .computeMessageSize(3, operation_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1377,6 +1408,7 @@ public final class OrderMultiplyWire {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getDestinationFieldBuilder();
           getMissingPiecesFieldBuilder();
           getOperationFieldBuilder();
         }
@@ -1387,15 +1419,21 @@ public final class OrderMultiplyWire {
       
       public Builder clear() {
         super.clear();
+        if (destinationBuilder_ == null) {
+          destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+        } else {
+          destinationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
         if (missingPiecesBuilder_ == null) {
           missingPieces_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           missingPiecesBuilder_.clear();
         }
         if (operationBuilder_ == null) {
           operation_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           operationBuilder_.clear();
         }
@@ -1436,24 +1474,34 @@ public final class OrderMultiplyWire {
       public it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody buildPartial() {
         it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody result = new it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (destinationBuilder_ == null) {
+          result.destination_ = destination_;
+        } else {
+          result.destination_ = destinationBuilder_.build();
+        }
         if (missingPiecesBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
             missingPieces_ = java.util.Collections.unmodifiableList(missingPieces_);
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.missingPieces_ = missingPieces_;
         } else {
           result.missingPieces_ = missingPiecesBuilder_.build();
         }
         if (operationBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
             operation_ = java.util.Collections.unmodifiableList(operation_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.operation_ = operation_;
         } else {
           result.operation_ = operationBuilder_.build();
         }
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -1469,11 +1517,14 @@ public final class OrderMultiplyWire {
       
       public Builder mergeFrom(it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody other) {
         if (other == it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody.getDefaultInstance()) return this;
+        if (other.hasDestination()) {
+          mergeDestination(other.getDestination());
+        }
         if (missingPiecesBuilder_ == null) {
           if (!other.missingPieces_.isEmpty()) {
             if (missingPieces_.isEmpty()) {
               missingPieces_ = other.missingPieces_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureMissingPiecesIsMutable();
               missingPieces_.addAll(other.missingPieces_);
@@ -1486,7 +1537,7 @@ public final class OrderMultiplyWire {
               missingPiecesBuilder_.dispose();
               missingPiecesBuilder_ = null;
               missingPieces_ = other.missingPieces_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000002);
               missingPiecesBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getMissingPiecesFieldBuilder() : null;
@@ -1499,7 +1550,7 @@ public final class OrderMultiplyWire {
           if (!other.operation_.isEmpty()) {
             if (operation_.isEmpty()) {
               operation_ = other.operation_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureOperationIsMutable();
               operation_.addAll(other.operation_);
@@ -1512,7 +1563,7 @@ public final class OrderMultiplyWire {
               operationBuilder_.dispose();
               operationBuilder_ = null;
               operation_ = other.operation_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
               operationBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getOperationFieldBuilder() : null;
@@ -1526,6 +1577,10 @@ public final class OrderMultiplyWire {
       }
       
       public final boolean isInitialized() {
+        if (!hasDestination()) {
+          
+          return false;
+        }
         for (int i = 0; i < getMissingPiecesCount(); i++) {
           if (!getMissingPieces(i).isInitialized()) {
             
@@ -1565,12 +1620,21 @@ public final class OrderMultiplyWire {
               break;
             }
             case 10: {
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.newBuilder();
+              if (hasDestination()) {
+                subBuilder.mergeFrom(getDestination());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setDestination(subBuilder.buildPartial());
+              break;
+            }
+            case 18: {
               it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.newBuilder();
               input.readMessage(subBuilder, extensionRegistry);
               addMissingPieces(subBuilder.buildPartial());
               break;
             }
-            case 18: {
+            case 26: {
               it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply.Builder subBuilder = it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply.newBuilder();
               input.readMessage(subBuilder, extensionRegistry);
               addOperation(subBuilder.buildPartial());
@@ -1582,13 +1646,103 @@ public final class OrderMultiplyWire {
       
       private int bitField0_;
       
-      // repeated .MatrixPieceOwnerBody missingPieces = 1;
+      // required .NodeListBody destination = 1;
+      private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> destinationBuilder_;
+      public boolean hasDestination() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination() {
+        if (destinationBuilder_ == null) {
+          return destination_;
+        } else {
+          return destinationBuilder_.getMessage();
+        }
+      }
+      public Builder setDestination(it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody value) {
+        if (destinationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          destination_ = value;
+          onChanged();
+        } else {
+          destinationBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setDestination(
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder builderForValue) {
+        if (destinationBuilder_ == null) {
+          destination_ = builderForValue.build();
+          onChanged();
+        } else {
+          destinationBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeDestination(it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody value) {
+        if (destinationBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              destination_ != it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance()) {
+            destination_ =
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.newBuilder(destination_).mergeFrom(value).buildPartial();
+          } else {
+            destination_ = value;
+          }
+          onChanged();
+        } else {
+          destinationBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearDestination() {
+        if (destinationBuilder_ == null) {
+          destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
+          onChanged();
+        } else {
+          destinationBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder getDestinationBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getDestinationFieldBuilder().getBuilder();
+      }
+      public it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder() {
+        if (destinationBuilder_ != null) {
+          return destinationBuilder_.getMessageOrBuilder();
+        } else {
+          return destination_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> 
+          getDestinationFieldBuilder() {
+        if (destinationBuilder_ == null) {
+          destinationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder>(
+                  destination_,
+                  getParentForChildren(),
+                  isClean());
+          destination_ = null;
+        }
+        return destinationBuilder_;
+      }
+      
+      // repeated .MatrixPieceOwnerBody missingPieces = 2;
       private java.util.List<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody> missingPieces_ =
         java.util.Collections.emptyList();
       private void ensureMissingPiecesIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
           missingPieces_ = new java.util.ArrayList<it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody>(missingPieces_);
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
          }
       }
       
@@ -1704,7 +1858,7 @@ public final class OrderMultiplyWire {
       public Builder clearMissingPieces() {
         if (missingPiecesBuilder_ == null) {
           missingPieces_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           missingPiecesBuilder_.clear();
@@ -1760,7 +1914,7 @@ public final class OrderMultiplyWire {
           missingPiecesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody.Builder, it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBodyOrBuilder>(
                   missingPieces_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
                   isClean());
           missingPieces_ = null;
@@ -1768,13 +1922,13 @@ public final class OrderMultiplyWire {
         return missingPiecesBuilder_;
       }
       
-      // repeated .OrderMultiply operation = 2;
+      // repeated .OrderMultiply operation = 3;
       private java.util.List<it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply> operation_ =
         java.util.Collections.emptyList();
       private void ensureOperationIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
           operation_ = new java.util.ArrayList<it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply>(operation_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
          }
       }
       
@@ -1890,7 +2044,7 @@ public final class OrderMultiplyWire {
       public Builder clearOperation() {
         if (operationBuilder_ == null) {
           operation_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           operationBuilder_.clear();
@@ -1946,7 +2100,7 @@ public final class OrderMultiplyWire {
           operationBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply, it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply.Builder, it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyOrBuilder>(
                   operation_,
-                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  ((bitField0_ & 0x00000004) == 0x00000004),
                   getParentForChildren(),
                   isClean());
           operation_ = null;
@@ -1985,18 +2139,19 @@ public final class OrderMultiplyWire {
   static {
     java.lang.String[] descriptorData = {
       "\n>home/paolo/uni/dissertation/dmat/proto" +
-      "/OrderMultiplyWire.proto\032\023RectangleWire." +
-      "proto\032\032MatrixPieceOwnerWire.proto\032\016TypeW" +
-      "ire.proto\"\320\001\n\rOrderMultiply\022\026\n\016outputMat" +
-      "rixId\030\001 \002(\t\022\025\n\routputChunkId\030\002 \002(\t\022\024\n\014ou" +
-      "tputNodeId\030\003 \002(\t\022\033\n\023firstFactorMatrixId\030" +
-      "\004 \002(\t\022\034\n\024secondFactorMatrixId\030\005 \002(\t\022&\n\016o" +
-      "utputPosition\030\006 \002(\0132\016.RectangleBody\022\027\n\004t" +
-      "ype\030\007 \002(\0132\t.TypeBody\"d\n\021OrderMultiplyBod" +
-      "y\022,\n\rmissingPieces\030\001 \003(\0132\025.MatrixPieceOw",
-      "nerBody\022!\n\toperation\030\002 \003(\0132\016.OrderMultip" +
-      "lyB%\n#it.unipr.aotlab.dmat.core.generate" +
-      "d"
+      "/OrderMultiplyWire.proto\032\022NodeListWire.p" +
+      "roto\032\023RectangleWire.proto\032\032MatrixPieceOw" +
+      "nerWire.proto\032\016TypeWire.proto\"\320\001\n\rOrderM" +
+      "ultiply\022\026\n\016outputMatrixId\030\001 \002(\t\022\025\n\routpu" +
+      "tChunkId\030\002 \002(\t\022\024\n\014outputNodeId\030\003 \002(\t\022\033\n\023" +
+      "firstFactorMatrixId\030\004 \002(\t\022\034\n\024secondFacto" +
+      "rMatrixId\030\005 \002(\t\022&\n\016outputPosition\030\006 \002(\0132" +
+      "\016.RectangleBody\022\027\n\004type\030\007 \002(\0132\t.TypeBody" +
+      "\"\210\001\n\021OrderMultiplyBody\022\"\n\013destination\030\001 ",
+      "\002(\0132\r.NodeListBody\022,\n\rmissingPieces\030\002 \003(" +
+      "\0132\025.MatrixPieceOwnerBody\022!\n\toperation\030\003 " +
+      "\003(\0132\016.OrderMultiplyB%\n#it.unipr.aotlab.d" +
+      "mat.core.generated"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2016,7 +2171,7 @@ public final class OrderMultiplyWire {
           internal_static_OrderMultiplyBody_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_OrderMultiplyBody_descriptor,
-              new java.lang.String[] { "MissingPieces", "Operation", },
+              new java.lang.String[] { "Destination", "MissingPieces", "Operation", },
               it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody.class,
               it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody.Builder.class);
           return null;
@@ -2025,6 +2180,7 @@ public final class OrderMultiplyWire {
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
+          it.unipr.aotlab.dmat.core.generated.NodeListWire.getDescriptor(),
           it.unipr.aotlab.dmat.core.generated.RectangleWire.getDescriptor(),
           it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.getDescriptor(),
           it.unipr.aotlab.dmat.core.generated.TypeWire.getDescriptor(),

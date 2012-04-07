@@ -66,10 +66,12 @@ public class WorkingNode {
 
         while (delivery == null && i.hasNext()) {
             Delivery possibleDelivery = i.next();
+            int serialNo = possibleDelivery.getProperties().getPriority();
 
-            //future sorter here
-            delivery = possibleDelivery;
-            i.remove();
+            if (serialNo == 0 || serialNo == state.currentOrderSerialNo) {
+                delivery = possibleDelivery;
+                i.remove();
+            }
         }
 
         return delivery;

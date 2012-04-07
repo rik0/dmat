@@ -5,15 +5,29 @@ import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageExposeValues extends MessageOrder {
-    public MatrixPieceOwnerBody body;
+    public MatrixPieceOwnerBody.Builder builder = null;
+    private MatrixPieceOwnerBody realBody = null;
 
-    public MessageExposeValues(MatrixPieceOwnerBody body) {
-        this.body = body;
+    MessageExposeValues(MatrixPieceOwnerBody body) {
+        this.realBody = body;
+    }
+
+    public MessageExposeValues(MatrixPieceOwnerBody.Builder builder) {
+        this.builder = builder;
+    }
+
+    public MatrixPieceOwnerBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override

@@ -1,0 +1,7 @@
+
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message NodeListBody {
+    repeated string nodeId = 1;
+}
+

@@ -1,14 +1,11 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
-import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.formats.Formats;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
-import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
-import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 
 public class InNodeChunks {
@@ -58,7 +55,7 @@ public class InNodeChunks {
         setSemiring(chunk, inNodeChunk);
         inNodeChunk.hostNode = wn;
         inNodeChunk.chunk = chunk;
-        inNodeChunk.accessor = (ChunkAccessor) Formats.build(inNodeChunk);
+        inNodeChunk.accessor = Formats.build(inNodeChunk);
         setMatrixPiece(chunk, inNodeChunk);
     }
 
@@ -77,6 +74,6 @@ public class InNodeChunks {
 
     private static <E> void setSemiring(Chunk chunk,
                                         InNodeChunk<E> inNodeChunk) {
-        inNodeChunk.semiring = SemiRings.semiring(chunk.getType()); 
+        inNodeChunk.semiring = SemiRings.semiring(chunk.getType());
     }
 }

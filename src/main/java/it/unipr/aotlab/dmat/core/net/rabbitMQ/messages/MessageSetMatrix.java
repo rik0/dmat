@@ -5,15 +5,28 @@ import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageSetMatrix extends MessageOrder {
-    public OrderSetMatrixBody body;
+    private OrderSetMatrixBody realBody;
+    public OrderSetMatrixBody.Builder builder;
 
-    public MessageSetMatrix(OrderSetMatrixBody body) {
-        this.body = body;
+    MessageSetMatrix(OrderSetMatrixBody body) {
+        this.realBody = body;
+    }
+
+    public MessageSetMatrix(OrderSetMatrixBody.Builder builder) {
+        this.builder = builder;
+    }
+
+    public OrderSetMatrixBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+        return realBody;
     }
 
     @Override
     public byte[] message() {
-        return body.toByteArray();
+        return body().toByteArray();
     }
 
     @Override

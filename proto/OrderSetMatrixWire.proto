@@ -1,11 +1,13 @@
+import "NodeListWire.proto" ;
 import "RectangleWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderSetMatrixBody {
-    required string matrixId = 1;
-    optional string chunkId = 2 [ default = "default" ];
-    optional RectangleBody position = 3;
-    required string URI = 4;
+    required NodeListBody destination = 1;
+    required string matrixId = 2;
+    optional string chunkId = 3 [ default = "default" ];
+    optional RectangleBody position = 4;
+    required string URI = 5;
 }
 
