@@ -1,6 +1,5 @@
 package it.unipr.aotlab.dmat.core.net;
 
-import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 
 public abstract class MessageImmediate extends Message {
     @Override

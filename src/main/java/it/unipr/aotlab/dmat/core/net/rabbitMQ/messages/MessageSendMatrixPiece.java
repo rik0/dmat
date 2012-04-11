@@ -5,6 +5,7 @@ import it.unipr.aotlab.dmat.core.net.MessageSupport;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public class MessageSendMatrixPiece extends MessageSupport {
     public SendMatrixPieceBody.Builder builder = null;
@@ -35,5 +36,15 @@ public class MessageSendMatrixPiece extends MessageSupport {
     @Override
     public void accept(NodeMessageDigester digester) throws IOException {
         digester.accept(this);
+    }
+
+    @Override
+    public void recipients(Collection<String> recipients) {
+        builder.setDestination(list2Protobuf(recipients));
+    }
+
+    @Override
+    public Collection<String> recipients() {
+        return body().getDestination().getNodeIdList();
     }
 }

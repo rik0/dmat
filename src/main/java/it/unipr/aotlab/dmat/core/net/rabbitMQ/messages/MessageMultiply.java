@@ -6,6 +6,7 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public class MessageMultiply extends Operation {
     public OrderMultiplyBody.Builder builder;
@@ -51,5 +52,15 @@ public class MessageMultiply extends Operation {
     @Override
     public MatrixPieceOwnerBody missingPiece(int n) {
         return body().getMissingPieces(n);
+    }
+
+    @Override
+    public void recipients(Collection<String> recipients) {
+        builder.setDestination(list2Protobuf(recipients));
+    }
+
+    @Override
+    public Collection<String> recipients() {
+        return body().getDestination().getNodeIdList();
     }
 }

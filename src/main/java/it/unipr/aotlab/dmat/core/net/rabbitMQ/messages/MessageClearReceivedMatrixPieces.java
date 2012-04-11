@@ -4,7 +4,6 @@ import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 public class MessageClearReceivedMatrixPieces extends MessageOrder {
-
     public MessageClearReceivedMatrixPieces() {
     }
 

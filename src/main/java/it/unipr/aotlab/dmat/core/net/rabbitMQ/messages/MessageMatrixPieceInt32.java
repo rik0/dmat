@@ -13,6 +13,7 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -226,5 +227,15 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     @Override
     public Iterator<Triplet> matrixRowterator(int row) {
         return new MessageRowIterator(row);
+    }
+
+    @Override
+    public void recipients(Collection<String> recipients) {
+        builder.setDestination(list2Protobuf(recipients));
+    }
+
+    @Override
+    public Collection<String> recipients() {
+        return body().getDestination().getNodeIdList();
     }
 }

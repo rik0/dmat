@@ -1,7 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.Node;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -63,11 +62,6 @@ public class MessageSender implements
         } finally {
             closeChannel(channel);
         }
-    }
-
-    @Override
-    public void sendMessage(Message m, Node node) throws IOException {
-        node.sendMessage(m);
     }
 
     public static void closeChannel(Channel channel) throws IOException {

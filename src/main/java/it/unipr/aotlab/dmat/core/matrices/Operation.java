@@ -4,10 +4,12 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.OrderAwaitUpdateWire.OrderAwaitUpdateBody;
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire.SendMatrixPieceBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
-import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
+import it.unipr.aotlab.dmat.core.registers.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth;
+import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupPrivate;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ public abstract class Operation {
                     awaitUpdate.setMatrixId(workZone.outputChunk.matrixId);
                     awaitUpdate.setUpdatingPosition(workZone.outputArea.convertToProto());
 
-                    getMessageSender()
+                    getNodeWorkGroup()
                         .sendMessage(new MessageAwaitUpdate(awaitUpdate.build()),
                                      workZone.outputChunk.getAssignedNode());
                 }
@@ -242,13 +244,16 @@ public abstract class Operation {
     }
 
 
-    protected MessageSender getMessageSender() {
-        return computingNodes.first().getMessageSender();
+    protected NodeWorkGroupBoth getNodeWorkGroup() {
+        return (NodeWorkGroupBoth) computingNodes.first().getWorkGroup();
     }
 
     protected TreeSet<Node> computingNodes = null;
     protected List<NodeWorkZonePair> tasks = new LinkedList<NodeWorkZonePair>();
     protected ArrayList<Matrix> operands = new ArrayList<Matrix>();
+
+    protected NodeWorkGroupPrivate nodeWorkGroupP;
+    protected NodeWorkGroup nodeWorkGroup;
 
     public static class NeededPieceOfChunk {
         public Chunk chunk;
@@ -400,7 +405,7 @@ public abstract class Operation {
                 messageBody.addRecipient(destination);
             }
 
-            getMessageSender().sendMessage(new MessageSendMatrixPiece(messageBody.build()),
+            getNodeWorkGroup().sendMessage(new MessageSendMatrixPiece(messageBody.build()),
                                            message.ownerNodeId);
         }
     }

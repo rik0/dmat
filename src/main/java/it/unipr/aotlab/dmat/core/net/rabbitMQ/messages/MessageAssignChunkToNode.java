@@ -6,6 +6,8 @@ import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
+import java.util.Collection;
+
 public class MessageAssignChunkToNode extends MessageOrder {
     private ChunkDescriptionBody realBody = null;
     public ChunkDescriptionBody.Builder builder = null;
@@ -36,5 +38,15 @@ public class MessageAssignChunkToNode extends MessageOrder {
     @Override
     public void accept(NodeMessageDigester digester) {
         digester.accept(this);
+    }
+
+    @Override
+    public void recipients(Collection<String> recipients) {
+        builder.setDestination(list2Protobuf(recipients));
+    }
+
+    @Override
+    public Collection<String> recipients() {
+        return body().getDestination().getNodeIdList();
     }
 }

@@ -38,7 +38,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
 
     @Override
     public void sendMessage(Message m) throws IOException {
-        sender.sendMessage(m, getNodeId());
+        register.sendMessage(m, this);
     }
 
     @Override

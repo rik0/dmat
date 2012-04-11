@@ -1,9 +1,12 @@
 package it.unipr.aotlab.dmat.core.net;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 
 public abstract class Message {
     int serialNo = -1;
@@ -26,6 +29,18 @@ public abstract class Message {
     public abstract MessageKind messageType();
 
     public abstract byte[] message();
+
+    public abstract Collection<String> recipients();
+
+    public void recipients(String... recipients) {
+        recipients(Arrays.asList(recipients));
+    }
+
+    public abstract void recipients(Collection<String> recipients);
+
+    public static NodeListBody list2Protobuf(Collection<String> recipients) {
+        return NodeListBody.newBuilder().addAllNodeId(recipients).build();
+    }
 
     public void serialNo(int serialNo) {
         this.serialNo = serialNo;

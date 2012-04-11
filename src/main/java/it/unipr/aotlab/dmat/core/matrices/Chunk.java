@@ -294,6 +294,6 @@ public class Chunk {
         MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
         getAssignedNode().sendMessage(new MessageExposeValues(
                 mp.setMatrixId(getMatrixId())
-                  .setChunkId(getChunkId()).build()));
+                  .setChunkId(getChunkId())));
     }
 }

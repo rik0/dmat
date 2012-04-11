@@ -12,6 +12,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
@@ -36,6 +37,7 @@ import java.util.TreeSet;
 
 public class NodeState {
     int currentOrderSerialNo = 1;
+    boolean executingOrder = false;
 
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
@@ -61,6 +63,10 @@ public class NodeState {
 
     NodeState(WorkingNode hostWorkingNode) {
         this.hostWorkingNode = hostWorkingNode;
+    }
+
+    public boolean busyExecutingOrder() {
+        return executingOrder;
     }
 
     public void eventuallyExecOperation() throws IOException {
@@ -728,7 +734,26 @@ public class NodeState {
         }
     }
 
-    void accept(NodeMessageDigester digester, Message m) throws IOException {
-        m.accept(digester);
+    void accept(NodeMessageDigester digester,
+                Message message) throws IOException {
+        boolean forUs = false;
+
+        for (String recipient : message.recipients()) {
+            if (WorkingNode.sameNode(recipient, hostWorkingNode.nodeId)) {
+                forUs = true;
+                break;
+            }
+        }
+
+        if (forUs) {
+            message.accept(digester);
+        }
+        else {
+            Assertion.isTrue(message.messageType() == MessageKind.ORDER,
+                    "A non-order reached this node even if it is not its recipient!\n"
+                    + "Only orders should be sent to the whole NodeWorkGroup!");
+
+            ++currentOrderSerialNo;
+        }
     }
 }

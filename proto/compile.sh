@@ -2,9 +2,10 @@
 set -e
 set -x
 
-PROTODIR="`dirname $0`"
-PROTODIR=`readlink -ne "$PROTODIR"`
-OUTPUTDIR=`readlink -ne "$PROTODIR/../src/main/java"`
+cd "`dirname $0`"
+PROTODIR="`readlink -ne .`"
+OUTPUTDIR="`readlink -ne ../src/main/java`"
+
 for PROTO in "$PROTODIR"/*.proto
 do
     protoc -I/ -I"$PROTODIR" "$PROTO" --java_out="$OUTPUTDIR"

@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.net;
 
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.registers.NodeWorkGroup;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -30,5 +31,5 @@ public interface Node {
 
     public void sendMessage(Message m) throws IOException;
 
-    public MessageSender getMessageSender();
+    public NodeWorkGroup getWorkGroup();
 }

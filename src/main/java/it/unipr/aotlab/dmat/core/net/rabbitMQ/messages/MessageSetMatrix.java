@@ -4,6 +4,8 @@ import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody
 import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
+import java.util.Collection;
+
 public class MessageSetMatrix extends MessageOrder {
     private OrderSetMatrixBody realBody;
     public OrderSetMatrixBody.Builder builder;
@@ -32,5 +34,15 @@ public class MessageSetMatrix extends MessageOrder {
     @Override
     public void accept(NodeMessageDigester digester) {
         digester.accept(this);
+    }
+
+    @Override
+    public void recipients(Collection<String> recipients) {
+        builder.setDestination(list2Protobuf(recipients));
+    }
+
+    @Override
+    public Collection<String> recipients() {
+        return body().getDestination().getNodeIdList();
     }
 }

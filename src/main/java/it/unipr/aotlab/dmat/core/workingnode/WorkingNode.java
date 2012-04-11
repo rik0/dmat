@@ -1,6 +1,7 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
 
@@ -46,16 +47,18 @@ public class WorkingNode {
         QueueingConsumer queueingConsumer = new QueueingConsumer(channel);
         channel.basicConsume(nodeId, true, queueingConsumer);
 
+        // ask new messages
         while (true) {
             QueueingConsumer.Delivery delivery = queueingConsumer
                     .nextDelivery();
 
             sortingBuffer.add(delivery);
 
+            // loop over the messages that the node already has
             while ((delivery = findNextProcessableMessage()) != null) {
-                Message m = Messages.readMessage(delivery);
+                Message message = Messages.readMessage(delivery);
 
-                state.accept(digester, m);
+                state.accept(digester, message);
             }
         }
     }
@@ -66,15 +69,35 @@ public class WorkingNode {
 
         while (delivery == null && i.hasNext()) {
             Delivery possibleDelivery = i.next();
-            int serialNo = possibleDelivery.getProperties().getPriority();
-
-            if (serialNo == 0 || serialNo == state.currentOrderSerialNo) {
+            if (isCorrectMessage(possibleDelivery)) {
                 delivery = possibleDelivery;
                 i.remove();
             }
         }
 
         return delivery;
+    }
+
+    private boolean isCorrectMessage(Delivery delivery) {
+        int serialNo = delivery.getProperties().getPriority();
+        int messageKind = delivery.getProperties().getDeliveryMode();
+        boolean executingOrder = state.busyExecutingOrder();
+        int workingOnSerialNo = state.currentOrderSerialNo;
+
+        if (messageKind == MessageKind.IMMEDIATE.tag)
+            return true;
+
+        if (messageKind == MessageKind.ORDER.tag
+                && serialNo == workingOnSerialNo
+                && !executingOrder)
+            return true;
+
+        if (messageKind == MessageKind.SUPPORT.tag
+                && serialNo == workingOnSerialNo
+                && executingOrder)
+            return true;
+
+        return false;
     }
 
     public WorkingNode(String nodeId,
@@ -90,5 +113,9 @@ public class WorkingNode {
 
     public String getNodeId() {
         return nodeId;
+    }
+
+    static public boolean sameNode(String lhs, String rhs) {
+        return lhs.equals(rhs);
     }
 }
