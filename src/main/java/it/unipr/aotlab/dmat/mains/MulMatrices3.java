@@ -55,9 +55,9 @@ public class MulMatrices3 {
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
 
             b.setMatrixId(B.getMatrixId());
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
             b.setMatrixId(C.getMatrixId());
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             Thread.sleep(2000);
 
@@ -68,7 +68,7 @@ public class MulMatrices3 {
             Thread.sleep(5000);
 
             MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").build()));
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A")));
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

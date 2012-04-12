@@ -57,7 +57,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
     }
 
     @Override
-    public it.unipr.aotlab.dmat.core.net.MessageSender getMessageSender() {
-        return sender;
+    public NodeWorkGroup getWorkGroup() {
+        return register;
     }
 }

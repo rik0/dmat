@@ -47,11 +47,11 @@ public class SumMatrices2 {
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
-            
+
             b.setMatrixId(A.getMatrixId());
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
             b.setMatrixId(B.getMatrixId());
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             Thread.sleep(2000);
 
@@ -62,7 +62,7 @@ public class SumMatrices2 {
             Thread.sleep(2000);
 
             MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").build()));
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A")));
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

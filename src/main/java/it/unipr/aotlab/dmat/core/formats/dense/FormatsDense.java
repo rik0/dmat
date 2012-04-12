@@ -2,10 +2,10 @@ package it.unipr.aotlab.dmat.core.formats.dense;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.DenseBase;
-import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 
 public class FormatsDense {
+    @SuppressWarnings("unchecked")
     public static DenseBase build(InNodeChunk<?> chunk) {
         switch (chunk.chunk.getElementType()) {
         case INT32:

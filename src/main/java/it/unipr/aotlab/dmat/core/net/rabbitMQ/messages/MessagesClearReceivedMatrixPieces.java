@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
+import it.unipr.aotlab.dmat.core.generated.OrderDummyWire.OrderDummyBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -17,6 +18,7 @@ public class MessagesClearReceivedMatrixPieces extends Messages {
     @Override
     public Message parseMessage(byte[] rawMessage)
             throws InvalidProtocolBufferException {
-        return new MessageClearReceivedMatrixPieces();
+        return new MessageClearReceivedMatrixPieces
+                (OrderDummyBody.parseFrom(rawMessage));
     }
 }

@@ -16,7 +16,17 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     static ChunkDescriptionWire.MatricesOnTheWire srtag = ChunkDescriptionWire.MatricesOnTheWire.INT32TRIPLETS;
 
     private int index = 0;
-    private MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body int32Triples;
+    private MatrixPieceTripletsInt32Body.Builder builder;
+    private MatrixPieceTripletsInt32Body realBody;
+
+    public MatrixPieceTripletsInt32Body body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
+    }
 
     static {
         MatrixPieceTripletsInt32.Builder b = new Builder();
@@ -39,7 +49,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         @Override
         public MessageMatrixValues buildMessage(MatrixPiece matrixPieceUnt) {
             MatrixPieceTripletsInt32 matrixPiece = (MatrixPieceTripletsInt32)matrixPieceUnt;
-            return new MessageMatrixPieceInt32(matrixPiece.int32Triples);
+            return new MessageMatrixPieceInt32(matrixPiece.builder);
         }
 
         @Override
@@ -97,13 +107,12 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     private class Int32TripletIterator implements Iterator<Int32Triplet> {
         @Override
         public boolean hasNext() {
-            return index < int32Triples.getValuesCount();
+            return index < body().getValuesCount();
         }
 
         @Override
         public Int32Triplet next() {
-            MatrixPieceTripletsInt32Wire.Triplet t = int32Triples
-                    .getValues(index);
+            MatrixPieceTripletsInt32Wire.Triplet t = body().getValues(index);
             Int32Triplet next_ = new Int32Triplet(t.getRow(), t.getCol(),
                     t.getValue());
             ++index;
@@ -117,9 +126,9 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
         }
     }
 
-    public MatrixPieceTripletsInt32(
+    MatrixPieceTripletsInt32(
             MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body int32Triples) {
-        this.int32Triples = int32Triples;
+        this.realBody = int32Triples;
     }
 
     @Override
@@ -134,16 +143,16 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
 
     @Override
     public String getMatrixId() {
-        return this.int32Triples.getMatrixId();
+        return this.body().getMatrixId();
     }
 
     @Override
     public String getChunkId() {
-        return this.int32Triples.getChunkId();
+        return this.body().getChunkId();
     }
 
     @Override
     public String getNodeId() {
-        return this.int32Triples.getNodeId();
+        return this.body().getNodeId();
     }
 }

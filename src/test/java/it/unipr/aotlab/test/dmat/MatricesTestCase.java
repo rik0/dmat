@@ -6,6 +6,7 @@ import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
@@ -106,7 +107,8 @@ public class MatricesTestCase {
 
     @Test
     public void makeAPieceSendIterate() {
-        MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body.Builder b = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
+        MatrixPieceTripletsInt32Body.Builder b
+                = MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body
                 .newBuilder();
 
         b.setMatrixId("A");
@@ -123,6 +125,7 @@ public class MatricesTestCase {
 
         MatrixPieceTripletsInt32.Builder receiverBuilder = new MatrixPieceTripletsInt32.Builder();
 
+        @SuppressWarnings("unchecked")
         Iterator<Int32Triplet> resultsIterator = (Iterator<Int32Triplet>) receiverBuilder
                 .buildFromMessageBody(messsageBody).matrixPieceIterator();
 

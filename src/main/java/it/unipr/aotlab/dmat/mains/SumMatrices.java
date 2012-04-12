@@ -55,16 +55,16 @@ public class SumMatrices {
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
 
             b.setMatrixId("A").setChunkId("Atop");
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             b.setMatrixId("A").setChunkId("Abottom");
-            testNode2.sendMessage(new MessageSetMatrix(b.build()));
+            testNode2.sendMessage(new MessageSetMatrix(b));
 
             b.setMatrixId("B").setChunkId("Bleft");
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             b.setMatrixId("B").setChunkId("Bright");
-            testNode2.sendMessage(new MessageSetMatrix(b.build()));
+            testNode2.sendMessage(new MessageSetMatrix(b));
 
             Thread.sleep(2000);
 

@@ -46,7 +46,9 @@ public class AdditionAssignment extends ShapeFriendlyOp {
                 }
             }
 
-            computingNode.sendMessage(new MessageAddAssign(order.build()));
+            getNodeWorkGroup()
+                .sendOrderRaw((new MessageAddAssign(order)).serialNo(serialNo),
+                    computingNode);
         }
     }
 }

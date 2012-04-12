@@ -4,6 +4,7 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.OrderAwaitUpdateWire.OrderAwaitUpdateBody;
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire.SendMatrixPieceBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
@@ -32,6 +33,8 @@ public abstract class Operation {
 
         fillinComputingNodes();
 
+        getOperationSerialNo();
+
         nodeFitness();
 
         splitWork();
@@ -56,7 +59,8 @@ public abstract class Operation {
     public abstract int arity();
 
     protected void sendMissingPiecesOrders() throws IOException {
-        OrderAwaitUpdateBody.Builder awaitUpdate = OrderAwaitUpdateBody.newBuilder();
+        OrderAwaitUpdateBody.Builder awaitUpdate = OrderAwaitUpdateBody
+                .newBuilder();
         HashMap<PendingMissingPiecesMess, TreeSet<String>> pendingMessages
             = new HashMap<PendingMissingPiecesMess, TreeSet<String>>();
 
@@ -71,17 +75,25 @@ public abstract class Operation {
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
 
                     awaitUpdate.setMatrixId(workZone.outputChunk.matrixId);
-                    awaitUpdate.setUpdatingPosition(workZone.outputArea.convertToProto());
+                    awaitUpdate.setUpdatingPosition(workZone
+                                                    .outputArea
+                                                    .convertToProto());
+                    String owner = workZone.outputChunk.getAssignedNode()
+                                   .getNodeId();
 
-                    getNodeWorkGroup()
-                        .sendMessage(new MessageAwaitUpdate(awaitUpdate.build()),
-                                     workZone.outputChunk.getAssignedNode());
+                    Message m = (new MessageAwaitUpdate(awaitUpdate))
+                                 .serialNo(serialNo)
+                                 .recipients(owner);
+
+                    getNodeWorkGroup().getMessageSender().sendMessage(m, owner);
                 }
 
-                //for each (sub)chunk needed to update the output area
+                //for each (sub)chunk needed to update this output area
                 for (NeededPieceOfChunk pc : workZone.involvedChunks) {
                     if ( ! computingNode.doesManage(pc.chunk.chunkId)) {
-                        updatePendingMessage(pendingMessages, pc, computingNodeId);
+                        updatePendingMessage(pendingMessages,
+                                             pc,
+                                             computingNodeId);
                     }
                 }
             }
@@ -324,6 +336,7 @@ public abstract class Operation {
     }
 
     private List<WorkZone> workZones;
+    protected int serialNo;
 
     private void fillinComputingNodes() {
         if (this.computingNodes == null) {
@@ -391,6 +404,7 @@ public abstract class Operation {
 
     private void doActualSending(HashMap<PendingMissingPiecesMess,
                                  TreeSet<String>> pendingMessages) throws IOException {
+
         for (Entry<PendingMissingPiecesMess, TreeSet<String>> task : pendingMessages.entrySet()) {
             SendMatrixPieceBody.Builder messageBody = SendMatrixPieceBody.newBuilder();
             messageBody.setUpdate(false);
@@ -405,8 +419,16 @@ public abstract class Operation {
                 messageBody.addRecipient(destination);
             }
 
-            getNodeWorkGroup().sendMessage(new MessageSendMatrixPiece(messageBody.build()),
-                                           message.ownerNodeId);
+            Message wireMessage = (new MessageSendMatrixPiece(messageBody))
+                    .serialNo(serialNo)
+                    .recipients(message.ownerNodeId);
+
+            getNodeWorkGroup().getMessageSender()
+                .sendMessage(wireMessage, message.ownerNodeId);
         }
+    }
+
+    private void getOperationSerialNo() {
+        serialNo = getNodeWorkGroup().getNextOrderId();
     }
 }

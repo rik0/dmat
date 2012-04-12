@@ -8,8 +8,9 @@ public abstract class MessageImmediate extends Message {
     }
 
     @Override
-    public void serialNo(int serialNo) {
+    public Message serialNo(int serialNo) {
         //Immediate messages always have serialNo of 0
+        return this;
     }
 
     @Override

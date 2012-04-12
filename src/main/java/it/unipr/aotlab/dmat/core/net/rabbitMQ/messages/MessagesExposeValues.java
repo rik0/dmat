@@ -1,7 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
-import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import com.google.protobuf.InvalidProtocolBufferException;

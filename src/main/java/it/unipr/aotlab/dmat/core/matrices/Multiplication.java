@@ -5,6 +5,7 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwner
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 
@@ -12,8 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import javax.net.ssl.HostnameVerifier;
 
 public class Multiplication extends Operation {
     @Override
@@ -203,7 +202,9 @@ public class Multiplication extends Operation {
                 order.addOperation(operation.build());
             }
 
-            computingNode.sendMessage(new MessageMultiply(order.build()));
+            Message m = new MessageMultiply(order);
+            m.recipients(computingNode.getNodeId());
+            computingNode.sendMessage(m);
         }
     }
 }

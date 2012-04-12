@@ -2,12 +2,10 @@ package it.unipr.aotlab.dmat.core.matrixPiece;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
-import it.unipr.aotlab.dmat.core.formats.dense.DenseInt32;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 
 import java.util.Collection;

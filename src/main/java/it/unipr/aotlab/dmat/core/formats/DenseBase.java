@@ -2,7 +2,6 @@ package it.unipr.aotlab.dmat.core.formats;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
-import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.util.TypeInfo;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 

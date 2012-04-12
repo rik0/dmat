@@ -32,18 +32,19 @@ public abstract class Message {
 
     public abstract Collection<String> recipients();
 
-    public void recipients(String... recipients) {
-        recipients(Arrays.asList(recipients));
+    public Message recipients(String... recipients) {
+        return recipients(Arrays.asList(recipients));
     }
 
-    public abstract void recipients(Collection<String> recipients);
+    public abstract Message recipients(Collection<String> recipients);
 
     public static NodeListBody list2Protobuf(Collection<String> recipients) {
         return NodeListBody.newBuilder().addAllNodeId(recipients).build();
     }
 
-    public void serialNo(int serialNo) {
+    public Message serialNo(int serialNo) {
         this.serialNo = serialNo;
+        return this;
     }
 
     public int serialNo() {

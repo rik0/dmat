@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.registers.rabbitMQ;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
@@ -94,7 +95,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
         case SUPPORT:
         default:
-            Assertion.isTrue(false, "Support messages should be be sent with this method!");
+            Assertion.isTrue(false, "Support messages should not be be sent with this method!");
         }
     }
 
@@ -108,6 +109,23 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         m.recipients(recipient.getNodeId());
         m.serialNo(getNextOrderId());
 
+        messageSender.multicastMessage(m, nodesId());
+    }
+
+    @Override
+    public MessageSender getMessageSender() {
+        return messageSender;
+    }
+
+    @Override
+    public void sendOrderRaw(Message m, Node recipient) throws IOException {
+        Assertion.isFalse(m.serialNo() == -1,
+                       "When using raw sending you have to give the serialNo!");
+
+        Assertion.isTrue(m.messageType() == MessageKind.ORDER,
+                       "This method sends only orders!");
+
+        m.recipients(recipient.getNodeId());
         messageSender.multicastMessage(m, nodesId());
     }
 }

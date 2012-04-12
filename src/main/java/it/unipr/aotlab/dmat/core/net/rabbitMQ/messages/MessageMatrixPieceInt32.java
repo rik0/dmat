@@ -8,6 +8,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
@@ -230,8 +231,9 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     }
 
     @Override
-    public void recipients(Collection<String> recipients) {
+    public Message recipients(Collection<String> recipients) {
         builder.setDestination(list2Protobuf(recipients));
+        return this;
     }
 
     @Override

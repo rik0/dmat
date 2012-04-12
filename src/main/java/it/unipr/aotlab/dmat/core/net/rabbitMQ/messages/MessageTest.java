@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody.Body;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.MessageImmediate;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
@@ -13,6 +14,10 @@ public class MessageTest extends MessageImmediate {
 
     MessageTest(Body body) {
         this.realBody = body;
+    }
+
+    public MessageTest(MessageTestBody.Body.Builder builder) {
+        this.builder = builder;
     }
 
     public MessageTestBody.Body body() {
@@ -36,8 +41,9 @@ public class MessageTest extends MessageImmediate {
     }
 
     @Override
-    public void recipients(Collection<String> recipients) {
+    public Message recipients(Collection<String> recipients) {
         builder.setDestination(list2Protobuf(recipients));
+        return this;
     }
 
     @Override

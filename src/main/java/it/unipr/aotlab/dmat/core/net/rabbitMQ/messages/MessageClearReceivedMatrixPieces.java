@@ -1,19 +1,49 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
+import it.unipr.aotlab.dmat.core.generated.OrderDummyWire.OrderDummyBody;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
+import java.util.Collection;
+
 public class MessageClearReceivedMatrixPieces extends MessageOrder {
-    public MessageClearReceivedMatrixPieces() {
+    OrderDummyBody.Builder builder = null;
+    OrderDummyBody realBody = null;
+
+    public OrderDummyBody body() {
+        if (realBody == null) {
+            realBody = builder.build();
+            builder = null;
+        }
+
+        return realBody;
+    }
+
+    public MessageClearReceivedMatrixPieces() {}
+
+    MessageClearReceivedMatrixPieces(OrderDummyBody body) {
+        realBody = body;
     }
 
     @Override
     public byte[] message() {
-        return null;
+        return body().toByteArray();
     }
 
     @Override
     public void accept(NodeMessageDigester digester) {
         digester.accept(this);
+    }
+
+    @Override
+    public Collection<String> recipients() {
+        return body().getDestination().getNodeIdList();
+    }
+
+    @Override
+    public Message recipients(Collection<String> recipients) {
+        builder.setDestination(list2Protobuf(recipients));
+        return this;
     }
 }

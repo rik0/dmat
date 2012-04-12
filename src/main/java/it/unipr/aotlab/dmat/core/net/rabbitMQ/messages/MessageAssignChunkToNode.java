@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.ChunkDescriptionBody;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.MessageOrder;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
@@ -41,8 +42,9 @@ public class MessageAssignChunkToNode extends MessageOrder {
     }
 
     @Override
-    public void recipients(Collection<String> recipients) {
+    public Message recipients(Collection<String> recipients) {
         builder.setDestination(list2Protobuf(recipients));
+        return this;
     }
 
     @Override

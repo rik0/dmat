@@ -65,25 +65,25 @@ public class MulMatrices2 {
 
             b.setMatrixId(B.getMatrixId());
             b.setChunkId("Bleft");
-            testNode2.sendMessage(new MessageSetMatrix(b.build()));
+            testNode2.sendMessage(new MessageSetMatrix(b));
 
             b.setChunkId("Bright");
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e1");
             b.setMatrixId(C.getMatrixId());
             b.setChunkId("Cleft");
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             b.setChunkId("Cright");
-            testNode2.sendMessage(new MessageSetMatrix(b.build()));
+            testNode2.sendMessage(new MessageSetMatrix(b));
 
             Thread.sleep(2000);
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cleft").build()));
-            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cright").build()));
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cleft")));
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cright")));
 
-            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bleft").build()));
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bright").build()));
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bleft")));
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bright")));
 
             Thread.sleep(2000);
             Multiplication r = new Multiplication();
@@ -93,7 +93,7 @@ public class MulMatrices2 {
 
             Thread.sleep(2000);
 
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("default").build()));
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("default")));
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

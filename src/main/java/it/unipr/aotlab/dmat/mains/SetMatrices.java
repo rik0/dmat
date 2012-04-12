@@ -5,7 +5,6 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
-import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.Node;
@@ -34,12 +33,12 @@ public class SetMatrices {
 
             Node testNode = nodes.setNodeName("testNode").build();
             matrix.getChunk(null).assignChunkToNode(testNode);
-            
+
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
             b.setMatrixId(matrix.getMatrixId());
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
-            
-            testNode.sendMessage(new MessageSetMatrix(b.build()));
+
+            testNode.sendMessage(new MessageSetMatrix(b));
 
 
             MessageSender.closeConnection();
