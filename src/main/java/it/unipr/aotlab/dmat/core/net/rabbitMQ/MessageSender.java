@@ -52,6 +52,8 @@ public class MessageSender implements
             AMQP.BasicProperties messageProperties
                      = (new AMQP.BasicProperties.Builder())
                         .headers(recipientList)
+                        .priority(m.serialNo())
+                        .deliveryMode(m.messageType().tag)
                         .contentType(m.contentType()).build();
 
             channel.basicPublish("amq.match",
@@ -86,6 +88,8 @@ public class MessageSender implements
             AMQP.BasicProperties messageProperties
                 = (new AMQP.BasicProperties.Builder())
                     .headers(recipientList)
+                    .priority(m.serialNo())
+                    .deliveryMode(m.messageType().tag)
                     .contentType(m.contentType())
                     .build();
 

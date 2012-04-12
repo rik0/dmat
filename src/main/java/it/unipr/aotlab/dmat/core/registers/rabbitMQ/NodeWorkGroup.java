@@ -6,7 +6,6 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
@@ -63,9 +62,6 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         return n;
     }
 
-    public void clearReceivedMatrixPieces() throws IOException {
-        messageSender.multicastMessage(new MessageClearReceivedMatrixPieces(), nodes.keySet());
-    }
 
     @Override
     public int getNextOrderId() {

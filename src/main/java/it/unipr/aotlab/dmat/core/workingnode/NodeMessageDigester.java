@@ -40,6 +40,8 @@ public class NodeMessageDigester {
         InNodeChunk<?> newChunk = InNodeChunks.build(hostWorkingNode,
                 new Chunk(message.body(), hostWorkingNode.nodeId));
         hostWorkingNode.state.managedChunks.add(newChunk);
+
+        hostWorkingNode.state.orderDone();
     }
 
     public void accept(MessageShutdown message) {
@@ -47,6 +49,7 @@ public class NodeMessageDigester {
         System.err.println("terminating.");
 
         throw new MainNode.Quit();
+        //do not expect much after this
     }
 
     public void accept(Message message) {
@@ -98,6 +101,8 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
         hostWorkingNode.state.chunkForOperations.clear();
+
+        hostWorkingNode.state.orderDone();
     }
 
     // CONSIDER: only one type of message for all operations?
@@ -132,6 +137,7 @@ public class NodeMessageDigester {
         System.err.println(message.toString());
 
         hostWorkingNode.state.updateMatrix(message);
+        hostWorkingNode.state.orderDone();
     }
 
     public void accept(MessageExposeValues message) {
@@ -149,5 +155,7 @@ public class NodeMessageDigester {
             Triplet t = i.next();
             System.err.println((t.row() + 1) + " " + (t.col() + 1) + " " + t.value());
         }
+
+        hostWorkingNode.state.orderDone();
     }
 }

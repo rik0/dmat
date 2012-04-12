@@ -88,7 +88,6 @@ public class SumMatrices {
             ABottom.sendMessageExposeValues();
 
             Thread.sleep(2000);
-            register.clearReceivedMatrixPieces();
 
             MessageSender.closeConnection();
         } catch (Throwable e) {

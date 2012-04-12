@@ -83,6 +83,7 @@ public class WorkingNode {
         int messageKind = delivery.getProperties().getDeliveryMode();
         boolean executingOrder = state.busyExecutingOrder();
         int workingOnSerialNo = state.currentOrderSerialNo;
+        System.err.println("XXX m:" + delivery.getProperties().getContentType() + " s:" + serialNo + " k:" + messageKind + " busy:" + executingOrder + " doingno:" + workingOnSerialNo);
 
         if (messageKind == MessageKind.IMMEDIATE.tag)
             return true;

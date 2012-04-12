@@ -164,6 +164,8 @@ public class NodeState {
 
                 doTheMultiplication(missingPieces, order);
             }
+
+            orderDone();
         }
     }
 
@@ -330,6 +332,8 @@ public class NodeState {
         if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
             for (OrderAddAssign order : messageAddAssign.body().getOperationList())
                 doTheSum(missingPieces, order);
+
+            orderDone();
         }
     }
 
@@ -746,6 +750,9 @@ public class NodeState {
         }
 
         if (forUs) {
+            if (message.messageType() == MessageKind.ORDER)
+                executingOrder = true;
+
             message.accept(digester);
         }
         else {
@@ -753,7 +760,14 @@ public class NodeState {
                     "A non-order reached this node even if it is not its recipient!\n"
                     + "Only orders should be sent to the whole NodeWorkGroup!");
 
+            System.err.println("XXX dropped: " + message.contentType());
             ++currentOrderSerialNo;
         }
+    }
+
+    void orderDone() {
+        Assertion.isTrue(executingOrder, "done an order while not doing an order?!?");
+        executingOrder = false;
+        ++currentOrderSerialNo;
     }
 }

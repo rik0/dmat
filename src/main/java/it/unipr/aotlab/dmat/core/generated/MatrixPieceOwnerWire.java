@@ -11,7 +11,7 @@ public final class MatrixPieceOwnerWire {
   public interface MatrixPieceOwnerBodyOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required .NodeListBody destination = 1;
+    // optional .NodeListBody destination = 1;
     boolean hasDestination();
     it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody getDestination();
     it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder getDestinationOrBuilder();
@@ -58,7 +58,7 @@ public final class MatrixPieceOwnerWire {
     }
     
     private int bitField0_;
-    // required .NodeListBody destination = 1;
+    // optional .NodeListBody destination = 1;
     public static final int DESTINATION_FIELD_NUMBER = 1;
     private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_;
     public boolean hasDestination() {
@@ -159,10 +159,6 @@ public final class MatrixPieceOwnerWire {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasDestination()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasMatrixId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -454,10 +450,6 @@ public final class MatrixPieceOwnerWire {
       }
       
       public final boolean isInitialized() {
-        if (!hasDestination()) {
-          
-          return false;
-        }
         if (!hasMatrixId()) {
           
           return false;
@@ -528,7 +520,7 @@ public final class MatrixPieceOwnerWire {
       
       private int bitField0_;
       
-      // required .NodeListBody destination = 1;
+      // optional .NodeListBody destination = 1;
       private it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody destination_ = it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody.Builder, it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBodyOrBuilder> destinationBuilder_;
@@ -808,7 +800,7 @@ public final class MatrixPieceOwnerWire {
       "\nAhome/paolo/uni/dissertation/dmat/proto" +
       "/MatrixPieceOwnerWire.proto\032\022NodeListWir" +
       "e.proto\032\023RectangleWire.proto\"\210\001\n\024MatrixP" +
-      "ieceOwnerBody\022\"\n\013destination\030\001 \002(\0132\r.Nod" +
+      "ieceOwnerBody\022\"\n\013destination\030\001 \001(\0132\r.Nod" +
       "eListBody\022\020\n\010matrixId\030\002 \002(\t\022\030\n\007chunkId\030\003" +
       " \001(\t:\007default\022 \n\010position\030\004 \001(\0132\016.Rectan" +
       "gleBodyB%\n#it.unipr.aotlab.dmat.core.gen" +
