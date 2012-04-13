@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.google.protobuf.ByteString;
+
 public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     private MatrixPieceTripletsInt32Body realBody;
     public MatrixPieceTripletsInt32Body.Builder builder;
@@ -41,8 +43,8 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

@@ -95,8 +95,9 @@ public class Chunk {
     }
 
     public String getAssignedNodeId() {
-        if (nodeId != null)
+        if (nodeId != null) {
             return nodeId;
+        }
 
         return assignedTo.getNodeId();
     }

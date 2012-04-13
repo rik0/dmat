@@ -7,6 +7,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageExposeValues extends MessageOrder {
     public MatrixPieceOwnerBody.Builder builder = null;
     private MatrixPieceOwnerBody realBody = null;
@@ -29,8 +31,8 @@ public class MessageExposeValues extends MessageOrder {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

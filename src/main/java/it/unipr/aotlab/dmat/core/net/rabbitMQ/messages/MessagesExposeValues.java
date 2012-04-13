@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class MessagesExposeValues extends Messages {
@@ -16,7 +17,7 @@ public class MessagesExposeValues extends Messages {
     }
 
     @Override
-    public Message parseMessage(byte[] rawMessage)
+    public Message parseMessage(ByteString rawMessage)
             throws InvalidProtocolBufferException {
         return new MessageExposeValues(MatrixPieceOwnerBody.parseFrom(rawMessage));
     }

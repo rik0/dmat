@@ -423,6 +423,11 @@ public abstract class Operation {
                     .serialNo(serialNo)
                     .recipients(message.ownerNodeId);
 
+            System.err.println("XXX message: "
+                    + wireMessage.contentType()
+                    + " serial: "
+                    + serialNo);
+
             getNodeWorkGroup().getMessageSender()
                 .sendMessage(wireMessage, message.ownerNodeId);
         }

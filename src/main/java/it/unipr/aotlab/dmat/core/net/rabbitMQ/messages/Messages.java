@@ -1,14 +1,15 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.rabbitmq.client.QueueingConsumer;
 
 public abstract class Messages {
     static Map<String, Messages> messageFactories = new HashMap<String, Messages>();
@@ -17,7 +18,7 @@ public abstract class Messages {
         ForceLoad.listFromFile(Messages.class, "KindOfMessages");
     }
 
-    public abstract Message parseMessage(byte[] rawMessage)
+    public abstract Message parseMessage(ByteString rawMessage)
             throws InvalidProtocolBufferException;
 
     public static Messages getFactory(String contentType) {
@@ -28,18 +29,16 @@ public abstract class Messages {
         return m;
     }
 
-    public static Message readMessage(QueueingConsumer.Delivery envelopedMessage)
-            throws InvalidProtocolBufferException {
-        Message m = readMessage(envelopedMessage.getProperties().getContentType(),
-                envelopedMessage.getBody());
-
-        m.serialNo(envelopedMessage.getProperties().getPriority());
-
-        return m;
-    }
-
-    public static Message readMessage(String contentType, byte[] rawMessage)
+    public static Message readMessage(String contentType, ByteString rawMessage)
             throws InvalidProtocolBufferException {
         return getFactory(contentType).parseMessage(rawMessage);
+    }
+
+    public static Message readMessage(EnvelopedMessageBody delivery)
+        throws InvalidProtocolBufferException {
+        Message m = readMessage(delivery.getContentType(), delivery.getMessage());
+        m.serialNo(delivery.getSerialNo());
+
+        return m;
     }
 }

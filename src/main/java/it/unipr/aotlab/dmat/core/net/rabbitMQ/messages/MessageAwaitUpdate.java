@@ -7,6 +7,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageAwaitUpdate extends MessageSupport {
     private OrderAwaitUpdateBody realBody;
     public OrderAwaitUpdateBody.Builder builder;
@@ -29,8 +31,8 @@ public class MessageAwaitUpdate extends MessageSupport {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

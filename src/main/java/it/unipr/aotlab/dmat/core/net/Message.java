@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public abstract class Message {
     int serialNo = -1;
 
@@ -26,9 +28,9 @@ public abstract class Message {
         return this.getClass().getSimpleName();
     }
 
-    public abstract MessageKind messageType();
+    public abstract MessageKind messageKind();
 
-    public abstract byte[] message();
+    public abstract ByteString message();
 
     public abstract Collection<String> recipients();
 

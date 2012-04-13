@@ -8,6 +8,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageSendMatrixPiece extends MessageSupport {
     public SendMatrixPieceBody.Builder builder = null;
     private SendMatrixPieceBody realBody = null;
@@ -30,8 +32,8 @@ public class MessageSendMatrixPiece extends MessageSupport {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

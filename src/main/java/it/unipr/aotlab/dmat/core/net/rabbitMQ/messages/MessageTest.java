@@ -8,6 +8,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageTest extends MessageImmediate {
     private MessageTestBody.Body realBody = null;
     public MessageTestBody.Body.Builder builder = null;
@@ -36,8 +38,8 @@ public class MessageTest extends MessageImmediate {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

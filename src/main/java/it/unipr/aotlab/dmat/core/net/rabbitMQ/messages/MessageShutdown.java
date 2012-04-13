@@ -7,6 +7,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageShutdown extends MessageOrder {
     OrderDummyBody.Builder builder = null;
     OrderDummyBody realBody = null;
@@ -27,8 +29,8 @@ public class MessageShutdown extends MessageOrder {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

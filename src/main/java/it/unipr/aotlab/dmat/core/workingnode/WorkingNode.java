@@ -1,17 +1,18 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
+import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.QueueingConsumer.Delivery;
 
 public class WorkingNode {
     String nodeId;
@@ -21,24 +22,8 @@ public class WorkingNode {
     NodeMessageDigester digester;
     MessageSender messageSender;
 
-    TreeSet<QueueingConsumer.Delivery> sortingBuffer
-        = new TreeSet<QueueingConsumer.Delivery>(
-                new Comparator<QueueingConsumer.Delivery>() {
-            @Override
-            public int compare(QueueingConsumer.Delivery lhs,
-                               QueueingConsumer.Delivery rhs) {
-                Integer lhsPri = lhs.getProperties().getPriority();
-                Integer rhsPri = rhs.getProperties().getPriority();
-
-                if (lhsPri != null && rhsPri != null)
-                    return lhsPri - rhsPri;
-
-                if (lhsPri == null)
-                    return 1;
-
-                return -1;
-            }
-        });
+    //much better a multiset!
+    ArrayList<EnvelopedMessageBody> sortingBuffer= new ArrayList<EnvelopedMessageBody>();
 
     public void consumerLoop() throws Exception {
         Channel channel = MessageSender.getConnection().createChannel();
@@ -49,8 +34,8 @@ public class WorkingNode {
 
         // ask new messages
         while (true) {
-            QueueingConsumer.Delivery delivery = queueingConsumer
-                    .nextDelivery();
+            EnvelopedMessageBody delivery = EnvelopedMessageBody
+                        .parseFrom(queueingConsumer.nextDelivery().getBody());
 
             sortingBuffer.add(delivery);
 
@@ -63,12 +48,19 @@ public class WorkingNode {
         }
     }
 
-    private Delivery findNextProcessableMessage() {
-        Iterator<Delivery> i = sortingBuffer.iterator();
-        Delivery delivery = null;
+    private EnvelopedMessageBody findNextProcessableMessage() {
+        Collections.sort(sortingBuffer, new Comparator<EnvelopedMessageBody>() {
+            @Override
+            public int compare(EnvelopedMessageBody lhs, EnvelopedMessageBody rhs) {
+                return lhs.getSerialNo() - rhs.getSerialNo();
+            }
+        });
+
+        Iterator<EnvelopedMessageBody> i = sortingBuffer.iterator();
+        EnvelopedMessageBody delivery = null;
 
         while (delivery == null && i.hasNext()) {
-            Delivery possibleDelivery = i.next();
+            EnvelopedMessageBody possibleDelivery = i.next();
             if (isCorrectMessage(possibleDelivery)) {
                 delivery = possibleDelivery;
                 i.remove();
@@ -78,12 +70,13 @@ public class WorkingNode {
         return delivery;
     }
 
-    private boolean isCorrectMessage(Delivery delivery) {
-        int serialNo = delivery.getProperties().getPriority();
-        int messageKind = delivery.getProperties().getDeliveryMode();
+    private boolean isCorrectMessage(EnvelopedMessageBody possibleDelivery) {
+        int serialNo = possibleDelivery.getSerialNo();
+        int messageKind = possibleDelivery.getMessageKind();
         boolean executingOrder = state.busyExecutingOrder();
         int workingOnSerialNo = state.currentOrderSerialNo;
-        System.err.println("XXX m:" + delivery.getProperties().getContentType() + " s:" + serialNo + " k:" + messageKind + " busy:" + executingOrder + " doingno:" + workingOnSerialNo);
+
+        System.err.println("XXX ZZZ m:" + possibleDelivery.getContentType() + " s:" + serialNo + " k:" + messageKind + " busy:" + executingOrder + " doingno:" + workingOnSerialNo);
 
         if (messageKind == MessageKind.IMMEDIATE.tag)
             return true;

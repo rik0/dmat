@@ -9,6 +9,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageAssignChunkToNode extends MessageOrder {
     private ChunkDescriptionBody realBody = null;
     public ChunkDescriptionBody.Builder builder = null;
@@ -32,8 +34,8 @@ public class MessageAssignChunkToNode extends MessageOrder {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

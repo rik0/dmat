@@ -1,0 +1,10 @@
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message EnvelopedMessageBody {
+    required int32 serialNo = 1;
+    required int32 messageKind = 2;
+    required string contentType = 3;
+
+    required bytes message = 4;
+}
+

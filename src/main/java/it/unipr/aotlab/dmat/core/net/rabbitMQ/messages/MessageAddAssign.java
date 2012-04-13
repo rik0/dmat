@@ -9,6 +9,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.google.protobuf.ByteString;
+
 public class MessageAddAssign extends Operation {
     private OrderAddAssignBody realBody = null;
     public OrderAddAssignBody.Builder builder = null;
@@ -31,8 +33,8 @@ public class MessageAddAssign extends Operation {
     }
 
     @Override
-    public byte[] message() {
-        return body().toByteArray();
+    public ByteString message() {
+        return body().toByteString();
     }
 
     @Override

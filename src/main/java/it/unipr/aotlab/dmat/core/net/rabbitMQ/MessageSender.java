@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
+import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import java.io.IOException;
@@ -42,6 +43,12 @@ public class MessageSender implements
         inizializeConnection();
         Channel channel = connection.createChannel();
 
+        EnvelopedMessageBody envelopedMessage = EnvelopedMessageBody.newBuilder()
+                .setSerialNo(m.serialNo())
+                .setContentType(m.contentType())
+                .setMessageKind(m.messageKind().tag)
+                .setMessage(m.message()).build();
+
         try {
             Hashtable<String, Object> recipientList
                 = new Hashtable<String, Object>();
@@ -52,14 +59,12 @@ public class MessageSender implements
             AMQP.BasicProperties messageProperties
                      = (new AMQP.BasicProperties.Builder())
                         .headers(recipientList)
-                        .priority(m.serialNo())
-                        .deliveryMode(m.messageType().tag)
-                        .contentType(m.contentType()).build();
+                        .build();
 
             channel.basicPublish("amq.match",
                                  "",
                                  messageProperties,
-                                 m.message());
+                                 envelopedMessage.toByteArray());
 
         } finally {
             closeChannel(channel);
@@ -80,6 +85,12 @@ public class MessageSender implements
 
         Channel channel = connection.createChannel();
 
+        EnvelopedMessageBody envelopedMessage = EnvelopedMessageBody.newBuilder()
+            .setSerialNo(m.serialNo())
+            .setContentType(m.contentType())
+            .setMessageKind(m.messageKind().tag)
+            .setMessage(m.message()).build();
+
         try {
             Hashtable<String, Object> recipientList
                 = new Hashtable<String, Object>(2, 1);
@@ -88,15 +99,12 @@ public class MessageSender implements
             AMQP.BasicProperties messageProperties
                 = (new AMQP.BasicProperties.Builder())
                     .headers(recipientList)
-                    .priority(m.serialNo())
-                    .deliveryMode(m.messageType().tag)
-                    .contentType(m.contentType())
                     .build();
 
             channel.basicPublish("amq.match",
                                  "",
                                  messageProperties,
-                                 m.message());
+                                 envelopedMessage.toByteArray());
         } finally {
             closeChannel(channel);
         }

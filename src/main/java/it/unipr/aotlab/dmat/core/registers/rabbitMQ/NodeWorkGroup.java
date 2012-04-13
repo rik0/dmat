@@ -80,7 +80,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     @Override
     public void sendMessage(Message m, Node recipient) throws IOException {
-        switch (m.messageType()) {
+        switch (m.messageKind()) {
         case ORDER:
             sendMessageOrder(m, recipient);
             break;
@@ -118,7 +118,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         Assertion.isFalse(m.serialNo() == -1,
                        "When using raw sending you have to give the serialNo!");
 
-        Assertion.isTrue(m.messageType() == MessageKind.ORDER,
+        Assertion.isTrue(m.messageKind() == MessageKind.ORDER,
                        "This method sends only orders!");
 
         m.recipients(recipient.getNodeId());

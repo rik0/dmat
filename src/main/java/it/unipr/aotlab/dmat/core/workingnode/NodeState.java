@@ -750,13 +750,13 @@ public class NodeState {
         }
 
         if (forUs) {
-            if (message.messageType() == MessageKind.ORDER)
+            if (message.messageKind() == MessageKind.ORDER)
                 executingOrder = true;
 
             message.accept(digester);
         }
         else {
-            Assertion.isTrue(message.messageType() == MessageKind.ORDER,
+            Assertion.isTrue(message.messageKind() == MessageKind.ORDER,
                     "A non-order reached this node even if it is not its recipient!\n"
                     + "Only orders should be sent to the whole NodeWorkGroup!");
 
@@ -767,6 +767,7 @@ public class NodeState {
 
     void orderDone() {
         Assertion.isTrue(executingOrder, "done an order while not doing an order?!?");
+
         executingOrder = false;
         ++currentOrderSerialNo;
     }
