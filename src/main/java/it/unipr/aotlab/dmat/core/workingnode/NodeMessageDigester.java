@@ -11,6 +11,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
@@ -50,6 +51,12 @@ public class NodeMessageDigester {
 
         throw new MainNode.Quit();
         //do not expect much after this
+    }
+
+    public void accept(MessageDummyOrder message) {
+        debugMessage(message);
+        System.err.println("Easy. Done.");
+        hostWorkingNode.state.orderDone();
     }
 
     public void accept(Message message) {

@@ -9,7 +9,7 @@ import java.io.IOException;
 public interface NodeWorkGroupPrivate {
     MessageSender getMessageSender();
     void registerNode(Node node) throws Exception;
-    void sendOrderRaw(Message m, Node recipient) throws IOException;
+    void sendOrderRaw(Message m, String recipient) throws IOException;
 
     int getNextOrderId();
 }

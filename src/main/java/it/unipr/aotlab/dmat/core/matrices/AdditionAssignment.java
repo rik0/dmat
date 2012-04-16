@@ -6,12 +6,17 @@ import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 
 import java.io.IOException;
+import java.util.TreeSet;
 
 public class AdditionAssignment extends ShapeFriendlyOp {
     @Override
     protected void sendOperationsOrders() throws IOException {
+        TreeSet<String> unusedNodes = new TreeSet<String>();
+        unusedNodes.addAll(getNodeWorkGroup().nodesId());
+
         OrderAddAssign.Builder operation = OrderAddAssign.newBuilder();
         Matrix firstOp = operands.get(0);
 
@@ -25,6 +30,7 @@ public class AdditionAssignment extends ShapeFriendlyOp {
 
         for (NodeWorkZonePair nodeAndworkZone : tasks) {
             Node computingNode = nodeAndworkZone.computingNode;
+            unusedNodes.remove(computingNode.getNodeId());
 
             MatrixPieceOwnerBody.Builder missingPiece = MatrixPieceOwnerBody.newBuilder();
             OrderAddAssignBody.Builder order = OrderAddAssignBody.newBuilder();
@@ -47,7 +53,12 @@ public class AdditionAssignment extends ShapeFriendlyOp {
             }
 
             getNodeWorkGroup().sendOrderRaw((new MessageAddAssign(order))
-                                .serialNo(serialNo), computingNode);
+                                .serialNo(serialNo), computingNode.getNodeId());
+        }
+
+        for (String nodeId : unusedNodes) {
+            getNodeWorkGroup().sendOrderRaw((new MessageDummyOrder())
+                    .serialNo(serialNo), nodeId);
         }
     }
 }

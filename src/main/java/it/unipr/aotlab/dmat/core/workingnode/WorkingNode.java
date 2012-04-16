@@ -37,6 +37,13 @@ public class WorkingNode {
             EnvelopedMessageBody delivery = EnvelopedMessageBody
                         .parseFrom(queueingConsumer.nextDelivery().getBody());
 
+            System.err.println("XXX ARRIVED " +
+            " ContentType: "  + delivery.getContentType()
+            + " SerialNo: " + delivery.getSerialNo()
+            + " MessageKind: " + delivery.getMessageKind()
+            + " amIBusy? " + state.busyExecutingOrder()
+            + " Working on: " + state.currentOrderSerialNo);
+
             sortingBuffer.add(delivery);
 
             // loop over the messages that the node already has
@@ -63,6 +70,12 @@ public class WorkingNode {
             EnvelopedMessageBody possibleDelivery = i.next();
             if (isCorrectMessage(possibleDelivery)) {
                 delivery = possibleDelivery;
+                System.err.println("XXX DIGESTED " +
+                        " ContentType: "  + delivery.getContentType()
+                        + " SerialNo: " + delivery.getSerialNo()
+                        + " MessageKind: " + delivery.getMessageKind()
+                        + " amIBusy? " + state.busyExecutingOrder()
+                        + " Working on: " + state.currentOrderSerialNo);
                 i.remove();
             }
         }
@@ -75,8 +88,6 @@ public class WorkingNode {
         int messageKind = possibleDelivery.getMessageKind();
         boolean executingOrder = state.busyExecutingOrder();
         int workingOnSerialNo = state.currentOrderSerialNo;
-
-        System.err.println("XXX ZZZ m:" + possibleDelivery.getContentType() + " s:" + serialNo + " k:" + messageKind + " busy:" + executingOrder + " doingno:" + workingOnSerialNo);
 
         if (messageKind == MessageKind.IMMEDIATE.tag)
             return true;

@@ -114,14 +114,14 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     }
 
     @Override
-    public void sendOrderRaw(Message m, Node recipient) throws IOException {
+    public void sendOrderRaw(Message m, String recipient) throws IOException {
         Assertion.isFalse(m.serialNo() == -1,
                        "When using raw sending you have to give the serialNo!");
 
         Assertion.isTrue(m.messageKind() == MessageKind.ORDER,
                        "This method sends only orders!");
 
-        m.recipients(recipient.getNodeId());
-        messageSender.multicastMessage(m, nodesId());
+        m.recipients(recipient);
+        messageSender.sendMessage(m, recipient);
     }
 }
