@@ -8,7 +8,6 @@ import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPie
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
@@ -26,8 +25,9 @@ public class AdditionAssignment extends ShapeFriendlyOp {
     }
 
     private void sendMessagesToComputingNodes(TreeSet<String> unusedNodes)
-                                                throws IOException {
+            throws IOException {
         OrderAddAssign.Builder operation = OrderAddAssign.newBuilder();
+
         Matrix firstOp = operands.get(0);
 
         TypeBody type = TypeBody.newBuilder()
@@ -84,14 +84,7 @@ public class AdditionAssignment extends ShapeFriendlyOp {
         }
     }
 
-    private void sendMessagesToUnusedNodes(TreeSet<String> unusedNodes)
-            throws IOException {
-        for (String nodeId : unusedNodes) {
-            getNodeWorkGroup().sendOrderRaw((new MessageDummyOrder())
-                    .serialNo(serialNo), nodeId);
 
-        }
-    }
 
 
     private void updateMissingPieces(MatrixPieceListBody.Builder missingPieces,
@@ -110,7 +103,7 @@ public class AdditionAssignment extends ShapeFriendlyOp {
     }
 
     private void fillInPiecesAwaitingUpdate(OrderAddAssignBody.Builder order,
-                                              String nodeId) {
+                                            String nodeId) {
         MatrixPieceListBody.Builder list = this.pieces2await.get(nodeId);
         if (list == null) {
             list = MatrixPieceListBody.newBuilder();

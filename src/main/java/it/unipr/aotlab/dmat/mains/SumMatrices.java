@@ -38,6 +38,7 @@ public class SumMatrices {
 
             Node testNode = nodes.setNodeName("testNode").build();
             Node testNode2 = nodes.setNodeName("testNode2").build();
+            nodes.setNodeName("testNode3").build();
 
             Chunk ATop = A.getChunk("Atop");
             Chunk ABottom = A.getChunk("Abottom");

@@ -143,6 +143,7 @@ public class NodeMessageDigester {
         //A = B * C
         debugMessage(message);
         System.err.println(message.toString());
+        operationCommonWork(message);
 
         hostWorkingNode.state.pendingOperations.add(message);
         hostWorkingNode.state.eventuallyExecOperation();

@@ -22,7 +22,9 @@ public class MessageShutdown extends MessageOrder {
         return realBody;
     }
 
-    public MessageShutdown() {}
+    public MessageShutdown() {
+        builder = OrderDummyBody.newBuilder();
+    }
 
     MessageShutdown(OrderDummyBody body) {
         realBody = body;

@@ -52,20 +52,17 @@ public class MulMatrices3 {
             C.getChunk(null).assignChunkToNode(testNode);
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
-            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
+            b.setURI("file://" + System.getProperty("user.dir")
+                               + "/example_matrices/square");
 
             b.setMatrixId(B.getMatrixId());
             testNode.sendMessage(new MessageSetMatrix(b));
             b.setMatrixId(C.getMatrixId());
             testNode.sendMessage(new MessageSetMatrix(b));
 
-            Thread.sleep(2000);
-
             Multiplication r = new Multiplication();
             r.setOperands(A, B, C);
             r.exec();
-
-            Thread.sleep(5000);
 
             MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A")));
@@ -78,8 +75,6 @@ public class MulMatrices3 {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DMatError e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

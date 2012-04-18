@@ -21,7 +21,7 @@ public class ShutdownANode {
             Node node = nodes.setNodeName("testNode").build();
 
             node.sendMessage(new MessageShutdown());
-            
+
             MessageSender.closeConnection();
 
         } catch (IdNotUnique e) {

@@ -7,6 +7,7 @@ import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPie
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth;
 
 import java.io.IOException;
@@ -407,7 +408,6 @@ public abstract class Operation {
 
     private void updateMatrixPieces2beSent(HashMap<PendingMissingPiecesMess,
                                  TreeSet<String>> pendingMessages) throws IOException {
-
         for (Entry<PendingMissingPiecesMess, TreeSet<String>> task : pendingMessages.entrySet()) {
             SendMatrixPiece.Builder singlePiece = SendMatrixPiece.newBuilder();
             singlePiece.setUpdate(false);
@@ -423,6 +423,7 @@ public abstract class Operation {
 
             updateMatrixPieces2beSent(message, singlePiece.build());
         }
+
     }
 
     private void updateMatrixPieces2beSent(PendingMissingPiecesMess message,
@@ -439,5 +440,13 @@ public abstract class Operation {
 
     private void getOperationSerialNo() {
         serialNo = getNodeWorkGroup().getNextOrderId();
+    }
+
+    protected void sendMessagesToUnusedNodes(TreeSet<String> unusedNodes)
+            throws IOException {
+        for (String nodeId : unusedNodes) {
+            getNodeWorkGroup().sendOrderRaw((new MessageDummyOrder())
+                    .serialNo(serialNo), nodeId);
+        }
     }
 }

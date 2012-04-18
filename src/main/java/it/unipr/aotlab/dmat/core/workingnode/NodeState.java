@@ -156,17 +156,10 @@ public class NodeState {
         LinkedList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null) {
-            for (OrderMultiply order : messageMultiply.body().getOperationList()) {
-                System.err.println("Starting "
-                        + order.getOutputMatrixId()
-                        + " = " + order.getFirstFactorMatrixId()
-                        + " * " + order.getSecondFactorMatrixId()
-                        + " for:\n" + order.getOutputPosition());
-
+            for (OrderMultiply order : messageMultiply.body().getOperationList())
                 doTheMultiplication(missingPieces, order);
-            }
 
-            orderDone();
+            checkUpdatingState();
         }
     }
 
@@ -183,14 +176,16 @@ public class NodeState {
             Assertion.isTrue(outputMatrixPosition.isSubset(outputPiece
                     .chunk.getArea()),
                     "Something wrong with multiplication.");
-            doTheMultImpl(missingPieces, order, MultOnLocalChunk
-                    .ref(order, outputPiece));
+            doTheMultImpl(missingPieces,
+                          order,
+                          (new MultOnLocalChunk(order, outputPiece)));
         }
         else {
-            doTheMultImpl(missingPieces, order, MulForRemoteNode
-                    .ref(order,
-                         getAppropriateBuilder(order.getFirstFactorMatrixId()),
-                         hostWorkingNode.messageSender));
+            doTheMultImpl(missingPieces,
+                          order,
+                          (new MulForRemoteNode(order,
+                           getAppropriateBuilder(order.getFirstFactorMatrixId()),
+                           hostWorkingNode.messageSender)));
         }
     }
 
@@ -200,16 +195,14 @@ public class NodeState {
         void postOperation() throws IOException;
     }
 
-    private static class MultOnLocalChunk implements MultiplicationHandles {
+    private class MultOnLocalChunk implements MultiplicationHandles {
         InNodeChunk<?> outputPiece;
         Rectangle outputPos;
 
-        public static MultOnLocalChunk ref(OrderMultiply order,
+        public MultOnLocalChunk(OrderMultiply order,
                                            InNodeChunk<?> outputPiece) {
-            MultOnLocalChunk rv = new MultOnLocalChunk();
-            rv.outputPiece = outputPiece;
-            rv.outputPos = Rectangle.build(order.getOutputPosition());
-            return rv;
+            this.outputPiece = outputPiece;
+            this.outputPos = Rectangle.build(order.getOutputPosition());
         }
 
         @Override
@@ -226,20 +219,18 @@ public class NodeState {
         }
     }
 
-    private static class MulForRemoteNode implements MultiplicationHandles {
+    private class MulForRemoteNode implements MultiplicationHandles {
         private OrderMultiply order;
         private ArrayList<Triplet> results = new ArrayList<Triplet>();
         private MatrixPieces.Builder mpBuilder;
         private MessageSender messageSender;
 
-        public static MultiplicationHandles ref(OrderMultiply order,
-                                                MatrixPieces.Builder mpBuilder,
-                                                MessageSender messageSender) {
-            MulForRemoteNode rv = new MulForRemoteNode();
-            rv.mpBuilder = mpBuilder;
-            rv.order = order;
-            rv.messageSender = messageSender;
-            return rv;
+        public MulForRemoteNode(OrderMultiply order,
+                                MatrixPieces.Builder mpBuilder,
+                                MessageSender messageSender) {
+            this.mpBuilder = mpBuilder;
+            this.order = order;
+            this.messageSender = messageSender;
         }
 
         @Override
@@ -256,7 +247,10 @@ public class NodeState {
                     results,
                     Rectangle.build(order.getOutputPosition()),
                     true);
-            messageSender.sendMessage(mpBuilder.buildMessage(matrixPiece),
+
+            messageSender.sendMessage(mpBuilder.buildMessage(matrixPiece)
+                                      .serialNo(currentOrderSerialNo)
+                                      .recipients(order.getOutputNodeId()),
                                       order.getOutputNodeId());
         }
 
@@ -450,7 +444,7 @@ public class NodeState {
     }
 
     void checkUpdatingState() {
-        System.err.println("XXX awaiting update n: " + nofAwaitingUpdate);
+        System.err.print("XXX awaiting update n: " + nofAwaitingUpdate + " ... ");
         Iterator<MessageMatrixValues> ivalues = chunkForUpdating.iterator();
         while (ivalues.hasNext()) {
             MessageMatrixValues value = ivalues.next();
@@ -471,6 +465,7 @@ public class NodeState {
                 }
             }
         }
+        System.err.println(nofAwaitingUpdate + " .");
 
         if (nofAwaitingUpdate == 0) orderDone();
     }

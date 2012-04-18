@@ -22,7 +22,9 @@ public class MessageDummyOrder extends MessageOrder {
         return realBody;
     }
 
-    public MessageDummyOrder() {}
+    public MessageDummyOrder() {
+        builder = OrderDummyBody.newBuilder();
+    }
 
     MessageDummyOrder(OrderDummyBody body) {
         realBody = body;
