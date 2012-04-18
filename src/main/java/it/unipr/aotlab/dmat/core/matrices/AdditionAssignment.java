@@ -1,10 +1,8 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssignBody;
-import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
@@ -52,8 +50,8 @@ public class AdditionAssignment extends ShapeFriendlyOp {
                 updateMissingPieces(missingPieces, wz, computingNode);
             }
             order.setMissingPieces(missingPieces.build());
-            fillInPieces2BeSent(order, computingNode.getNodeId());
-            fillInPiecesAwaitingUpdate(order, computingNode.getNodeId());
+            order.setPiecesToSend(pieces2BeSentProto(computingNode.getNodeId()));
+            order.setAwaitingUpdates(awaitingUpdateProto(computingNode.getNodeId()));
 
             getNodeWorkGroup().sendOrderRaw(
                     (new MessageAddAssign(order)).serialNo(serialNo),
@@ -71,8 +69,8 @@ public class AdditionAssignment extends ShapeFriendlyOp {
                     OrderAddAssignBody.Builder order
                         = OrderAddAssignBody.newBuilder();
 
-                    fillInPieces2BeSent(order, nodeId);
-                    fillInPiecesAwaitingUpdate(order, nodeId);
+                    order.setPiecesToSend(pieces2BeSentProto(nodeId));
+                    order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
                     order.setMissingPieces(MatrixPieceListBody
                             .getDefaultInstance());
 
@@ -82,44 +80,6 @@ public class AdditionAssignment extends ShapeFriendlyOp {
                 }
             }
         }
-    }
-
-
-
-
-    private void updateMissingPieces(MatrixPieceListBody.Builder missingPieces,
-                                     WorkZone wz,
-                                     Node computingNode) {
-        MatrixPiece.Builder missingPiece = MatrixPiece.newBuilder();
-
-        for (NeededPieceOfChunk c : wz.involvedChunks) {
-            if ( ! computingNode.doesManage(c.chunk.getChunkId())) {
-                System.err.println("XXX " + computingNode.getNodeId() + "LALLA");
-                missingPiece.setMatrixId(c.chunk.getMatrixId())
-                            .setPosition(c.piece.convertToProto());
-                missingPieces.addMatrixPiece(missingPiece.build());
-            }
-        }
-    }
-
-    private void fillInPiecesAwaitingUpdate(OrderAddAssignBody.Builder order,
-                                            String nodeId) {
-        MatrixPieceListBody.Builder list = this.pieces2await.get(nodeId);
-        if (list == null) {
-            list = MatrixPieceListBody.newBuilder();
-        }
-
-        order.setAwaitingUpdates(list.build());
-    }
-
-    private void fillInPieces2BeSent(OrderAddAssignBody.Builder order,
-                                       String nodeId) {
-        SendMatrixPieceListBody.Builder list = this.pieces2beSent.get(nodeId);
-        if (list == null) {
-            list = SendMatrixPieceListBody.newBuilder();
-        }
-
-        order.setPiecesToSend(list.build());
     }
 
     private static void fillInOperation(OrderAddAssignBody.Builder order,

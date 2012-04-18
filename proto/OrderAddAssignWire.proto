@@ -14,7 +14,6 @@ message OrderAddAssign {
     required TypeBody type = 5;
 }
 
-
 message OrderAddAssignBody {
     required NodeListBody destination = 1;
     required SendMatrixPieceListBody piecesToSend = 2;

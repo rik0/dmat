@@ -1,11 +1,9 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody;
-import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
@@ -204,8 +202,9 @@ public class Multiplication extends Operation {
                 updateMissingPieces(missingPieces, wz, computingNode);
             }
             order.setMissingPieces(missingPieces.build());
-            fillInPieces2BeSent(order, computingNode.getNodeId());
-            fillInPiecesAwaitingUpdate(order, computingNode.getNodeId());
+            order.setPiecesToSend(pieces2BeSentProto(computingNode.getNodeId()));
+            order.setAwaitingUpdates(
+                    awaitingUpdateProto(computingNode.getNodeId()));
 
 
             getNodeWorkGroup().sendOrderRaw(
@@ -224,8 +223,8 @@ public class Multiplication extends Operation {
                     OrderMultiplyBody.Builder order
                         = OrderMultiplyBody.newBuilder();
 
-                    fillInPieces2BeSent(order, nodeId);
-                    fillInPiecesAwaitingUpdate(order, nodeId);
+                    order.setPiecesToSend(pieces2BeSentProto(nodeId));
+                    order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
                     order.setMissingPieces(MatrixPieceListBody
                             .getDefaultInstance());
 
@@ -233,39 +232,6 @@ public class Multiplication extends Operation {
                         .sendOrderRaw((new MessageMultiply(order))
                         .serialNo(serialNo), nodeId);
                 }
-            }
-        }
-    }
-
-    private void fillInPiecesAwaitingUpdate(OrderMultiplyBody.Builder order,
-                                            String nodeId) {
-        MatrixPieceListBody.Builder list = this.pieces2await.get(nodeId);
-        if (list == null) {
-            list = MatrixPieceListBody.newBuilder();
-        }
-
-        order.setAwaitingUpdates(list.build());
-    }
-
-    private void fillInPieces2BeSent(OrderMultiplyBody.Builder order,
-                                     String nodeId) {
-        SendMatrixPieceListBody.Builder list = this.pieces2beSent.get(nodeId);
-        if (list == null) {
-            list = SendMatrixPieceListBody.newBuilder();
-        }
-
-        order.setPiecesToSend(list.build());
-    }
-
-    private void updateMissingPieces(MatrixPieceListBody.Builder missingPieces,
-                                     WorkZone wz,
-                                     Node computingNode) {
-        MatrixPiece.Builder missingPiece = MatrixPiece.newBuilder();
-        for (NeededPieceOfChunk c : wz.involvedChunks) {
-            if ( ! computingNode.doesManage(c.chunk.chunkId)) {
-                missingPiece.setMatrixId(c.chunk.getMatrixId())
-                            .setPosition(c.piece.convertToProto());
-                missingPieces.addMatrixPiece(missingPiece.build());
             }
         }
     }

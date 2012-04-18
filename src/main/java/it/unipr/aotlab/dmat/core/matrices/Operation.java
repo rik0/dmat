@@ -449,4 +449,34 @@ public abstract class Operation {
                     .serialNo(serialNo), nodeId);
         }
     }
+
+    protected SendMatrixPieceListBody pieces2BeSentProto(String nodeId) {
+        SendMatrixPieceListBody.Builder list = this.pieces2beSent.get(nodeId);
+        if (list != null)
+            return list.build();
+
+        return SendMatrixPieceListBody.getDefaultInstance();
+    }
+
+    protected MatrixPieceListBody awaitingUpdateProto(String nodeId) {
+        MatrixPieceListBody.Builder list = this.pieces2await.get(nodeId);
+        if (list != null)
+            return list.build();
+
+        return MatrixPieceListBody.getDefaultInstance();
+    }
+
+    protected void updateMissingPieces(MatrixPieceListBody.Builder missingPieces,
+                                       WorkZone wz,
+                                       Node computingNode) {
+        MatrixPiece.Builder missingPiece = MatrixPiece.newBuilder();
+        for (NeededPieceOfChunk c : wz.involvedChunks) {
+            if ( ! computingNode.doesManage(c.chunk.chunkId)) {
+                missingPiece.setMatrixId(c.chunk.getMatrixId())
+                .setPosition(c.piece.convertToProto());
+                missingPieces.addMatrixPiece(missingPiece.build());
+            }
+        }
+    }
+
 }
