@@ -1,7 +1,7 @@
-import "MatrixPieceOwnerWire.proto" ;
-import "MatrixPieceWire.proto" ;
+import "MatrixPieceListWire.proto" ;
 import "NodeListWire.proto" ;
 import "RectangleWire.proto" ;
+import "SendMatrixPieceListWire.proto" ;
 import "TypeWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
@@ -9,16 +9,17 @@ option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 message OrderAddAssign {
     required string firstAddendumNodeId = 1;
     required string firstAddendumMatrixId = 2;
-    required string firstAddendumChunkId = 3;
-    required string secondAddendumMatrixId = 4;
-    required RectangleBody outputPiece = 5;
-    required TypeBody type = 6;
+    required string secondAddendumMatrixId = 3;
+    required RectangleBody outputPiece = 4;
+    required TypeBody type = 5;
 }
+
 
 message OrderAddAssignBody {
     required NodeListBody destination = 1;
-    repeated MatrixPieceOwnerBody missingPieces = 2;
-    repeated MatrixPieceBody awaitingUpdates = 3;
-    repeated OrderAddAssign operation = 4;
+    required SendMatrixPieceListBody piecesToSend = 2;
+    required MatrixPieceListBody missingPieces = 3;
+    required MatrixPieceListBody awaitingUpdates = 4;
+    repeated OrderAddAssign operation = 5;
 }
 

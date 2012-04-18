@@ -37,7 +37,7 @@ public class WorkingNode {
             EnvelopedMessageBody delivery = EnvelopedMessageBody
                         .parseFrom(queueingConsumer.nextDelivery().getBody());
 
-            System.err.println("XXX ARRIVED " +
+            System.err.println("XXX ARRIVED  " +
             " ContentType: "  + delivery.getContentType()
             + " SerialNo: " + delivery.getSerialNo()
             + " MessageKind: " + delivery.getMessageKind()

@@ -42,7 +42,7 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
         }
 
         @Override
-        public MatrixPiece buildFromTriplets(String matrixId, String chunkId,
+        public MatrixPiece buildFromTriplets(String matrixId,
                 String nodeId, Collection<Triplet> triplets,
                 Rectangle position, boolean isUpdate) {
             throw new DMatInternalError(this.getClass().getCanonicalName() + " for still unimplemented");
@@ -104,12 +104,12 @@ public class MatrixPieceTripletsBytes implements MatrixPiece {
     }
 
     @Override
-    public String getChunkId() {
-        return this.int32Triples.getChunkId();
+    public String getNodeId() {
+        return this.int32Triples.getNodeId();
     }
 
     @Override
-    public String getNodeId() {
-        return this.int32Triples.getNodeId();
+    public Rectangle getPosition() {
+        return Rectangle.build(this.int32Triples.getPosition());
     }
 }

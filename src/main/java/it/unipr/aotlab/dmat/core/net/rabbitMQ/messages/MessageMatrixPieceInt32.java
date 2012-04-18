@@ -63,7 +63,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     }
 
     @Override
-    public Rectangle getArea() {
+    public Rectangle getPosition() {
         return Rectangle.build(body().getPosition());
     }
 
@@ -81,12 +81,6 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
     public boolean getUpdate() {
         return body().getUpdate();
     }
-
-    @Override
-    public String getChunkId() {
-        return body().getChunkId();
-    }
-
 
     private class MessageMatrixIterator implements Iterator<Triplet> {
         int end;
@@ -137,7 +131,7 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
 
     @Override
     public boolean doesManage(int row, int col) {
-        return getArea().contains(row, col);
+        return getPosition().contains(row, col);
     }
 
     private class MessageRowIterator implements Iterator<Triplet> {

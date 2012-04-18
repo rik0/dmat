@@ -2,7 +2,12 @@ import "RectangleWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
-message MatrixPieceBody {
+message MatrixPiece {
     required string matrixId = 1;
     required RectangleBody position = 2;
 }
+
+message MatrixPieceListBody {
+    repeated MatrixPiece matrixPiece = 1;
+}
+

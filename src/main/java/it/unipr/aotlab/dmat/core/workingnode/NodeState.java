@@ -2,20 +2,19 @@ package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
 import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
 import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
 import it.unipr.aotlab.dmat.core.loaders.MatrixMarket;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
-import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
@@ -41,13 +40,13 @@ public class NodeState {
 
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
-    ArrayList<MessageAwaitUpdate> awaitingUpdate
-        = new ArrayList<MessageAwaitUpdate>();
-    ArrayList<MessageMatrixValues> chunkForUpdating
-        = new ArrayList<MessageMatrixValues>();
+    int nofAwaitingUpdate = 0;
+    ArrayList<MatrixPiece> awaitingUpdate = new ArrayList<MatrixPiece>();
+    LinkedList<MessageMatrixValues> chunkForUpdating
+        = new LinkedList<MessageMatrixValues>();
 
-    ArrayList<MessageMatrixValues> chunkForOperations
-        = new ArrayList<MessageMatrixValues>();
+    LinkedList<MessageMatrixValues> chunkForOperations
+        = new LinkedList<MessageMatrixValues>();
     LinkedList<Operation> pendingOperations = new LinkedList<Operation>();
     LinkedList<Operation> delayedOperations = new LinkedList<Operation>();
 
@@ -116,14 +115,15 @@ public class NodeState {
 
 
     public MessageMatrixValues getMessage(
-            ArrayList<MessageMatrixValues> messages,
+            LinkedList<MessageMatrixValues> messages,
             String matrixId,
             Rectangle interestedArea) {
         if (messages == null) messages = chunkForOperations;
 
         for (MessageMatrixValues m : messages) {
+            System.err.println("XXX trying "+ m.getMatrixId()+ " " + m.getPosition());
             if (m.getMatrixId().equals(matrixId)
-                    && interestedArea.isSubset(m.getArea())) {
+                    && interestedArea.isSubset(m.getPosition())) {
                 return m;
             }
         }
@@ -132,10 +132,11 @@ public class NodeState {
     }
 
     public Iterator<Triplet> getIterator(
-            ArrayList<MessageMatrixValues> extraPieces,
+            LinkedList<MessageMatrixValues> extraPieces,
             String matrixId,
             Rectangle interestedArea) {
 
+        System.err.println("XXX "+matrixId + " " + interestedArea);
         InNodeChunk<?> n = getChunk(matrixId, interestedArea);
         if (n != null) {
             return n.accessor.matrixPieceIterator(interestedArea);
@@ -152,7 +153,7 @@ public class NodeState {
     }
 
     public void exec(MessageMultiply messageMultiply) throws IOException {
-        ArrayList<MessageMatrixValues> missingPieces = null;
+        LinkedList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null) {
             for (OrderMultiply order : messageMultiply.body().getOperationList()) {
@@ -170,7 +171,7 @@ public class NodeState {
     }
 
     private void doTheMultiplication(
-            ArrayList<MessageMatrixValues> missingPieces,
+            LinkedList<MessageMatrixValues> missingPieces,
             OrderMultiply order) throws IOException {
         String outputMatrixId = order.getOutputMatrixId();
         Rectangle outputMatrixPosition = Rectangle
@@ -248,9 +249,9 @@ public class NodeState {
 
         @Override
         public void postOperation() throws IOException {
-            MatrixPiece matrixPiece = mpBuilder
+            it.unipr.aotlab.dmat.core.matrixPiece
+                .MatrixPiece matrixPiece = mpBuilder
                         .buildFromTriplets(order.getOutputMatrixId(),
-                    order.getOutputChunkId(),
                     order.getOutputNodeId(),
                     results,
                     Rectangle.build(order.getOutputPosition()),
@@ -263,7 +264,7 @@ public class NodeState {
         public void preOperation() {}
     }
 
-    private void doTheMultImpl(ArrayList<MessageMatrixValues> missingPieces,
+    private void doTheMultImpl(LinkedList<MessageMatrixValues> missingPieces,
                                OrderMultiply order,
                                MultiplicationHandles eor) throws IOException {
         int endRow = order.getOutputPosition().getEndRow();
@@ -327,18 +328,20 @@ public class NodeState {
     }
 
     public void exec(MessageAddAssign messageAddAssign) throws IOException {
-        ArrayList<MessageMatrixValues> missingPieces = null;
+        LinkedList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
             for (OrderAddAssign order : messageAddAssign.body().getOperationList())
                 doTheSum(missingPieces, order);
 
-            orderDone();
+            checkUpdatingState();
         }
     }
 
-    private ArrayList<MessageMatrixValues> weGotAllPieces(Operation op) {
-        ArrayList<MessageMatrixValues> missingPieces = getMissingPieces(op);
+    private LinkedList<MessageMatrixValues> weGotAllPieces(Operation op) {
+        System.err.println("XXX what op says: " + op.nofMissingPieces());
+
+        LinkedList<MessageMatrixValues> missingPieces = getMissingPieces(op);
         if (missingPieces.size() == op.nofMissingPieces()) {
             System.err.println("Ready to do operation");
             return missingPieces;
@@ -350,7 +353,7 @@ public class NodeState {
         return null;
     }
 
-    private void doTheSum(ArrayList<MessageMatrixValues> missingPieces, OrderAddAssign order) throws IOException {
+    private void doTheSum(LinkedList<MessageMatrixValues> missingPieces, OrderAddAssign order) throws IOException {
         String firstMatrixId = order.getFirstAddendumMatrixId();
         String secondMatrixId = order.getSecondAddendumMatrixId();
         SemiRing semiring = SemiRings.semiring(order.getType());
@@ -398,12 +401,17 @@ public class NodeState {
         MatrixPieces.Builder b = firstOpMess.getAppropriatedBuilder();
 
         String matrixId = firstOpMess.getMatrixId();
-        String chunkId = firstOpMess.getChunkId();
         String nodeId = firstOpMess.getNodeId();
-        Rectangle position = firstOpMess.getArea();
+        Rectangle position = firstOpMess.getPosition();
 
-        MatrixPiece rawMessage = b.buildFromTriplets(matrixId, chunkId, nodeId, tree, position, true);
-        hostWorkingNode.messageSender.sendMessage(b.buildMessage(rawMessage), outputNodeId);
+        it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece
+            rawMessage = b.buildFromTriplets(matrixId, nodeId, tree, position, true);
+
+        hostWorkingNode.messageSender
+            .sendMessage(b.buildMessage(rawMessage)
+                         .recipients(outputNodeId)
+                         .serialNo(currentOrderSerialNo),
+                         outputNodeId);
     }
 
     private static void updateSumTree(TreeSet<Triplet> tree, Triplet op, SemiRing semiring) {
@@ -422,15 +430,16 @@ public class NodeState {
         tree.add(op);
     }
 
-    private ArrayList<MessageMatrixValues> getMissingPieces(Operation message) {
-        ArrayList<MessageMatrixValues> foundPieces = new ArrayList<MessageMatrixValues>();
+    private LinkedList<MessageMatrixValues> getMissingPieces(Operation message) {
+        LinkedList<MessageMatrixValues> foundPieces = new LinkedList<MessageMatrixValues>();
 
         for (MessageMatrixValues chunk : chunkForOperations) {
             for (int c = message.nofMissingPieces(); c-- > 0;) {
-                MatrixPieceOwnerBody piece = message.missingPiece(c);
+                MatrixPieceListWire.MatrixPiece piece = message.missingPiece(c);
+                Rectangle neededPos = Rectangle.build(piece.getPosition());
 
                 if (piece.getMatrixId().equals(chunk.getMatrixId())
-                        && piece.getChunkId().equals(chunk.getChunkId())) {
+                        && neededPos.isSubset(chunk.getPosition())) {
                     foundPieces.add(chunk);
                     break;
                 }
@@ -441,60 +450,44 @@ public class NodeState {
     }
 
     void checkUpdatingState() {
-        ArrayList<Integer> toBeRemovedIva = new ArrayList<Integer>();
-        ArrayList<Integer> toBeRemovedIwa = new ArrayList<Integer>();
+        System.err.println("XXX awaiting update n: " + nofAwaitingUpdate);
+        Iterator<MessageMatrixValues> ivalues = chunkForUpdating.iterator();
+        while (ivalues.hasNext()) {
+            MessageMatrixValues value = ivalues.next();
 
-        for (int ivalues = 0; ivalues < chunkForUpdating.size(); ++ivalues) {
-            for (int iwaiting = 0; iwaiting < awaitingUpdate.size(); ++iwaiting) {
-                MessageMatrixValues values = chunkForUpdating.get(ivalues);
-                MessageAwaitUpdate waiting = awaitingUpdate.get(iwaiting);
+            Iterator<MatrixPiece> iwaiting = awaitingUpdate.iterator();
+            while (iwaiting.hasNext()) {
+                MatrixPiece waiting = iwaiting.next();
 
-                if (values.getMatrixId().equals(waiting.body()
-                            .getMatrixId())
-                        && values.getArea().compare(waiting.body()
-                                .getUpdatingPosition()) == 0) {
-                    toBeRemovedIva.add(ivalues);
-                    toBeRemovedIwa.add(iwaiting);
+                if (value.getMatrixId().equals(waiting.getMatrixId())
+                        && value.getPosition().compare(
+                                waiting.getPosition()) == 0) {
 
-                    doTheUpdate(values);
+                    doTheUpdate(value);
+
+                    ivalues.remove();
+                    iwaiting.remove();
+                    break;
                 }
             }
         }
 
-        for (Integer i : toBeRemovedIva)
-            removeElement(chunkForUpdating, i);
-
-        for (Integer i : toBeRemovedIwa)
-            removeElement(awaitingUpdate, i);
+        if (nofAwaitingUpdate == 0) orderDone();
     }
 
     private void doTheUpdate(MessageMatrixValues values) {
         String matrixId = values.getMatrixId();
-        String chunkId = values.getChunkId();
+        Rectangle position = values.getPosition();
 
-        InNodeChunk<?> updatingNode = getChunk(matrixId, chunkId);
+        InNodeChunk<?> updatingNode = getChunk(matrixId, position);
 
         Assertion.isTrue(updatingNode != null, "Requested updating of a non-managed node!");
-        Assertion.isTrue(values.getArea().isSubset(updatingNode.chunk.getArea()),
+        Assertion.isTrue(values.getPosition().isSubset(updatingNode.chunk.getArea()),
                 "Invalid updating message has arrived!");
 
         updatingNode.accept(values);
-    }
 
-    public static <E> void removeElement(ArrayList<E> al, int index) {
-        int size = al.size();
-        Assertion.isTrue(index < size, "Wrong removeElement call!");
-
-        if (size == 1) {
-            al.clear();
-        }
-        else if (index == (size - 1)) {
-            al.remove(size - 1);
-        }
-        else {
-            E last = al.remove(size - 1);
-            al.set(index, last);
-        }
+        --nofAwaitingUpdate;
     }
 
     public class RowIterator implements java.util.Iterator<Triplet> {
@@ -536,7 +529,7 @@ public class NodeState {
                     if (v.getMatrixId().equals(matrixId)
                             && v.doesManage(row, nextChunkColumn)) {
 
-                        nextChunkColumn = v.getArea().endCol;
+                        nextChunkColumn = v.getPosition().endCol;
                         nextTriplets = v.matrixRowterator(row);
                         break;
                     }
@@ -619,7 +612,7 @@ public class NodeState {
                     if (v.getMatrixId().equals(matrixId)
                             && v.doesManage(nextChunkRow, col)) {
 
-                        nextChunkRow = v.getArea().endRow;
+                        nextChunkRow = v.getPosition().endRow;
                         nextTriplets = v.matrixColumnIterator(col);
                         break;
                     }

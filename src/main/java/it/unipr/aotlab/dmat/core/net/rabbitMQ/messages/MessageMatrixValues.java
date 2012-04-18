@@ -11,11 +11,9 @@ import java.util.Iterator;
 public abstract class MessageMatrixValues extends MessageSupport {
     public abstract String getMatrixId();
 
-    public abstract String getChunkId();
-
     public abstract String getNodeId();
 
-    public abstract Rectangle getArea();
+    public abstract Rectangle getPosition();
 
     public abstract boolean doesManage(int row, int col);
 
@@ -39,8 +37,7 @@ public abstract class MessageMatrixValues extends MessageSupport {
         @Override
         public int compare(MessageMatrixValues lhs, MessageMatrixValues rhs) {
             int rv = lhs.getMatrixId().compareTo(rhs.getMatrixId());
-            if (rv == 0) rv = lhs.getChunkId().compareTo(rhs.getChunkId());
-            if (rv == 0) rv = lhs.getArea().compare(rhs.getArea());
+            if (rv == 0) rv = lhs.getPosition().compare(rhs.getPosition());
 
             return rv;
         }

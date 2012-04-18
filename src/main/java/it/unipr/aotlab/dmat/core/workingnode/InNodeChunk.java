@@ -34,7 +34,7 @@ public abstract class InNodeChunk<E> {
     }
 
     public void accept(MessageMatrixValues values) {
-        Rectangle area = values.getArea();
+        Rectangle area = values.getPosition();
         Iterator<Triplet> triplets = values.matrixPieceIterator();
         accessor.setPosition(semiring.zero(), area);
 

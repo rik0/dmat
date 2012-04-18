@@ -1,23 +1,25 @@
+import "MatrixPieceListWire.proto" ;
 import "NodeListWire.proto" ;
 import "RectangleWire.proto" ;
-import "MatrixPieceOwnerWire.proto" ;
+import "SendMatrixPieceListWire.proto" ;
 import "TypeWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
 message OrderMultiply {
     required string outputMatrixId = 1;
-    required string outputChunkId = 2;
-    required string outputNodeId = 3;
-    required string firstFactorMatrixId = 4;
-    required string secondFactorMatrixId = 5;
-    required RectangleBody outputPosition = 6;
-    required TypeBody type = 7;
+    required string outputNodeId = 2;
+    required string firstFactorMatrixId = 3;
+    required string secondFactorMatrixId = 4;
+    required RectangleBody outputPosition = 5;
+    required TypeBody type = 6;
 }
 
 message OrderMultiplyBody {
     required NodeListBody destination = 1;
-    repeated MatrixPieceOwnerBody missingPieces = 2 ;
-    repeated OrderMultiply operation = 3;
+    required SendMatrixPieceListBody piecesToSend = 2;
+    required MatrixPieceListBody missingPieces = 3;
+    required MatrixPieceListBody awaitingUpdates = 4;
+    repeated OrderMultiply operation = 5;
 }
 

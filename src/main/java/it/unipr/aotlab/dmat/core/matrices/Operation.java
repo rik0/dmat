@@ -1,16 +1,13 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.generated.OrderAwaitUpdateWire.OrderAwaitUpdateBody;
-import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceWire.SendMatrixPieceBody;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPieceListBody;
+import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPiece;
+import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
-import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
-import it.unipr.aotlab.dmat.core.registers.NodeWorkGroup;
 import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth;
-import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupPrivate;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +36,7 @@ public abstract class Operation {
 
         splitWork();
 
-        sendMissingPiecesOrders();
+        prepareMissingPiecesOrders();
 
         sendOperationsOrders();
     }
@@ -58,9 +55,8 @@ public abstract class Operation {
 
     public abstract int arity();
 
-    protected void sendMissingPiecesOrders() throws IOException {
-        OrderAwaitUpdateBody.Builder awaitUpdate = OrderAwaitUpdateBody
-                .newBuilder();
+    protected void prepareMissingPiecesOrders() throws IOException {
+        MatrixPiece.Builder awaitUpdate = MatrixPiece.newBuilder();
         HashMap<PendingMissingPiecesMess, TreeSet<String>> pendingMessages
             = new HashMap<PendingMissingPiecesMess, TreeSet<String>>();
 
@@ -71,21 +67,17 @@ public abstract class Operation {
 
             //for each output area it needs to be updated
             for (WorkZone workZone : nodeAndworkZone.workZones) {
-                //send ``awaiting update'' if needed.
+                //update ``awaiting update'' if needed.
                 if ( ! computingNode.doesManage(workZone.outputChunk.chunkId)) {
-
                     awaitUpdate.setMatrixId(workZone.outputChunk.matrixId);
-                    awaitUpdate.setUpdatingPosition(workZone
-                                                    .outputArea
+                    awaitUpdate.setPosition(workZone.outputArea
                                                     .convertToProto());
-                    String owner = workZone.outputChunk.getAssignedNode()
-                                   .getNodeId();
 
-                    Message m = (new MessageAwaitUpdate(awaitUpdate))
-                                 .serialNo(serialNo)
-                                 .recipients(owner);
+                    String owner = workZone.outputChunk
+                            .getAssignedNode()
+                            .getNodeId();
 
-                    getNodeWorkGroup().getMessageSender().sendMessage(m, owner);
+                    updatePieces2await(owner, awaitUpdate.build());
                 }
 
                 //for each (sub)chunk needed to update this output area
@@ -99,7 +91,17 @@ public abstract class Operation {
             }
         }
 
-        doActualSending(pendingMessages);
+        updateMatrixPieces2beSent(pendingMessages);
+    }
+
+    private void updatePieces2await(String owner, MatrixPiece matrixPiece) {
+        MatrixPieceListBody.Builder pieces = pieces2await.get(owner);
+        if (pieces == null) {
+            pieces = MatrixPieceListBody.newBuilder();
+            pieces2await.put(owner, pieces);
+        }
+
+        pieces.addMatrixPiece(matrixPiece);
     }
 
     protected void precondition() throws DMatError {
@@ -264,8 +266,10 @@ public abstract class Operation {
     protected List<NodeWorkZonePair> tasks = new LinkedList<NodeWorkZonePair>();
     protected ArrayList<Matrix> operands = new ArrayList<Matrix>();
 
-    protected NodeWorkGroupPrivate nodeWorkGroupP;
-    protected NodeWorkGroup nodeWorkGroup;
+    protected HashMap<String, SendMatrixPieceListBody.Builder> pieces2beSent
+        = new HashMap<String, SendMatrixPieceListBody.Builder>();
+    protected HashMap<String, MatrixPieceListBody.Builder> pieces2await
+        = new HashMap<String, MatrixPieceListBody.Builder>();
 
     public static class NeededPieceOfChunk {
         public Chunk chunk;
@@ -383,54 +387,54 @@ public abstract class Operation {
     }
 
     private static void updatePendingMessage(HashMap<PendingMissingPiecesMess,
-                                             TreeSet<String>> pendingMessages,
+                                                 TreeSet<String>> pendingMessages,
                                              NeededPieceOfChunk neededPiece,
                                              String destination) {
         PendingMissingPiecesMess message = new PendingMissingPiecesMess();
-        TreeSet<String> destinationList;
 
         message.ownerNodeId = neededPiece.chunk.getAssignedNodeId();
         message.matrixId    = neededPiece.chunk.matrixId;
         message.neededPiece = neededPiece.piece;
 
-        if ((destinationList = pendingMessages.get(message)) != null) {
-            destinationList.add(destination);
-        } else {
-            TreeSet<String> firstDestination = new TreeSet<String>();
-            firstDestination.add(destination);
-            pendingMessages.put(message, firstDestination);
+        TreeSet<String> destinationList = pendingMessages.get(message);
+        if (destinationList == null) {
+            destinationList = new TreeSet<String>();
+            pendingMessages.put(message, destinationList);
         }
+
+        destinationList.add(destination);
     }
 
-    private void doActualSending(HashMap<PendingMissingPiecesMess,
+    private void updateMatrixPieces2beSent(HashMap<PendingMissingPiecesMess,
                                  TreeSet<String>> pendingMessages) throws IOException {
 
         for (Entry<PendingMissingPiecesMess, TreeSet<String>> task : pendingMessages.entrySet()) {
-            SendMatrixPieceBody.Builder messageBody = SendMatrixPieceBody.newBuilder();
-            messageBody.setUpdate(false);
+            SendMatrixPiece.Builder singlePiece = SendMatrixPiece.newBuilder();
+            singlePiece.setUpdate(false);
 
             PendingMissingPiecesMess message = task.getKey();
             TreeSet<String> destinations = task.getValue();
 
-            messageBody.setMatrixId(message.matrixId)
+            singlePiece.setMatrixId(message.matrixId)
                        .setNeededPiece(message.neededPiece.convertToProto());
 
-            for (String destination : destinations) {
-                messageBody.addRecipient(destination);
-            }
+            for (String destination : destinations)
+                singlePiece.addRecipient(destination);
 
-            Message wireMessage = (new MessageSendMatrixPiece(messageBody))
-                    .serialNo(serialNo)
-                    .recipients(message.ownerNodeId);
-
-            System.err.println("XXX message: "
-                    + wireMessage.contentType()
-                    + " serial: "
-                    + serialNo);
-
-            getNodeWorkGroup().getMessageSender()
-                .sendMessage(wireMessage, message.ownerNodeId);
+            updateMatrixPieces2beSent(message, singlePiece.build());
         }
+    }
+
+    private void updateMatrixPieces2beSent(PendingMissingPiecesMess message,
+                                           SendMatrixPiece messageBody) {
+        SendMatrixPieceListBody.Builder owner
+                = pieces2beSent.get(message.ownerNodeId);
+        if (owner == null) {
+            owner = SendMatrixPieceListBody.newBuilder();
+            pieces2beSent.put(message.ownerNodeId, owner);
+        }
+
+        owner.addSendMatrixPiece(messageBody);
     }
 
     private void getOperationSerialNo() {

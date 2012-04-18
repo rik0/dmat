@@ -14,9 +14,8 @@ message MatrixPieceTripletsInt32Body {
     required NodeListBody destination = 1;
     required bool update = 2;
     required string matrixId = 3;
-    required string chunkId = 4;
-    required string nodeId = 5;
-    required RectangleBody position = 6;
-    repeated Triplet values = 7;
+    required string nodeId = 4;
+    required RectangleBody position = 5;
+    repeated Triplet values = 6;
 }
 

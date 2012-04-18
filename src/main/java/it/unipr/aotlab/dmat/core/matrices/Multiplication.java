@@ -186,7 +186,6 @@ public class Multiplication extends Operation {
             for (WorkZone wz : nwzp.workZones) {
                 Chunk outputChunk = output.getChunk(wz.outputArea.startRow, wz.outputArea.startCol);
                 operation.setOutputPosition(wz.outputArea.convertToProto());
-                operation.setOutputChunkId(outputChunk.getChunkId());
                 operation.setOutputNodeId(outputChunk.getAssignedNodeId());
 
                 for (NeededPieceOfChunk c : wz.involvedChunks) {
@@ -195,7 +194,7 @@ public class Multiplication extends Operation {
                         missingPiece.setMatrixId(c.chunk.getMatrixId());
                         missingPiece.setPosition(c.piece.convertToProto());
 
-                        order.addMissingPieces(missingPiece.build());
+                        //order.addMissingPieces(missingPiece.build());
                     }
                 }
 

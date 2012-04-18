@@ -7,6 +7,7 @@ import it.unipr.aotlab.dmat.core.errors.InvalidCoord;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body;
+import it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
@@ -113,9 +114,9 @@ public class MatricesTestCase {
 
         b.setMatrixId("A");
         b.setUpdate(true);
-        b.setChunkId("unused");
         b.setNodeId("unused");
         b.setPosition(Rectangle.build(0, 0, 10, 10).convertToProto());
+        b.setDestination(NodeListBody.getDefaultInstance());
 
         for (int i = 0; i < 10; ++i) {
             b.addValues(MatrixPieceTripletsInt32Wire.Triplet.newBuilder()

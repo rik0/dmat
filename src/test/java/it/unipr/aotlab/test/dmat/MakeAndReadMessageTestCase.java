@@ -2,6 +2,7 @@ package it.unipr.aotlab.test.dmat;
 
 import static junit.framework.Assert.assertEquals;
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
+import it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageTest;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
@@ -19,6 +20,7 @@ public class MakeAndReadMessageTestCase {
         String messageOnTheWire = "Test message";
 
         MessageTestBody.Body.Builder builder = MessageTestBody.Body.newBuilder()
+                .setDestination(NodeListBody.getDefaultInstance())
                 .setMessage(messageOnTheWire);
         MessageTest messageTestSent = new MessageTest(builder);
 

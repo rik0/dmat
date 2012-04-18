@@ -59,7 +59,6 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
 
             b.setUpdate(isUpdate);
             b.setPosition(position.convertToProto());
-            b.setChunkId(format.hostChunk().chunk.getChunkId());
             b.setNodeId(format.hostChunk().chunk.getAssignedNodeId());
 
             int intDefault = (Integer) format.getDefault();
@@ -72,12 +71,11 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
                         b.addValues(trl.setRow(r).setCol(c).setValue(v).build());
                 }
 
-            return new MatrixPieceTripletsInt32(b.build());
+            return new MatrixPieceTripletsInt32(b);
         }
 
         @Override
         public MatrixPiece buildFromTriplets(String matrixId,
-                String chunkId,
                 String nodeId,
                 Collection<Triplet> triplets,
                 Rectangle position,
@@ -90,7 +88,6 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
             b.setPosition(position.convertToProto());
 
             b.setMatrixId(matrixId);
-            b.setChunkId(chunkId);
             b.setNodeId(nodeId);
 
             for (Triplet t : triplets) {
@@ -100,7 +97,7 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
                         .setValue((Integer) t.value()).build());
             }
 
-            return new MatrixPieceTripletsInt32(b.build());
+            return new MatrixPieceTripletsInt32(b);
         }
     }
 
@@ -127,8 +124,13 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     }
 
     MatrixPieceTripletsInt32(
-            MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body int32Triples) {
+            MatrixPieceTripletsInt32Body int32Triples) {
         this.realBody = int32Triples;
+    }
+
+    public MatrixPieceTripletsInt32(
+            MatrixPieceTripletsInt32Body.Builder builder) {
+        this.builder = builder;
     }
 
     @Override
@@ -147,12 +149,12 @@ public class MatrixPieceTripletsInt32 implements MatrixPiece {
     }
 
     @Override
-    public String getChunkId() {
-        return this.body().getChunkId();
+    public String getNodeId() {
+        return this.body().getNodeId();
     }
 
     @Override
-    public String getNodeId() {
-        return this.body().getNodeId();
+    public Rectangle getPosition() {
+        return Rectangle.build(this.body().getPosition());
     }
 }

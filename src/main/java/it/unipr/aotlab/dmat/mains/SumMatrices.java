@@ -66,15 +66,11 @@ public class SumMatrices {
             b.setMatrixId("B").setChunkId("Bright");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
-            Thread.sleep(2000);
-
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
 
             BLeft.sendMessageExposeValues();
             BRight.sendMessageExposeValues();
-
-            Thread.sleep(2000);
 
             AdditionAssignment r = new AdditionAssignment();
 
@@ -82,12 +78,8 @@ public class SumMatrices {
             r.setOperands(A, B);
             r.exec();
 
-            Thread.sleep(2000);
-
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
-
-            Thread.sleep(2000);
 
             MessageSender.closeConnection();
         } catch (Throwable e) {

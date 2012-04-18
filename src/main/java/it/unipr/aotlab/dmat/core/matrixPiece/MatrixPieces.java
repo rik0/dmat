@@ -27,9 +27,8 @@ public class MatrixPieces {
         MessageMatrixValues buildMessage(MatrixPiece matrixPiece);
 
         MatrixPiece buildFromChunk(ChunkAccessor format, Rectangle position, boolean isUpdate);
-        
+
         MatrixPiece buildFromTriplets(String matrixId,
-                String chunkId,
                 String nodeId,
                 Collection<Triplet> triplets,
                 Rectangle position,

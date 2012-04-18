@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
-import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPiece;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
@@ -9,15 +9,15 @@ import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAwaitUpdate;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSendMatrixPiece;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageShutdown;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Operation;
+import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -78,30 +78,34 @@ public class NodeMessageDigester {
         }
     }
 
-    public void accept(MessageSendMatrixPiece message) throws IOException {
-        debugMessage(message);
-        System.err.println("\n" + message.body().getMatrixId() + " " + message.body().getNeededPiece() + " ");
+    private void sendMatrixPieces(Operation operation) throws IOException {
+        for (int i = operation.nofPiecesToBeSent(); i-- > 0;) {
+            SendMatrixPiece piece2beSent = operation.pieceToBeSent(i);
+            Rectangle neededPiece = Rectangle.build(piece2beSent.getNeededPiece());
+            MatrixPiece piece = null;
 
-        Rectangle neededPiece = Rectangle.build(message.body().getNeededPiece());
-        MatrixPiece piece = null;
-
-        for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
-            System.err.println("XXX LL " + inNodeChunk.chunk );
-            if (message.body().getMatrixId().equals(inNodeChunk.chunk.getMatrixId())
-                    && inNodeChunk.chunk.doesManage(neededPiece.startRow, neededPiece.startCol)) {
-                System.err.println("XXX SS");
-                piece = inNodeChunk.getMatrixPiece(neededPiece, message.body().getUpdate());
-                break;
+            for (InNodeChunk<?> inNodeChunk : hostWorkingNode.state.managedChunks) {
+                if (piece2beSent.getMatrixId().equals(inNodeChunk.chunk.getMatrixId())
+                        && inNodeChunk.chunk.doesManage(neededPiece.startRow, neededPiece.startCol)) {
+                    piece = inNodeChunk.getMatrixPiece(neededPiece, false);
+                    break;
+                }
             }
-        }
-        if (piece == null)
-            throw new DMatInternalError(hostWorkingNode
-                    + " received an invalid request. It does not manage "
-                    + message.body().getMatrixId()
-                    + " row: " + neededPiece.startRow + " col: " + neededPiece.startCol);
+            Assertion.isTrue(piece != null, hostWorkingNode
+                    + " does not manage " + piece2beSent.getMatrixId() + "("
+                    + neededPiece.startRow +", " + neededPiece.startCol + ")");
 
-        MatrixPieces.Builder mbuilder = MatrixPieces.matrixPiece(piece.getTag());
-        hostWorkingNode.messageSender.multicastMessage(mbuilder.buildMessage(piece),  message.body().getRecipientList());
+            MatrixPieces.Builder mbuilder = MatrixPieces
+                    .matrixPiece(piece.getTag());
+
+            Message mess = mbuilder.buildMessage(piece)
+                                   .serialNo(operation.serialNo());
+            mess.recipients(piece2beSent.getRecipientList());
+
+            hostWorkingNode.messageSender
+                    .multicastMessage(mess,
+                                      piece2beSent.getRecipientList());
+        }
     }
 
     public void accept(MessageClearReceivedMatrixPieces message) {
@@ -112,11 +116,24 @@ public class NodeMessageDigester {
         hostWorkingNode.state.orderDone();
     }
 
-    // CONSIDER: only one type of message for all operations?
+    private void operationCommonWork(Operation message) throws IOException {
+        Assertion.isTrue(hostWorkingNode.state.awaitingUpdate.isEmpty(),
+                "Unresolved updating!");
+
+        sendMatrixPieces(message);
+
+        hostWorkingNode.state.nofAwaitingUpdate
+            = message.nofPiacesAwaitingUpdate();
+
+        for (int i = message.nofPiacesAwaitingUpdate(); i-- > 0;)
+            hostWorkingNode.state.awaitingUpdate.add(message.awaitingUpdate(i));
+    }
+
     public void accept(MessageAddAssign message) throws IOException {
         //A += B
         debugMessage(message);
         System.err.println(message.toString());
+        operationCommonWork(message);
 
         hostWorkingNode.state.pendingOperations.add(message);
         hostWorkingNode.state.eventuallyExecOperation();
@@ -129,14 +146,6 @@ public class NodeMessageDigester {
 
         hostWorkingNode.state.pendingOperations.add(message);
         hostWorkingNode.state.eventuallyExecOperation();
-    }
-
-    public void accept(MessageAwaitUpdate message) {
-        debugMessage(message);
-        System.err.println(message.toString());
-
-        hostWorkingNode.state.awaitingUpdate.add(message);
-        hostWorkingNode.state.checkUpdatingState();
     }
 
     public void accept(MessageSetMatrix message) {
