@@ -6,19 +6,20 @@ import "TypeWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
-message OrderAddAssign {
-    required string firstAddendumNodeId = 1;
-    required string firstAddendumMatrixId = 2;
-    required string secondAddendumMatrixId = 3;
-    required RectangleBody outputPiece = 4;
+message OrderBinaryOp {
+    required string  firstOperandNodeId = 1;
+    required string  firstOperandMatrixId = 2;
+    required string secondOperandMatrixId = 3;
+    required RectangleBody outputPosition = 4;
     required TypeBody type = 5;
 }
 
-message OrderAddAssignBody {
+
+message OrderBinaryOpBody {
     required NodeListBody destination = 1;
     required SendMatrixPieceListBody piecesToSend = 2;
     required MatrixPieceListBody missingPieces = 3;
     required MatrixPieceListBody awaitingUpdates = 4;
-    repeated OrderAddAssign operation = 5;
+    repeated OrderBinaryOp operation = 5;
 }
 

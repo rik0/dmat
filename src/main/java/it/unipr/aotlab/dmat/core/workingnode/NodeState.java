@@ -4,8 +4,8 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
-import it.unipr.aotlab.dmat.core.generated.OrderAddAssignWire.OrderAddAssign;
-import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
+import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOp;
+import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOp;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
 import it.unipr.aotlab.dmat.core.loaders.MatrixMarket;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
@@ -15,6 +15,7 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCopyMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
@@ -156,16 +157,50 @@ public class NodeState {
         LinkedList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageMultiply)) != null) {
-            for (OrderMultiply order : messageMultiply.body().getOperationList())
+            for (OrderTernaryOp order : messageMultiply.body().getOperationList())
                 doTheMultiplication(missingPieces, order);
 
             checkUpdatingState();
         }
     }
 
+    public void exec(MessageCopyMatrix messageCopyMatrix) throws IOException {
+        LinkedList<MessageMatrixValues> missingPieces = null;
+
+        if ((missingPieces = weGotAllPieces(messageCopyMatrix)) != null) {
+            for (OrderBinaryOp order : messageCopyMatrix.body().getOperationList())
+                doTheCopy(missingPieces, order);
+
+            checkUpdatingState();
+        }
+    }
+
+    private void doTheCopy(LinkedList<MessageMatrixValues> missingPieces,
+                           OrderBinaryOp order) {
+        String firstMatrixId = order.getFirstOperandMatrixId();
+        String secondMatrixId = order.getSecondOperandMatrixId();
+        Rectangle interestedPosition = Rectangle.build(order.getOutputPosition());
+
+        InNodeChunk<?> firstOp = getChunk(firstMatrixId, interestedPosition);
+        if (firstOp != null) {
+            Iterator<Triplet> secondOp = getIterator(missingPieces,
+                                                     secondMatrixId,
+                                                     interestedPosition);
+
+            firstOp.accessor.setPositionToZero(interestedPosition);
+            while (secondOp.hasNext()) {
+                Triplet t = secondOp.next();
+                firstOp.accessor.set(t.value(), t.row(), t.col());
+            }
+        }
+        else {
+            throw new DMatInternalError("A remove computing node for copying a matrix does not have any sense!");
+        }
+    }
+
     private void doTheMultiplication(
             LinkedList<MessageMatrixValues> missingPieces,
-            OrderMultiply order) throws IOException {
+            OrderTernaryOp order) throws IOException {
         String outputMatrixId = order.getOutputMatrixId();
         Rectangle outputMatrixPosition = Rectangle
                 .build(order.getOutputPosition());
@@ -184,7 +219,7 @@ public class NodeState {
             doTheMultImpl(missingPieces,
                           order,
                           (new MulForRemoteNode(order,
-                           getAppropriateBuilder(order.getFirstFactorMatrixId()),
+                           getAppropriateBuilder(order.getFirstOperandMatrixId()),
                            hostWorkingNode.messageSender)));
         }
     }
@@ -199,8 +234,8 @@ public class NodeState {
         InNodeChunk<?> outputPiece;
         Rectangle outputPos;
 
-        public MultOnLocalChunk(OrderMultiply order,
-                                           InNodeChunk<?> outputPiece) {
+        public MultOnLocalChunk(OrderTernaryOp order,
+                                InNodeChunk<?> outputPiece) {
             this.outputPiece = outputPiece;
             this.outputPos = Rectangle.build(order.getOutputPosition());
         }
@@ -220,12 +255,12 @@ public class NodeState {
     }
 
     private class MulForRemoteNode implements MultiplicationHandles {
-        private OrderMultiply order;
+        private OrderTernaryOp order;
         private ArrayList<Triplet> results = new ArrayList<Triplet>();
         private MatrixPieces.Builder mpBuilder;
         private MessageSender messageSender;
 
-        public MulForRemoteNode(OrderMultiply order,
+        public MulForRemoteNode(OrderTernaryOp order,
                                 MatrixPieces.Builder mpBuilder,
                                 MessageSender messageSender) {
             this.mpBuilder = mpBuilder;
@@ -259,7 +294,7 @@ public class NodeState {
     }
 
     private void doTheMultImpl(LinkedList<MessageMatrixValues> missingPieces,
-                               OrderMultiply order,
+                               OrderTernaryOp order,
                                MultiplicationHandles eor) throws IOException {
         int endRow = order.getOutputPosition().getEndRow();
         int endCol = order.getOutputPosition().getEndCol();
@@ -282,11 +317,11 @@ public class NodeState {
         eor.postOperation();
     }
 
-    private Triplet doTheMulOneElement(int row, int col, OrderMultiply order) {
+    private Triplet doTheMulOneElement(int row, int col, OrderTernaryOp order) {
         RowIterator rowIterator
-            = new RowIterator(order.getFirstFactorMatrixId(), row);
+            = new RowIterator(order.getFirstOperandMatrixId(), row);
         ColIterator colIterator
-            = new ColIterator(order.getSecondFactorMatrixId(), col);
+            = new ColIterator(order.getSecondOperandMatrixId(), col);
         SemiRing sm = SemiRings.semiring(order.getType());
         Triplet result = null;
 
@@ -325,7 +360,7 @@ public class NodeState {
         LinkedList<MessageMatrixValues> missingPieces = null;
 
         if ((missingPieces = weGotAllPieces(messageAddAssign)) != null) {
-            for (OrderAddAssign order : messageAddAssign.body().getOperationList())
+            for (OrderBinaryOp order : messageAddAssign.body().getOperationList())
                 doTheSum(missingPieces, order);
 
             checkUpdatingState();
@@ -347,11 +382,12 @@ public class NodeState {
         return null;
     }
 
-    private void doTheSum(LinkedList<MessageMatrixValues> missingPieces, OrderAddAssign order) throws IOException {
-        String firstMatrixId = order.getFirstAddendumMatrixId();
-        String secondMatrixId = order.getSecondAddendumMatrixId();
+    private void doTheSum(LinkedList<MessageMatrixValues> missingPieces,
+            OrderBinaryOp order) throws IOException {
+        String firstMatrixId = order.getFirstOperandMatrixId();
+        String secondMatrixId = order.getSecondOperandMatrixId();
         SemiRing semiring = SemiRings.semiring(order.getType());
-        Rectangle interestedPosition = Rectangle.build(order.getOutputPiece());
+        Rectangle interestedPosition = Rectangle.build(order.getOutputPosition());
 
         InNodeChunk<?> firstOp = getChunk(firstMatrixId, interestedPosition);
         System.err.println(hostWorkingNode.nodeId + " doing sum for " + interestedPosition);
@@ -385,7 +421,7 @@ public class NodeState {
                 updateSumTree(tree, so, semiring);
             }
 
-            sendOutputBack(tree, firstOpMess, order.getFirstAddendumNodeId());
+            sendOutputBack(tree, firstOpMess, order.getFirstOperandNodeId());
         }
     }
 

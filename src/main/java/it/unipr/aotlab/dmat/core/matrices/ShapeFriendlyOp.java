@@ -6,12 +6,7 @@ import it.unipr.aotlab.dmat.core.util.Assertion;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class ShapeFriendlyOp extends Operation {
-    @Override
-    public int arity() {
-        return 2;
-    }
-
+public abstract class ShapeFriendlyOp extends BinaryOperation {
     @Override
     protected void otherPreconditions() throws DMatError {
         Matrix firstOperand = operands.get(0);
@@ -34,9 +29,9 @@ public abstract class ShapeFriendlyOp extends Operation {
         return workZones;
     }
 
-    private static void updateWorkZones(LinkedList<WorkZone> workZones,
-                                        Chunk firstOpChunk,
-                                        NeededPieceOfChunk secondOpChunkNInter) {
+    protected void updateWorkZones(LinkedList<WorkZone> workZones,
+                                   Chunk firstOpChunk,
+                                   NeededPieceOfChunk secondOpChunkNInter) {
         Rectangle intersection = secondOpChunkNInter.piece;
         Assertion.isTrue(intersection != null, "Null intersection in ShapeFriendlyOp!");
 

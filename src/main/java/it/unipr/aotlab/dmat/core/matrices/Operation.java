@@ -129,7 +129,7 @@ public abstract class Operation {
         return operands.get(outputMatrixIndex());
     }
 
-    // The user fails to set computing nodes, set the default.
+    // The user failed to set computing nodes, set the default.
     protected TreeSet<Node> getDefaultComputingNodes() {
         TreeSet<Node> workers = new TreeSet<Node>(new Node.NodeComparor());
 

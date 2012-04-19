@@ -5,6 +5,7 @@ it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesDummyOrder
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesExposeValues
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMatrixPieceInt32
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesMultiply
+it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesCopyMatrix
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesSetMatrix
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesShutdown
 it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessagesTest

@@ -1,24 +1,24 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ.messages;
 
-import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOpBody;
+import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOpBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-public class MessagesMultiply extends Messages {
+public class MessagesCopyMatrix extends Messages {
     static {
         Messages.messageFactories.put(
-                MessageMultiply.class.getSimpleName(),
-                new MessagesMultiply());
+                MessageCopyMatrix.class.getSimpleName(),
+                new MessagesCopyMatrix());
     }
 
-    protected MessagesMultiply() {
+    protected MessagesCopyMatrix() {
     }
 
     @Override
     public Message parseMessage(ByteString rawMessage)
             throws InvalidProtocolBufferException {
-        return new MessageMultiply(OrderTernaryOpBody.parseFrom(rawMessage));
+        return new MessageAddAssign(OrderBinaryOpBody.parseFrom(rawMessage));
     }
 }

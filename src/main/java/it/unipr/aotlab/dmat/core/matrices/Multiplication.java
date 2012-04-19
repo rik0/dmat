@@ -1,26 +1,15 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPieceListBody;
-import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiply;
-import it.unipr.aotlab.dmat.core.generated.OrderMultiplyWire.OrderMultiplyBody;
-import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
-import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOpBody.Builder;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
-import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.TreeSet;
 
-public class Multiplication extends Operation {
-    @Override
-    public int arity() {
-        return 3;
-    }
-
+public class Multiplication extends TernaryOperation {
     @Override
     protected void otherPreconditions() throws DMatError {
         Matrix outputMatrix = operands.get(0);
@@ -160,89 +149,11 @@ public class Multiplication extends Operation {
         return index;
     }
 
-
     @Override
-    protected void sendOperationsOrders() throws IOException {
-        TreeSet<String> unusedNodes = new TreeSet<String>();
-        unusedNodes.addAll(getNodeWorkGroup().nodesId());
-
-        sendMessagesToComputingNodes(unusedNodes);
-        sendMessagesToStorageNodes(unusedNodes);
-        sendMessagesToUnusedNodes(unusedNodes);
-    }
-
-    private void sendMessagesToComputingNodes(TreeSet<String> unusedNodes)
-            throws IOException {
-        OrderMultiply.Builder operation = OrderMultiply.newBuilder();
-
-        Matrix output   = operands.get(0);
-        Matrix firstOp  = operands.get(1);
-        Matrix secondOp = operands.get(2);
-
-        TypeBody type = TypeBody.newBuilder()
-                .setElementType(firstOp.getElementType())
-                .setSemiRing(firstOp.getSemiRing()).build();
-
-        operation.setOutputMatrixId(output.getMatrixId());
-        operation.setFirstFactorMatrixId(firstOp.getMatrixId());
-        operation.setSecondFactorMatrixId(secondOp.getMatrixId());
-        operation.setType(type);
-
-        for (NodeWorkZonePair nwzp : tasks) {
-            Node computingNode = nwzp.computingNode;
-            boolean tr = unusedNodes.remove(computingNode.getNodeId());
-            Assertion.isTrue(tr, "");
-
-            OrderMultiplyBody.Builder order = OrderMultiplyBody.newBuilder();
-            MatrixPieceListBody.Builder
-                missingPieces = MatrixPieceListBody.newBuilder();
-
-            for (WorkZone wz : nwzp.workZones) {
-                fillInOperation(order, wz, operation);
-                updateMissingPieces(missingPieces, wz, computingNode);
-            }
-            order.setMissingPieces(missingPieces.build());
-            order.setPiecesToSend(pieces2BeSentProto(computingNode.getNodeId()));
-            order.setAwaitingUpdates(
-                    awaitingUpdateProto(computingNode.getNodeId()));
-
-
-            getNodeWorkGroup().sendOrderRaw(
-                    (new MessageMultiply(order)).serialNo(serialNo),
-                    computingNode.getNodeId());
-        }
-    }
-
-    private void sendMessagesToStorageNodes(TreeSet<String> unusedNodes)
-            throws IOException {
-        for (Matrix matrix : this.operands) {
-            for (Chunk chunk : matrix.getChunks()) {
-                String nodeId = chunk.getAssignedNode().getNodeId();
-                if (unusedNodes.remove(nodeId)) {
-                    System.err.println("XXX storage node: " + nodeId);
-                    OrderMultiplyBody.Builder order
-                        = OrderMultiplyBody.newBuilder();
-
-                    order.setPiecesToSend(pieces2BeSentProto(nodeId));
-                    order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
-                    order.setMissingPieces(MatrixPieceListBody
-                            .getDefaultInstance());
-
-                    getNodeWorkGroup()
-                        .sendOrderRaw((new MessageMultiply(order))
-                        .serialNo(serialNo), nodeId);
-                }
-            }
-        }
-    }
-
-    private static void fillInOperation(OrderMultiplyBody.Builder order,
-                                        WorkZone wz,
-                                        OrderMultiply.Builder operation) {
-        operation.setOutputNodeId(wz.outputChunk.getAssignedNodeId());
-        operation.setOutputPosition(wz.outputArea.convertToProto());
-
-        order.addOperation(operation.build());
+    public void sendOrder(Builder order, String nodeId) throws IOException {
+        getNodeWorkGroup().sendOrderRaw(
+                (new MessageMultiply(order)).serialNo(serialNo),
+                nodeId);
     }
 }
 
