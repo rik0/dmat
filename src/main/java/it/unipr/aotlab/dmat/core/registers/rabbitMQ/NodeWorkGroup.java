@@ -5,6 +5,8 @@ import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
@@ -20,19 +22,25 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     int orderNo = 0;
     Map<String, Node> nodes = new LinkedHashMap<String, Node>();
     MessageSender messageSender;
+    String masterId;
 
-    public NodeWorkGroup(MessageSender messageSender) throws IOException {
-        this.messageSender = messageSender;
+    public NodeWorkGroup(Address rabbitMQaddress, String masterId)
+            throws IOException {
+        this.messageSender = new MessageSender(new Connector(
+                        rabbitMQaddress));
+        this.masterId = masterId;
+        try {
+            registerNode(masterId);
+        } catch (IdNotUnique e) {
+            Assertion.isFalse(false, "Master is duplicate? WTF?");
+        }
     }
 
     public MessageSender messageSender() {
         return messageSender;
     }
 
-    @Override
-    public void registerNode(Node n) throws IdNotUnique, IOException {
-        String id = n.getNodeId();
-
+    private void registerNode(String id) throws IdNotUnique, IOException {
         if (nodes.get(id) != null)
             throw new IdNotUnique();
 
@@ -46,11 +54,16 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
             exchangeSpec.put("x-match", "any");
             channel.queueBind(id, "amq.match", "", exchangeSpec);
 
-            //register locally
-            nodes.put(id, n);
         } finally {
             MessageSender.closeChannel(channel);
         }
+    }
+
+    @Override
+    public void registerNode(Node n) throws IdNotUnique, IOException {
+        String id = n.getNodeId();
+        registerNode(id);
+        nodes.put(id, n);
     }
 
     @Override
@@ -123,5 +136,14 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
         m.recipients(recipient);
         messageSender.sendMessage(m, recipient);
+    }
+
+    @Override
+    public String getMasterId() {
+        return masterId;
+    }
+
+    @Override
+    public void sendMessageToMaster(Message m) {
     }
 }

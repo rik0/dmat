@@ -8,7 +8,6 @@ import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
@@ -17,9 +16,7 @@ import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 public class CopyMatrices {
     public static void main(String[] argv) {
        try {
-            MessageSender messageSender = new MessageSender(new Connector(
-                    new Address("127.0.0.1")));
-            NodeWorkGroup register = new NodeWorkGroup(messageSender);
+            NodeWorkGroup register = new NodeWorkGroup(new Address(), "master");
             Nodes nodes = new Nodes(register);
 
             Matrix A = Matrices.newBuilder()

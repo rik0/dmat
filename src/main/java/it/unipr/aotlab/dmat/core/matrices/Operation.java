@@ -9,6 +9,7 @@ import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth;
+import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public abstract class Operation {
 
         fillinComputingNodes();
 
+        partitionNodeList();
+
         getOperationSerialNo();
 
         nodeFitness();
@@ -39,7 +42,13 @@ public abstract class Operation {
 
         prepareMissingPiecesOrders();
 
-        sendOperationsOrders();
+        sendOrdersToComputingNodes();
+
+        sendOrdersToStorageNodes();
+
+        sendOrdersToUnusedNodes();
+
+        awaitAnswer();
     }
 
     // Check stuff like matrices size
@@ -50,9 +59,22 @@ public abstract class Operation {
     protected abstract List<WorkZone>
         neededChunksToUpdateThisChunk(Chunk outputMatrixChunk);
 
+    //If the operation is ``non-void'' implements here the facts that
+    //the master awaits the answer.
+    protected void awaitAnswer() {}
+
     // You have the list of NodeWorkZonePair, where each working
-    // node is associate to its work. Send the orders.
-    protected abstract void sendOperationsOrders() throws IOException;
+    // node is associated with its work. Send the orders.
+    protected abstract void sendOrdersToComputingNodes() throws IOException;
+
+    protected abstract void sendOrdersToStorageNodes() throws IOException;
+
+    protected void sendOrdersToUnusedNodes() throws IOException {
+        for (String nodeId : unusedNodes) {
+            getNodeWorkGroup().sendOrderRaw((new MessageDummyOrder())
+                    .serialNo(serialNo), nodeId);
+        }
+    }
 
     public abstract int arity();
 
@@ -275,6 +297,8 @@ public abstract class Operation {
         = new HashMap<String, SendMatrixPieceListBody.Builder>();
     protected HashMap<String, MatrixPieceListBody.Builder> pieces2await
         = new HashMap<String, MatrixPieceListBody.Builder>();
+    TreeSet<String> storageNodes = new TreeSet<String>();
+    TreeSet<String> unusedNodes = new TreeSet<String>();
 
     public static class NeededPieceOfChunk {
         public Chunk chunk;
@@ -446,14 +470,6 @@ public abstract class Operation {
         serialNo = getNodeWorkGroup().getNextOrderId();
     }
 
-    protected void sendMessagesToUnusedNodes(TreeSet<String> unusedNodes)
-            throws IOException {
-        for (String nodeId : unusedNodes) {
-            getNodeWorkGroup().sendOrderRaw((new MessageDummyOrder())
-                    .serialNo(serialNo), nodeId);
-        }
-    }
-
     protected SendMatrixPieceListBody pieces2BeSentProto(String nodeId) {
         SendMatrixPieceListBody.Builder list = this.pieces2beSent.get(nodeId);
         if (list != null)
@@ -483,4 +499,21 @@ public abstract class Operation {
         }
     }
 
+    private void partitionNodeList() {
+        unusedNodes.addAll(getNodeWorkGroup().nodesId());
+
+        for (Node computingNode : computingNodes) {
+            boolean present = unusedNodes.remove(computingNode.getNodeId());
+            Assertion.isTrue(present,
+                             "A computing node was not in the workgroup!");
+        }
+
+        for (Matrix matrix : this.operands) {
+            for (Chunk chunk : matrix.getChunks()) {
+                String nodeId = chunk.assignedTo.getNodeId();
+                if (unusedNodes.remove(nodeId))
+                    storageNodes.add(nodeId);
+            }
+        }
+    }
 }

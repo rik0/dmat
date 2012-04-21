@@ -5,10 +5,8 @@ import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOp;
 import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOpBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
-import java.util.TreeSet;
 
 
 public abstract class BinaryOperation extends Operation {
@@ -21,16 +19,7 @@ public abstract class BinaryOperation extends Operation {
     }
 
     @Override
-    protected void sendOperationsOrders() throws IOException {
-        TreeSet<String> unusedNodes = new TreeSet<String>();
-        unusedNodes.addAll(getNodeWorkGroup().nodesId());
-
-        sendMessagesToComputingNodes(unusedNodes);
-        sendMessagesToStorageNodes(unusedNodes);
-        sendMessagesToUnusedNodes(unusedNodes);
-    }
-
-    protected void sendMessagesToComputingNodes(TreeSet<String> unusedNodes)
+    protected void sendOrdersToComputingNodes()
             throws IOException {
         OrderBinaryOp.Builder operation = OrderBinaryOp.newBuilder();
 
@@ -46,8 +35,6 @@ public abstract class BinaryOperation extends Operation {
 
         for (NodeWorkZonePair nodeAndworkZone : tasks) {
             Node computingNode = nodeAndworkZone.computingNode;
-            boolean tr = unusedNodes.remove(computingNode.getNodeId());
-            Assertion.isTrue(tr, "");
 
             OrderBinaryOpBody.Builder order = OrderBinaryOpBody.newBuilder();
             MatrixPieceListBody.Builder
@@ -75,24 +62,20 @@ public abstract class BinaryOperation extends Operation {
         order.addOperation(operation.build());
     }
 
-    protected void sendMessagesToStorageNodes(TreeSet<String> unusedNodes)
+    @Override
+    protected void sendOrdersToStorageNodes()
             throws IOException {
-        for (Matrix matrix : this.operands) {
-            for (Chunk chunk : matrix.getChunks()) {
-                String nodeId = chunk.getAssignedNode().getNodeId();
-                if (unusedNodes.remove(nodeId)) {
-                    System.err.println("XXX storage node: " + nodeId);
-                    OrderBinaryOpBody.Builder order
-                        = OrderBinaryOpBody.newBuilder();
+        for (String nodeId : storageNodes) {
+            System.err.println("XXX storage node: " + nodeId);
+            OrderBinaryOpBody.Builder order
+                = OrderBinaryOpBody.newBuilder();
 
-                    order.setPiecesToSend(pieces2BeSentProto(nodeId));
-                    order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
-                    order.setMissingPieces(MatrixPieceListBody
-                            .getDefaultInstance());
+            order.setPiecesToSend(pieces2BeSentProto(nodeId));
+            order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
+            order.setMissingPieces(MatrixPieceListBody
+                    .getDefaultInstance());
 
-                    sendOrder(order, nodeId);
-                }
-            }
+            sendOrder(order, nodeId);
         }
     }
 }

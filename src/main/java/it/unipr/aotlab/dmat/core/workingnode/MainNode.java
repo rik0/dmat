@@ -7,7 +7,7 @@ import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 public class MainNode {
     static public void showUsage() {
         System.out
-                .println("Use: node.jar nodeName brokerName brokerAddress [brokerPort]");
+                .println("Use: node.jar nodeName masterName brokerAddress [brokerPort]");
         System.out.println();
     }
 

@@ -16,7 +16,8 @@ public abstract class Message {
     public enum MessageKind {
         IMMEDIATE(0x0),
         SUPPORT(0x1),
-        ORDER(0x2);
+        ORDER(0x2),
+        ANSWER(0x4);
 
         public int tag;
         private MessageKind(int tag) {

@@ -5,31 +5,20 @@ import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOp;
 import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOpBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.TypeBody;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
-import java.util.TreeSet;
 
 public abstract class TernaryOperation extends Operation {
     public abstract void sendOrder(OrderTernaryOpBody.Builder order,
-                                    String nodeId) throws IOException;
-
-    @Override
-    protected void sendOperationsOrders() throws IOException {
-        TreeSet<String> unusedNodes = new TreeSet<String>();
-        unusedNodes.addAll(getNodeWorkGroup().nodesId());
-
-        sendMessagesToComputingNodes(unusedNodes);
-        sendMessagesToStorageNodes(unusedNodes);
-        sendMessagesToUnusedNodes(unusedNodes);
-    }
+                                   String nodeId) throws IOException;
 
     @Override
     public int arity() {
         return 3;
     }
 
-    protected void sendMessagesToComputingNodes(TreeSet<String> unusedNodes)
+    @Override
+    protected void sendOrdersToComputingNodes()
             throws IOException {
         OrderTernaryOp.Builder operation = OrderTernaryOp.newBuilder();
 
@@ -48,8 +37,6 @@ public abstract class TernaryOperation extends Operation {
 
         for (NodeWorkZonePair nwzp : tasks) {
             Node computingNode = nwzp.computingNode;
-            boolean tr = unusedNodes.remove(computingNode.getNodeId());
-            Assertion.isTrue(tr, "");
 
             OrderTernaryOpBody.Builder order = OrderTernaryOpBody.newBuilder();
             MatrixPieceListBody.Builder
@@ -68,24 +55,19 @@ public abstract class TernaryOperation extends Operation {
         }
     }
 
-    private void sendMessagesToStorageNodes(TreeSet<String> unusedNodes)
-            throws IOException {
-        for (Matrix matrix : this.operands) {
-            for (Chunk chunk : matrix.getChunks()) {
-                String nodeId = chunk.getAssignedNode().getNodeId();
-                if (unusedNodes.remove(nodeId)) {
-                    System.err.println("XXX storage node: " + nodeId);
-                    OrderTernaryOpBody.Builder order
-                        = OrderTernaryOpBody.newBuilder();
+    @Override
+    protected void sendOrdersToStorageNodes() throws IOException {
+        for (String nodeId : storageNodes) {
+            System.err.println("XXX storage node: " + nodeId);
+            OrderTernaryOpBody.Builder order
+                = OrderTernaryOpBody.newBuilder();
 
-                    order.setPiecesToSend(pieces2BeSentProto(nodeId));
-                    order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
-                    order.setMissingPieces(MatrixPieceListBody
-                            .getDefaultInstance());
+            order.setPiecesToSend(pieces2BeSentProto(nodeId));
+            order.setAwaitingUpdates(awaitingUpdateProto(nodeId));
+            order.setMissingPieces(MatrixPieceListBody
+                    .getDefaultInstance());
 
-                    sendOrder(order, nodeId);
-                }
-            }
+            sendOrder(order, nodeId);
         }
     }
 

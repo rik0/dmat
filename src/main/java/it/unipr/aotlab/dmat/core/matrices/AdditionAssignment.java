@@ -8,10 +8,10 @@ import java.io.IOException;
 public class AdditionAssignment extends ShapeFriendlyOp {
     @Override
     protected void sendOrder(OrderBinaryOpBody.Builder order,
-                             String computingNode)
+                             String recipientNode)
             throws IOException {
         getNodeWorkGroup().sendOrderRaw(
                 (new MessageAddAssign(order)).serialNo(serialNo),
-                 computingNode);
+                 recipientNode);
     }
 }

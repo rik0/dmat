@@ -11,7 +11,6 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
@@ -23,10 +22,7 @@ import java.io.IOException;
 public class MulMatrices2 {
     public static void main(String[] argv) {
        try {
-           MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
-            MessageSender messageSender = new MessageSender(new Connector(
-                    new Address("127.0.0.1")));
-            NodeWorkGroup register = new NodeWorkGroup(messageSender);
+            NodeWorkGroup register = new NodeWorkGroup(new Address(), "master");
             Nodes nodes = new Nodes(register);
 
             Node testNode = nodes.setNodeName("testNode").build();
@@ -78,6 +74,7 @@ public class MulMatrices2 {
             b.setChunkId("Cright");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
+            MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cleft")));
             testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cright")));
 

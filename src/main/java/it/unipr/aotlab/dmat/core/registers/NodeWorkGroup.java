@@ -9,6 +9,7 @@ import java.util.Collection;
 public interface NodeWorkGroup {
     Node getNode(String nodeId) throws NodeNotFound;
     void sendMessage(Message m, Node recipient) throws Exception;
+    String getMasterId();
 
     Collection<String> nodesId();
     Collection<Node> nodes();

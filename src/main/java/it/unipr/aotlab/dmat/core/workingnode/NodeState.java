@@ -36,7 +36,8 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 public class NodeState {
-    int currentOrderSerialNo = 1;
+
+    private int currentOrderSerialNo = 1;
     boolean executingOrder = false;
 
     WorkingNode hostWorkingNode;
@@ -794,5 +795,9 @@ public class NodeState {
 
         executingOrder = false;
         ++currentOrderSerialNo;
+    }
+
+    public int getCurrentSerialNo() {
+        return currentOrderSerialNo;
     }
 }
