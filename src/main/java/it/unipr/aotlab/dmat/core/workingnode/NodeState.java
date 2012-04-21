@@ -194,7 +194,7 @@ public class NodeState {
             }
         }
         else {
-            throw new DMatInternalError("A remove computing node for copying a matrix does not have any sense!");
+            throw new DMatInternalError("A remote computing node for copying a matrix does not have any sense!");
         }
     }
 

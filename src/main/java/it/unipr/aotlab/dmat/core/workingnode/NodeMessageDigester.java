@@ -151,9 +151,13 @@ public class NodeMessageDigester {
     }
 
     public void accept(MessageCopyMatrix message) throws IOException {
+        //A = B
         debugMessage(message);
         System.err.println(message.toString());
         operationCommonWork(message);
+
+        hostWorkingNode.state.pendingOperations.add(message);
+        hostWorkingNode.state.eventuallyExecOperation();
     }
 
     public void accept(MessageSetMatrix message) {

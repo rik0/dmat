@@ -183,7 +183,7 @@ public abstract class Operation {
                 int rhsv = node.doesManage(rhs.outputChunk.chunkId) ? 1 : 0;
                 int lhsv = node.doesManage(lhs.outputChunk.chunkId) ? 1 : 0;
 
-                return rhsv - lhsv;
+                return lhsv - rhsv;
             }
 
             public int compareNofLocalChunks(WorkZone lhs, WorkZone rhs) {
@@ -214,9 +214,13 @@ public abstract class Operation {
 
             @Override
             public int compare(WorkZone lhs, WorkZone rhs) {
+                System.err.println("XXX comparison: " + nodeId + " " + lhs.outputChunk.matrixId + " "+lhs.outputArea +" VS "+ lhs.outputChunk.matrixId +" "+ rhs.outputArea + " ---> ");
                 int diffValue = compareNofLocalChunks(lhs, rhs);
+                System.err.println("XXX " + diffValue);
                 if (diffValue == 0) diffValue = compareOutputChunkPresence(lhs, rhs);
+                System.err.println("XXX " + diffValue);
                 if (diffValue == 0) diffValue = compareSizes(lhs, rhs);
+                System.err.println("XXX " + diffValue);
 
                 return diffValue;
             }
@@ -248,7 +252,7 @@ public abstract class Operation {
         return nofWorkZonesForNode;
     }
 
-    private void splitWork() {
+    protected void splitWork() {
         int nodeNo = 0;
 
         for (NodeWorkZonePair nodeNWorkzone : tasks) {
@@ -343,7 +347,7 @@ public abstract class Operation {
     private List<WorkZone> workZones;
     protected int serialNo;
 
-    private void fillinComputingNodes() {
+    protected void fillinComputingNodes() {
         if (this.computingNodes == null) {
             this.computingNodes = getDefaultComputingNodes();
         }

@@ -78,20 +78,16 @@ public class MulMatrices2 {
             b.setChunkId("Cright");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
-            Thread.sleep(2000);
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cleft")));
             testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cright")));
 
             testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bleft")));
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bright")));
 
-            Thread.sleep(2000);
             Multiplication r = new Multiplication();
 
             r.setOperands(A, B, C);
             r.exec();
-
-            Thread.sleep(2000);
 
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("default")));
 
@@ -103,8 +99,6 @@ public class MulMatrices2 {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DMatError e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

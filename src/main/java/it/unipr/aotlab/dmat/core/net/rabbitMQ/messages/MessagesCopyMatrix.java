@@ -19,6 +19,6 @@ public class MessagesCopyMatrix extends Messages {
     @Override
     public Message parseMessage(ByteString rawMessage)
             throws InvalidProtocolBufferException {
-        return new MessageAddAssign(OrderBinaryOpBody.parseFrom(rawMessage));
+        return new MessageCopyMatrix(OrderBinaryOpBody.parseFrom(rawMessage));
     }
 }
