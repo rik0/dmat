@@ -3,9 +3,9 @@ package it.unipr.aotlab.dmat.mains;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
-import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
+import it.unipr.aotlab.dmat.core.matrices.Compare;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
@@ -13,7 +13,6 @@ import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
@@ -21,9 +20,16 @@ import java.io.IOException;
 
 public class MulMatrices3 {
     public static void main(String[] argv) {
+       NodeWorkGroup register = null;
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new Address(), "master");
+            register = new NodeWorkGroup(new Address(), "master");
             Nodes nodes = new Nodes(register);
+
+            Matrix Expected = Matrices.newBuilder()
+                    .setName("Expected")
+                    .setNofRows(20)
+                    .setNofColumns(20)
+                    .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
@@ -44,6 +50,7 @@ public class MulMatrices3 {
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Node testNode = nodes.setNodeName("testNode").build();
+            Expected.getChunk(null).assignChunkToNode(testNode);
             A.getChunk(null).assignChunkToNode(testNode);
             B.getChunk(null).assignChunkToNode(testNode);
             C.getChunk(null).assignChunkToNode(testNode);
@@ -54,15 +61,24 @@ public class MulMatrices3 {
 
             b.setMatrixId(B.getMatrixId());
             testNode.sendMessage(new MessageSetMatrix(b));
+
             b.setMatrixId(C.getMatrixId());
+            testNode.sendMessage(new MessageSetMatrix(b));
+
+            b.setURI("file://" + System.getProperty("user.dir")
+                               + "/example_matrices/square_squared");
+            b.setMatrixId(Expected.getMatrixId());
             testNode.sendMessage(new MessageSetMatrix(b));
 
             Multiplication r = new Multiplication();
             r.setOperands(A, B, C);
             r.exec();
 
-            MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
-            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A")));
+            Compare c = new Compare();
+            c.setOperands(A, Expected);
+            c.exec();
+
+            System.err.println("Equals? " + c.answer());
 
             MessageSender.closeConnection();
         } catch (ChunkNotFound e) {

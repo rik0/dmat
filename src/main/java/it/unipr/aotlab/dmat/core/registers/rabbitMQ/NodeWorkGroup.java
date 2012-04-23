@@ -31,8 +31,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     public NodeWorkGroup(Address rabbitMQaddress, String masterId)
             throws IOException {
-        this.messageSender = new MessageSender(new Connector(
-                        rabbitMQaddress));
+        this.messageSender = new MessageSender(new Connector(rabbitMQaddress));
         this.masterId = masterId;
 
         try {
@@ -45,7 +44,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
             registerNode(masterId);
 
         } catch (IdNotUnique e) {
-            Assertion.isFalse(false, "Master is duplicate? WTF?");
+            Assertion.isFalse(true, "Master is duplicate? WTF?");
         }
 
         masterDeliveryManager = new it.unipr.aotlab.dmat.core.net.rabbitMQ
@@ -65,12 +64,11 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         try {
             //register in rabbitmq
             channel = MessageSender.getConnection().createChannel();
-            Hashtable<String, Object> exchangeSpec = new Hashtable<String, Object>(
-                    3, 1);
+            Hashtable<String, Object> exchangeSpec
+                = new Hashtable<String, Object>(3, 1);
             exchangeSpec.put(id, "");
             exchangeSpec.put("x-match", "any");
             channel.queueBind(id, "amq.match", "", exchangeSpec);
-
         } finally {
             MessageSender.closeChannel(channel);
         }

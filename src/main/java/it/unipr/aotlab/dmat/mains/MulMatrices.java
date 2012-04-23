@@ -22,6 +22,12 @@ public class MulMatrices {
             Node testNode2 = nodes.setNodeName("testNode2").build();
             Node testNode3 = nodes.setNodeName("testNode3").build();
 
+            Matrix Expected = Matrices.newBuilder()
+                    .setName("A")
+                    .setNofRows(10)
+                    .setNofColumns(20)
+                    .setElementType(TypeWire.ElementType.INT32).build();
+
             Matrix A = Matrices.newBuilder()
                     .setName("A")
                     .setNofRows(10)
@@ -63,33 +69,17 @@ public class MulMatrices {
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e2");
             b.setMatrixId(B.getMatrixId());
-            b.setChunkId("Bleft");
             testNode2.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Bright-top");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Bright-bottom");
             testNode3.sendMessage(new MessageSetMatrix(b));
 
             b.setMatrixId(C.getMatrixId());
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e1");
-            b.setChunkId("Cleft-top");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Cleft-bottom-left");
             testNode2.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Cleft-bottom-right");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Cright-left");
             testNode2.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Cright-right-top");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Cright-right-bottom");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
             Multiplication r = new Multiplication();

@@ -41,6 +41,7 @@ public class MessageSetMatrix extends MessageOrder {
 
     @Override
     public Message recipients(Collection<String> recipients) {
+        System.err.println("XXX " +recipients + " - " + builder);
         builder.setDestination(list2Protobuf(recipients));
         return this;
     }

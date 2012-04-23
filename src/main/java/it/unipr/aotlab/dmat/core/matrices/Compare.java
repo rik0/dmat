@@ -21,6 +21,7 @@ public class Compare extends ShapeFriendlyOp {
     @Override
     protected void awaitAnswer() {
         int nofWorkZone = tasks.size();
+        System.err.println("XXX expected serialno " + serialNo);
 
         try {
             while (nofWorkZone-- > 0) {

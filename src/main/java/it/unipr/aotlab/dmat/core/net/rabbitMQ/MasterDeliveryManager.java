@@ -33,6 +33,8 @@ public class MasterDeliveryManager implements it.unipr.aotlab.dmat.core.net.Mast
                 EnvelopedMessageBody newDelivery = EnvelopedMessageBody
                     .parseFrom(queueingConsumer.nextDelivery().getBody());
 
+                System.err.println("XXX delivery serial no: " + newDelivery
+                        .getSerialNo());
                 answers.add(newDelivery);
             }
         }
@@ -46,6 +48,7 @@ public class MasterDeliveryManager implements it.unipr.aotlab.dmat.core.net.Mast
         EnvelopedMessageBody delivery = null;
         Iterator<EnvelopedMessageBody> ianswer = answers.iterator();
         while (delivery == null && ianswer.hasNext()) {
+            System.err.println("XXX looping... ");
             EnvelopedMessageBody message = ianswer.next();
             if (message.getMessageKind() != Message.MessageKind.ANSWER.tag)
                 throw new DMatInternalError("Unexpected kind of message!");

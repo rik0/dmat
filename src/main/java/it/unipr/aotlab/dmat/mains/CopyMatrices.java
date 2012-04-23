@@ -52,17 +52,13 @@ public class CopyMatrices {
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square2");
 
-            b.setMatrixId("A").setChunkId("Atop");
+            b.setMatrixId("A");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setMatrixId("A").setChunkId("Abottom");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
-            b.setMatrixId("B").setChunkId("Bleft");
+            b.setMatrixId("B");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setMatrixId("B").setChunkId("Bright");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
             ATop.sendMessageExposeValues();

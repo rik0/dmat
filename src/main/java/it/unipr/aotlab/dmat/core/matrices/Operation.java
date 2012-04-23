@@ -236,13 +236,9 @@ public abstract class Operation {
 
             @Override
             public int compare(WorkZone lhs, WorkZone rhs) {
-                System.err.println("XXX comparison: " + nodeId + " " + lhs.outputChunk.matrixId + " "+lhs.outputArea +" VS "+ lhs.outputChunk.matrixId +" "+ rhs.outputArea + " ---> ");
                 int diffValue = compareNofLocalChunks(lhs, rhs);
-                System.err.println("XXX " + diffValue);
                 if (diffValue == 0) diffValue = compareOutputChunkPresence(lhs, rhs);
-                System.err.println("XXX " + diffValue);
                 if (diffValue == 0) diffValue = compareSizes(lhs, rhs);
-                System.err.println("XXX " + diffValue);
 
                 return diffValue;
             }

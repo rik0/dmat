@@ -60,18 +60,12 @@ public class MulMatrices2 {
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e2");
 
             b.setMatrixId(B.getMatrixId());
-            b.setChunkId("Bleft");
             testNode2.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Bright");
             testNode.sendMessage(new MessageSetMatrix(b));
 
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e1");
             b.setMatrixId(C.getMatrixId());
-            b.setChunkId("Cleft");
             testNode.sendMessage(new MessageSetMatrix(b));
-
-            b.setChunkId("Cright");
             testNode2.sendMessage(new MessageSetMatrix(b));
 
             MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();

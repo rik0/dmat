@@ -7,7 +7,6 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
 import it.unipr.aotlab.dmat.core.generated.MessageSingleIntWire.MessageSingleIntBody;
 import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOp;
 import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOp;
-import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
 import it.unipr.aotlab.dmat.core.loaders.MatrixMarket;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
@@ -39,7 +38,6 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
 public class NodeState {
-
     private int currentOrderSerialNo = 1;
     boolean executingOrder = false;
 
@@ -207,6 +205,7 @@ public class NodeState {
                                                    secondMatrixId,
                                                    interestedPosition);
 
+        System.err.println("XXX AAA");
         while (firstOpIt.hasNext())
             tree.add(firstOpIt.next());
 
@@ -224,16 +223,23 @@ public class NodeState {
 
                 answer = 0;
                 break;
+
+            } else {
+                tree.remove(firstOp);
             }
+
+
         }
+        if (tree.size() != 0) answer = 0;
 
         MessageSingleIntBody.Builder mb = MessageSingleIntBody.newBuilder()
                                          .setTheInt(answer);
 
-        hostWorkingNode.messageSender.sendMessage(new MessageEqualityAnswer(mb)
-                                                  .serialNo(currentOrderSerialNo)
-                                                  .recipients(hostWorkingNode.masterName),
-                                                  hostWorkingNode.masterName);
+        hostWorkingNode.messageSender
+            .sendMessage(new MessageEqualityAnswer(mb)
+                         .serialNo(currentOrderSerialNo)
+                         .recipients(hostWorkingNode.masterName),
+                         hostWorkingNode.masterName);
     }
 
     private void doTheCopy(LinkedList<MessageMatrixValues> missingPieces,
@@ -765,49 +771,48 @@ public class NodeState {
 
     public void updateMatrix(MessageSetMatrix message) {
         URI dataAddress;
-        InNodeChunk<?> chunk = getChunk(message.body().getMatrixId(),
-                                        message.body().getChunkId());
-        if (chunk == null) {
-            throw new DMatInternalError("This node does not manage "
-                    + message.body().getMatrixId()
-                    + "." + message.body().getChunkId() + "!");
-        }
-        try {
-            dataAddress = new URI(message.body().getURI());
-        } catch (URISyntaxException e) {
-            throw new DMatInternalError("Received an URI with a syntax error!");
-        }
-        RectangleBody rect = message.body().getPosition();
-        Rectangle position = rect.getEndRow() != 0
-                ? Rectangle.build(rect) : chunk.chunk.getArea();
+        String matrixId = message.body().getMatrixId();
 
-        try {
-            updateMatrixImpl(chunk, position, dataAddress, message);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            throw new DMatInternalError("The file does not exist!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new DMatInternalError(e + " " + e.getMessage());
-        } catch (DMatError e) {
-            e.printStackTrace();
-            throw new DMatInternalError(e + " " + e.getMessage());
+        for (InNodeChunk<?> chunk : managedChunks) {
+            if ( ! chunk.chunk.getMatrixId().equals(matrixId))
+                continue;
+
+            try {
+                dataAddress = new URI(message.body().getURI());
+            } catch (URISyntaxException e) {
+                throw new DMatInternalError("Received an URI with a syntax error!");
+            }
+
+            try {
+                updateMatrixImpl(chunk, dataAddress, message);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                throw new DMatInternalError("The file does not exist!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new DMatInternalError(e + " " + e.getMessage());
+            } catch (DMatError e) {
+                e.printStackTrace();
+                throw new DMatInternalError(e + " " + e.getMessage());
+            }
         }
     }
 
     private void updateMatrixImpl(InNodeChunk<?> chunk,
-                                  Rectangle position,
                                   URI dataAddress,
                                   MessageSetMatrix message)
                                           throws IOException,
                                                  DMatError {
         FileInputStream a = new FileInputStream(dataAddress.getPath());
+        Rectangle position = chunk.chunk.getArea();
+        chunk.accessor.resetToZero();
+
         try {
             MatrixMarket mm = new MatrixMarket(a);
             Iterator<Triplet> mmi = mm.getIterator();
 
             if (mm.getNofRows() != chunk.chunk.getMatrixNofRows()
-                    || mm.getNofCols() != chunk.chunk.getMatrixNofColumns()) {
+                || mm.getNofCols() != chunk.chunk.getMatrixNofColumns()) {
                 throw new DMatInternalError(
                         "Matrix on the file has wrong dimensions!");
             }
