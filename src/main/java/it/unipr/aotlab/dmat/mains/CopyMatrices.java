@@ -3,20 +3,21 @@ package it.unipr.aotlab.dmat.mains;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.matrices.Compare;
 import it.unipr.aotlab.dmat.core.matrices.CopyMatrix;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
 public class CopyMatrices {
     public static void main(String[] argv) {
+       NodeWorkGroup register = null;
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new Address(), "master");
+            register = new NodeWorkGroup(new Address(), "master");
             Nodes nodes = new Nodes(register);
 
             Matrix A = Matrices.newBuilder()
@@ -75,13 +76,22 @@ public class CopyMatrices {
             r.setOperands(A, B);
             r.exec();
 
+            Compare c = new Compare();
+            c.setOperands(A, B);
+            c.exec();
+
+            System.err.println("A and B are equals? " + c.answer());
+
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
 
-            MessageSender.closeConnection();
+
         } catch (Throwable e) {
             System.err.println(e);
             e.printStackTrace();
         }
+       finally {
+            register.close();
+       }
     }
 }

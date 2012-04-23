@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.registers.rabbitMQ;
 
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
+import it.unipr.aotlab.dmat.core.net.MasterDeliveryManager;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
@@ -17,23 +18,39 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.QueueingConsumer;
 
 public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth {
     int orderNo = 0;
     Map<String, Node> nodes = new LinkedHashMap<String, Node>();
     MessageSender messageSender;
     String masterId;
+    private QueueingConsumer queueingConsumer;
+    private Channel channel;
+    MasterDeliveryManager masterDeliveryManager;
 
     public NodeWorkGroup(Address rabbitMQaddress, String masterId)
             throws IOException {
         this.messageSender = new MessageSender(new Connector(
                         rabbitMQaddress));
         this.masterId = masterId;
+
         try {
+            channel = MessageSender.getConnection().createChannel();
+
+            channel.queueDeclare(masterId, false, false, false, null);
+            this.queueingConsumer = new QueueingConsumer(channel);
+            channel.basicConsume(masterId, true, queueingConsumer);
+
             registerNode(masterId);
+
         } catch (IdNotUnique e) {
             Assertion.isFalse(false, "Master is duplicate? WTF?");
         }
+
+        masterDeliveryManager = new it.unipr.aotlab.dmat.core.net.rabbitMQ
+                .MasterDeliveryManager(masterId);
+        masterDeliveryManager.initialize();
     }
 
     public MessageSender messageSender() {
@@ -144,6 +161,18 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     }
 
     @Override
-    public void sendMessageToMaster(Message m) {
+    public void close() {
+        try {
+            masterDeliveryManager.close();
+            channel.close();
+            MessageSender.closeConnection();;
+        } catch (IOException e) {
+        }
+    }
+
+    @Override
+    public Message getNextAnswer(int serialNo) throws Exception {
+        masterDeliveryManager.setInterestedSerialNo(serialNo);
+        return masterDeliveryManager.getNextDelivery();
     }
 }

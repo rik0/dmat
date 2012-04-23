@@ -10,6 +10,7 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageClearReceivedMatrixPieces;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCompare;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCopyMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
@@ -152,6 +153,16 @@ public class NodeMessageDigester {
 
     public void accept(MessageCopyMatrix message) throws IOException {
         //A = B
+        debugMessage(message);
+        System.err.println(message.toString());
+        operationCommonWork(message);
+
+        hostWorkingNode.state.pendingOperations.add(message);
+        hostWorkingNode.state.eventuallyExecOperation();
+    }
+
+    public void accept(MessageCompare message) throws IOException {
+        //A == B
         debugMessage(message);
         System.err.println(message.toString());
         operationCommonWork(message);

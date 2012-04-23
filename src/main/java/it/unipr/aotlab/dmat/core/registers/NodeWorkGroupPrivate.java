@@ -10,7 +10,7 @@ public interface NodeWorkGroupPrivate {
     MessageSender getMessageSender();
     void registerNode(Node node) throws Exception;
     void sendOrderRaw(Message m, String recipient) throws IOException;
-    void sendMessageToMaster(Message m);
+    Message getNextAnswer(int serialNo) throws Exception;
 
     int getNextOrderId();
 }

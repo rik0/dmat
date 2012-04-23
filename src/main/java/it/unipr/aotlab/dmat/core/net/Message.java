@@ -1,16 +1,25 @@
 package it.unipr.aotlab.dmat.core.net;
 
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 
 import com.google.protobuf.ByteString;
 
 public abstract class Message {
+    public static class EnvelopedSerialComparator implements Comparator<EnvelopedMessageBody> {
+        @Override
+        public int compare(EnvelopedMessageBody lhs, EnvelopedMessageBody rhs) {
+            return lhs.getSerialNo() - rhs.getSerialNo();
+        }
+    }
+
     int serialNo = -1;
 
     public enum MessageKind {

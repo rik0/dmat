@@ -11,7 +11,6 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 
 import com.rabbitmq.client.Channel;
@@ -42,7 +41,7 @@ public class NodeDeliveryManager implements DeliveryManager {
         channel.close();
     }
 
-    //a multiset would be much better!
+    //a multiset might be better!
     ArrayList<EnvelopedMessageBody> sortingBuffer= new ArrayList<EnvelopedMessageBody>();
 
     @Override
@@ -56,18 +55,14 @@ public class NodeDeliveryManager implements DeliveryManager {
 
                 sortingBuffer.add(newDelivery);
             }
+
         } while (delivery == null);
 
         return Messages.readMessage(delivery);
     }
 
     private EnvelopedMessageBody findNextProcessableMessage() {
-        Collections.sort(sortingBuffer, new Comparator<EnvelopedMessageBody>() {
-            @Override
-            public int compare(EnvelopedMessageBody lhs, EnvelopedMessageBody rhs) {
-                return lhs.getSerialNo() - rhs.getSerialNo();
-            }
-        });
+        Collections.sort(sortingBuffer, new Message.EnvelopedSerialComparator());
 
         Iterator<EnvelopedMessageBody> i = sortingBuffer.iterator();
         EnvelopedMessageBody delivery = null;

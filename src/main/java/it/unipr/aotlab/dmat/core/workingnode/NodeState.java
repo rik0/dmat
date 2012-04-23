@@ -4,6 +4,7 @@ import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
+import it.unipr.aotlab.dmat.core.generated.MessageSingleIntWire.MessageSingleIntBody;
 import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOp;
 import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOp;
 import it.unipr.aotlab.dmat.core.generated.RectangleWire.RectangleBody;
@@ -15,7 +16,9 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAddAssign;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCompare;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCopyMatrix;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageEqualityAnswer;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
@@ -174,6 +177,63 @@ public class NodeState {
 
             checkUpdatingState();
         }
+    }
+
+    public void exec(MessageCompare messageCompare) throws IOException {
+        LinkedList<MessageMatrixValues> missingPieces = null;
+
+        if ((missingPieces = weGotAllPieces(messageCompare)) != null) {
+            for (OrderBinaryOp order : messageCompare.body().getOperationList())
+                doTheComparison(missingPieces, order);
+
+            orderDone();
+        }
+    }
+
+    private void doTheComparison(LinkedList<MessageMatrixValues> missingPieces,
+            OrderBinaryOp order) throws IOException {
+        String firstMatrixId = order.getFirstOperandMatrixId();
+        String secondMatrixId = order.getSecondOperandMatrixId();
+        Rectangle interestedPosition = Rectangle.build(order.getOutputPosition());
+        int answer = 1;
+
+        TreeSet<Triplet> tree = new TreeSet<Triplet>(new Triplet.Comparator());
+
+        Iterator<Triplet> firstOpIt = getIterator(missingPieces,
+                                                  firstMatrixId,
+                                                  interestedPosition);
+
+        Iterator<Triplet> secondOpIt = getIterator(missingPieces,
+                                                   secondMatrixId,
+                                                   interestedPosition);
+
+        while (firstOpIt.hasNext())
+            tree.add(firstOpIt.next());
+
+        while (secondOpIt.hasNext()) {
+            Triplet secondOp = secondOpIt.next();
+            Triplet firstOp = null;
+
+            try {
+                firstOp = tree.tailSet(secondOp).first();
+            } catch (java.util.NoSuchElementException t) {}
+
+            if (firstOp == null
+                || tree.comparator().compare(firstOp, secondOp) != 0
+                || !firstOp.value().equals(secondOp.value())) {
+
+                answer = 0;
+                break;
+            }
+        }
+
+        MessageSingleIntBody.Builder mb = MessageSingleIntBody.newBuilder()
+                                         .setTheInt(answer);
+
+        hostWorkingNode.messageSender.sendMessage(new MessageEqualityAnswer(mb)
+                                                  .serialNo(currentOrderSerialNo)
+                                                  .recipients(hostWorkingNode.masterName),
+                                                  hostWorkingNode.masterName);
     }
 
     private void doTheCopy(LinkedList<MessageMatrixValues> missingPieces,

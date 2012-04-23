@@ -1,0 +1,9 @@
+import "NodeListWire.proto" ;
+
+option java_package = "it.unipr.aotlab.dmat.core.generated" ;
+
+message MessageSingleIntBody {
+    required NodeListBody destination = 1;
+    required int32 theInt = 2;
+}
+

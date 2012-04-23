@@ -1,11 +1,15 @@
 package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOpBody;
+import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCompare;
+import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageEqualityAnswer;
 
 import java.io.IOException;
 
 public class Compare extends ShapeFriendlyOp {
+    boolean answer = true;
+
     @Override
     protected void sendOrder(OrderBinaryOpBody.Builder order, String recipientNode)
             throws IOException {
@@ -16,8 +20,21 @@ public class Compare extends ShapeFriendlyOp {
 
     @Override
     protected void awaitAnswer() {
-        int nofWorkZone ;
-        // TODO Auto-generated method stub
-        super.awaitAnswer();
+        int nofWorkZone = tasks.size();
+
+        try {
+            while (nofWorkZone-- > 0) {
+                Message m = getNodeWorkGroup().getNextAnswer(serialNo);
+                MessageEqualityAnswer tm = (MessageEqualityAnswer)m;
+
+                answer &= (tm.body().getTheInt() != 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean answer() {
+        return answer;
     }
 }
