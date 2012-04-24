@@ -1,9 +1,9 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
-import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
+import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ public class MasterDeliveryManager implements it.unipr.aotlab.dmat.core.net.Mast
 
                 System.err.println("XXX delivery serial no: " + newDelivery
                         .getSerialNo());
+
                 answers.add(newDelivery);
             }
         }
@@ -48,10 +49,10 @@ public class MasterDeliveryManager implements it.unipr.aotlab.dmat.core.net.Mast
         EnvelopedMessageBody delivery = null;
         Iterator<EnvelopedMessageBody> ianswer = answers.iterator();
         while (delivery == null && ianswer.hasNext()) {
-            System.err.println("XXX looping... ");
             EnvelopedMessageBody message = ianswer.next();
-            if (message.getMessageKind() != Message.MessageKind.ANSWER.tag)
-                throw new DMatInternalError("Unexpected kind of message!");
+            Assertion.isTrue(
+                    message.getMessageKind() == Message.MessageKind.ANSWER.tag,
+                    "Unexpected kind of message!");
 
             if (message.getSerialNo() == serialNo) {
                 delivery = message;

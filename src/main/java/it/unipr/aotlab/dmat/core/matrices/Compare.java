@@ -17,11 +17,10 @@ public class Compare extends ShapeFriendlyOp {
                 (new MessageCompare(order)).serialNo(serialNo),
                  recipientNode);
     }
-
     @Override
     protected void awaitAnswer() {
         int nofWorkZone = tasks.size();
-        System.err.println("XXX expected serialno " + serialNo);
+        System.err.println("XXX expected " + nofWorkZone + " of serialNo " + serialNo);
 
         try {
             while (nofWorkZone-- > 0) {

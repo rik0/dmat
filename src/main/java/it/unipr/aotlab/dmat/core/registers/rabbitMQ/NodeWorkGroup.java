@@ -25,8 +25,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     Map<String, Node> nodes = new LinkedHashMap<String, Node>();
     MessageSender messageSender;
     String masterId;
-    private QueueingConsumer queueingConsumer;
-    private Channel channel;
+    public QueueingConsumer queueingConsumer;
     MasterDeliveryManager masterDeliveryManager;
 
     public NodeWorkGroup(Address rabbitMQaddress, String masterId)
@@ -34,22 +33,15 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         this.messageSender = new MessageSender(new Connector(rabbitMQaddress));
         this.masterId = masterId;
 
-        try {
-            channel = MessageSender.getConnection().createChannel();
-
-            channel.queueDeclare(masterId, false, false, false, null);
-            this.queueingConsumer = new QueueingConsumer(channel);
-            channel.basicConsume(masterId, true, queueingConsumer);
-
-            registerNode(masterId);
-
-        } catch (IdNotUnique e) {
-            Assertion.isFalse(true, "Master is duplicate? WTF?");
-        }
-
         masterDeliveryManager = new it.unipr.aotlab.dmat.core.net.rabbitMQ
                 .MasterDeliveryManager(masterId);
         masterDeliveryManager.initialize();
+
+        try {
+            registerNode(masterId);
+        } catch (IdNotUnique e) {
+            Assertion.isFalse(true, "Master is duplicate? WTF?");
+        }
     }
 
     public MessageSender messageSender() {
@@ -162,7 +154,6 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     public void close() {
         try {
             masterDeliveryManager.close();
-            channel.close();
             MessageSender.closeConnection();;
         } catch (IOException e) {
         }

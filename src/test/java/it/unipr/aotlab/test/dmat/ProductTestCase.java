@@ -1,4 +1,4 @@
-package it.unipr.aotlab.dmat.mains;
+package it.unipr.aotlab.test.dmat;
 
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
@@ -8,14 +8,46 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
-public class MulMatrices {
-    public static void main(String[] argv) {
-       try {
+import java.io.IOException;
+import java.util.ArrayList;
+
+import junit.framework.Assert;
+
+import org.junit.Test;
+
+
+public class ProductTestCase {
+    static String rabbitMQAddress = "localhost";
+    static ArrayList<Process> nodes = new ArrayList<Process>();
+
+    public static void startNode(String name) throws IOException {
+        String[] execi = { "/usr/bin/sakura", "-h", "-e", "./bin/worknode.sh", name, "master", rabbitMQAddress };
+        nodes.add(Runtime.getRuntime().exec(execi));
+    }
+
+    public static void stopAllNodes() throws InterruptedException, IOException {
+        String[] execi = { "/usr/bin/sakura", "-h", "-e", "./bin/resetrabbitmq.sh" };
+        int rv = Runtime.getRuntime().exec(execi).waitFor();
+        Assert.assertEquals(0, rv);
+
+        for (Process n : nodes) {
+            n.waitFor();
+        }
+        nodes.clear();
+    }
+
+    @Test
+    public void complexMul() {
+        try {
+            startNode("testNode");
+            startNode("testNode2");
+            startNode("testNode3");
+            Thread.sleep(2000);
+
             NodeWorkGroup register = new NodeWorkGroup(new Address(), "master");
             Nodes nodes = new Nodes(register);
 
@@ -93,17 +125,25 @@ public class MulMatrices {
             r.setOperands(A, B, C);
             r.exec();
 
-            A.getChunk(null).sendMessageExposeValues();
-
             Compare c = new Compare();
             c.setOperands(Expected, A);
             c.exec();
 
-            System.err.println("Equals: " + c.answer());
+            Assert.assertTrue(c.answer());
 
-            MessageSender.closeConnection();
+            register.close();
+
         } catch (Throwable e) {
             e.printStackTrace();
+            Assert.assertTrue(false);
+        }
+        finally {
+            try {
+                stopAllNodes();
+            } catch (Throwable e) {
+                e.printStackTrace();
+                Assert.assertTrue(false);
+            }
         }
     }
 }

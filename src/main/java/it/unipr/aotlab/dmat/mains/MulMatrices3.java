@@ -1,8 +1,5 @@
 package it.unipr.aotlab.dmat.mains;
 
-import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
-import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Compare;
@@ -11,12 +8,9 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
-
-import java.io.IOException;
 
 public class MulMatrices3 {
     public static void main(String[] argv) {
@@ -24,6 +18,7 @@ public class MulMatrices3 {
        try {
             register = new NodeWorkGroup(new Address(), "master");
             Nodes nodes = new Nodes(register);
+            Node testNode = nodes.setNodeName("testNode").build();
 
             Matrix Expected = Matrices.newBuilder()
                     .setName("Expected")
@@ -49,7 +44,7 @@ public class MulMatrices3 {
                     .setNofColumns(20)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
-            Node testNode = nodes.setNodeName("testNode").build();
+
             Expected.getChunk(null).assignChunkToNode(testNode);
             A.getChunk(null).assignChunkToNode(testNode);
             B.getChunk(null).assignChunkToNode(testNode);
@@ -80,15 +75,10 @@ public class MulMatrices3 {
 
             System.err.println("Equals? " + c.answer());
 
-            MessageSender.closeConnection();
-        } catch (ChunkNotFound e) {
+        } catch (Throwable e) {
             e.printStackTrace();
-        } catch (IdNotUnique e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DMatError e) {
-            e.printStackTrace();
+        } finally {
+            register.close();
         }
     }
 }

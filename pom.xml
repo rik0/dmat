@@ -74,69 +74,7 @@
                             <mainClass>
                                 it.unipr.aotlab.dmat.core.workingnode.MainNode
                             </mainClass>
-                            <commandLineArguments>
-                                <commandLineArgument>
-                                    testNode
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    brokerName
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    localhost
-                                </commandLineArgument>
-                            </commandLineArguments>
-                            <name>testnode</name>
-                        </program>
-                        <program>
-                            <mainClass>
-                                it.unipr.aotlab.dmat.core.workingnode.MainNode
-                            </mainClass>
-                            <commandLineArguments>
-                                <commandLineArgument>
-                                    testNode2
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    brokerName
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    localhost
-                                </commandLineArgument>
-                            </commandLineArguments>
-                            <name>testnode2</name>
-                        </program>
-                        <program>
-                            <mainClass>
-                                it.unipr.aotlab.dmat.core.workingnode.MainNode
-                            </mainClass>
-                            <commandLineArguments>
-                                <commandLineArgument>
-                                    testNode3
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    brokerName
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    localhost
-                                </commandLineArgument>
-                            </commandLineArguments>
-                            <name>testnode3</name>
-                        </program>
-                        <program>
-                            <mainClass>
-                                it.unipr.aotlab.dmat.core.workingnode.MainNode
-                            </mainClass>
-                            <commandLineArguments>
-                                <commandLineArgument>
-                                    testNode4
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    brokerName
-                                </commandLineArgument>
-                                <commandLineArgument>
-                                    localhost
-                                </commandLineArgument>
-                            </commandLineArguments>
-                            <name>testnode4</name>
+                            <name>worknode</name>
                         </program>
                     </programs>
                 </configuration>

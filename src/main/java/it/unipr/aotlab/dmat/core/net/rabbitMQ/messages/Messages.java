@@ -31,6 +31,7 @@ public abstract class Messages {
 
     public static Message readMessage(String contentType, ByteString rawMessage)
             throws InvalidProtocolBufferException {
+        System.err.println("XXX contentType " + contentType);
         return getFactory(contentType).parseMessage(rawMessage);
     }
 
