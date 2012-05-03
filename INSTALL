@@ -1,0 +1,83 @@
+jzmq is not in any public maven repository at the moment.
+
+So you need to install it yourself:
+
+1- ensure that ØMQ is installed in your system and it
+has been compiled with pgm support (configure --with-pgm)
+You can try compiling and executing the C program enclosed
+at bottom of this file.
+
+2- clone the git jzmq repository
+$ git clone 'git://github.com/zeromq/jzmq.git'
+
+3- go in the jzmq directory and compile
+$ ./configure && make && mvn package
+
+4- once the three steps are completed correctly install
+the jar files to the maven local repository.
+
+The jar files are in the ``target'' directory.
+The minimal necessary is jzmq-1.0.0.jar, but you might
+want also sources and javadocs.
+
+jzmq-1.0.0-sources.jar and jzmq-1.0.0.jar are exclusive.
+Sources is advised as it makes programming and debugging
+easier.
+
+$ mvn install:install-file -Dfile=/FULL/PATH/TO/jzmq-1.0.0-sources.jar -DgroupId=org.zeromq -DartifactId=jzmq -Dversion=1.0.0 -Dpackaging=jar
+$ mvn install:install-file -Dfile=/FULL/PATH/TO/jzmq-1.0.0.jar -DgroupId=org.zeromq -DartifactId=jzmq -Dversion=1.0.0 -Dpackaging=jar
+$ mvn install:install-file -Dfile=/FULL/PATH/TO/jzmq-1.0.0-javadoc.jar -DgroupId=org.zeromq -DartifactId=jzmq-javadoc -Dversion=1.0.0 -Dpackaging=jar
+
+in Linux you can use `readlink -e jzmq-1.0.0.jar` to get
+the full path easily.
+
+In case of problems try compiling with ``mvn -o'' so that
+maven will clearly states if it cannot find jzmq.
+
+
+
+
+##############################################################################
+
+/* gcc -lzmq test.c */
+
+#include <stdio.h>
+#include <zmq.h>
+
+int main () {
+  int mainrv = 0;
+
+  void *context = zmq_init (1);
+  if (context == NULL) {
+    fprintf (stderr, "Error occurred during zmq_init(): %s\n", zmq_strerror (errno));
+    mainrv = 1;
+    goto end;
+  }
+
+  void *publisher = zmq_socket (context, ZMQ_PUB);
+  if (publisher == 0) {
+    fprintf (stderr, "Error occurred during zmq_socket(): %s\n", zmq_strerror (errno));
+    mainrv = 1;
+    goto error1;
+  }
+
+  int rv = zmq_bind (publisher, "epgm://127.0.0.1;239.255.255.255:5561");
+  if (rv != 0) {
+    fprintf (stderr, "Error occurred during zmq_bind(): %s\n", zmq_strerror (errno));
+    mainrv = 1;
+    goto error2;
+  }
+
+  fprintf(stderr, "\n\nSUCCESS! Ignore eventual warnings, it is normal as we used the loopback device to make it simple.\n\n");
+
+  error2:
+  zmq_close (publisher);
+
+  error1:
+  zmq_term (context);
+
+  end:
+  return mainrv;
+}
+
+##############################################################################
