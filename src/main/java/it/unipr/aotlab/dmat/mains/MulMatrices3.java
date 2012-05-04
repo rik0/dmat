@@ -6,9 +6,9 @@ import it.unipr.aotlab.dmat.core.matrices.Compare;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
+import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
@@ -16,7 +16,7 @@ public class MulMatrices3 {
     public static void main(String[] argv) {
        NodeWorkGroup register = null;
        try {
-            register = new NodeWorkGroup(new Address(), "master");
+            register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
             Node testNode = nodes.setNodeName("testNode").build();
 

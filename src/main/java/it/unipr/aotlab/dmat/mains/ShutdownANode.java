@@ -1,8 +1,8 @@
 package it.unipr.aotlab.dmat.mains;
 
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
+import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Node;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ShutdownANode {
     public static void main(String argv[]) {
         try {
-            NodeWorkGroup register = new NodeWorkGroup(new Address(), "master");
+            NodeWorkGroup register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
 
             Node node = nodes.setNodeName("testNode").build();

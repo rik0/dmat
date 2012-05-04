@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
+import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 
@@ -11,12 +11,12 @@ public class MainNode {
         System.out.println();
     }
 
-    static public Address buildBrokerAddress(String[] args) {
-        Address address = null;
+    static public IPAddress buildBrokerAddress(String[] args) {
+        IPAddress address = null;
         if (args.length > 3) {
-            address = new Address(args[2], Integer.parseInt(args[3]));
+            address = new IPAddress(args[2], Integer.parseInt(args[3]));
         } else {
-            address = new Address(args[2]);
+            address = new IPAddress(args[2]);
         }
         return address;
     }

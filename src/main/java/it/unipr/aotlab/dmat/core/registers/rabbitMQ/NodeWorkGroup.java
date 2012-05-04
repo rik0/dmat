@@ -2,11 +2,11 @@ package it.unipr.aotlab.dmat.core.registers.rabbitMQ;
 
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
+import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.MasterDeliveryManager;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Address;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.util.Assertion;
@@ -28,7 +28,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     public QueueingConsumer queueingConsumer;
     MasterDeliveryManager masterDeliveryManager;
 
-    public NodeWorkGroup(Address rabbitMQaddress, String masterId)
+    public NodeWorkGroup(IPAddress rabbitMQaddress, String masterId)
             throws IOException {
         this.messageSender = new MessageSender(new Connector(rabbitMQaddress));
         this.masterId = masterId;
