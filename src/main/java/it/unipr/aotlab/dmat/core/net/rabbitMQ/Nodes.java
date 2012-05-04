@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.InvalidNode;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.net.Address;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
 
 import java.io.IOException;
@@ -50,5 +51,11 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
             throw new InvalidNode("Node without ID.");
 
         register.registerNode(buildingNode);
+    }
+
+    @Override
+    public Nodes setNodeAddress(Address address) {
+        // rabbitMQ nodes have no explicit address
+        return this;
     }
 }

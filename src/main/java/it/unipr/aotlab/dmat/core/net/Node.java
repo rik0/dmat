@@ -32,4 +32,6 @@ public interface Node {
     public void sendMessage(Message m) throws IOException;
 
     public NodeWorkGroup getWorkGroup();
+
+    public Address getAddress();
 }

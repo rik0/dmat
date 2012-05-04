@@ -58,22 +58,22 @@ int main () {
   if (publisher == 0) {
     fprintf (stderr, "Error occurred during zmq_socket(): %s\n", zmq_strerror (errno));
     mainrv = 1;
-    goto error1;
+    goto exception0;
   }
 
   int rv = zmq_bind (publisher, "epgm://127.0.0.1;239.255.255.255:5561");
   if (rv != 0) {
     fprintf (stderr, "Error occurred during zmq_bind(): %s\n", zmq_strerror (errno));
     mainrv = 1;
-    goto error2;
+    goto exception1;
   }
 
   fprintf(stderr, "\n\nSUCCESS! Ignore eventual warnings, it is normal as we used the loopback device to make it simple.\n\n");
 
-  error2:
+  exception1:
   zmq_close (publisher);
 
-  error1:
+  exception0:
   zmq_term (context);
 
   end:
