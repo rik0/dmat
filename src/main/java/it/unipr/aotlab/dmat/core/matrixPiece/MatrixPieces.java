@@ -4,7 +4,7 @@ import it.unipr.aotlab.dmat.core.formats.ChunkAccessor;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.util.ForceLoad;
 
 import java.util.Collection;

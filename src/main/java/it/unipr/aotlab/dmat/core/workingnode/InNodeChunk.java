@@ -11,7 +11,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 
 public abstract class InNodeChunk<E> {

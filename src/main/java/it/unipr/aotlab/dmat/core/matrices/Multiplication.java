@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.generated.OrderTernaryOpWire.OrderTernaryOpBody.Builder;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMultiply;
+import it.unipr.aotlab.dmat.core.net.messages.MessageMultiply;
 
 import java.io.IOException;
 import java.util.ArrayList;

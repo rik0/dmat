@@ -7,7 +7,7 @@ import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPie
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPieceListBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire.SemiRing;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageDummyOrder;
+import it.unipr.aotlab.dmat.core.net.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 

@@ -6,8 +6,8 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixPieceInt32;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixPieceInt32;
+import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 
 import java.util.Collection;
 import java.util.Iterator;

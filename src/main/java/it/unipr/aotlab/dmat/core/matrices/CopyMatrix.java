@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOpBody;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCopyMatrix;
+import it.unipr.aotlab.dmat.core.net.messages.MessageCopyMatrix;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;

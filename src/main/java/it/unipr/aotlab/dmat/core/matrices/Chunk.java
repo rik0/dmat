@@ -29,8 +29,8 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwner
 import it.unipr.aotlab.dmat.core.generated.RectangleWire;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.net.Node;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageAssignChunkToNode;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageExposeValues;
+import it.unipr.aotlab.dmat.core.net.messages.MessageAssignChunkToNode;
+import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
 
 import java.io.IOException;
 

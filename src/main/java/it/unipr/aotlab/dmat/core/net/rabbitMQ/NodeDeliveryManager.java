@@ -5,7 +5,7 @@ import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessage
 import it.unipr.aotlab.dmat.core.net.DeliveryManager;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
+import it.unipr.aotlab.dmat.core.net.messages.Messages;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 
 import java.io.IOException;

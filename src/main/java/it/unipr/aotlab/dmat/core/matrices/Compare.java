@@ -2,8 +2,8 @@ package it.unipr.aotlab.dmat.core.matrices;
 
 import it.unipr.aotlab.dmat.core.generated.OrderBinaryOpWire.OrderBinaryOpBody;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageCompare;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageEqualityAnswer;
+import it.unipr.aotlab.dmat.core.net.messages.MessageCompare;
+import it.unipr.aotlab.dmat.core.net.messages.MessageEqualityAnswer;
 
 import java.io.IOException;
 

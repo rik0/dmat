@@ -6,7 +6,7 @@ import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire;
 import it.unipr.aotlab.dmat.core.generated.ChunkDescriptionWire.MatricesOnTheWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsBytesWire;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageMatrixValues;
+import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 
 import java.util.Collection;
 import java.util.Iterator;

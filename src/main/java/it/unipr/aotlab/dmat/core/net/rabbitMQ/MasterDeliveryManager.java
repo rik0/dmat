@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
 import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
+import it.unipr.aotlab.dmat.core.net.messages.Messages;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;

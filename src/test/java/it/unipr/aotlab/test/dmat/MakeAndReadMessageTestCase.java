@@ -4,8 +4,8 @@ import static junit.framework.Assert.assertEquals;
 import it.unipr.aotlab.dmat.core.generated.MessageTestBody;
 import it.unipr.aotlab.dmat.core.generated.NodeListWire.NodeListBody;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.MessageTest;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.messages.Messages;
+import it.unipr.aotlab.dmat.core.net.messages.MessageTest;
+import it.unipr.aotlab.dmat.core.net.messages.Messages;
 
 import java.io.IOException;
 
