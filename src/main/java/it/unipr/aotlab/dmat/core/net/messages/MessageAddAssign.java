@@ -24,5 +24,4 @@ public class MessageAddAssign extends MessageBinaryOp {
     public void exec(NodeState nodeState) throws IOException {
         nodeState.exec(this);
     }
-
 }

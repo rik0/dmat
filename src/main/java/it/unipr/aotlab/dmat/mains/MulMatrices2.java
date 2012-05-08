@@ -1,8 +1,5 @@
 package it.unipr.aotlab.dmat.mains;
 
-import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
-import it.unipr.aotlab.dmat.core.errors.DMatError;
-import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
@@ -16,8 +13,6 @@ import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
-
-import java.io.IOException;
 
 public class MulMatrices2 {
     public static void main(String[] argv) {
@@ -83,13 +78,7 @@ public class MulMatrices2 {
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("default")));
 
             MessageSender.closeConnection();
-        } catch (ChunkNotFound e) {
-            e.printStackTrace();
-        } catch (IdNotUnique e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (DMatError e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }

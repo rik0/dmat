@@ -2,30 +2,43 @@ package it.unipr.aotlab.dmat.core.net.zeroMQ;
 
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
+import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeDescription;
+import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeWorkGroupBody;
 import it.unipr.aotlab.dmat.core.net.Address;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageUtils;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.zeromq.ZMQ;
 
 public class MessageSender implements
         it.unipr.aotlab.dmat.core.net.MessageSender {
-    NodeWorkGroup nodeWorkGroup;
+    Map<String, Node> nodeWorkGroup;
     ZMQ.Context zmqContext;
 
+    public MessageSender(NodeWorkGroupBody nodeWorkGroup) {
+        for (int i = nodeWorkGroup.getNodesCount(); i-- > 0;) {
+            NodeDescription node = nodeWorkGroup.getNodes(i);
+            node.getNodeId();
+            node.getHost();
+            node.getPort();
+        }
+    }
+
     public MessageSender(NodeWorkGroup nodeWorkGroup) {
-        this.nodeWorkGroup = nodeWorkGroup;
+        this.nodeWorkGroup = nodeWorkGroup.nodesMap();
         this.zmqContext = nodeWorkGroup.getSocketContext();
     }
 
     @Override
     public void sendMessage(Message m, String nodeName) throws IOException,
                                                                NodeNotFound {
-        sendMessage(m, nodeWorkGroup.getNode(nodeName).getAddress());
+        sendMessage(m, nodeWorkGroup.get(nodeName).getAddress());
     }
 
     public void sendMessage(Message m, Address ipAddress) {

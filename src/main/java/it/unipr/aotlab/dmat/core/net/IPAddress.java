@@ -4,7 +4,7 @@ public class IPAddress implements it.unipr.aotlab.dmat.core.net.Address {
     int port;
     String address;
 
-    public IPAddress(String address, final int port) {
+    public IPAddress(String address, int port) {
         this.port = port;
         this.address = address;
     }

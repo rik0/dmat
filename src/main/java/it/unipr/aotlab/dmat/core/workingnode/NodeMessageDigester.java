@@ -14,6 +14,7 @@ import it.unipr.aotlab.dmat.core.net.messages.MessageCompare;
 import it.unipr.aotlab.dmat.core.net.messages.MessageCopyMatrix;
 import it.unipr.aotlab.dmat.core.net.messages.MessageDummyOrder;
 import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
+import it.unipr.aotlab.dmat.core.net.messages.MessageInitializeWorkGroup;
 import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
@@ -53,6 +54,11 @@ public class NodeMessageDigester {
 
         throw new MainNode.Quit();
         //do not expect much after this
+    }
+
+    public void accept(MessageInitializeWorkGroup message) {
+        debugMessage(message);
+        hostWorkingNode.state.orderDone();
     }
 
     public void accept(MessageDummyOrder message) {

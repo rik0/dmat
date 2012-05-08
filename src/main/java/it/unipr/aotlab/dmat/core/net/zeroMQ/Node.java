@@ -3,20 +3,17 @@ package it.unipr.aotlab.dmat.core.net.zeroMQ;
 import it.unipr.aotlab.dmat.core.errors.ChunkNotFound;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Address;
-import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Node implements it.unipr.aotlab.dmat.core.net.Node {
     String nodeId;
     private Map<String, Chunk> chunks = new HashMap<String, Chunk>();
-    IPAddress address;
+    Address address;
     NodeWorkGroup workGroup;
-    MessageSender messageSender;
 
     @Override
     public it.unipr.aotlab.dmat.core.registers.NodeWorkGroup getWorkGroup() {
@@ -55,7 +52,7 @@ public class Node implements it.unipr.aotlab.dmat.core.net.Node {
     }
 
     @Override
-    public void sendMessage(Message m) throws IOException {
-        messageSender.sendMessage(m, address);
+    public void sendMessage(Message m) throws Exception {
+        workGroup.sendMessage(m, this);
     }
 }

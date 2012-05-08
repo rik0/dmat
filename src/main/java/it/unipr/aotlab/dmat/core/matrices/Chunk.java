@@ -32,8 +32,6 @@ import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
 
-import java.io.IOException;
-
 /**
  * User: enrico Package: it.unipr.aotlab.dmat.core.partitions Date: 10/17/11
  * Time: 3:44 PM
@@ -126,7 +124,7 @@ public class Chunk {
         return matricesOnTheWire;
     }
 
-    public void assignChunkToNode(Node node) throws IOException, DMatError {
+    public void assignChunkToNode(Node node) throws Exception {
         if (assignedTo != null)
             throw new DMatError("This node has been already assigned to "
                     + assignedTo.getNodeId() + ".");
@@ -291,7 +289,7 @@ public class Chunk {
         return or;
     }
 
-    public void sendMessageExposeValues() throws IOException {
+    public void sendMessageExposeValues() throws Exception {
         MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
         getAssignedNode().sendMessage(new MessageExposeValues(
                 mp.setMatrixId(getMatrixId())

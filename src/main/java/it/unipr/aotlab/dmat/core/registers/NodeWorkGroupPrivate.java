@@ -5,12 +5,14 @@ import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.Node;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface NodeWorkGroupPrivate {
     MessageSender getMessageSender();
     void registerNode(Node node) throws Exception;
     void sendOrderRaw(Message m, String recipient) throws IOException;
     Message getNextAnswer(int serialNo) throws Exception;
+    Map<String, Node> nodesMap();
 
     int getNextOrderId();
 }

@@ -164,4 +164,9 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         masterDeliveryManager.setInterestedSerialNo(serialNo);
         return masterDeliveryManager.getNextDelivery();
     }
+
+    @Override
+    public Map<String, Node> nodesMap() {
+        return nodes;
+    }
 }

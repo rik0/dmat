@@ -1,12 +1,9 @@
 package it.unipr.aotlab.dmat.core.net.zeroMQ;
 
-import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
+import it.unipr.aotlab.dmat.core.errors.InvalidNode;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.net.Address;
-import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
-
-import java.io.IOException;
 
 public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
     Node buildingNode = new Node();
@@ -35,12 +32,12 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
 
     @Override
     public Nodes setNodeAddress(Address address) {
-        buildingNode.address = (IPAddress)address;
+        buildingNode.address = address;
         return this;
     }
 
     @Override
-    public Node build() throws IdNotUnique, IOException {
+    public Node build() throws Exception {
         validateBuildingNode();
 
         Node builtNode = buildingNode;
@@ -49,7 +46,15 @@ public class Nodes implements it.unipr.aotlab.dmat.core.net.Nodes {
         return builtNode;
     }
 
-    private void validateBuildingNode() {
+    private void validateBuildingNode() throws Exception {
         buildingNode.workGroup = workGroup;
+
+        if (buildingNode.nodeId == null)
+            throw new InvalidNode("Node without ID.");
+
+        if (buildingNode.address == null)
+            throw new InvalidNode("Node without Address.");
+
+        workGroup.registerNode(buildingNode);
     }
 }
