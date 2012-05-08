@@ -1,4 +1,4 @@
-/* gcc -lzmq test.c */
+/* gcc -o test_epgm test_epgm.c -lzmq */
 
 #include <stdio.h>
 #include <zmq.h>

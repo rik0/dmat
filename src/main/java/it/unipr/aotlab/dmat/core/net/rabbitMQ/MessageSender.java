@@ -1,10 +1,13 @@
 package it.unipr.aotlab.dmat.core.net.rabbitMQ;
 
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.NodeAddress;
 
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Map;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -108,5 +111,11 @@ public class MessageSender implements
         } finally {
             closeChannel(channel);
         }
+    }
+
+    @Override
+    public void meetTheWorkGroup(Map<String, NodeAddress> workgroup) {
+        throw new DMatInternalError("rabbitMQ senders do not need to know"
+                + " the workgroup.");
     }
 }

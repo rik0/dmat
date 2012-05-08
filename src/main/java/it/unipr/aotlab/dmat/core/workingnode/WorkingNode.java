@@ -1,8 +1,8 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.net.DeliveryManager;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.NodeDeliveryManager;
+import it.unipr.aotlab.dmat.core.net.MessageSender;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.NodeDeliveryManager;
 
 public class WorkingNode {
     String nodeId;

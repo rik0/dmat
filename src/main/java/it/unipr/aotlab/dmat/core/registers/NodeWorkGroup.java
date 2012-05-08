@@ -3,6 +3,7 @@ package it.unipr.aotlab.dmat.core.registers;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.NodeAddress;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -14,5 +15,5 @@ public interface NodeWorkGroup {
     void close() throws IOException;
 
     Collection<String> nodesId();
-    Collection<Node> nodes();
+    Collection<NodeAddress> nodesAddress();
 }

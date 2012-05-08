@@ -8,6 +8,7 @@ import it.unipr.aotlab.dmat.core.net.Address;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.NodeAddress;
 import it.unipr.aotlab.dmat.core.net.messages.MessageInitializeWorkGroup;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.util.Assertion;
@@ -21,7 +22,7 @@ import org.zeromq.ZMQ;
 
 public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth {
     int orderNo = 1;
-    Map<String, Node> nodes = new LinkedHashMap<String, Node>();
+    Map<String, NodeAddress> nodes = new LinkedHashMap<String, NodeAddress>();
     String masterId;
     ZMQ.Context zmqContext;
     MessageSender messageSender;
@@ -29,11 +30,11 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     @Override
     public Node getNode(String nodeId) throws NodeNotFound {
-        Node n = nodes.get(nodeId);
+        NodeAddress n = nodes.get(nodeId);
         if (n == null)
             throw new NodeNotFound();
 
-        return n;
+        return (Node) n;
     }
 
     public NodeWorkGroup(String masterId, Address masterAddress) {
@@ -54,7 +55,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     }
 
     @Override
-    public Collection<Node> nodes() {
+    public Collection<NodeAddress> nodesAddress() {
         return nodes.values();
     }
 
@@ -149,7 +150,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         master.setPort(masterAddress.getPort());
         thisObject.setMaster(master.build());
 
-        for (Node n : nodes()) {
+        for (NodeAddress n : nodesAddress()) {
             NodeDescription.Builder description = NodeDescription.newBuilder();
             description.setNodeId(n.getNodeId());
             description.setHost(n.getAddress().getHost());
@@ -163,18 +164,18 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     public void initialize() throws IOException {
         NodeWorkGroupBody.Builder b = serialize();
-        for (Node n : nodes()) {
-            MessageInitializeWorkGroup m = new MessageInitializeWorkGroup(b);
+
+        for (NodeAddress n : nodesAddress()) {
+            NodeWorkGroupBody.Builder messageBuilder = b.clone();
+            MessageInitializeWorkGroup m = new MessageInitializeWorkGroup(messageBuilder);
 
             m.serialNo(orderNo);
             sendOrderRaw(m, n.getNodeId());
-
-            b = b.clone();
         }
     }
 
     @Override
-    public Map<String, Node> nodesMap() {
+    public Map<String, NodeAddress> nodesMap() {
         return nodes;
     }
 }

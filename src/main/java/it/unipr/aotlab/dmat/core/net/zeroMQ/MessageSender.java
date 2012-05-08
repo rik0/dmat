@@ -2,11 +2,9 @@ package it.unipr.aotlab.dmat.core.net.zeroMQ;
 
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
-import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeDescription;
-import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeWorkGroupBody;
 import it.unipr.aotlab.dmat.core.net.Address;
 import it.unipr.aotlab.dmat.core.net.Message;
-import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.NodeAddress;
 import it.unipr.aotlab.dmat.core.net.messages.MessageUtils;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
@@ -18,19 +16,18 @@ import org.zeromq.ZMQ;
 
 public class MessageSender implements
         it.unipr.aotlab.dmat.core.net.MessageSender {
-    Map<String, Node> nodeWorkGroup;
+    Map<String, NodeAddress> nodeWorkGroup;
     ZMQ.Context zmqContext;
 
-    public MessageSender(NodeWorkGroupBody nodeWorkGroup) {
-        for (int i = nodeWorkGroup.getNodesCount(); i-- > 0;) {
-            NodeDescription node = nodeWorkGroup.getNodes(i);
-            node.getNodeId();
-            node.getHost();
-            node.getPort();
-        }
+
+    public MessageSender(ZMQ.Context zmqContext) {
+        /* for the working node */
+        this.nodeWorkGroup = null;
+        this.zmqContext = zmqContext;
     }
 
     public MessageSender(NodeWorkGroup nodeWorkGroup) {
+        /* for the master node */
         this.nodeWorkGroup = nodeWorkGroup.nodesMap();
         this.zmqContext = nodeWorkGroup.getSocketContext();
     }
@@ -66,5 +63,10 @@ public class MessageSender implements
 
             sendMessage(m, node);
         }
+    }
+
+    @Override
+    public void meetTheWorkGroup(Map<String, NodeAddress> workgroup) {
+        this.nodeWorkGroup = workgroup;
     }
 }

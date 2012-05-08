@@ -1,5 +1,8 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
+import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeDescription;
 import it.unipr.aotlab.dmat.core.generated.SendMatrixPieceListWire.SendMatrixPiece;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
@@ -7,6 +10,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.NodeAddress;
 import it.unipr.aotlab.dmat.core.net.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.messages.MessageAssignChunkToNode;
 import it.unipr.aotlab.dmat.core.net.messages.MessageClearReceivedMatrixPieces;
@@ -24,6 +28,8 @@ import it.unipr.aotlab.dmat.core.util.Assertion;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class NodeMessageDigester {
     WorkingNode hostWorkingNode;
@@ -58,6 +64,26 @@ public class NodeMessageDigester {
 
     public void accept(MessageInitializeWorkGroup message) {
         debugMessage(message);
+        Map<String, NodeAddress> map = new LinkedHashMap<String, NodeAddress>();
+
+        NodeDescription masterDesc = message.body().getMaster();
+        String id = masterDesc.getNodeId();
+        String host = masterDesc.getHost();
+        int port = masterDesc.getPort();
+
+        map.put(id, new NodeInfo(id, host, port));
+
+        for (int i = message.body().getNodesCount(); i-- > 0;) {
+            NodeDescription nodeDesc = message.body().getNodes(i);
+
+            id = nodeDesc.getNodeId();
+            host = nodeDesc.getHost();
+            port = nodeDesc.getPort();
+
+            map.put(id, new NodeInfo(id, host, port));
+        }
+
+        hostWorkingNode.messageSender.meetTheWorkGroup(map);
         hostWorkingNode.state.orderDone();
     }
 
@@ -110,9 +136,13 @@ public class NodeMessageDigester {
                                    .serialNo(operation.serialNo());
             mess.recipients(piece2beSent.getRecipientList());
 
-            hostWorkingNode.messageSender
-                    .multicastMessage(mess,
-                                      piece2beSent.getRecipientList());
+            try {
+                hostWorkingNode.messageSender
+                        .multicastMessage(mess,
+                                          piece2beSent.getRecipientList());
+            } catch (NodeNotFound e) {
+                throw new DMatInternalError("Sending matrix piece to a non-existing node.");
+            }
         }
     }
 

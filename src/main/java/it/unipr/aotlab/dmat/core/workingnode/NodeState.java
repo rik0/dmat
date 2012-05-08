@@ -2,6 +2,7 @@ package it.unipr.aotlab.dmat.core.workingnode;
 
 import it.unipr.aotlab.dmat.core.errors.DMatError;
 import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
+import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece;
 import it.unipr.aotlab.dmat.core.generated.MessageSingleIntWire.MessageSingleIntBody;
@@ -13,6 +14,7 @@ import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
 import it.unipr.aotlab.dmat.core.matrixPiece.Triplet;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
+import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.messages.MessageAddAssign;
 import it.unipr.aotlab.dmat.core.net.messages.MessageCompare;
 import it.unipr.aotlab.dmat.core.net.messages.MessageCopyMatrix;
@@ -21,7 +23,6 @@ import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageMultiply;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.messages.Operation;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.semirings.SemiRing;
 import it.unipr.aotlab.dmat.core.semirings.SemiRings;
 import it.unipr.aotlab.dmat.core.util.Assertion;
@@ -205,7 +206,6 @@ public class NodeState {
                                                    secondMatrixId,
                                                    interestedPosition);
 
-        System.err.println("XXX AAA");
         while (firstOpIt.hasNext())
             tree.add(firstOpIt.next());
 
@@ -235,11 +235,15 @@ public class NodeState {
         MessageSingleIntBody.Builder mb = MessageSingleIntBody.newBuilder()
                                          .setTheInt(answer);
 
-        hostWorkingNode.messageSender
-            .sendMessage(new MessageEqualityAnswer(mb)
-                         .serialNo(currentOrderSerialNo)
-                         .recipients(hostWorkingNode.masterName),
-                         hostWorkingNode.masterName);
+        try {
+            hostWorkingNode.messageSender
+                .sendMessage(new MessageEqualityAnswer(mb)
+                             .serialNo(currentOrderSerialNo)
+                             .recipients(hostWorkingNode.masterName),
+                             hostWorkingNode.masterName);
+        } catch (NodeNotFound e) {
+            throw new DMatInternalError("Trying to send equality answer to non-esiting node!");
+        }
     }
 
     private void doTheCopy(LinkedList<MessageMatrixValues> missingPieces,
@@ -350,10 +354,14 @@ public class NodeState {
                     Rectangle.build(order.getOutputPosition()),
                     true);
 
-            messageSender.sendMessage(mpBuilder.buildMessage(matrixPiece)
-                                      .serialNo(currentOrderSerialNo)
-                                      .recipients(order.getOutputNodeId()),
-                                      order.getOutputNodeId());
+            try {
+                messageSender.sendMessage(mpBuilder.buildMessage(matrixPiece)
+                                          .serialNo(currentOrderSerialNo)
+                                          .recipients(order.getOutputNodeId()),
+                                          order.getOutputNodeId());
+            } catch (NodeNotFound e) {
+                Assertion.isTrue(false, "Trying to send mul answer to an non-existing node!");
+            }
         }
 
         @Override
@@ -504,11 +512,16 @@ public class NodeState {
         it.unipr.aotlab.dmat.core.matrixPiece.MatrixPiece
             rawMessage = b.buildFromTriplets(matrixId, nodeId, tree, position, true);
 
-        hostWorkingNode.messageSender
-            .sendMessage(b.buildMessage(rawMessage)
-                         .recipients(outputNodeId)
-                         .serialNo(currentOrderSerialNo),
-                         outputNodeId);
+        try {
+            hostWorkingNode.messageSender
+                .sendMessage(b.buildMessage(rawMessage)
+                             .recipients(outputNodeId)
+                             .serialNo(currentOrderSerialNo),
+                             outputNodeId);
+        } catch (NodeNotFound e) {
+            throw new DMatInternalError("Sum tring to send the output back"
+                    + " to unknown node.");
+        }
     }
 
     private static void updateSumTree(TreeSet<Triplet> tree, Triplet op, SemiRing semiring) {

@@ -7,6 +7,7 @@ import it.unipr.aotlab.dmat.core.net.MasterDeliveryManager;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.NodeAddress;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
 import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.util.Assertion;
@@ -22,7 +23,7 @@ import com.rabbitmq.client.QueueingConsumer;
 
 public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWorkGroupBoth {
     int orderNo = 0;
-    Map<String, Node> nodes = new LinkedHashMap<String, Node>();
+    Map<String, NodeAddress> nodes = new LinkedHashMap<String, NodeAddress>();
     MessageSender messageSender;
     String masterId;
     public QueueingConsumer queueingConsumer;
@@ -75,11 +76,11 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     @Override
     public Node getNode(String id) throws NodeNotFound {
-        Node n = nodes.get(id);
+        NodeAddress n = nodes.get(id);
         if (n == null)
             throw new NodeNotFound();
 
-        return n;
+        return (Node) n;
     }
 
 
@@ -94,7 +95,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     }
 
     @Override
-    public Collection<Node> nodes() {
+    public Collection<NodeAddress> nodesAddress() {
         return nodes.values();
     }
 
@@ -166,7 +167,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     }
 
     @Override
-    public Map<String, Node> nodesMap() {
+    public Map<String, NodeAddress> nodesMap() {
         return nodes;
     }
 }

@@ -1,41 +1,31 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
-import it.unipr.aotlab.dmat.core.net.IPAddress;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Connector;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.MessageSender;
+
+import org.zeromq.ZMQ;
 
 public class MainNode {
     static public void showUsage() {
         System.out
-                .println("Use: node.jar nodeName masterName brokerAddress [brokerPort]");
+                .println("Use: node.jar nodeName masterName");
         System.out.println();
     }
 
-    static public IPAddress buildBrokerAddress(String[] args) {
-        IPAddress address = null;
-        if (args.length > 3) {
-            address = new IPAddress(args[2], Integer.parseInt(args[3]));
-        } else {
-            address = new IPAddress(args[2]);
-        }
-        return address;
-    }
-
     static public int realMain(String[] args) throws Exception {
-        if (args.length < 3) {
+        if (args.length < 2) {
             showUsage();
-            throw new BadQuit("node.jar expects at least three parameters.");
+            throw new BadQuit("node.jar expects two parameters.");
         }
 
-        MessageSender rabbitMQConnector = new MessageSender(new Connector(buildBrokerAddress(args)));
-        WorkingNode wn = new WorkingNode(args[0], args[1], rabbitMQConnector);
-
+        ZMQ.Context context = ZMQ.context(1);
+        MessageSender messageSender = new MessageSender(context);
+        WorkingNode wn = new WorkingNode(args[0], args[1], messageSender);
         try {
             System.err.println("Started node: " + args[0]);
             wn.consumerLoop();
         }
         finally {
-            MessageSender.closeConnection();
+            context.term();
         }
 
         return 0;
@@ -86,6 +76,7 @@ public class MainNode {
                     + ". Message: "
                     + e.getMessage());
         }
+
         return mainReturnValue;
     }
 
