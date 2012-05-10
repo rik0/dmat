@@ -69,7 +69,7 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         zmqContext.term();
     }
 

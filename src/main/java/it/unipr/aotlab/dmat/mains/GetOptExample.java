@@ -1,11 +1,10 @@
 package it.unipr.aotlab.dmat.mains;
 
-import gnu.getopt.Getopt;
-import gnu.getopt.LongOpt;
+//import gnu.getopt.Getopt;
 
 public class GetOptExample {
     public static void main(String[] argv) {
-        int c;
+  /*      int c;
         String arg;
         LongOpt[] longopts = new LongOpt[3];
 
@@ -80,6 +79,6 @@ public class GetOptExample {
             }
 
         for (int i = g.getOptind(); i < argv.length ; i++)
-          System.out.println("Non option argv element: " + argv[i] + "\n");
+          System.out.println("Non option argv element: " + argv[i] + "\n"); */
     }
 }

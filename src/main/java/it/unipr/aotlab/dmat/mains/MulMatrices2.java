@@ -10,18 +10,23 @@ import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class MulMatrices2 {
     public static void main(String[] argv) {
+        NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
+
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
 
-            Node testNode = nodes.setNodeName("testNode").build();
-            Node testNode2 = nodes.setNodeName("testNode2").build();
+            Node testNode = nodes.setNodeName("testNode")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
+            Node testNode2 = nodes.setNodeName("testNode2")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6002)).build();
+
+            register.initialize();
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
@@ -77,9 +82,12 @@ public class MulMatrices2 {
 
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("default")));
 
-            MessageSender.closeConnection();
+            testNode.sendMessage(new MessageShutdown());
+            testNode2.sendMessage(new MessageShutdown());
         } catch (Throwable e) {
             e.printStackTrace();
+        } finally {
+            register.close();
         }
     }
 }

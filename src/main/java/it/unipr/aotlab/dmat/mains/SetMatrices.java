@@ -7,14 +7,13 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class SetMatrices {
     public static void main(String[] argv) {
+       NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
 
             Matrix matrix = Matrices.newBuilder()
@@ -23,7 +22,12 @@ public class SetMatrices {
                     .setNofColumns(20)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
-            Node testNode = nodes.setNodeName("testNode").build();
+            Node testNode = nodes.setNodeName("testNode")
+                                 .setNodeAddress(new IPAddress("192.168.0.2", 6000))
+                                 .build();
+
+            register.initialize();
+
             matrix.getChunk(null).assignChunkToNode(testNode);
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
@@ -31,11 +35,11 @@ public class SetMatrices {
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/square");
 
             testNode.sendMessage(new MessageSetMatrix(b));
-
-
-            MessageSender.closeConnection();
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+        finally {
+            register.close();
         }
     }
 }

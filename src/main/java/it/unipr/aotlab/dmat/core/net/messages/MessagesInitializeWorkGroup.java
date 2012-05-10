@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.messages;
 
-import it.unipr.aotlab.dmat.core.generated.OrderDummyWire.OrderDummyBody;
+import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeWorkGroupBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import com.google.protobuf.ByteString;
@@ -19,6 +19,6 @@ public class MessagesInitializeWorkGroup extends Messages {
     @Override
     public Message parseMessage(ByteString rawMessage)
             throws InvalidProtocolBufferException {
-        return new MessageShutdown(OrderDummyBody.parseFrom(rawMessage));
+        return new MessageInitializeWorkGroup(NodeWorkGroupBody.parseFrom(rawMessage));
     }
 }

@@ -64,6 +64,8 @@ public class NodeMessageDigester {
 
     public void accept(MessageInitializeWorkGroup message) {
         debugMessage(message);
+        System.err.println("Initializing.");
+
         Map<String, NodeAddress> map = new LinkedHashMap<String, NodeAddress>();
 
         NodeDescription masterDesc = message.body().getMaster();

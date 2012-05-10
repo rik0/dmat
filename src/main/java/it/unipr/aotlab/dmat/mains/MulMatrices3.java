@@ -9,16 +9,17 @@ import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class MulMatrices3 {
     public static void main(String[] argv) {
-       NodeWorkGroup register = null;
+       NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
        try {
-            register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
-            Node testNode = nodes.setNodeName("testNode").build();
+            Node testNode = nodes.setNodeName("testNode")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
+            register.initialize();
 
             Matrix Expected = Matrices.newBuilder()
                     .setName("Expected")

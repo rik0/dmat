@@ -5,14 +5,13 @@ import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.NodeAddress;
 
-import java.io.IOException;
 import java.util.Collection;
 
 public interface NodeWorkGroup {
     Node getNode(String nodeId) throws NodeNotFound;
     void sendMessage(Message m, Node recipients) throws Exception;
     String getMasterId();
-    void close() throws IOException;
+    void close();
 
     Collection<String> nodesId();
     Collection<NodeAddress> nodesAddress();

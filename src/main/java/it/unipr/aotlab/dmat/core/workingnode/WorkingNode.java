@@ -4,6 +4,8 @@ import it.unipr.aotlab.dmat.core.net.DeliveryManager;
 import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.NodeDeliveryManager;
 
+import org.zeromq.ZMQ;
+
 public class WorkingNode {
     String nodeId;
     String masterName;
@@ -28,14 +30,16 @@ public class WorkingNode {
 
     public WorkingNode(String nodeId,
                        String masterName,
-                       MessageSender messageSender) {
+                       MessageSender messageSender,
+                       ZMQ.Context context,
+                       String port) {
         this.digester = new NodeMessageDigester(this);
         this.state = new NodeState(this);
 
         this.nodeId = nodeId;
         this.masterName = masterName;
         this.messageSender = messageSender;
-        this.deliveryManager = new NodeDeliveryManager(state, nodeId);
+        this.deliveryManager = new NodeDeliveryManager(state, port, context);
     }
 
     public String getNodeId() {

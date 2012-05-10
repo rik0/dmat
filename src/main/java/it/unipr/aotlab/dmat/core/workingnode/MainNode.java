@@ -7,19 +7,23 @@ import org.zeromq.ZMQ;
 public class MainNode {
     static public void showUsage() {
         System.out
-                .println("Use: node.jar nodeName masterName");
+                .println("Use: node.jar nodeName listeningPort masterName");
         System.out.println();
     }
 
     static public int realMain(String[] args) throws Exception {
-        if (args.length < 2) {
+        if (args.length < 3) {
             showUsage();
-            throw new BadQuit("node.jar expects two parameters.");
+            throw new BadQuit("node.jar expects three parameters.");
         }
 
         ZMQ.Context context = ZMQ.context(1);
         MessageSender messageSender = new MessageSender(context);
-        WorkingNode wn = new WorkingNode(args[0], args[1], messageSender);
+        WorkingNode wn = new WorkingNode(args[0],
+                                         args[2],
+                                         messageSender,
+                                         context,
+                                         args[1]);
         try {
             System.err.println("Started node: " + args[0]);
             wn.consumerLoop();

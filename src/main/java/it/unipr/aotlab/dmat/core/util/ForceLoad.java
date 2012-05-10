@@ -16,7 +16,8 @@ public class ForceLoad {
             ForceLoad.listFromFileImpl(filename);
         } catch (ClassNotFoundException e) {
             throw new DMatInternalError(c.getCanonicalName()
-                    + " initialization invalid file. Original Message: "
+                    + " initialization invalid file ``"
+                    + filename + ".''s Original Message: "
                     + e.getMessage());
 
         } catch (IOException e) {

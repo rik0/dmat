@@ -10,15 +10,25 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class CopyMatrices {
     public static void main(String[] argv) {
-       NodeWorkGroup register = null;
+       NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
+
        try {
-            register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
+
+            Node testNode = nodes
+                    .setNodeName("testNode")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6001)).build();
+
+            Node testNode2 = nodes
+                    .setNodeName("testNode2")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
+
+            register.initialize();
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
@@ -33,9 +43,6 @@ public class CopyMatrices {
                     .setNofRows(20)
                     .splitVerticallyChuck(null, 10, "Bleft", "Bright")
                     .setElementType(TypeWire.ElementType.INT32).build();
-
-            Node testNode = nodes.setNodeName("testNode").build();
-            Node testNode2 = nodes.setNodeName("testNode2").build();
 
             Chunk ATop = A.getChunk("Atop");
             Chunk ABottom = A.getChunk("Abottom");
@@ -80,8 +87,6 @@ public class CopyMatrices {
 
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
-
-
         } catch (Throwable e) {
             System.err.println(e);
             e.printStackTrace();

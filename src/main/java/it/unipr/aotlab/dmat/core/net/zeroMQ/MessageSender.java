@@ -19,7 +19,6 @@ public class MessageSender implements
     Map<String, NodeAddress> nodeWorkGroup;
     ZMQ.Context zmqContext;
 
-
     public MessageSender(ZMQ.Context zmqContext) {
         /* for the working node */
         this.nodeWorkGroup = null;
@@ -44,9 +43,13 @@ public class MessageSender implements
         EnvelopedMessageBody envelopedMessage = MessageUtils.putInEnvelope(m);
 
         ZMQ.Socket socket = zmqContext.socket(ZMQ.REQ);
+
         try {
-            socket.bind("tcp://" + address + ":" + port);
+            System.err.println("XXX connecting tcp://" + address + ":" + port);
+            socket.connect("tcp://" + address + ":" + port);
+
             socket.send(envelopedMessage.toByteArray(), 0);
+            socket.recv(0);
         }
         finally {
             socket.close();
@@ -56,6 +59,7 @@ public class MessageSender implements
     @Override
     public void multicastMessage(Message m, Iterable<String> list)
             throws IOException, NodeNotFound {
+
         // XXX it will be replaced by true multicasting!
         Iterator<String> nodes = list.iterator();
         while (nodes.hasNext()) {
