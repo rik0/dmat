@@ -9,15 +9,27 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class SumMatrices {
     public static void main(String[] argv) {
+        NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
+
+            Node testNode = nodes.setNodeName("testNode")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000))
+                    .build();
+            Node testNode2 = nodes.setNodeName("testNode2")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6002))
+                    .build();
+            Node testNode3 = nodes.setNodeName("testNode3")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6003))
+                    .build();
+
+            register.initialize();
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
@@ -33,9 +45,7 @@ public class SumMatrices {
                     .splitVerticallyChuck(null, 10, "Bleft", "Bright")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
-            Node testNode = nodes.setNodeName("testNode").build();
-            Node testNode2 = nodes.setNodeName("testNode2").build();
-            nodes.setNodeName("testNode3").build();
+
 
             Chunk ATop = A.getChunk("Atop");
             Chunk ABottom = A.getChunk("Abottom");
@@ -67,7 +77,6 @@ public class SumMatrices {
             BRight.sendMessageExposeValues();
 
             AdditionAssignment r = new AdditionAssignment();
-
             r.setComputingNodes(testNode);
             r.setOperands(A, B);
             r.exec();
@@ -75,10 +84,15 @@ public class SumMatrices {
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
 
-            MessageSender.closeConnection();
-        } catch (Throwable e) {
-            System.err.println(e);
-            e.printStackTrace();
-        }
+            testNode.sendMessage(new MessageShutdown());
+            testNode2.sendMessage(new MessageShutdown());
+            testNode3.sendMessage(new MessageShutdown());
+       } catch (Throwable e) {
+           System.err.println(e);
+           e.printStackTrace();
+       }
+       finally {
+           register.close();
+       }
     }
 }

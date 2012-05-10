@@ -10,15 +10,19 @@ import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class SumMatrices2 {
     public static void main(String[] argv) {
+       NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
+            Node testNode = nodes.setNodeName("testNode")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000))
+                    .build();
+
+            register.initialize();
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
@@ -31,8 +35,6 @@ public class SumMatrices2 {
                     .setNofColumns(20)
                     .setNofRows(20)
                     .setElementType(TypeWire.ElementType.INT32).build();
-
-            Node testNode = nodes.setNodeName("testNode").build();
 
             A.getChunk(null).assignChunkToNode(testNode);
             B.getChunk(null).assignChunkToNode(testNode);
@@ -53,9 +55,11 @@ public class SumMatrices2 {
             MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
             testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A")));
 
-            MessageSender.closeConnection();
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+        finally{
+            register.close();
         }
     }
 }

@@ -9,19 +9,28 @@ import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.MessageSender;
-import it.unipr.aotlab.dmat.core.net.rabbitMQ.Nodes;
-import it.unipr.aotlab.dmat.core.registers.rabbitMQ.NodeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
+import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class MulMatrices {
     public static void main(String[] argv) {
+        NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 6001));
+
        try {
-            NodeWorkGroup register = new NodeWorkGroup(new IPAddress(), "master");
             Nodes nodes = new Nodes(register);
 
-            Node testNode = nodes.setNodeName("testNode").build();
-            Node testNode2 = nodes.setNodeName("testNode2").build();
-            Node testNode3 = nodes.setNodeName("testNode3").build();
+            Node testNode = nodes.setNodeName("testNode")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
+
+            Node testNode2 = nodes.setNodeName("testNode2")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6002)).build();
+
+            Node testNode3 = nodes.setNodeName("testNode3")
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6003)).build();
+
+            register.initialize();
+
 
             Matrix Expected = Matrices.newBuilder()
                     .setName("A")
@@ -101,9 +110,15 @@ public class MulMatrices {
 
             System.err.println("Equals: " + c.answer());
 
-            MessageSender.closeConnection();
+            testNode.sendMessage(new MessageShutdown());
+            testNode2.sendMessage(new MessageShutdown());
+            testNode3.sendMessage(new MessageShutdown());
+
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+        finally {
+            register.close();
         }
     }
 }

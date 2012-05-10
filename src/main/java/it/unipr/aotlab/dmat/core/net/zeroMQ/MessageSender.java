@@ -46,6 +46,7 @@ public class MessageSender implements
 
         try {
             System.err.println("XXX connecting tcp://" + address + ":" + port);
+            System.err.println("XXX sending serialno " + m.serialNo());
             socket.connect("tcp://" + address + ":" + port);
 
             socket.send(envelopedMessage.toByteArray(), 0);

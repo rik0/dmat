@@ -23,6 +23,7 @@ public abstract class DeliveryManager {
         do {
             if ((delivery = findNextProcessableMessage()) == null) {
                 EnvelopedMessageBody newDelivery = awaitNextDelivery();
+                System.err.println("XXX Serial no " + newDelivery.getSerialNo());
                 sortingBuffer.add(newDelivery);
             }
 

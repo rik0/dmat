@@ -53,7 +53,7 @@ public abstract class BinaryOperation extends Operation {
         }
     }
 
-    private static void fillInOperation(OrderBinaryOpBody.Builder order,
+    protected static void fillInOperation(OrderBinaryOpBody.Builder order,
             WorkZone wz,
             OrderBinaryOp.Builder operation) {
         operation.setFirstOperandNodeId(wz.outputChunk.getAssignedNodeId());

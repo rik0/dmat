@@ -22,7 +22,9 @@ public class MessageClearReceivedMatrixPieces extends MessageOrder {
         return realBody;
     }
 
-    public MessageClearReceivedMatrixPieces() {}
+    public MessageClearReceivedMatrixPieces() {
+        builder = OrderDummyBody.newBuilder();
+    }
 
     MessageClearReceivedMatrixPieces(OrderDummyBody body) {
         realBody = body;
