@@ -157,6 +157,13 @@ public class NodeMessageDigester {
     }
 
     private void operationCommonWork(Operation message) throws IOException {
+        System.err.println("XXX BRE");
+        for (int i = hostWorkingNode.state.awaitingUpdate.size(); i-- > 0;) {
+            it.unipr.aotlab.dmat.core.generated.MatrixPieceListWire.MatrixPiece p = hostWorkingNode.state.awaitingUpdate.get(i);
+            System.err.println("XXX " + p.getMatrixId());
+            System.err.println("XXX " + p.getPosition());
+        }
+        System.err.println("XXX ERB");
         Assertion.isTrue(hostWorkingNode.state.awaitingUpdate.isEmpty(),
                 "Unresolved updating!");
 

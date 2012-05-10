@@ -10,6 +10,7 @@ import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
@@ -22,11 +23,11 @@ public class CopyMatrices {
 
             Node testNode = nodes
                     .setNodeName("testNode")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6001)).build();
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
 
             Node testNode2 = nodes
                     .setNodeName("testNode2")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
+                    .setNodeAddress(new IPAddress("192.168.0.2", 6002)).build();
 
             register.initialize();
 
@@ -74,19 +75,26 @@ public class CopyMatrices {
             BLeft.sendMessageExposeValues();
             BRight.sendMessageExposeValues();
 
-            CopyMatrix r = new CopyMatrix();
-
-            r.setOperands(A, B);
-            r.exec();
-
             Compare c = new Compare();
             c.setOperands(A, B);
             c.exec();
+            System.err.println("A and B are equals? " + c.answer());
+
+            CopyMatrix r = new CopyMatrix();
+            r.setOperands(A, B);
+            r.exec();
+
+            Compare c2 = new Compare();
+            c2.setOperands(A, B);
+            c2.exec();
 
             System.err.println("A and B are equals? " + c.answer());
 
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
+
+            testNode.sendMessage(new MessageShutdown());
+            testNode2.sendMessage(new MessageShutdown());
         } catch (Throwable e) {
             System.err.println(e);
             e.printStackTrace();

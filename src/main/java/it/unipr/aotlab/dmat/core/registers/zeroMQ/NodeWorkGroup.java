@@ -1,5 +1,6 @@
 package it.unipr.aotlab.dmat.core.registers.zeroMQ;
 
+import it.unipr.aotlab.dmat.core.errors.DMatInternalError;
 import it.unipr.aotlab.dmat.core.errors.IdNotUnique;
 import it.unipr.aotlab.dmat.core.errors.NodeNotFound;
 import it.unipr.aotlab.dmat.core.generated.NodeWorkGroupWire.NodeDescription;
@@ -10,6 +11,7 @@ import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.NodeAddress;
 import it.unipr.aotlab.dmat.core.net.messages.MessageInitializeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.MasterDeliveryManager;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.util.Assertion;
 
@@ -27,6 +29,22 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     ZMQ.Context zmqContext;
     MessageSender messageSender;
     Address masterAddress;
+    private MasterDeliveryManager masterDeliveryManager_ = null;
+
+    MasterDeliveryManager masterDeliveryManager() {
+        if (masterDeliveryManager_ == null) {
+            try {
+                masterDeliveryManager_ = new MasterDeliveryManager(zmqContext,
+                        Integer.toString(masterAddress.getPort()));
+                masterDeliveryManager_.initialize();
+            } catch (IOException e) {
+                throw new DMatInternalError(e.getClass().getCanonicalName()
+                        + " : " + e.getMessage());
+            }
+        }
+
+        return masterDeliveryManager_;
+    }
 
     @Override
     public Node getNode(String nodeId) throws NodeNotFound {
@@ -70,6 +88,15 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     @Override
     public void close() {
+        if (masterDeliveryManager_ != null) {
+            try {
+                masterDeliveryManager_.close();
+            } catch (IOException e) {
+                throw new DMatInternalError(e.getClass().getCanonicalName()
+                        + " : " + e.getMessage());
+            }
+        }
+
         zmqContext.term();
     }
 
@@ -137,8 +164,8 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
 
     @Override
     public Message getNextAnswer(int serialNo) throws Exception {
-        // TODO Auto-generated method stub
-        throw new java.lang.Error("NOT IMPLEMENTED YET.");
+        masterDeliveryManager().setInterestedSerialNo(serialNo);
+        return masterDeliveryManager().getNextDelivery();
     }
 
     private NodeWorkGroupBody.Builder serialize() {
