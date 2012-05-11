@@ -1,19 +1,18 @@
 package it.unipr.aotlab.dmat.core.workingnode;
 
-import it.unipr.aotlab.dmat.core.net.DeliveryManager;
 import it.unipr.aotlab.dmat.core.net.MessageSender;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.NodeDeliveryManager;
 
 import org.zeromq.ZMQ;
 
 public class WorkingNode {
-    String nodeId;
-    String masterName;
+    public String nodeId;
+    public String masterName;
 
-    NodeState state;
-    NodeMessageDigester digester;
-    MessageSender messageSender;
-    DeliveryManager deliveryManager;
+    public NodeState state;
+    public NodeMessageDigester digester;
+    public MessageSender messageSender;
+    public NodeDeliveryManager deliveryManager;
 
     public void consumerLoop() throws Exception {
         deliveryManager.initialize();
@@ -39,7 +38,7 @@ public class WorkingNode {
         this.nodeId = nodeId;
         this.masterName = masterName;
         this.messageSender = messageSender;
-        this.deliveryManager = new NodeDeliveryManager(state, port, context);
+        this.deliveryManager = new NodeDeliveryManager(this, port, context);
     }
 
     public String getNodeId() {

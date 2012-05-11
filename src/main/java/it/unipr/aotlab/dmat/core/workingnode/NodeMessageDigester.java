@@ -21,6 +21,7 @@ import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageInitializeWorkGroup;
 import it.unipr.aotlab.dmat.core.net.messages.MessageMatrixValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageMultiply;
+import it.unipr.aotlab.dmat.core.net.messages.MessagePrepareForMulticast;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
 import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.net.messages.Operation;
@@ -222,6 +223,13 @@ public class NodeMessageDigester {
 
         hostWorkingNode.state.updateMatrix(message);
         hostWorkingNode.state.orderDone();
+    }
+
+    public void accept(MessagePrepareForMulticast message) {
+        debugMessage(message);
+        System.err.println(message.toString());
+
+        hostWorkingNode.deliveryManager.prepareForReceivingMulticast();
     }
 
     public void accept(MessageExposeValues message) {

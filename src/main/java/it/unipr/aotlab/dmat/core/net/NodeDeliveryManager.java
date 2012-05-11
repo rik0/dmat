@@ -8,6 +8,8 @@ import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 public abstract class NodeDeliveryManager extends DeliveryManager {
     NodeState currentState;
 
+    public abstract void prepareForReceivingMulticast();
+
     public NodeDeliveryManager(NodeState currentState) {
         this.currentState = currentState;
     }

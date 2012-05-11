@@ -9,6 +9,7 @@ it.unipr.aotlab.dmat.core.net.messages.MessagesExposeValues
 it.unipr.aotlab.dmat.core.net.messages.MessagesInitializeWorkGroup
 it.unipr.aotlab.dmat.core.net.messages.MessagesMatrixPieceInt32
 it.unipr.aotlab.dmat.core.net.messages.MessagesMultiply
+it.unipr.aotlab.dmat.core.net.messages.MessagesPrepareForMulticast
 it.unipr.aotlab.dmat.core.net.messages.MessagesSetMatrix
 it.unipr.aotlab.dmat.core.net.messages.MessagesShutdown
 it.unipr.aotlab.dmat.core.net.messages.MessagesTest

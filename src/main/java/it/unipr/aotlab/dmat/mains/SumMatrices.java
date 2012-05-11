@@ -15,7 +15,10 @@ import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class SumMatrices {
     public static void main(String[] argv) {
-        NodeWorkGroup register = new NodeWorkGroup("master", new IPAddress("192.168.0.2", 5672));
+        NodeWorkGroup register = NodeWorkGroup.builder().
+                masterId("master").
+                masterAddress(new IPAddress("192.168.0.2", 5672)).build();
+
        try {
             Nodes nodes = new Nodes(register);
 

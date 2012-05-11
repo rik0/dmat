@@ -29,18 +29,14 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     ZMQ.Context zmqContext;
     MessageSender messageSender;
     Address masterAddress;
+
     private MasterDeliveryManager masterDeliveryManager_ = null;
 
     MasterDeliveryManager masterDeliveryManager() {
         if (masterDeliveryManager_ == null) {
-            try {
-                masterDeliveryManager_ = new MasterDeliveryManager(zmqContext,
-                        Integer.toString(masterAddress.getPort()));
-                masterDeliveryManager_.initialize();
-            } catch (IOException e) {
-                throw new DMatInternalError(e.getClass().getCanonicalName()
-                        + " : " + e.getMessage());
-            }
+            masterDeliveryManager_ = new MasterDeliveryManager(zmqContext,
+                    Integer.toString(masterAddress.getPort()));
+            masterDeliveryManager_.initialize();
         }
 
         return masterDeliveryManager_;
@@ -55,11 +51,11 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
         return (Node) n;
     }
 
-    public NodeWorkGroup(String masterId, Address masterAddress) {
-        this.zmqContext = ZMQ.context(1);
-        this.masterId = masterId;
-        this.masterAddress = masterAddress;
-        this.messageSender = new MessageSender(this);
+    public Address masterAddress() {
+        return masterAddress;
+    }
+
+    NodeWorkGroup() {
     }
 
     @Override
@@ -204,5 +200,9 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     @Override
     public Map<String, NodeAddress> nodesMap() {
         return nodes;
+    }
+
+    public static NodeWorkGroups builder() {
+        return new NodeWorkGroups();
     }
 }

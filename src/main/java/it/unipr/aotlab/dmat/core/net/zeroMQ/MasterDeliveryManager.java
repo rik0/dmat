@@ -23,8 +23,7 @@ public class MasterDeliveryManager extends it.unipr.aotlab.dmat.core.net.MasterD
     }
 
     @Override
-    public void initialize() throws IOException {
-        messageReader.initialize();
+    public void initialize() {
         this.messageReaderThread = new Thread(messageReader);
         this.messageReaderThread.start();
     }

@@ -46,6 +46,7 @@ public class MessageReader implements Runnable {
 
         System.err.println("XXX binding + tcp://*:" + port);
         this.messageGetter.bind("tcp://*:" + port);
+        this.messageGetter.bind("inproc://loopback");
 
     }
 
@@ -61,6 +62,12 @@ public class MessageReader implements Runnable {
 
     @Override
     public void run() {
+        try {
+            initialize();
+        } catch (IOException e1) {
+            throw new DMatInternalError(e1 + ":" + e1.getMessage());
+        }
+
         EnvelopedMessageBody m;
         byte[] rawMessage;
 
