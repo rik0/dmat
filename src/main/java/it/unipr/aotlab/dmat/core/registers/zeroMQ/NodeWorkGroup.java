@@ -11,6 +11,7 @@ import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.NodeAddress;
 import it.unipr.aotlab.dmat.core.net.messages.MessageInitializeWorkGroup;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.MasterDeliveryManager;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.MessageSender;
 import it.unipr.aotlab.dmat.core.util.Assertion;
@@ -188,11 +189,24 @@ public class NodeWorkGroup implements it.unipr.aotlab.dmat.core.registers.NodeWo
     public void initialize() throws IOException {
         NodeWorkGroupBody.Builder b = serialize();
 
+        System.err.println("XXX " + nodesAddress());
+
         for (NodeAddress n : nodesAddress()) {
             NodeWorkGroupBody.Builder messageBuilder = b.clone();
             MessageInitializeWorkGroup m = new MessageInitializeWorkGroup(messageBuilder);
 
             m.serialNo(orderNo);
+            sendOrderRaw(m, n.getNodeId());
+        }
+    }
+
+    public void shutDown() throws IOException {
+        int id = getNextOrderId();
+
+        for (NodeAddress n : nodesAddress()) {
+            MessageShutdown m = new MessageShutdown();
+
+            m.serialNo(id);
             sendOrderRaw(m, n.getNodeId());
         }
     }

@@ -42,11 +42,16 @@ public class NodeDeliveryManager extends it.unipr.aotlab.dmat.core.net.NodeDeliv
         return messageReader.awaitNextDelivery();
     }
 
-    public void prepareForReceivingMulticast() {
+    @Override
+    public void prepareForReceivingMulticast(String signature) {
         clearThreadsList();
 
-        BroadcastReader reader = new BroadcastReader((MessageSender)workingNode.messageSender,
-                            workingNode.nodeId);
+        BroadcastReader reader
+            = new BroadcastReader((MessageSender)workingNode.messageSender,
+                    workingNode.nodeId,
+                    signature,
+                    messageReader.port);
+
         Thread readerThread = new Thread(reader);
         readerThread.start();
 

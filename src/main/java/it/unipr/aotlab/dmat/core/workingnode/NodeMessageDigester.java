@@ -229,7 +229,8 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
-        hostWorkingNode.deliveryManager.prepareForReceivingMulticast();
+        hostWorkingNode.deliveryManager
+            .prepareForReceivingMulticast(message.body().getTheString());
     }
 
     public void accept(MessageExposeValues message) {

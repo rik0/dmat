@@ -9,7 +9,7 @@ import it.unipr.aotlab.dmat.core.net.messages.MessagePrepareForMulticast;
 import it.unipr.aotlab.dmat.core.net.messages.MessageUtils;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 import it.unipr.aotlab.dmat.core.util.Assertion;
-import it.unipr.aotlab.dmat.core.workingnode.NodeInfo;
+import it.unipr.aotlab.dmat.core.util.Utils;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -22,6 +22,7 @@ import org.zeromq.ZMQ.Socket;
 public class MessageSender implements
         it.unipr.aotlab.dmat.core.net.MessageSender {
     public String nodeId;
+    public String nodeAddress;
     public ZMQ.Context zmqContext;
 
     public Map<String, NodeAddress> nodeWorkGroup;
@@ -44,18 +45,17 @@ public class MessageSender implements
 
     public MessageSender(NodeWorkGroup nodeWorkGroup,
             String nodeId,
+            String masterAddress,
             Address broadcastAddress,
             String syncPort) {
         /* for the master node */
         this.nodeWorkGroup = nodeWorkGroup.nodesMap();
         this.nodeId = nodeId;
+        this.nodeAddress = masterAddress;
         this.zmqContext = nodeWorkGroup.getSocketContext();
         this.broadcastAddress = broadcastAddress.getHost();
         this.broadcastPort = Integer.toString(broadcastAddress.getPort());
         this.syncPort = syncPort;
-
-        this.nodeWorkGroup.put(this.nodeId,
-                new NodeInfo(this.nodeId, nodeWorkGroup.masterAddress().getHost(),  nodeWorkGroup.masterAddress().getPort()));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MessageSender implements
             System.err.println("XXX sending serialno " + m.serialNo());
             socket.connect("tcp://" + address + ":" + port);
 
-            socket.send(envelopedMessage.toByteArray(), 0);
+            Utils.zmqSend(socket, envelopedMessage.toByteArray());
             socket.recv(0);
         }
         finally {
@@ -100,6 +100,9 @@ public class MessageSender implements
             return;
         }
 
+        System.err.println("XXX multicasting : " + m.contentType() + " serial no: "
+        + m.serialNo() + " recipients " + m.recipients() + " all recipiends " + recipientsList);
+
         multicastMessageImpl(m, recipientsList);
     }
 
@@ -107,16 +110,22 @@ public class MessageSender implements
         ZMQ.Socket syncService = null;
 
         ZMQ.Socket broadcast = zmqContext.socket(ZMQ.PUB);
-        broadcast.bind("epgm://"
-                + nodeWorkGroup.get(nodeId).getAddress().getHost()
+        System.err.println("XXX binding to " + "epgm://"
+                + nodeAddress
                 + ";" + broadcastAddress
                 + ":" + broadcastPort);
+
+        broadcast.bind("epgm://"
+                + nodeAddress
+                + ";" + broadcastAddress
+                + ":" + broadcastPort);
+        System.err.println("XXX nof recipients " + recipientsList.size());
 
         try {
             alertRecipients(recipientsList.iterator());
             try {
                 syncService = zmqContext.socket(ZMQ.REP);
-                syncService.setReceiveTimeOut(53);
+                syncService.setReceiveTimeOut(373);
                 syncService.bind("tcp://*:" + syncPort);
 
                 awaitSubscribers(broadcast, syncService, recipientsList.size());
@@ -125,49 +134,56 @@ public class MessageSender implements
                 syncService.close();
             }
 
-            actuallyBroadCastMessage(m, broadcast);
+            actuallyMulticastMessage(m, broadcast);
         }
         finally {
             broadcast.close();
         }
     }
 
-    private void actuallyBroadCastMessage(Message m, Socket broadcast) {
+    private void actuallyMulticastMessage(Message m, Socket broadcast) {
         EnvelopedMessageBody envelopedMessage = MessageUtils.putInEnvelope(m);
 
-        boolean b = broadcast.send(nodeId.getBytes(), ZMQ.SNDMORE);
-        Assertion.isTrue(b, "broadcast socket is not sending!");
-
-        b = broadcast.send(envelopedMessage.toByteArray(), 0);
-        Assertion.isTrue(b, "broadcast socket is not sending!");
+        Utils.zmqSendMore(broadcast, nodeId.getBytes());
+        Utils.zmqSend(broadcast, envelopedMessage.toByteArray());
     }
 
-    private void awaitSubscribers(Socket broadcast, Socket syncService, int size) {
-        while (size > 0) {
-            boolean b = broadcast.send(nodeId.getBytes(), ZMQ.SNDMORE);
-            Assertion.isTrue(b, "broadcast socket is not sending!");
-
-            b = broadcast.send("".getBytes(), 0);
-            Assertion.isTrue(b, "broadcast socket is not sending!");
-
-            byte[] readySignal = syncService.recv(0);
-            if (readySignal != null) {
-                syncService.send("".getBytes(), 0);
-                --size;
+    private int getSubscribers(Socket syncService, int nofSubscribers) {
+        byte[] readySignal = null;
+        while (nofSubscribers > 0) {
+            readySignal = syncService.recv(0);
+            if (readySignal == null) {
+                break;
             }
+
+            System.err.println("XXX got " + (new String(readySignal)));
+            syncService.send("".getBytes(), 0);
+
+            --nofSubscribers;
+        }
+        return nofSubscribers;
+    }
+
+    private void awaitSubscribers(Socket broadcast,
+                                  Socket syncService,
+                                  int nofSubscribers) {
+
+        while (nofSubscribers > 0) {
+            Utils.zmqSendMore(broadcast, nodeId.getBytes());
+            Utils.zmqSend(broadcast, "".getBytes());
+
+            nofSubscribers = getSubscribers(syncService, nofSubscribers);
         }
 
-        boolean b = broadcast.send(nodeId.getBytes(), ZMQ.SNDMORE);
-        Assertion.isTrue(b, "broadcast socket is not sending!");
-
-        b = broadcast.send("R".getBytes(), 0);
-        Assertion.isTrue(b, "broadcast socket is not sending!");
+        Utils.zmqSendMore(broadcast, nodeId.getBytes());
+        Utils.zmqSend(broadcast, "R".getBytes());
     }
 
     private void alertRecipients(Iterator<String> nodes) throws IOException, NodeNotFound {
         while (nodes.hasNext()) {
             String node = nodes.next();
-            sendMessage(new MessagePrepareForMulticast(nodeId), node);
+            sendMessage((new MessagePrepareForMulticast(nodeId)).recipients(node),
+                    node);
         }
     }
 

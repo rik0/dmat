@@ -11,16 +11,26 @@ public class BroadcastReader implements Runnable {
     ZMQ.Socket loopback;
     MessageSender messageSender;
     String senderId;
+    private String recipientId;
+    private String localPort;
 
     BroadcastReader(MessageSender messageSender,
-                    String senderId) {
+                    String recipientId,
+                    String senderId,
+                    String localPort) {
         this.context = messageSender.zmqContext;
+        this.recipientId = recipientId;
         this.messageSender = messageSender;
         this.senderId = senderId;
+        this.localPort = localPort;
     }
 
     public void connectToSubscriberSocket() {
         ZMQ.Socket subscriber = context.socket(ZMQ.SUB);
+
+        System.err.println("XXX + connecting to epgm://" + messageSender.broadcastAddress
+                + ":" + messageSender.broadcastPort);
+        System.err.println("XXX signature " + senderId);
 
         subscriber.connect("epgm://" + messageSender.broadcastAddress
                 + ":" + messageSender.broadcastPort);
@@ -47,7 +57,7 @@ public class BroadcastReader implements Runnable {
     }
 
     public void syncWithPublisher() {
-        syncClient.send("".getBytes(), 0);
+        syncClient.send(recipientId.getBytes(), 0);
         syncClient.recv(0);
     }
 
@@ -64,40 +74,42 @@ public class BroadcastReader implements Runnable {
         }
     }
 
+    public void connectInLoopBack() {
+        ZMQ.Socket loopback = context.socket(ZMQ.REQ);
+        loopback.connect("tcp://127.0.0.1:" + localPort);
+
+        this.loopback = loopback;
+    }
+
     public void getAndResendMessage() {
         byte[] p = subscriber.recv(0);
         Assertion.isTrue((new String(p)).equals(senderId), "Strange message arrived!");
 
         byte[] message = subscriber.recv(0);
-
-        ZMQ.Socket loopback = context.socket(ZMQ.REQ);
-        loopback.connect("inproc://loopback");
-
         loopback.send(message, 0);
         loopback.recv(0);
     }
 
     @Override
     public void run() {
-
         try {
             connectToSubscriberSocket();
             connectToSyncService();
             awaitPublisher();
             syncWithPublisher();
             awaitOtherSubscribers();
+            connectInLoopBack();
             getAndResendMessage();
-
         }
         finally {
-            if (subscriber != null)
-                subscriber.close();
+            if (loopback != null)
+                loopback.close();
 
             if (syncClient != null)
                 syncClient.close();
 
-            if (loopback != null)
-                loopback.close();
+            if (subscriber != null)
+                subscriber.close();
         }
     }
 }

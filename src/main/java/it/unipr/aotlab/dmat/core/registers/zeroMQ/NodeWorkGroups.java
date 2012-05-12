@@ -70,9 +70,11 @@ public class NodeWorkGroups {
             syncPort = "43982";
 
         buildingObject.zmqContext = ZMQ.context(nofZMQContextTheads);
-        buildingObject.messageSender = new MessageSender(buildingObject,
-                                                         buildingObject.masterId,
-                                                         broadcastAddress,
-                                                         syncPort);
+        buildingObject.messageSender = new MessageSender(
+                buildingObject,
+                buildingObject.masterId,
+                buildingObject.masterAddress.getHost(),
+                broadcastAddress,
+                syncPort);
     }
 }

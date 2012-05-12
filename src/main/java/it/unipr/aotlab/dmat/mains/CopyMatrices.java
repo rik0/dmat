@@ -11,7 +11,6 @@ import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageClearReceivedMatrixPieces;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
@@ -102,8 +101,7 @@ public class CopyMatrices {
             ATop.sendMessageExposeValues();
             ABottom.sendMessageExposeValues();
 
-            testNode.sendMessage(new MessageShutdown());
-            testNode2.sendMessage(new MessageShutdown());
+            register.shutDown();
 
         } catch (Throwable e) {
             System.err.println(e);

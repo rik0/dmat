@@ -9,7 +9,6 @@ import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
-import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
@@ -17,7 +16,7 @@ public class MulMatrices {
     public static void main(String[] argv) {
         NodeWorkGroup register = NodeWorkGroup.builder().
                 masterId("master").
-                masterAddress(new IPAddress("192.168.0.2", 5672)).build();
+                masterAddress(new IPAddress("192.168.0.2", 6001)).build();
 
        try {
             Nodes nodes = new Nodes(register);
@@ -110,11 +109,9 @@ public class MulMatrices {
             c.setOperands(Expected, A);
             c.exec();
 
-            System.err.println("Equals: " + c.answer());
+            System.err.println("Equals: " + c.answer() + " (expected: true.)");
 
-            testNode.sendMessage(new MessageShutdown());
-            testNode2.sendMessage(new MessageShutdown());
-            testNode3.sendMessage(new MessageShutdown());
+            register.shutDown();
 
         } catch (Throwable e) {
             e.printStackTrace();
