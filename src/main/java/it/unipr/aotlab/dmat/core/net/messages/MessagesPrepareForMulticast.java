@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.messages;
 
-import it.unipr.aotlab.dmat.core.generated.MessageSingleStringWire.MessageSingleStringBody;
+import it.unipr.aotlab.dmat.core.generated.MessageMulticastInfoWire.MessageMulticastInfoBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 
 import com.google.protobuf.ByteString;
@@ -19,6 +19,6 @@ public class MessagesPrepareForMulticast extends Messages {
     @Override
     public Message parseMessage(ByteString rawMessage)
             throws InvalidProtocolBufferException {
-        return new MessagePrepareForMulticast(MessageSingleStringBody.parseFrom(rawMessage));
+        return new MessagePrepareForMulticast(MessageMulticastInfoBody.parseFrom(rawMessage));
     }
 }

@@ -1,18 +1,20 @@
 package it.unipr.aotlab.dmat.mains;
 
+import it.unipr.aotlab.dmat.core.generated.MatrixPieceOwnerWire.MatrixPieceOwnerBody;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
-import it.unipr.aotlab.dmat.core.matrices.Compare;
 import it.unipr.aotlab.dmat.core.matrices.Matrices;
 import it.unipr.aotlab.dmat.core.matrices.Matrix;
 import it.unipr.aotlab.dmat.core.matrices.Multiplication;
 import it.unipr.aotlab.dmat.core.net.IPAddress;
 import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.net.messages.MessageExposeValues;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
-public class MulMatrices2 {
+public class MulMatrices4 {
     public static void main(String[] argv) {
         NodeWorkGroup register = NodeWorkGroup.builder().
                 masterId("master").
@@ -23,79 +25,67 @@ public class MulMatrices2 {
 
             Node testNode = nodes.setNodeName("testNode")
                     .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
-            Node testNode1 = nodes.setNodeName("testNode1")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6001)).build();
             Node testNode2 = nodes.setNodeName("testNode2")
                     .setNodeAddress(new IPAddress("192.168.0.2", 6002)).build();
-            Node testNode3 = nodes.setNodeName("testNode3")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6003)).build();
 
             register.initialize();
-
-            Matrix Expected = Matrices.newBuilder()
-                    .setName("Expected")
-                    .setNofRows(10)
-                    .setNofColumns(20)
-                    .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
                     .setNofRows(10)
                     .setNofColumns(20)
-                    .splitHorizzontalyChuck(null, 7, "Atop", "Abottom")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix B = Matrices.newBuilder()
                     .setName("B")
                     .setNofRows(10)
                     .setNofColumns(15)
-                    .splitHorizzontalyChuck(null, 7, "Btop", "Bbottom")
+                    .splitVerticallyChuck(null, 10, "Bleft", "Bright")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix C = Matrices.newBuilder()
                     .setName("C")
                     .setNofRows(15)
                     .setNofColumns(20)
-                    .splitHorizzontalyChuck(null, 7, "Ctop", "Cbottom")
+                    .splitVerticallyChuck(null, 10, "Cleft", "Cright")
                     .setElementType(TypeWire.ElementType.INT32).build();
 
-            Expected.getChunk(null).assignChunkToNode(testNode);
+            A.getChunk(null).assignChunkToNode(testNode);
 
-            A.getChunk("Atop").assignChunkToNode(testNode);
-            A.getChunk("Abottom").assignChunkToNode(testNode3);
+            B.getChunk("Bleft").assignChunkToNode(testNode2);
+            B.getChunk("Bright").assignChunkToNode(testNode);
 
-            B.getChunk("Btop").assignChunkToNode(testNode1);
-            B.getChunk("Bbottom").assignChunkToNode(testNode2);
-
-            C.getChunk("Ctop").assignChunkToNode(testNode1);
-            C.getChunk("Cbottom").assignChunkToNode(testNode2);
+            C.getChunk("Cleft").assignChunkToNode(testNode);
+            C.getChunk("Cright").assignChunkToNode(testNode2);
 
             OrderSetMatrixBody.Builder b = OrderSetMatrixBody.newBuilder();
-            b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e2xe1");
-            b.setMatrixId(Expected.getMatrixId());
-            testNode.sendMessage(new MessageSetMatrix(b));
-
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e2");
+
             b.setMatrixId(B.getMatrixId());
             testNode2.sendMessage(new MessageSetMatrix(b));
-            testNode1.sendMessage(new MessageSetMatrix(b));
+            testNode.sendMessage(new MessageSetMatrix(b));
 
             b.setURI("file://" + System.getProperty("user.dir") + "/example_matrices/e1");
             b.setMatrixId(C.getMatrixId());
-            testNode1.sendMessage(new MessageSetMatrix(b));
+            testNode.sendMessage(new MessageSetMatrix(b));
             testNode2.sendMessage(new MessageSetMatrix(b));
 
+            MatrixPieceOwnerBody.Builder mp = MatrixPieceOwnerBody.newBuilder();
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cleft")));
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("C").setChunkId("Cright")));
+
+            testNode2.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bleft")));
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("B").setChunkId("Bright")));
+
             Multiplication r = new Multiplication();
+
             r.setOperands(A, B, C);
-            r.setComputingNodes(testNode, testNode3);
             r.exec();
 
-            Compare c = new Compare();
-            c.setOperands(A, Expected);
-            c.exec();
+            testNode.sendMessage(new MessageExposeValues(mp.setMatrixId("A").setChunkId("default")));
 
-            System.err.println("Equals: " + c.answer() + " (expected: true)");
-            register.shutDown();
+            testNode.sendMessage(new MessageShutdown());
+            testNode2.sendMessage(new MessageShutdown());
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {

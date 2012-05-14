@@ -92,13 +92,44 @@ public class Rectangle {
 
         return rv;
     }
-    
+
     public int compare(RectangleBody rhs) {
         int rv = startRow - rhs.getStartRow();
         if (rv == 0) rv = endRow - rhs.getEndRow();
         if (rv == 0) rv = startCol - rhs.getStartCol();
         if (rv == 0) rv = endCol - rhs.getEndCol();
 
-        return rv;        
+        return rv;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + endCol;
+        result = prime * result + endRow;
+        result = prime * result + startCol;
+        result = prime * result + startRow;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Rectangle other = (Rectangle) obj;
+        if (endCol != other.endCol)
+            return false;
+        if (endRow != other.endRow)
+            return false;
+        if (startCol != other.startCol)
+            return false;
+        if (startRow != other.startRow)
+            return false;
+        return true;
     }
 }

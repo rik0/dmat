@@ -103,14 +103,18 @@ public abstract class Operation {
                     updatePieces2await(owner, awaitUpdate.build());
                 }
 
+                System.err.println("XXX working for computing node: " + computingNodeId);
                 //for each (sub)chunk needed to update this output area
                 for (NeededPieceOfChunk pc : workZone.involvedChunks) {
+                    System.err.println("XXX checking:\n" + pc.chunk + "\n" + pc.piece );
                     if ( ! computingNode.doesManage(pc.chunk.chunkId)) {
+                        System.err.println("XXX piece needed!");
                         updatePendingMessage(pendingMessages,
                                              pc,
                                              computingNodeId);
                     }
                 }
+                System.err.println("XXX END working for computing node: " + computingNodeId);
             }
         }
 
@@ -179,7 +183,7 @@ public abstract class Operation {
     }
 
     public void setComputingNodes(Collection<Node> computingNodes) {
-        this.computingNodes = new TreeSet<Node>();
+        this.computingNodes = new TreeSet<Node>(new Node.NodeComparor());
         this.computingNodes.addAll(computingNodes);
     }
 
@@ -277,6 +281,7 @@ public abstract class Operation {
             takeWorkZones(nodeNWorkzone, assign(nodeNo));
 
             ++nodeNo;
+            System.err.println("XXX Node WorkZone pair: " + nodeNWorkzone);
         }
     }
 
@@ -386,12 +391,14 @@ public abstract class Operation {
         }
     }
 
-    private static class PendingMissingPiecesMess implements Comparable<PendingMissingPiecesMess> {
+    private static class PendingMissingPiecesMess {
         public String ownerNodeId;
         public String matrixId;
         public Rectangle neededPiece;
 
-        public PendingMissingPiecesMess() {}
+        public PendingMissingPiecesMess() {
+            System.err.println("XXX AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa");
+        }
 
         @Override
         public String toString() {
@@ -399,15 +406,43 @@ public abstract class Operation {
         }
 
         @Override
-        public int compareTo(PendingMissingPiecesMess rhs) {
-            int rv = matrixId.compareTo(rhs.matrixId);
-            if (rv == 0) rv = ownerNodeId.compareTo(rhs.ownerNodeId);
-            if (rv == 0) rv = neededPiece.startRow - rhs.neededPiece.startRow;
-            if (rv == 0) rv = neededPiece.endRow   - rhs.neededPiece.endRow ;
-            if (rv == 0) rv = neededPiece.startCol - rhs.neededPiece.startCol;
-            if (rv == 0) rv = neededPiece.endRow   - rhs.neededPiece.endRow;
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result
+                    + ((matrixId == null) ? 0 : matrixId.hashCode());
+            result = prime * result
+                    + ((neededPiece == null) ? 0 : neededPiece.hashCode());
+            result = prime * result
+                    + ((ownerNodeId == null) ? 0 : ownerNodeId.hashCode());
+            return result;
+        }
 
-            return rv;
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            PendingMissingPiecesMess other = (PendingMissingPiecesMess) obj;
+            if (matrixId == null) {
+                if (other.matrixId != null)
+                    return false;
+            } else if (!matrixId.equals(other.matrixId))
+                return false;
+            if (neededPiece == null) {
+                if (other.neededPiece != null)
+                    return false;
+            } else if (!neededPiece.equals(other.neededPiece))
+                return false;
+            if (ownerNodeId == null) {
+                if (other.ownerNodeId != null)
+                    return false;
+            } else if (!ownerNodeId.equals(other.ownerNodeId))
+                return false;
+            return true;
         }
     }
 
@@ -423,11 +458,15 @@ public abstract class Operation {
 
         TreeSet<String> destinationList = pendingMessages.get(message);
         if (destinationList == null) {
+            System.err.println("XXX new piece!");
             destinationList = new TreeSet<String>();
             pendingMessages.put(message, destinationList);
         }
 
         destinationList.add(destination);
+        System.err.println("XXX nof of recipients for " +
+        message.ownerNodeId + " \n" + message.matrixId + "(" + message.neededPiece + ")\n"
+        + " is " + destinationList.size() + " just added: " + destination);
     }
 
     private void updateMatrixPieces2beSent(HashMap<PendingMissingPiecesMess,

@@ -1,6 +1,6 @@
 package it.unipr.aotlab.dmat.core.net.messages;
 
-import it.unipr.aotlab.dmat.core.generated.MessageSingleStringWire.MessageSingleStringBody;
+import it.unipr.aotlab.dmat.core.generated.MessageMulticastInfoWire.MessageMulticastInfoBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.MessageImmediate;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
@@ -10,10 +10,10 @@ import java.util.Collection;
 import com.google.protobuf.ByteString;
 
 public class MessagePrepareForMulticast extends MessageImmediate {
-    MessageSingleStringBody.Builder builder = null;
-    MessageSingleStringBody realBody = null;
+    MessageMulticastInfoBody.Builder builder = null;
+    MessageMulticastInfoBody realBody = null;
 
-    public MessageSingleStringBody body() {
+    public MessageMulticastInfoBody body() {
         if (realBody == null) {
             realBody = builder.build();
             builder = null;
@@ -22,15 +22,16 @@ public class MessagePrepareForMulticast extends MessageImmediate {
         return realBody;
     }
 
-    public MessagePrepareForMulticast(MessageSingleStringBody.Builder sender) {
+    public MessagePrepareForMulticast(MessageMulticastInfoBody.Builder sender) {
         builder = sender;
     }
 
-    public MessagePrepareForMulticast(String sender) {
-        builder = MessageSingleStringBody.newBuilder().setTheString(sender);
+    public MessagePrepareForMulticast(String sender, int syncPort) {
+        builder = MessageMulticastInfoBody.newBuilder().setSenderId(sender)
+                .setSyncPort(syncPort);
     }
 
-    MessagePrepareForMulticast(MessageSingleStringBody body) {
+    MessagePrepareForMulticast(MessageMulticastInfoBody body) {
         realBody = body;
     }
 

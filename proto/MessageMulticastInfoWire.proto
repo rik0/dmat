@@ -2,8 +2,9 @@ import "NodeListWire.proto" ;
 
 option java_package = "it.unipr.aotlab.dmat.core.generated" ;
 
-message MessageSingleStringBody {
+message MessageMulticastInfoBody {
     required NodeListBody destination = 1;
-    required string theString = 2;
+    required string senderId = 2;
+    required int32 syncPort = 3;
 }
 

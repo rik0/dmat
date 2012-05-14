@@ -11,8 +11,6 @@ public interface MessageSender {
 
     void sendMessage(Message m, String nodeName) throws IOException, NodeNotFound;
 
-    //void multicastMessage(Message m, Iterable<String> list) throws IOException, NodeNotFound;
-
     void multicastMessage(Message m, Collection<String> list)
             throws IOException, NodeNotFound;
 }

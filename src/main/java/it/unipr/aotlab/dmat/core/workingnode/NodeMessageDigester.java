@@ -140,6 +140,8 @@ public class NodeMessageDigester {
             mess.recipients(piece2beSent.getRecipientList());
 
             try {
+                System.err.println("XXX message digester 143 nof recipients " + piece2beSent.getRecipientList().size());
+
                 hostWorkingNode.messageSender
                         .multicastMessage(mess,
                                           piece2beSent.getRecipientList());
@@ -229,8 +231,11 @@ public class NodeMessageDigester {
         debugMessage(message);
         System.err.println(message.toString());
 
+        String sender = message.body().getSenderId();
+        String syncPort = Integer.toString(message.body().getSyncPort());
+
         hostWorkingNode.deliveryManager
-            .prepareForReceivingMulticast(message.body().getTheString());
+            .prepareForReceivingMulticast(sender, syncPort);
     }
 
     public void accept(MessageExposeValues message) {

@@ -11,21 +11,24 @@ public class BroadcastReader implements Runnable {
     ZMQ.Socket loopback;
     MessageSender messageSender;
     String senderId;
-    private String recipientId;
-    private String localPort;
+    String recipientId;
+    String localPort;
+    String remoteSyncPort;
 
     BroadcastReader(MessageSender messageSender,
                     String recipientId,
                     String senderId,
-                    String localPort) {
+                    String localPort,
+                    String remoteSyncPort) {
         this.context = messageSender.zmqContext;
         this.recipientId = recipientId;
         this.messageSender = messageSender;
         this.senderId = senderId;
         this.localPort = localPort;
+        this.remoteSyncPort = remoteSyncPort;
     }
 
-    public void connectToSubscriberSocket() {
+    public void subscribeToMulticast() {
         ZMQ.Socket subscriber = context.socket(ZMQ.SUB);
 
         System.err.println("XXX + connecting to epgm://" + messageSender.broadcastAddress
@@ -41,7 +44,7 @@ public class BroadcastReader implements Runnable {
 
     public void connectToSyncService() {
         String address = messageSender.nodeWorkGroup.get(senderId).getAddress().getHost();
-        String port = messageSender.syncPort;
+        String port = remoteSyncPort;
 
         ZMQ.Socket syncClient = context.socket(ZMQ.REQ);
         syncClient.connect("tcp://" + address + ":" + port);
@@ -93,7 +96,7 @@ public class BroadcastReader implements Runnable {
     @Override
     public void run() {
         try {
-            connectToSubscriberSocket();
+            subscribeToMulticast();
             connectToSyncService();
             awaitPublisher();
             syncWithPublisher();

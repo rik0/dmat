@@ -22,7 +22,7 @@ import org.zeromq.ZMQ.Socket;
 public class MessageSender implements
         it.unipr.aotlab.dmat.core.net.MessageSender {
     public String nodeId;
-    public String nodeAddress;
+    private String nodeAddress_;
     public ZMQ.Context zmqContext;
 
     public Map<String, NodeAddress> nodeWorkGroup;
@@ -51,7 +51,7 @@ public class MessageSender implements
         /* for the master node */
         this.nodeWorkGroup = nodeWorkGroup.nodesMap();
         this.nodeId = nodeId;
-        this.nodeAddress = masterAddress;
+        this.nodeAddress_ = masterAddress;
         this.zmqContext = nodeWorkGroup.getSocketContext();
         this.broadcastAddress = broadcastAddress.getHost();
         this.broadcastPort = Integer.toString(broadcastAddress.getPort());
@@ -70,7 +70,6 @@ public class MessageSender implements
         EnvelopedMessageBody envelopedMessage = MessageUtils.putInEnvelope(m);
 
         ZMQ.Socket socket = zmqContext.socket(ZMQ.REQ);
-
         try {
             System.err.println("XXX connecting tcp://" + address + ":" + port);
             System.err.println("XXX sending serialno " + m.serialNo());
@@ -111,12 +110,12 @@ public class MessageSender implements
 
         ZMQ.Socket broadcast = zmqContext.socket(ZMQ.PUB);
         System.err.println("XXX binding to " + "epgm://"
-                + nodeAddress
+                + nodeAddress()
                 + ";" + broadcastAddress
                 + ":" + broadcastPort);
 
         broadcast.bind("epgm://"
-                + nodeAddress
+                + nodeAddress()
                 + ";" + broadcastAddress
                 + ":" + broadcastPort);
         System.err.println("XXX nof recipients " + recipientsList.size());
@@ -182,7 +181,7 @@ public class MessageSender implements
     private void alertRecipients(Iterator<String> nodes) throws IOException, NodeNotFound {
         while (nodes.hasNext()) {
             String node = nodes.next();
-            sendMessage((new MessagePrepareForMulticast(nodeId)).recipients(node),
+            sendMessage((new MessagePrepareForMulticast(nodeId, Integer.parseInt(syncPort))).recipients(node),
                     node);
         }
     }
@@ -190,5 +189,13 @@ public class MessageSender implements
     @Override
     public void meetTheWorkGroup(Map<String, NodeAddress> workgroup) {
         this.nodeWorkGroup = workgroup;
+    }
+
+    public String nodeAddress() {
+        if (nodeAddress_ == null) {
+            nodeAddress_ = nodeWorkGroup.get(nodeId).getAddress().getHost();
+        }
+
+        return nodeAddress_;
     }
 }
