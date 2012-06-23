@@ -87,6 +87,8 @@ public class NodeMessageDigester {
         }
 
         hostWorkingNode.messageSender.meetTheWorkGroup(map);
+
+        hostWorkingNode.state.setInitialized();
         hostWorkingNode.state.orderDone();
     }
 

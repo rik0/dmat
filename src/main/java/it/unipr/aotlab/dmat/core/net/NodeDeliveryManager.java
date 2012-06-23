@@ -6,7 +6,7 @@ import it.unipr.aotlab.dmat.core.net.Message.MessageKind;
 import it.unipr.aotlab.dmat.core.workingnode.NodeState;
 
 public abstract class NodeDeliveryManager extends DeliveryManager {
-    NodeState currentState;
+    public NodeState currentState;
 
     public abstract void prepareForReceivingMulticast(String signature,
             String syncPort);

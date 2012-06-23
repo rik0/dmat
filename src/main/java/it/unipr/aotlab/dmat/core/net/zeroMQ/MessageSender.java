@@ -124,7 +124,7 @@ public class MessageSender implements
             alertRecipients(recipientsList.iterator());
             try {
                 syncService = zmqContext.socket(ZMQ.REP);
-                syncService.setReceiveTimeOut(373);
+                syncService.setReceiveTimeOut(53);
                 syncService.bind("tcp://*:" + syncPort);
 
                 awaitSubscribers(broadcast, syncService, recipientsList.size());

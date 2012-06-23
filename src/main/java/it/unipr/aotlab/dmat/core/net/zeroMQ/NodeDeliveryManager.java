@@ -19,7 +19,7 @@ public class NodeDeliveryManager extends it.unipr.aotlab.dmat.core.net.NodeDeliv
     public NodeDeliveryManager(WorkingNode workingNode, String port,
             Context context) {
         super(workingNode.state);
-        this.messageReader = new MessageReader(context, port);
+        this.messageReader = new MessageReader(this, context, port);
         this.workingNode = workingNode;
     }
 
@@ -43,7 +43,7 @@ public class NodeDeliveryManager extends it.unipr.aotlab.dmat.core.net.NodeDeliv
     }
 
     @Override
-    public void prepareForReceivingMulticast(String sender, String syncPort) {
+    public synchronized  void prepareForReceivingMulticast(String sender, String syncPort) {
         clearThreadsList();
 
         BroadcastReader reader

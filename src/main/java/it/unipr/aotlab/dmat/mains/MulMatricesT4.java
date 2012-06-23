@@ -29,7 +29,6 @@ public class MulMatricesT4 {
     private static final String C_TOP_RIGHT = "CTopRight";
     private static final String C_BOTTOM_RIGHT = "CBottomRight";
 
-
     public static void main(String[] argv) {
         NodeWorkGroup register = NodeWorkGroup.builder().
                 masterId("master").

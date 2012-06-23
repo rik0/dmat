@@ -41,6 +41,7 @@ import java.util.TreeSet;
 public class NodeState {
     private int currentOrderSerialNo = 1;
     boolean executingOrder = false;
+    boolean initialized = false;
 
     WorkingNode hostWorkingNode;
     ArrayList<InNodeChunk<?>> managedChunks = new ArrayList<InNodeChunk<?>>();
@@ -53,6 +54,14 @@ public class NodeState {
         = new LinkedList<MessageMatrixValues>();
     LinkedList<Operation> pendingOperations = new LinkedList<Operation>();
     LinkedList<Operation> delayedOperations = new LinkedList<Operation>();
+
+    public synchronized boolean initialized() {
+        return initialized;
+    }
+
+    public synchronized void setInitialized() {
+        this.initialized = false;
+    }
 
     public boolean doesManage(String matrixId, String chunkId) {
         for (InNodeChunk<?> c : managedChunks) {

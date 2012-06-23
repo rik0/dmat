@@ -1,8 +1,10 @@
 package it.unipr.aotlab.dmat.core.net.messages;
 
+import it.unipr.aotlab.dmat.core.generated.EnvelopedMessageWire.EnvelopedMessageBody;
 import it.unipr.aotlab.dmat.core.generated.MessageMulticastInfoWire.MessageMulticastInfoBody;
 import it.unipr.aotlab.dmat.core.net.Message;
 import it.unipr.aotlab.dmat.core.net.MessageImmediate;
+import it.unipr.aotlab.dmat.core.net.zeroMQ.MessageReader;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.util.Collection;
@@ -12,6 +14,19 @@ import com.google.protobuf.ByteString;
 public class MessagePrepareForMulticast extends MessageImmediate {
     MessageMulticastInfoBody.Builder builder = null;
     MessageMulticastInfoBody realBody = null;
+
+    @Override
+    public void immediateAction(MessageReader reader, EnvelopedMessageBody m) {
+        if ( ! reader.nodeDeliveryManager.currentState.initialized()) {
+            reader.pushback(m);
+        }
+        else {
+            String sender = this.body().getSenderId();
+            String syncPort = Integer.toString(this.body().getSyncPort());
+
+            reader.nodeDeliveryManager.prepareForReceivingMulticast(sender, syncPort);
+        }
+    }
 
     public MessageMulticastInfoBody body() {
         if (realBody == null) {
