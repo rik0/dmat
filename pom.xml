@@ -88,6 +88,12 @@
                             </mainClass>
                             <name>t2</name>
                         </program>
+                        <program>
+                            <mainClass>
+                                it.unipr.aotlab.dmat.mains.MulMatricesT4
+                            </mainClass>
+                            <name>t4</name>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>
