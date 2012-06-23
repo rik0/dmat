@@ -76,6 +76,18 @@
                             </mainClass>
                             <name>worknode</name>
                         </program>
+                        <program>
+                            <mainClass>
+                                it.unipr.aotlab.dmat.mains.MulMatricesT1
+                            </mainClass>
+                            <name>t1</name>
+                        </program>
+                        <program>
+                            <mainClass>
+                                it.unipr.aotlab.dmat.mains.MulMatricesT2
+                            </mainClass>
+                            <name>t2</name>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>

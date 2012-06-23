@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class CompressedColsInt32 {
-    int startCol;
-    ArrayList<Integer> rows;
-    ArrayList<Integer> cols;
-    ArrayList<Integer> values;
+    private int startCol;
+    private ArrayList<Integer> rows;
+    private ArrayList<Integer> cols;
+    private ArrayList<Integer> values;
 
     private int addCol(List<Triplet> values,
                        int valuesSize,
@@ -45,7 +45,7 @@ public class CompressedColsInt32 {
         }
     }
 
-    public class ColIterator implements Iterator<Int32Triplet> {
+    private class ColIterator implements Iterator<it.unipr.aotlab.dmat.core.matrixPiece.Triplet> {
         int col;
         int current;
         int max;
@@ -90,7 +90,7 @@ public class CompressedColsInt32 {
 
     }
 
-    Iterator<Int32Triplet> getColIterator(int col) {
+    public Iterator<it.unipr.aotlab.dmat.core.matrixPiece.Triplet> getColIterator(int col) {
         return new ColIterator(col);
     }
 
@@ -102,7 +102,7 @@ public class CompressedColsInt32 {
         this.cols = new ArrayList<Integer>(nofCols+1);
         this.values = new ArrayList<Integer>();
 
-        List<Triplet> values = triplets.getValuesList();
+        List<Triplet> values = new ArrayList<Triplet>(triplets.getValuesList());
         Collections.sort(values, new Comparator<Triplet>() {
             @Override
             public int compare(Triplet lhs, Triplet rhs) {

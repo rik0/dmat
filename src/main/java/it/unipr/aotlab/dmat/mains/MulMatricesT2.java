@@ -12,6 +12,7 @@ import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class MulMatricesT2 {
+    private static final String IP = "192.168.0.2";
     private static final String C_TOP = "CTop";
 	private static final String C_BOTTOM = "CBottom";
 	private static final String B_RIGHT = "BRight";
@@ -20,16 +21,16 @@ public class MulMatricesT2 {
 	public static void main(String[] argv) {
         NodeWorkGroup register = NodeWorkGroup.builder().
                 masterId("master").
-                masterAddress(new IPAddress("42.191.37.74", 5672)).build();
+                masterAddress(new IPAddress(IP, 5672)).build();
 
        try {
             Nodes nodes = new Nodes(register);
 
             Node testNode0 = nodes.setNodeName("testnode0")
-                    .setNodeAddress(new IPAddress("42.191.37.74", 6000)).build();
-            
+                    .setNodeAddress(new IPAddress(IP, 6000)).build();
+
             Node testNode1 = nodes.setNodeName("testnode1")
-                    .setNodeAddress(new IPAddress("42.191.37.74", 6001)).build();
+                    .setNodeAddress(new IPAddress(IP, 6001)).build();
 
             register.initialize();
 
@@ -57,7 +58,7 @@ public class MulMatricesT2 {
 
             B.getChunk(B_LEFT).assignChunkToNode(testNode0);
             B.getChunk(B_RIGHT).assignChunkToNode(testNode1);
-            
+
             C.getChunk(C_BOTTOM).assignChunkToNode(testNode0);
             C.getChunk(C_TOP).assignChunkToNode(testNode1);
 

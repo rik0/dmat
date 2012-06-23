@@ -4,6 +4,8 @@ import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire;
 import it.unipr.aotlab.dmat.core.generated.MatrixPieceTripletsInt32Wire.MatrixPieceTripletsInt32Body;
 import it.unipr.aotlab.dmat.core.generated.support.MatrixPieceTripletsInt32WireSupport;
 import it.unipr.aotlab.dmat.core.matrices.Rectangle;
+import it.unipr.aotlab.dmat.core.matrixPiece.CompressedColsInt32;
+import it.unipr.aotlab.dmat.core.matrixPiece.CompressedRowsInt32;
 import it.unipr.aotlab.dmat.core.matrixPiece.Int32Triplet;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieceTripletsInt32;
 import it.unipr.aotlab.dmat.core.matrixPiece.MatrixPieces;
@@ -13,9 +15,7 @@ import it.unipr.aotlab.dmat.core.workingnode.InNodeChunk;
 import it.unipr.aotlab.dmat.core.workingnode.NodeMessageDigester;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -134,96 +134,26 @@ public class MessageMatrixPieceInt32 extends MessageMatrixValues {
         return getPosition().contains(row, col);
     }
 
-    private class MessageRowIterator implements Iterator<Triplet> {
-        // CONSIDER: we extract the whole row and sort it...
-        //           better way?
-        private class colComparator implements java.util.Comparator<Triplet> {
-            @Override
-            public int compare(Triplet lhs, Triplet rhs) {
-                return lhs.col() - rhs.col();
-            }
-        }
-        ArrayList<Triplet> row = new ArrayList<Triplet>();
-        Iterator<Triplet> iterator;
-
-        public MessageRowIterator(int row) {
-            for (int r = 0, e = body().getValuesCount(); r < e; ++r) {
-                MatrixPieceTripletsInt32Wire.Triplet rawT = body().getValues(r);
-
-                if (row == rawT.getRow())
-                    this.row.add(new Int32Triplet(rawT.getRow(),
-                                                  rawT.getCol(),
-                                                  rawT.getValue()));
-            }
-            Collections.sort(this.row, new colComparator());
-
-            iterator = this.row.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public Triplet next() {
-            return iterator.next();
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    private class MessageColIterator implements Iterator<Triplet> {
-        private class rowComparator implements java.util.Comparator<Triplet> {
-            @Override
-            public int compare(Triplet lhs, Triplet rhs) {
-                return lhs.row() - rhs.row();
-            }
-        }
-        ArrayList<Triplet> col = new ArrayList<Triplet>();
-        Iterator<Triplet> iterator;
-
-        public MessageColIterator(int col) {
-            for (int r = 0, e = body().getValuesCount(); r < e; ++r) {
-                MatrixPieceTripletsInt32Wire.Triplet rawT = body().getValues(r);
-
-                if (col == rawT.getCol())
-                    this.col.add(new Int32Triplet(rawT.getRow(),
-                                                  rawT.getCol(),
-                                                  rawT.getValue()));
-            }
-            Collections.sort(this.col, new rowComparator());
-
-            iterator = this.col.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public Triplet next() {
-            return iterator.next();
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
-
+    CompressedColsInt32 columnIteratorMaker = null;
     @Override
     public Iterator<Triplet> matrixColumnIterator(int col) {
-        return new MessageColIterator(col);
+        if (columnIteratorMaker == null) {
+            System.err.println("XXX converting message in CompressedCols!");
+            columnIteratorMaker = new CompressedColsInt32(body());
+        }
+
+        return columnIteratorMaker.getColIterator(col);
     }
 
+    CompressedRowsInt32 rowIteratorMaker = null;
     @Override
     public Iterator<Triplet> matrixRowterator(int row) {
-        return new MessageRowIterator(row);
+        if (rowIteratorMaker == null) {
+            System.err.println("XXX converting message in CompressedRows!");
+            rowIteratorMaker = new CompressedRowsInt32(body());
+        }
+
+        return rowIteratorMaker.getRowIterator(row);
     }
 
     @Override
