@@ -12,6 +12,7 @@ import it.unipr.aotlab.dmat.core.net.zeroMQ.Nodes;
 import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class MulMatricesT2 {
+    private static final int MATRIX_SIZE = 400;
     private static final String IP = "192.168.0.2";
     private static final String C_TOP = "CTop";
 	private static final String C_BOTTOM = "CBottom";
@@ -36,22 +37,22 @@ public class MulMatricesT2 {
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
-                    .setNofRows(400)
-                    .setNofColumns(400)
+                    .setNofRows(MATRIX_SIZE)
+                    .setNofColumns(MATRIX_SIZE)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix B = Matrices.newBuilder()
                     .setName("B")
-                    .setNofRows(400)
-                    .setNofColumns(400)
-                    .splitHorizzontalyChuck(null, 200, B_LEFT, B_RIGHT)
+                    .setNofRows(MATRIX_SIZE)
+                    .setNofColumns(MATRIX_SIZE)
+                    .splitHorizzontalyChuck(null, MATRIX_SIZE/2, B_LEFT, B_RIGHT)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix C = Matrices.newBuilder()
                     .setName("C")
-                    .setNofRows(400)
-                    .setNofColumns(400)
-                    .splitVerticallyChuck(null, 200, C_TOP, C_BOTTOM)
+                    .setNofRows(MATRIX_SIZE)
+                    .setNofColumns(MATRIX_SIZE)
+                    .splitVerticallyChuck(null, MATRIX_SIZE/2, C_TOP, C_BOTTOM)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             A.getChunk(null).assignChunkToNode(testNode0);

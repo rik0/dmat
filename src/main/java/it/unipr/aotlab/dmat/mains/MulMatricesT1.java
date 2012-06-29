@@ -27,20 +27,20 @@ public class MulMatricesT1 {
 
             Matrix A = Matrices.newBuilder()
                     .setName("A")
-                    .setNofRows(400)
-                    .setNofColumns(400)
+                    .setNofRows(800)
+                    .setNofColumns(800)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix B = Matrices.newBuilder()
                     .setName("B")
-                    .setNofRows(400)
-                    .setNofColumns(400)
+                    .setNofRows(800)
+                    .setNofColumns(800)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             Matrix C = Matrices.newBuilder()
                     .setName("C")
-                    .setNofRows(400)
-                    .setNofColumns(400)
+                    .setNofRows(800)
+                    .setNofColumns(800)
                     .setElementType(TypeWire.ElementType.INT32).build();
 
             A.getChunk(null).assignChunkToNode(testNode0);
