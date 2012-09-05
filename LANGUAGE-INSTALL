@@ -1,0 +1,38 @@
+                                                    it.unipr.aotlab
+                                                           05/09/12
+                                                           
+    -----     [[ DMAT LIBRARY ]]      Language branch     -----    
+
+This is the Language branch of the dmat library.
+It introduces classes and objects in the Scala programming language
+to write programs of master nodes.
+
+Compile:
+  Compiling the project, including scala sources, is possible
+  thanks to maven executing
+  
+      mvn compile
+  
+  Excluding scala sources from the process is still possible with
+  the following command:
+  
+      mvn -P'!scala-bindings' compile
+
+
+Package and other goals:
+  Idem as compile, simply replace the goal with the one you like!
+  
+  If you want to test only the java library and you have compiled
+  also the scala sources, please run mvn clear to remove them or
+  java will try to run (obviously without success) the
+  already-compiled scala tests
+
+
+Changing default behaviour:
+  If you want to change the default behaviour from "compile-all" to
+  "compile-without-scala", simply change the pom.xml: go to profile
+  with id scala-bindings, then to the tag activation, then switch
+  activeByDefault from true to false. Now mvn compile will not
+  include scala sources. If you want to include them, you must do
+  mvn -Pscala-bindings compile
+
