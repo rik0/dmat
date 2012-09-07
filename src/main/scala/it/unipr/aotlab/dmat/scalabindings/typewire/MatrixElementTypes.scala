@@ -23,7 +23,7 @@ object MatrixElementTypes extends Enum[MatrixElementType] {
     case object BOOL extends MatrixElementType { val wrapped = TypeWire.ElementType.BOOL }
     case object INT8 extends MatrixElementType { val wrapped = TypeWire.ElementType.INT8 }
     case object INT16 extends MatrixElementType { val wrapped = TypeWire.ElementType.INT16 }
-    case object INT36 extends MatrixElementType { val wrapped = TypeWire.ElementType.INT32 }
+    case object INT32 extends MatrixElementType { val wrapped = TypeWire.ElementType.INT32 }
     case object INT64 extends MatrixElementType { val wrapped = TypeWire.ElementType.INT64 }
     case object UINT8 extends MatrixElementType { val wrapped = TypeWire.ElementType.UINT8 }
     case object UINT16 extends MatrixElementType { val wrapped = TypeWire.ElementType.UINT16 }
