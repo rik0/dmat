@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+  <classpathentry kind="src" path="src/test/java" output="target/test-classes" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
+  <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/org/zeromq/jzmq/1.0.0/jzmq-1.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/protobuf/protobuf-java/2.4.1/protobuf-java-2.4.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/mojo/appassembler-maven-plugin/1.2/appassembler-maven-plugin-1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/mojo/appassembler/appassembler-model/1.2/appassembler-model-1.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-utils/1.5.6/plexus-utils-1.5.6.jar"/>
+  <classpathentry kind="var" path="M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar"/>
+  <classpathentry kind="var" path="M2_REPO/stax/stax/1.1.1-dev/stax-1.1.1-dev.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit/junit/4.10/junit-4.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-plugin-api/2.0/maven-plugin-api-2.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-project/2.0.10/maven-project-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-settings/2.0.10/maven-settings-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-model/2.0.10/maven-model-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-interpolation/1.1/plexus-interpolation-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-profile/2.0.10/maven-profile-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-artifact-manager/2.0.10/maven-artifact-manager-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-repository-metadata/2.0.10/maven-repository-metadata-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-artifact/2.0.10/maven-artifact-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/maven/maven-plugin-registry/2.0.10/maven-plugin-registry-2.0.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/junit-addons/junit-addons/1.4/junit-addons-1.4.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar"/>
+  <classpathentry kind="var" path="M2_REPO/gnu/getopt/java-getopt/1.0.13/java-getopt-1.0.13.jar"/>
+</classpath>

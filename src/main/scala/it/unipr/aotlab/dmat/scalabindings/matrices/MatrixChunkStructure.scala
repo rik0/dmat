@@ -28,10 +28,10 @@ class MatrixChunkStructure(val size: MatrixDims, val name: String, val offset: M
 
 
 
-case class MatrixHJoinedChunkStructure(left: MatrixChunkStructure, right: MatrixChunkStructure) extends MatrixChunkStructure(left.size.rows x (left.size.cols+right.size.cols),null,left.offset) {
+case class MatrixHJoinedChunkStructure(left: MatrixChunkStructure, right: MatrixChunkStructure) extends MatrixChunkStructure(left.size.rows x (left.size.cols+right.size.cols),left.name,left.offset) {
 	assert(left.size.rows == right.size.rows)
 }
 
-case class MatrixVJoinedChunkStructure(left: MatrixChunkStructure, right: MatrixChunkStructure) extends MatrixChunkStructure((left.size.rows+right.size.rows) x left.size.cols,null,left.offset) {
-	assert(left.size.cols == right.size.cols)
+case class MatrixVJoinedChunkStructure(top: MatrixChunkStructure, bottom: MatrixChunkStructure) extends MatrixChunkStructure((top.size.rows+bottom.size.rows) x top.size.cols,top.name,top.offset) {
+	assert(top.size.cols == bottom.size.cols)
 }

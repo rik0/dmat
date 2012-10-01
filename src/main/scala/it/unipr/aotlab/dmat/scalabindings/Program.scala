@@ -17,11 +17,11 @@ class Program {
 	implicit def integer_to_MatrixRows(r: Int): MatrixRows = new MatrixRows(r)
 	implicit def integer_to_MatrixCols(c: Int): MatrixCols = new MatrixCols(c)
 	
-	def B(name: String, size: MatrixDims): MatrixChunkStructure = { println("B("+name+")"); MatrixChunkStructure(size,name) }
+	def B(name: String, size: MatrixDims): MatrixChunkStructure = { println("[SCALA] B("+name+")"); MatrixChunkStructure(size,name) }
 	
 	
 	def register(name: String, matrix: Matrix)(implicit auth: Matrix.AuthToken with NotNull) {
-		println("Registering matrix "+name+"...");
+		println("[SCALA] Registering matrix "+name+"...");
 		mymatrices.put(name,matrix)
 	}
 	

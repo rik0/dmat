@@ -9,6 +9,7 @@ do
     return 0;
   elif [ $arg = "-v" -o $arg = "--version" ]; then
     echo "dmat-master version 1.0";
+    scalac -version
     return 0;
   fi
 done
@@ -28,5 +29,5 @@ NAME=$1
 BASEDIR=`dirname $0`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
 
-scala -cp $BASEDIR/target/dmat-1.0-SNAPSHOT.jar $1
+scala -cp $BASEDIR/target/dmat-1.0-SNAPSHOT.jar -Djava.library.path=$BASEDIR/usr/lib $1
 

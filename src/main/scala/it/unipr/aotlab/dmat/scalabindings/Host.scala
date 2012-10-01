@@ -1,13 +1,27 @@
 package it.unipr.aotlab.dmat.scalabindings
 
 import it.unipr.aotlab.dmat.scalabindings.matrices.MatrixInterface
+import it.unipr.aotlab.dmat.scalabindings.matrices.Matrix
+
+import it.unipr.aotlab.dmat.core.net.Node;
+import it.unipr.aotlab.dmat.core.matrices.Chunk;
 
 
 class Host(val ip: String, val port: Int)
-		extends (Host CanHaveAssigned MatrixInterface)
-		with (Host CanReceive MatrixInterface) {
+		extends (Host CanHaveAssigned MatrixInterface) {
 	
-	def print() = println("//"+ip+":"+port+"/")
+	def print() = println("[SCALA] //"+ip+":"+port+"/")
+	
+	def setImplementation(impl: it.unipr.aotlab.dmat.core.net.Node)(implicit auth: NetGroup.AuthToken with NotNull): Host = {
+		jimpl = impl;
+		return this;
+	}
+	
+	def chunkToNodeAssignationJImplementation(cimpl: Chunk)(implicit auth: MatrixInterface.AuthToken with NotNull) {
+		cimpl.assignChunkToNode(jimpl);
+	}
+	
+	private var jimpl: it.unipr.aotlab.dmat.core.net.Node = _;
 	
 }
 
@@ -23,6 +37,6 @@ class HostName(it: String, ng: NetGroup) {
 	def at(ip: String, port: Int): Host = {
 		val h: Host = new Host(ip,port)
 		if (ng != null) ng.register(it,h)
-		h
+		return h
 	}
 }
