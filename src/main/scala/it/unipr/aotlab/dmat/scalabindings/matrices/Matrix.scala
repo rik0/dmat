@@ -7,6 +7,9 @@ import it.unipr.aotlab.dmat.scalabindings.InitializableIn
 import it.unipr.aotlab.dmat.scalabindings.typewire.MatrixElementType
 
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
+import it.unipr.aotlab.dmat.core.generated.TypeWire;
+import it.unipr.aotlab.dmat.core.net.Message;
 
 object MatrixInterface {
 	sealed trait AuthToken
@@ -37,7 +40,7 @@ class MatrixChunk(val parent: Matrix, impl: Chunk) extends MatrixInterface {
 	
 	def assignTo(node: Host) = {
 		node.chunkToNodeAssignationJImplementation(jimpl);
-		println("[SCALA] Chunk "+name+" of matrix "+parent.name+" assigned to node //"+node.ip+":"+node.port+"/")
+		println("[SCALA] Chunk "+jimpl+" of matrix "+parent.name+" assigned to node //"+node.ip+":"+node.port+"/")
 	}
 	
 	override def toString(): String = impl.toString();
@@ -64,8 +67,13 @@ class Matrix(val name: String, size: MatrixDims, impl: MatrixImpl, eltype: Matri
 	
 	
 	class WithLoadedVals extends InitializableIn[Host,Unit] {
+		private var jMsgBuilder: OrderSetMatrixBody.Builder = _;
+// 		 OrderSetMatrixBody.newBuilder()
+// 		jMsgBuilder.setMatrixId(Matrix.this.jimpl.getMatrixId());
+		
 		def loadFromURL(url: String): WithLoadedVals = {
 			this.url = url
+// 			jMsgBuilder.setURI(url);
 			println("[SCALA] Matrix "+name+" loads values from file "+url+".");
 			return this
 		}
@@ -74,7 +82,7 @@ class Matrix(val name: String, size: MatrixDims, impl: MatrixImpl, eltype: Matri
 			println("[SCALA] Matrix "+name+" initialized in node //"+node.ip+":"+node.port+"/")
 		}
 		
-		var url: String = _
+		private var url: String = _
 	}
 	
 	def loadValuesFromFile(fname: String): WithLoadedVals = {

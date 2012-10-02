@@ -57,12 +57,12 @@ class MatrixBuilder(prog: Program) {
 		struct match {
 			case MatrixHJoinedChunkStructure(l,r) =>
 				println("[SCALA] H split("+owname+") "+struct.name+"("+name+") ==> ( "+l.name+" / "+r.name+" )")
-				jimpl.splitVerticallyChuck(name,l.size.cols.number,l.name,r.name);
+				jimpl.splitVerticallyChuck(name,r.offset.cols.number,l.name,r.name);
 				split_impl(l)
 				split_impl(r)
 			case MatrixVJoinedChunkStructure(t,b) =>
 				println("[SCALA] V split("+owname+") "+struct.name+"("+name+") ==> ( "+t.name+" - "+b.name+" )")
-				jimpl.splitHorizzontalyChuck(name,t.size.rows.number,t.name,b.name);
+				jimpl.splitHorizzontalyChuck(name,b.offset.rows.number,t.name,b.name);
 				split_impl(t)
 				split_impl(b)
 			case MatrixChunkStructure(s,n,o) =>

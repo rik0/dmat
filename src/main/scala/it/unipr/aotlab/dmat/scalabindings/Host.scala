@@ -21,6 +21,11 @@ class Host(val ip: String, val port: Int)
 		cimpl.assignChunkToNode(jimpl);
 	}
 	
+// 	def getJImplementation(implicit auth: MatrixInterface.AuthToken with NotNull): it.unipr.aotlab.dmat.core.net.Node = {
+// 		return jimpl
+// 	}
+	
+	
 	private var jimpl: it.unipr.aotlab.dmat.core.net.Node = _;
 	
 }

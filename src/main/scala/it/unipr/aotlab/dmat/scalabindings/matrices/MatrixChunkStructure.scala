@@ -14,24 +14,37 @@ object MatrixChunkStructure {
 	
 }
 
-class MatrixChunkStructure(val size: MatrixDims, val name: String, val offset: MatrixDims) {
+class MatrixChunkStructure(val size: MatrixDims, val name: String, var offset: MatrixDims) {
+	import IntToDims._;
 	
 	def /(rhv: MatrixChunkStructure): MatrixChunkStructure = {
 		require(size.rows == rhv.size.rows)
+		rhv.shiftH(this)
 		MatrixHJoinedChunkStructure(this,rhv)
 	}
 	def -(rhv: MatrixChunkStructure): MatrixChunkStructure = {
 		require(size.cols == rhv.size.cols)
+		rhv.shiftH(this)
 		MatrixVJoinedChunkStructure(this,rhv)
 	}
+	
+	private def shiftH(lhv: MatrixChunkStructure) {
+		offset = offset.rows x (offset.cols.number + lhv.size.cols.number)
+	}
+	private def shiftV(lhv: MatrixChunkStructure) {
+		offset = (offset.rows.number + lhv.size.rows.number) x offset.cols
+	}
+	
 }
 
 
 
 case class MatrixHJoinedChunkStructure(left: MatrixChunkStructure, right: MatrixChunkStructure) extends MatrixChunkStructure(left.size.rows x (left.size.cols+right.size.cols),left.name,left.offset) {
+	import IntToDims._;
 	assert(left.size.rows == right.size.rows)
 }
 
 case class MatrixVJoinedChunkStructure(top: MatrixChunkStructure, bottom: MatrixChunkStructure) extends MatrixChunkStructure((top.size.rows+bottom.size.rows) x top.size.cols,top.name,top.offset) {
+	import IntToDims._;
 	assert(top.size.cols == bottom.size.cols)
 }

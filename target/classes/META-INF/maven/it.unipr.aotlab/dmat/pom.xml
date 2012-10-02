@@ -16,19 +16,11 @@
     </properties>
 
     <build>
-      <pluginManagement>
-	<plugins>
-	  <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>2.3.2</version>
-          </plugin>
-	</plugins>
-      </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -43,9 +35,9 @@
                         <id>protobuf</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <target>
+                            <tasks>
                                 <exec executable="proto/compile.sh" />
-                            </target>
+                            </tasks>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -166,22 +158,24 @@
 	  <maven.compiler.target>1.5</maven.compiler.target>
 	  <scala.version>2.8.0</scala.version>
 	</properties>
-	
-	<repositories>
-	  <repository>
-	    <id>scala-tools.org</id>
-	    <name>Scala-Tools Maven2 Repository</name>
-	    <url>http://scala-tools.org/repo-releases</url>
-	  </repository>
-	</repositories>
 
-	<pluginRepositories>
-	  <pluginRepository>
-	    <id>scala-tools.org</id>
-	    <name>Scala-Tools Maven2 Repository</name>
-	    <url>http://scala-tools.org/repo-releases</url>
-	  </pluginRepository>
-	</pluginRepositories>
+	<!--
+	  <repositories>
+	    <repository>
+	      <id>scala-tools.org</id>
+	      <name>Scala-Tools Maven2 Repository</name>
+	      <url>http://scala-tools.org/repo-releases</url>
+	    </repository>
+	  </repositories>
+
+	  <pluginRepositories>
+	    <pluginRepository>
+	      <id>scala-tools.org</id>
+	      <name>Scala-Tools Maven2 Repository</name>
+	      <url>http://scala-tools.org/repo-releases</url>
+	    </pluginRepository>
+	  </pluginRepositories>
+	-->
 	
 	<dependencies>
 	  <dependency>
@@ -189,7 +183,7 @@
 	    <artifactId>scala-library</artifactId>
 	    <version>${scala.version}</version>
 	  </dependency>
-	  
+
 	  <!-- Test -->
 	  <dependency>
 	    <groupId>junit</groupId>
@@ -212,21 +206,14 @@
 	</dependencies>
 
 	<build>
-	  <pluginManagement>
-	    <plugins>
-	      <plugin>
-		<groupId>org.scala-tools</groupId>
-		<artifactId>maven-scala-plugin</artifactId>
-		<version>2.15.0</version>
-	      </plugin>
-	    </plugins>
-	  </pluginManagement>
-	  
+	  <!--<sourceDirectory>src/main/scala</sourceDirectory>
+	  <testSourceDirectory>src/test/scala</testSourceDirectory>-->
 	  <plugins>
 	    <plugin>
 	      <groupId>org.scala-tools</groupId>
 	      <artifactId>maven-scala-plugin</artifactId>
-	      <!--<executions>
+	      <version>2.15.0</version>
+	      <executions>
 		<execution>
 		  <goals>
 		    <goal>compile</goal>
@@ -235,7 +222,7 @@
 		  <configuration>
 
 		    <args>
-		      --><!--<arg>-make:transitive</arg>--><!--
+		      <!--<arg>-make:transitive</arg>-->
 		      <arg>-dependencyfile</arg>
 		      <arg>${project.build.directory}/.scala_dependencies</arg>
 		    </args>
@@ -245,76 +232,8 @@
 		    </jvmArgs>
 		  </configuration>
 		</execution>
-	      </executions>-->
-	      <configuration>
-		<displayCmd>true</displayCmd>
-	      </configuration>
-	      <executions>
-		<!--<execution>
-		  <id>cccccccccompile</id>
-		  <phase>compile</phase>
-		  <configuration>
-		    <target>
-		      <echo message="[::::::::::::::::::::::::MAVEN_COMPILE_CLASSPATH::::::::::::::::::::::] ====]]]] ${maven.compile.classpath}" />
-		      <echo message="[::::::::::::::::::::::::PROJECT_BUILD_DIRECTORY::::::::::::::::::::::] ====]]]] ${project.build.directory}" />
-		    </target>
-		  </configuration>
-		</execution>-->
-		
-		<execution>
-		  <id>scala-compile</id>
-		  <phase>compile</phase>
-		  <goals>
-		    <goal>compile</goal>
-		  </goals>
-		  <configuration>
-		    <sourceDirectory>src/main/scala</sourceDirectory>
-		    <testSourceDirectory>src/test/scala</testSourceDirectory>
-		    <args>
-		      <arg>-make:transitive</arg>
-		      <arg>-dependencyfile</arg>
-		      <arg>${project.build.directory/.scala_dependencies</arg>
-		    </args>
-		    <jvmArgs>
-		      <jvmArg>-Xm128m</jvmArg>
-		      <jvmArg>-Djava.library.path=$BASEDIR/usr/lib</jvmArg>
-		    </jvmArgs>
-		    <scalaVersion>${scala.version}</scalaVersion>
-		  </configuration>
-		</execution>  
-		
-		<execution>
-		  <id>scala-test-compile</id>
-		  <phase>process-test-resources</phase>
-		  <goals>
-		    <goal>testCompile</goal>
-		  </goals>
-		</execution>
-		
-		<execution>
-		  <id>scala-compile-first</id>
-		  <phase>process-resources</phase>
-		  <goals>
-		    <goal>add-source</goal>
-		    <goal>compile</goal>
-		  </goals>
-		</execution>
-		
 	      </executions>
 	    </plugin>
-	    <plugin>
-	      <groupId>org.apache.maven.plugins</groupId>
-	      <artifactId>maven-compiler-plugin</artifactId>
-	      <executions>
-		<execution>
-		  <phase>compile</phase>
-		  <goals>
-		    <goal>compile</goal>
-		  </goals>
-		</execution>
-	      </executions>
-	    </plugin>
-	    
 	    <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-surefire-plugin</artifactId>
@@ -332,7 +251,6 @@
 	      </configuration>
 	    </plugin>
 	    
-	    <!--
 	    <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-shade-plugin</artifactId>
@@ -359,7 +277,7 @@
 		</execution>
 	      </executions>
 	    </plugin>
-	    -->
+	    
 	  </plugins>
 	</build>
 	
