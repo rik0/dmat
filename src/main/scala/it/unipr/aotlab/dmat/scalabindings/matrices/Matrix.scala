@@ -67,13 +67,12 @@ class Matrix(val name: String, size: MatrixDims, impl: MatrixImpl, eltype: Matri
 	
 	
 	class WithLoadedVals extends InitializableIn[Host,Unit] {
-		private var jMsgBuilder: OrderSetMatrixBody.Builder = _;
-// 		 OrderSetMatrixBody.newBuilder()
-// 		jMsgBuilder.setMatrixId(Matrix.this.jimpl.getMatrixId());
+		private var jMsgBuilder: OrderSetMatrixBody.Builder = OrderSetMatrixBody.newBuilder();
+		jMsgBuilder.setMatrixId(Matrix.this.jimpl.getMatrixId());
 		
 		def loadFromURL(url: String): WithLoadedVals = {
 			this.url = url
-// 			jMsgBuilder.setURI(url);
+			jMsgBuilder.setURI(url);
 			println("[SCALA] Matrix "+name+" loads values from file "+url+".");
 			return this
 		}

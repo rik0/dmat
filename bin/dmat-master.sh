@@ -29,5 +29,6 @@ NAME=$1
 BASEDIR=`dirname $0`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
 
+echo "BASEDIR ============> "$BASEDIR
 scala -cp $BASEDIR/target/dmat-1.0-SNAPSHOT.jar -Djava.library.path=$BASEDIR/usr/lib $1
 
