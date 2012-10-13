@@ -16,19 +16,19 @@ public class MulMatrices2 {
     public static void main(String[] argv) {
         NodeWorkGroup register = NodeWorkGroup.builder().
                 masterId("master").
-                masterAddress(new IPAddress("192.168.0.2", 5672)).build();
+                masterAddress(new IPAddress("192.168.1.160", 5672)).build();
 
        try {
             Nodes nodes = new Nodes(register);
 
             Node testNode = nodes.setNodeName("testNode")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6000)).build();
+                    .setNodeAddress(new IPAddress("192.168.1.160", 6000)).build();
             Node testNode1 = nodes.setNodeName("testNode1")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6001)).build();
+                    .setNodeAddress(new IPAddress("192.168.1.160", 6001)).build();
             Node testNode2 = nodes.setNodeName("testNode2")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6002)).build();
+                    .setNodeAddress(new IPAddress("192.168.1.160", 6002)).build();
             Node testNode3 = nodes.setNodeName("testNode3")
-                    .setNodeAddress(new IPAddress("192.168.0.2", 6003)).build();
+                    .setNodeAddress(new IPAddress("192.168.1.160", 6003)).build();
 
             register.initialize();
 

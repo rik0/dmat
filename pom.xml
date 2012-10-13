@@ -112,6 +112,18 @@
                             </mainClass>
                             <name>t4</name>
                         </program>
+			<program>
+                            <mainClass>
+                                it.unipr.aotlab.dmat.mains.MulMatrices
+                            </mainClass>
+                            <name>MulMatrices</name>
+                        </program>
+			<program>
+                            <mainClass>
+                                it.unipr.aotlab.dmat.mains.MulMatrices2
+                            </mainClass>
+                            <name>MulMatrices2</name>
+                        </program>
                     </programs>
                 </configuration>
             </plugin>

@@ -103,7 +103,9 @@ class Matrix(name: String, size: MatrixDims, impl: MatrixImpl, prog: Program)
 		}
 		
 		def initializeIn(node: Host) = {
-			node.getImplementation.sendMessage(new MessageSetMatrix(jMsgBuilder))
+			// need one for each chunk to initialize
+			for (c: Chunk <- jimpl.getChunks()) if (node.getImplementation.getNodeId() == c.getAssignedNodeId())
+			  node.getImplementation.sendMessage(new MessageSetMatrix(jMsgBuilder))
 			println("[SCALA] Matrix "+getName+" initialized in node //"+node.ip+":"+node.port+"/")
 		}
 		

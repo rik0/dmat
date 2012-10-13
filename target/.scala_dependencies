@@ -54,8 +54,8 @@
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/MatrixDims.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/MatrixDims.scala
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Host.scala
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Program.scala
-../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Master.scala
+../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/NetGroup.scala
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Host.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Host.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Host.scala
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Host.scala -> ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/Assignable.scala
@@ -149,6 +149,7 @@
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/MatrixChunk$Auth$.class
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix$.class
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/MatrixChunk$.class
+../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix$WithLoadedVals$$anonfun$initializeIn$1.class
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/MatrixInterface.class
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/MatrixInterface$AuthToken.class
 ../src/main/scala/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix.scala -> classes/it/unipr/aotlab/dmat/scalabindings/matrices/Matrix$$anonfun$exposeValues$1.class
