@@ -2,7 +2,7 @@ package it.unipr.aotlab.dmat.scalabindings.matrices
 
 
 
-class MatrixRows(val number: Int) {
+case class MatrixRows(val number: Int) {
 
 	def x(cols: MatrixCols): MatrixDims = new MatrixDims(this,cols);
 	
@@ -15,9 +15,11 @@ class MatrixRows(val number: Int) {
 		}
 	}
 	
+	override def toString = "rows: "+number
+	
 }
 
-class MatrixCols(val number: Int) {
+case class MatrixCols(val number: Int) {
 
 	def +(rhv: MatrixCols): MatrixCols = new MatrixCols(number+rhv.number)
 	
@@ -28,12 +30,23 @@ class MatrixCols(val number: Int) {
 		}
 	}
 	
+	override def toString = "cols: "+number
+	
 }
 
 
 class MatrixDims(val rows: MatrixRows, val cols: MatrixCols) {
 	
 	def +(rhv: MatrixDims): MatrixDims = (rows+rhv.rows) x (cols+rhv.cols)
+	
+	override def equals(that: Any) = {
+		that match {
+			case d: MatrixDims => rows == d.rows && cols == d.cols
+			case _ => false
+		}
+	}
+	
+	override def toString = rows.number+"x"+cols.number
 	
 }
 

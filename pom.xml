@@ -31,6 +31,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+		<executions>
+		  <execution>
+		    <phase>compile</phase>
+		    <goals>
+		      <goal>compile</goal>
+		    </goals>
+		  </execution>
+		</executions>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -226,8 +234,16 @@
 		<sourceDirectory>src/main/scala</sourceDirectory>
 		<testSourceDirectory>src/test/scala</testSourceDirectory>
 		<scalaVersion>${scala.version}</scalaVersion>
+		<args>
+		  <arg>-unchecked</arg>
+		  <arg>-deprecation</arg>
+		  <arg>-explaintypes</arg>
+		  <arg>-make:transitive</arg>
+		  <arg>-dependencyfile</arg>
+		  <arg>${project.build.directory}/.scala_dependencies</arg>
+		</args>
 		<sendJavaToScalac>false</sendJavaToScalac>
-		<outputDir>target/scala_classes</outputDir>
+		<!--<outputDir>target/scala_classes</outputDir>-->
 	      </configuration>
 	      <executions>
 		
@@ -252,22 +268,10 @@
 		  <phase>process-resources</phase>
 		  <goals>
 		    <goal>add-source</goal>
-		    <goal>compile</goal>
+		    <!--<goal>compile</goal>-->
 		  </goals>
 		</execution>
 		
-	      </executions>
-	    </plugin>
-	    <plugin>
-	      <groupId>org.apache.maven.plugins</groupId>
-	      <artifactId>maven-compiler-plugin</artifactId>
-	      <executions>
-		<execution>
-		  <phase>compile</phase>
-		  <goals>
-		    <goal>compile</goal>
-		  </goals>
-		</execution>
 	      </executions>
 	    </plugin>
 	    

@@ -122,6 +122,11 @@ public class Matrices {
 
         return this;
     }
+    
+    public Matrices setSemiring(TypeWire.SemiRing semiring) {
+	this.semiring = semiring;
+	return this;
+    }
 
     public Matrices setChunkMatrixOnTheWire(String chunkName,
             ChunkDescriptionWire.MatricesOnTheWire matrixOnTheWire)

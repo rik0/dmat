@@ -1,0 +1,609 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGBUS (0x7) at pc=0x00007f7c11ce953e, pid=9156, tid=140170904233728
+#
+# JRE version: 6.0_24-b24
+# Java VM: OpenJDK 64-Bit Server VM (20.0-b12 mixed mode linux-amd64 compressed oops)
+# Derivative: IcedTea6 1.11.4
+# Distribution: Ubuntu 12.04 LTS, package 6b24-1.11.4-1ubuntu0.12.04.1
+# Problematic frame:
+# C  [libzip.so+0x453e]  Java_java_util_zip_ZipEntry_initFields+0xc3e
+#
+# If you would like to submit a bug report, please include
+# instructions how to reproduce the bug and visit:
+#   https://bugs.launchpad.net/ubuntu/+source/openjdk-6/
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f7c0c008000):  JavaThread "main" [_thread_in_native, id=9157, stack(0x00007f7c14e46000,0x00007f7c14f47000)]
+
+siginfo:si_signo=SIGBUS: si_errno=0, si_code=2 (BUS_ADRERR), si_addr=0x00007f7c08bfe76e
+
+Registers:
+RAX=0x00007f7c0c237e30, RBX=0x00007f7c08bfe751, RCX=0x0000000000000063, RDX=0x00007f7c0c000020
+RSP=0x00007f7c14f3da00, RBP=0x00007f7c14f3da40, RSI=0x0000000000000040, RDI=0x0000000000000003
+R8 =0x0000000000000005, R9 =0x000000000000001f, R10=0x00007f7c09010d3b, R11=0x00007f7c144e25d0
+R12=0x00007f7c0c237e30, R13=0x00007f7c14f3dab0, R14=0x00007f7c0c22e7b0, R15=0x00007f7c0c22facc
+RIP=0x00007f7c11ce953e, EFLAGS=0x0000000000010202, CSGSFS=0x0000000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007f7c14f3da00)
+0x00007f7c14f3da00:   00007f7c14f3da20 00007f7c13ba3bb1
+0x00007f7c14f3da10:   00007f7c0c22e7b0 00007f7c0c22e7b0
+0x00007f7c14f3da20:   00000000d3fb7196 00007f7c14f3dab0
+0x00007f7c14f3da30:   0000000000000000 00007f7c0c22facc
+0x00007f7c14f3da40:   00007f7c14f3da90 00007f7c11ce9dea
+0x00007f7c14f3da50:   00007f7c0c008000 00007f7c0c23eab0
+0x00007f7c14f3da60:   00007f7c0c008000 00007f7c0c0081d0
+0x00007f7c14f3da70:   00007f7c14f3dab0 000000000000003e
+0x00007f7c14f3da80:   00007f7c14f3df88 00007f7c14f3dab0
+0x00007f7c14f3da90:   00007f7c14f3def0 00007f7c11ce84a9
+0x00007f7c14f3daa0:   0000003e00f3daa0 00007f7c0c22e7b0
+0x00007f7c14f3dab0:   7270696e752f7469 2f62616c746f612f
+0x00007f7c14f3dac0:   726f632f74616d64 7473696765722f65
+0x00007f7c14f3dad0:   6f72657a2f737265 5765646f4e2f514d
+0x00007f7c14f3dae0:   70756f72476b726f 00007373616c632e
+0x00007f7c14f3daf0:   00007f7c090a3a94 0000000000000000
+0x00007f7c14f3db00:   00007f7c0900df56 00000000faec5ae0
+0x00007f7c14f3db10:   00000000f0451ab0 00000000faec92f0
+0x00007f7c14f3db20:   66222b3f00000002 000000014205fb4f
+0x00007f7c14f3db30:   00007f7cda60d080 0000000000000001
+0x00007f7c14f3db40:   00007f7c14f3db40 00000000e668a0ff
+0x00007f7c14f3db50:   00007f7c14f3dbb0 00000000e697a818
+0x00007f7c14f3db60:   00007f7c14f3dbd0 00007f7c0900596e
+0x00007f7c14f3db70:   00000000faec7ab8 00007f7c0900596e
+0x00007f7c14f3db80:   00007f7c0c008d70 00000000f0451ab0
+0x00007f7c14f3db90:   00007f7c14f3db90 00000000e6a7037c
+0x00007f7c14f3dba0:   00007f7c14f3dbe0 00000000e6ba11c0
+0x00007f7c14f3dbb0:   00000000e740c5f8 00000000e6a70388
+0x00007f7c14f3dbc0:   0000000000000000 00007f7c14f3dbe0
+0x00007f7c14f3dbd0:   00007f7c14f3dc28 00007f7c0900596e
+0x00007f7c14f3dbe0:   00000000faec92f0 00007f7c14f3dbe8
+0x00007f7c14f3dbf0:   00000000e6ba05c9 00007f7c14f3dc38 
+
+Instructions: (pc=0x00007f7c11ce953e)
+0x00007f7c11ce951e:   c7 00 00 00 00 00 48 c7 40 30 00 00 00 00 48 c7
+0x00007f7c11ce952e:   40 28 00 00 00 00 8b 1b 49 2b 5e 28 49 03 5e 18
+0x00007f7c11ce953e:   44 0f b6 7b 1d 0f b6 43 1c 0f b6 53 0c 0f b6 4b
+0x00007f7c11ce954e:   0e 44 0f b6 6b 1f 41 c1 e7 08 41 09 c7 0f b6 43 
+
+Register to memory mapping:
+
+RAX=0x00007f7c0c237e30 is an unknown value
+RBX=0x00007f7c08bfe751 is an unknown value
+RCX=0x0000000000000063 is an unknown value
+RDX=0x00007f7c0c000020 is an unknown value
+RSP=0x00007f7c14f3da00 is pointing into the stack for thread: 0x00007f7c0c008000
+RBP=0x00007f7c14f3da40 is pointing into the stack for thread: 0x00007f7c0c008000
+RSI=0x0000000000000040 is an unknown value
+RDI=0x0000000000000003 is an unknown value
+R8 =0x0000000000000005 is an unknown value
+R9 =0x000000000000001f is an unknown value
+R10=0x00007f7c09010d3b is an Interpreter codelet
+method entry point (kind = native)  [0x00007f7c09010ae0, 0x00007f7c09011320]  2112 bytes
+R11=0x00007f7c144e25d0: <offset 0x1835d0> in /lib/x86_64-linux-gnu/libc.so.6 at 0x00007f7c1435f000
+R12=0x00007f7c0c237e30 is an unknown value
+R13=0x00007f7c14f3dab0 is pointing into the stack for thread: 0x00007f7c0c008000
+R14=0x00007f7c0c22e7b0 is an unknown value
+R15=0x00007f7c0c22facc is an unknown value
+
+
+Stack: [0x00007f7c14e46000,0x00007f7c14f47000],  sp=0x00007f7c14f3da00,  free space=990k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libzip.so+0x453e]  Java_java_util_zip_ZipEntry_initFields+0xc3e
+C  [libzip.so+0x4dea]  ZIP_GetEntry+0xba
+C  [libzip.so+0x34a9]  Java_java_util_zip_ZipFile_getEntry+0x119
+j  java.util.zip.ZipFile.getEntry(JLjava/lang/String;Z)J+0
+j  java.util.zip.ZipFile.getInputStream(Ljava/lang/String;)Ljava/io/InputStream;+34
+j  java.util.zip.ZipFile.getInputStream(Ljava/util/zip/ZipEntry;)Ljava/io/InputStream;+5
+j  scala.tools.nsc.io.FileZipArchive$FileEntry$1.input()Ljava/io/InputStream;+8
+j  scala.tools.nsc.io.AbstractFile.toByteArray()[B+1
+j  scala.tools.nsc.symtab.classfile.AbstractFileReader.<init>(Lscala/tools/nsc/io/AbstractFile;)V+11
+j  scala.tools.nsc.symtab.classfile.ClassfileParser.parse(Lscala/tools/nsc/io/AbstractFile;Lscala/tools/nsc/symtab/Symbols$Symbol;)V+64
+j  scala.tools.nsc.symtab.SymbolLoaders$ClassfileLoader.doComplete(Lscala/tools/nsc/symtab/Symbols$Symbol;)V+22
+j  scala.tools.nsc.symtab.SymbolLoaders$SymbolLoader.complete(Lscala/tools/nsc/symtab/Symbols$Symbol;)V+22
+j  scala.tools.nsc.symtab.SymbolLoaders$SymbolLoader.load(Lscala/tools/nsc/symtab/Symbols$Symbol;)V+2
+j  scala.tools.nsc.symtab.Symbols$Symbol.typeParams()Lscala/collection/immutable/List;+55
+j  scala.tools.nsc.transform.SpecializeTypes.specializedTypeVars(Lscala/tools/nsc/symtab/Types$Type;)Lscala/collection/immutable/Set;+174
+j  scala.tools.nsc.transform.SpecializeTypes.specializedTypeVars(Lscala/tools/nsc/symtab/Types$Type;)Lscala/collection/immutable/Set;+303
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$specializedTypeVars$2.apply()Lscala/collection/immutable/Set;+11
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$specializedTypeVars$2.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.symtab.SymbolTable.atPhase(Lscala/tools/nsc/Phase;Lscala/Function0;)Ljava/lang/Object;+14
+j  scala.tools.nsc.transform.SpecializeTypes.specializedTypeVars(Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/Set;+27
+j  scala.tools.nsc.transform.SpecializeTypes.scala$tools$nsc$transform$SpecializeTypes$$specializeMember(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/collection/immutable/Map;Lscala/collection/immutable/List;)Lscala/collection/immutable/List;+59
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$13$$anonfun$apply$15.apply(Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/List;+35
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$13$$anonfun$apply$15.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.TraversableLike$$anonfun$flatMap$1.apply(Ljava/lang/Object;)Lscala/collection/mutable/Builder;+9
+j  scala.collection.TraversableLike$$anonfun$flatMap$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+2
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  java.util.zip.ZipFile.getEntry(JLjava/lang/String;Z)J+0
+j  java.util.zip.ZipFile.getInputStream(Ljava/lang/String;)Ljava/io/InputStream;+34
+j  java.util.zip.ZipFile.getInputStream(Ljava/util/zip/ZipEntry;)Ljava/io/InputStream;+5
+j  scala.tools.nsc.io.FileZipArchive$FileEntry$1.input()Ljava/io/InputStream;+8
+j  scala.tools.nsc.io.AbstractFile.toByteArray()[B+1
+j  scala.tools.nsc.symtab.classfile.AbstractFileReader.<init>(Lscala/tools/nsc/io/AbstractFile;)V+11
+j  scala.tools.nsc.symtab.classfile.ClassfileParser.parse(Lscala/tools/nsc/io/AbstractFile;Lscala/tools/nsc/symtab/Symbols$Symbol;)V+64
+j  scala.tools.nsc.symtab.SymbolLoaders$ClassfileLoader.doComplete(Lscala/tools/nsc/symtab/Symbols$Symbol;)V+22
+j  scala.tools.nsc.symtab.SymbolLoaders$SymbolLoader.complete(Lscala/tools/nsc/symtab/Symbols$Symbol;)V+22
+j  scala.tools.nsc.symtab.SymbolLoaders$SymbolLoader.load(Lscala/tools/nsc/symtab/Symbols$Symbol;)V+2
+j  scala.tools.nsc.symtab.Symbols$Symbol.typeParams()Lscala/collection/immutable/List;+55
+j  scala.tools.nsc.transform.SpecializeTypes.specializedTypeVars(Lscala/tools/nsc/symtab/Types$Type;)Lscala/collection/immutable/Set;+174
+j  scala.tools.nsc.transform.SpecializeTypes.specializedTypeVars(Lscala/tools/nsc/symtab/Types$Type;)Lscala/collection/immutable/Set;+303
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$specializedTypeVars$2.apply()Lscala/collection/immutable/Set;+11
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$specializedTypeVars$2.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.symtab.SymbolTable.atPhase(Lscala/tools/nsc/Phase;Lscala/Function0;)Ljava/lang/Object;+14
+j  scala.tools.nsc.transform.SpecializeTypes.specializedTypeVars(Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/Set;+27
+j  scala.tools.nsc.transform.SpecializeTypes.scala$tools$nsc$transform$SpecializeTypes$$specializeMember(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/collection/immutable/Map;Lscala/collection/immutable/List;)Lscala/collection/immutable/List;+59
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$13$$anonfun$apply$15.apply(Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/List;+35
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$13$$anonfun$apply$15.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.TraversableLike$$anonfun$flatMap$1.apply(Ljava/lang/Object;)Lscala/collection/mutable/Builder;+9
+j  scala.collection.TraversableLike$$anonfun$flatMap$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+2
+J  scala.collection.immutable.List.foreach(Lscala/Function1;)V
+j  scala.collection.TraversableLike$class.flatMap(Lscala/collection/TraversableLike;Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+24
+j  scala.collection.immutable.List.flatMap(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+3
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$13.apply(Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/List;+64
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$13.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+j  scala.collection.TraversableLike$$anonfun$flatMap$1.apply(Ljava/lang/Object;)Lscala/collection/mutable/Builder;+9
+j  scala.collection.TraversableLike$$anonfun$flatMap$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+2
+J  scala.collection.immutable.List.foreach(Lscala/Function1;)V
+j  scala.collection.TraversableLike$class.flatMap(Lscala/collection/TraversableLike;Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+24
+j  scala.collection.immutable.List.flatMap(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;+3
+j  scala.tools.nsc.transform.SpecializeTypes.specializeClass(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/collection/immutable/Map;)Lscala/collection/immutable/List;+26
+j  scala.tools.nsc.transform.SpecializeTypes.transformInfo(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/tools/nsc/symtab/Types$Type;)Lscala/tools/nsc/symtab/Types$Type;+423
+j  scala.tools.nsc.transform.InfoTransform$Phase$$anon$1.transform(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/tools/nsc/symtab/Types$Type;)Lscala/tools/nsc/symtab/Types$Type;+9
+J  scala.tools.nsc.symtab.Symbols$Symbol.rawInfo()Lscala/tools/nsc/symtab/Types$Type;
+J  scala.tools.nsc.symtab.Symbols$Symbol.info()Lscala/tools/nsc/symtab/Types$Type;
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$transformInfo$2$$anonfun$apply$29.apply(Lscala/tools/nsc/symtab/Types$Type;)Lscala/tools/nsc/symtab/Types$Type;+4
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$transformInfo$2$$anonfun$apply$29.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+J  scala.collection.immutable.List.map(Lscala/Function1;Lscala/collection/generic/CanBuildFrom;)Ljava/lang/Object;
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$transformInfo$2.apply()Lscala/collection/immutable/List;+18
+j  scala.tools.nsc.transform.SpecializeTypes$$anonfun$transformInfo$2.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.symtab.SymbolTable.atPhase(Lscala/tools/nsc/Phase;Lscala/Function0;)Ljava/lang/Object;+14
+j  scala.tools.nsc.transform.SpecializeTypes.transformInfo(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/tools/nsc/symtab/Types$Type;)Lscala/tools/nsc/symtab/Types$Type;+324
+j  scala.tools.nsc.transform.InfoTransform$Phase$$anon$1.transform(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/tools/nsc/symtab/Types$Type;)Lscala/tools/nsc/symtab/Types$Type;+9
+J  scala.tools.nsc.symtab.Symbols$Symbol.rawInfo()Lscala/tools/nsc/symtab/Types$Type;
+J  scala.tools.nsc.symtab.Symbols$Symbol.info()Lscala/tools/nsc/symtab/Types$Type;
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6$$anonfun$implSpecClasses$1.apply(Lscala/reflect/generic/Trees$Tree;)V+31
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6$$anonfun$implSpecClasses$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+J  scala.collection.immutable.List.foreach(Lscala/Function1;)V
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.implSpecClasses(Lscala/collection/immutable/List;)Lscala/collection/immutable/List;+18
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+1777
+j  scala.tools.nsc.ast.Trees$Transformer.transformTemplate(Lscala/reflect/generic/Trees$Template;)Lscala/reflect/generic/Trees$Template;+2
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transform$2.apply()Lscala/reflect/generic/Trees$ClassDef;+45
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transform$2.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.ast.Trees$Transformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+11
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/reflect/generic/Trees$Tree;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+57
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+7
+j  scala.tools.nsc.ast.Trees$Transformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+198
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+72
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+4008
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transformStats$1.apply(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+81
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transformStats$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+J  scala.collection.immutable.List.loop$1(Lscala/collection/mutable/ListBuffer;Lscala/collection/immutable/List;Lscala/collection/immutable/List;Lscala/Function1;)Lscala/collection/immutable/List;
+J  scala.collection.immutable.List.mapConserve(Lscala/Function1;)Lscala/collection/immutable/List;
+j  scala.tools.nsc.ast.Trees$Transformer.transformStats(Lscala/collection/immutable/List;Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/List;+10
+j  scala.tools.nsc.ast.Trees$Transformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+811
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+72
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+4008
+j  scala.tools.nsc.ast.Trees$Transformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+820
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+72
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+4008
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transform$5.apply()Lscala/reflect/generic/Trees$DefDef;+67
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transform$5.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.ast.Trees$Transformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+11
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/reflect/generic/Trees$Tree;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+57
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+7
+j  scala.tools.nsc.ast.Trees$Transformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+496
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+72
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+4008
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transformTrees$1.apply(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+5
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transformTrees$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+J  scala.collection.immutable.List.loop$1(Lscala/collection/mutable/ListBuffer;Lscala/collection/immutable/List;Lscala/collection/immutable/List;Lscala/Function1;)Lscala/collection/immutable/List;
+J  scala.collection.immutable.List.mapConserve(Lscala/Function1;)Lscala/collection/immutable/List;
+j  scala.tools.nsc.ast.Trees$Transformer.transformTrees(Lscala/collection/immutable/List;)Lscala/collection/immutable/List;+9
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6$$anonfun$transform$16.apply()Lscala/collection/immutable/List;+17
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6$$anonfun$transform$16.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.ast.Trees$Transformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+11
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/reflect/generic/Trees$Tree;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+57
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+7
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+1922
+j  scala.tools.nsc.ast.Trees$Transformer.transformTemplate(Lscala/reflect/generic/Trees$Template;)Lscala/reflect/generic/Trees$Template;+2
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transform$2.apply()Lscala/reflect/generic/Trees$ClassDef;+45
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transform$2.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.ast.Trees$Transformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+11
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/reflect/generic/Trees$Tree;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+57
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+7
+j  scala.tools.nsc.ast.Trees$Transformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+198
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+72
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+4008
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transformStats$1.apply(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+81
+j  scala.tools.nsc.ast.Trees$Transformer$$anonfun$transformStats$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+J  scala.collection.immutable.List.loop$1(Lscala/collection/mutable/ListBuffer;Lscala/collection/immutable/List;Lscala/collection/immutable/List;Lscala/Function1;)Lscala/collection/immutable/List;
+J  scala.collection.immutable.List.mapConserve(Lscala/Function1;)Lscala/collection/immutable/List;
+j  scala.tools.nsc.ast.Trees$Transformer.transformStats(Lscala/collection/immutable/List;Lscala/tools/nsc/symtab/Symbols$Symbol;)Lscala/collection/immutable/List;+10
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6$$anonfun$transform$15.apply()Lscala/reflect/generic/Trees$PackageDef;+79
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6$$anonfun$transform$15.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.ast.Trees$Transformer.atOwner(Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+11
+j  scala.tools.nsc.transform.TypingTransformers$TypingTransformer.atOwner(Lscala/reflect/generic/Trees$Tree;Lscala/tools/nsc/symtab/Symbols$Symbol;Lscala/Function0;)Ljava/lang/Object;+57
+j  scala.tools.nsc.transform.SpecializeTypes$$anon$6.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+1714
+j  scala.tools.nsc.transform.SpecializeTypes$SpecializationTransformer$$anonfun$transform$37.apply()Lscala/reflect/generic/Trees$Tree;+21
+j  scala.tools.nsc.transform.SpecializeTypes$SpecializationTransformer$$anonfun$transform$37.apply()Ljava/lang/Object;+1
+j  scala.tools.nsc.symtab.SymbolTable.atPhase(Lscala/tools/nsc/Phase;Lscala/Function0;)Ljava/lang/Object;+14
+j  scala.tools.nsc.transform.SpecializeTypes$SpecializationTransformer.transform(Lscala/reflect/generic/Trees$Tree;)Lscala/reflect/generic/Trees$Tree;+65
+j  scala.tools.nsc.ast.Trees$Transformer.transformUnit(Lscala/tools/nsc/ast/Trees$CompilationUnitTrait;)V+8
+j  scala.tools.nsc.transform.Transform$Phase.apply(Lscala/tools/nsc/CompilationUnits$CompilationUnit;)V+11
+j  scala.tools.nsc.Global$GlobalPhase.applyPhase(Lscala/tools/nsc/CompilationUnits$CompilationUnit;)V+100
+j  scala.tools.nsc.Global$GlobalPhase$$anonfun$run$1.apply(Lscala/tools/nsc/CompilationUnits$CompilationUnit;)V+5
+j  scala.tools.nsc.Global$GlobalPhase$$anonfun$run$1.apply(Ljava/lang/Object;)Ljava/lang/Object;+5
+J  scala.collection.Iterator$class.foreach(Lscala/collection/Iterator;Lscala/Function1;)V
+j  scala.collection.mutable.ListBuffer$$anon$1.foreach(Lscala/Function1;)V+2
+j  scala.tools.nsc.Global$GlobalPhase.run()V+26
+j  scala.tools.nsc.Global$Run.compileSources(Lscala/collection/immutable/List;)V+577
+j  scala.tools.nsc.Global$Run.compile(Lscala/collection/immutable/List;)V+69
+j  scala.tools.nsc.StandardCompileServer.session()V+483
+j  scala.tools.util.SocketServer$$anonfun$doSession$1$$anonfun$apply$1.apply$mcV$sp()V+7
+j  scala.tools.util.SocketServer$$anonfun$doSession$1$$anonfun$apply$1.apply()V+1
+j  scala.tools.util.SocketServer$$anonfun$doSession$1$$anonfun$apply$1.apply()Ljava/lang/Object;+1
+j  scala.util.DynamicVariable.withValue(Ljava/lang/Object;Lscala/Function0;)Ljava/lang/Object;+17
+j  scala.Console$.withOut(Ljava/io/PrintStream;Lscala/Function0;)Ljava/lang/Object;+6
+j  scala.Console$.withOut(Ljava/io/OutputStream;Lscala/Function0;)Ljava/lang/Object;+10
+j  scala.tools.util.SocketServer$$anonfun$doSession$1.apply(Ljava/io/BufferedReader;Ljava/io/PrintWriter;)V+43
+j  scala.tools.util.SocketServer$$anonfun$doSession$1.apply(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;+9
+j  scala.tools.nsc.io.Socket.applyReaderAndWriter(Lscala/Function2;)Ljava/lang/Object;+24
+j  scala.tools.util.SocketServer.doSession(Lscala/tools/nsc/io/Socket;)V+10
+j  scala.tools.util.SocketServer.loop$1()V+36
+j  scala.tools.util.SocketServer.run()V+9
+j  scala.tools.nsc.CompileServer$.main([Ljava/lang/String;)V+161
+j  scala.tools.nsc.CompileServer.main([Ljava/lang/String;)V+4
+v  ~StubRoutines::call_stub
+j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+87
+j  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+6
+j  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+161
+j  scala.tools.nsc.util.ScalaClassLoader$$anonfun$run$1.apply()Ljava/lang/Object;+34
+j  scala.tools.nsc.util.ScalaClassLoader$class.asContext(Lscala/tools/nsc/util/ScalaClassLoader;Lscala/Function0;)Ljava/lang/Object;+20
+j  scala.tools.nsc.util.ScalaClassLoader$URLClassLoader.asContext(Lscala/Function0;)Ljava/lang/Object;+2
+j  scala.tools.nsc.util.ScalaClassLoader$class.run(Lscala/tools/nsc/util/ScalaClassLoader;Ljava/lang/String;Lscala/collection/Seq;)V+65
+j  scala.tools.nsc.util.ScalaClassLoader$URLClassLoader.run(Ljava/lang/String;Lscala/collection/Seq;)V+3
+j  scala.tools.nsc.ObjectRunner$.run(Lscala/collection/immutable/List;Ljava/lang/String;Lscala/collection/Seq;)V+15
+j  scala.tools.nsc.ObjectRunner$.runAndCatch(Lscala/collection/immutable/List;Ljava/lang/String;Lscala/collection/Seq;)Lscala/Either;+7
+j  scala.tools.nsc.MainGenericRunner.runTarget$1(Lscala/tools/nsc/GenericRunnerCommand;)Lscala/Either;+47
+j  scala.tools.nsc.MainGenericRunner.process([Ljava/lang/String;)Z+182
+j  scala.tools.nsc.MainGenericRunner$.main([Ljava/lang/String;)V+2
+j  scala.tools.nsc.MainGenericRunner.main([Ljava/lang/String;)V+4
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007f7c0c0d0000 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=9168, stack(0x00007f7c1010a000,0x00007f7c1020b000)]
+  0x00007f7c0c0cd800 JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=9167, stack(0x00007f7c1020b000,0x00007f7c1030c000)]
+  0x00007f7c0c0ca800 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=9166, stack(0x00007f7c1030c000,0x00007f7c1040d000)]
+  0x00007f7c0c0bc800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=9165, stack(0x00007f7c1040d000,0x00007f7c1050e000)]
+  0x00007f7c0c0aa800 JavaThread "Finalizer" daemon [_thread_blocked, id=9164, stack(0x00007f7c10bf9000,0x00007f7c10cfa000)]
+  0x00007f7c0c0a8800 JavaThread "Reference Handler" daemon [_thread_blocked, id=9163, stack(0x00007f7c10cfa000,0x00007f7c10dfb000)]
+=>0x00007f7c0c008000 JavaThread "main" [_thread_in_native, id=9157, stack(0x00007f7c14e46000,0x00007f7c14f47000)]
+
+Other Threads:
+  0x00007f7c0c0a1800 VMThread [stack: 0x00007f7c10dfb000,0x00007f7c10efc000] [id=9162]
+  0x00007f7c0c0da800 WatcherThread [stack: 0x00007f7c10009000,0x00007f7c1010a000] [id=9169]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 26624K, used 4586K [0x00000000faab0000, 0x00000000fc600000, 0x0000000100000000)
+  eden space 25280K, 18% used [0x00000000faab0000,0x00000000faf2a920,0x00000000fc360000)
+  from space 1344K, 0% used [0x00000000fc4b0000,0x00000000fc4b0000,0x00000000fc600000)
+  to   space 1344K, 0% used [0x00000000fc360000,0x00000000fc360000,0x00000000fc4b0000)
+ PSOldGen        total 38656K, used 20533K [0x00000000f0000000, 0x00000000f25c0000, 0x00000000faab0000)
+  object space 38656K, 53% used [0x00000000f0000000,0x00000000f140d5b8,0x00000000f25c0000)
+ PSPermGen       total 29056K, used 27942K [0x00000000e5a00000, 0x00000000e7660000, 0x00000000f0000000)
+  object space 29056K, 96% used [0x00000000e5a00000,0x00000000e75499e0,0x00000000e7660000)
+
+Code Cache  [0x00007f7c09000000, 0x00007f7c09280000, 0x00007f7c0c000000)
+ total_blobs=950 nmethods=686 adapters=216 free_code_cache=47819968 largest_free_block=55488
+
+Dynamic libraries:
+00400000-00409000 r-xp 00000000 08:07 928138                             /usr/lib/jvm/java-6-openjdk-amd64/jre/bin/java
+00608000-00609000 r--p 00008000 08:07 928138                             /usr/lib/jvm/java-6-openjdk-amd64/jre/bin/java
+00609000-0060a000 rw-p 00009000 08:07 928138                             /usr/lib/jvm/java-6-openjdk-amd64/jre/bin/java
+01be6000-01c07000 rw-p 00000000 00:00 0                                  [heap]
+e5a00000-e7660000 rw-p 00000000 00:00 0 
+e7660000-e91f0000 ---p 00000000 00:00 0 
+e91f0000-f0000000 rw-p 00000000 00:00 0 
+f0000000-f25c0000 rw-p 00000000 00:00 0 
+f25c0000-faab0000 rw-p 00000000 00:00 0 
+faab0000-fc600000 rw-p 00000000 00:00 0 
+fc600000-fcd50000 ---p 00000000 00:00 0 
+fcd50000-100000000 rw-p 00000000 00:00 0 
+7f7bcc000000-7f7bcc021000 rw-p 00000000 00:00 0 
+7f7bcc021000-7f7bd0000000 ---p 00000000 00:00 0 
+7f7bd0000000-7f7bd0021000 rw-p 00000000 00:00 0 
+7f7bd0021000-7f7bd4000000 ---p 00000000 00:00 0 
+7f7bd4000000-7f7bd5fec000 rw-p 00000000 00:00 0 
+7f7bd5fec000-7f7bd8000000 ---p 00000000 00:00 0 
+7f7bd8000000-7f7bd9b29000 rw-p 00000000 00:00 0 
+7f7bd9b29000-7f7bdc000000 ---p 00000000 00:00 0 
+7f7bdc000000-7f7bdc021000 rw-p 00000000 00:00 0 
+7f7bdc021000-7f7be0000000 ---p 00000000 00:00 0 
+7f7be0000000-7f7be0021000 rw-p 00000000 00:00 0 
+7f7be0021000-7f7be4000000 ---p 00000000 00:00 0 
+7f7be4000000-7f7be43ec000 rw-p 00000000 00:00 0 
+7f7be43ec000-7f7be8000000 ---p 00000000 00:00 0 
+7f7be8000000-7f7be8021000 rw-p 00000000 00:00 0 
+7f7be8021000-7f7bec000000 ---p 00000000 00:00 0 
+7f7bec000000-7f7bec021000 rw-p 00000000 00:00 0 
+7f7bec021000-7f7bf0000000 ---p 00000000 00:00 0 
+7f7bf4000000-7f7bf407c000 rw-p 00000000 00:00 0 
+7f7bf407c000-7f7bf8000000 ---p 00000000 00:00 0 
+7f7bfc000000-7f7bfc021000 rw-p 00000000 00:00 0 
+7f7bfc021000-7f7c00000000 ---p 00000000 00:00 0 
+7f7c04000000-7f7c04021000 rw-p 00000000 00:00 0 
+7f7c04021000-7f7c08000000 ---p 00000000 00:00 0 
+7f7c089eb000-7f7c089f3000 r-xp 00000000 08:07 928111                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnio.so
+7f7c089f3000-7f7c08bf2000 ---p 00008000 08:07 928111                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnio.so
+7f7c08bf2000-7f7c08bf3000 r--p 00007000 08:07 928111                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnio.so
+7f7c08bf3000-7f7c08bf4000 rw-p 00008000 08:07 928111                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnio.so
+7f7c08bf4000-7f7c08c2a000 r--s 004df000 08:06 135166                     /home/marco/Documenti/Scuola/Unipr1112/SistemiDistribuiti/Progetto/dmat/target/original-dmat-1.0-SNAPSHOT.jar (deleted)
+7f7c08c2a000-7f7c08c2e000 r--s 00038000 08:07 661723                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/sunpkcs11.jar
+7f7c08c2e000-7f7c08c31000 r--s 00031000 08:07 662087                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/sunjce_provider.jar
+7f7c08c31000-7f7c08c34000 r--s 00077000 08:07 662057                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/localedata.jar
+7f7c08c34000-7f7c08c36000 r--s 0000f000 08:07 662882                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/pulse-java.jar
+7f7c08c36000-7f7c08c37000 r--s 00007000 08:07 799105                     /usr/share/java/java-atk-wrapper.jar
+7f7c08c37000-7f7c08c39000 r--s 00001000 08:07 662088                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/dnsns.jar
+7f7c08c39000-7f7c08c3a000 r--s 00005000 08:07 815858                     /usr/share/java/jansi-1.4.jar
+7f7c08c3a000-7f7c08c4e000 r--s 000bc000 08:07 815874                     /usr/share/java/scalap-2.9.1.jar
+7f7c08c4e000-7f7c08ccd000 r--s 007fa000 08:07 815861                     /usr/share/java/scala-library-2.9.1.jar
+7f7c08ccd000-7f7c08dac000 r--s 00a9a000 08:07 815873                     /usr/share/java/scala-compiler-2.9.1.jar
+7f7c08dac000-7f7c08db9000 r--s 00107000 08:07 662909                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/rhino.jar
+7f7c08db9000-7f7c08dea000 rw-p 00000000 00:00 0 
+7f7c08dea000-7f7c08dff000 r-xp 00000000 08:07 928115                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnet.so
+7f7c08dff000-7f7c08ffe000 ---p 00015000 08:07 928115                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnet.so
+7f7c08ffe000-7f7c08fff000 r--p 00014000 08:07 928115                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnet.so
+7f7c08fff000-7f7c09000000 rw-p 00015000 08:07 928115                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libnet.so
+7f7c09000000-7f7c09280000 rwxp 00000000 00:00 0 
+7f7c09280000-7f7c0c3b4000 rw-p 00000000 00:00 0 
+7f7c0c3b4000-7f7c10000000 ---p 00000000 00:00 0 
+7f7c10000000-7f7c10001000 r--s 00003000 08:07 814040                     /usr/share/java/hawtjni-runtime-1.1-SNAPSHOT.jar
+7f7c10001000-7f7c10002000 r--s 00001000 08:07 815856                     /usr/share/java/jansi-native-1.0.jar
+7f7c10002000-7f7c10009000 r--s 000fb000 08:07 662910                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/resources.jar
+7f7c10009000-7f7c1000a000 ---p 00000000 00:00 0 
+7f7c1000a000-7f7c1010a000 rw-p 00000000 00:00 0 
+7f7c1010a000-7f7c1010d000 ---p 00000000 00:00 0 
+7f7c1010d000-7f7c1020b000 rw-p 00000000 00:00 0 
+7f7c1020b000-7f7c1020e000 ---p 00000000 00:00 0 
+7f7c1020e000-7f7c1030c000 rw-p 00000000 00:00 0 
+7f7c1030c000-7f7c1030f000 ---p 00000000 00:00 0 
+7f7c1030f000-7f7c1040d000 rw-p 00000000 00:00 0 
+7f7c1040d000-7f7c10410000 ---p 00000000 00:00 0 
+7f7c10410000-7f7c1050e000 rw-p 00000000 00:00 0 
+7f7c1050e000-7f7c10bf9000 r--p 00000000 08:07 660242                     /usr/lib/locale/locale-archive
+7f7c10bf9000-7f7c10bfc000 ---p 00000000 00:00 0 
+7f7c10bfc000-7f7c10cfa000 rw-p 00000000 00:00 0 
+7f7c10cfa000-7f7c10cfd000 ---p 00000000 00:00 0 
+7f7c10cfd000-7f7c10dfb000 rw-p 00000000 00:00 0 
+7f7c10dfb000-7f7c10dfc000 ---p 00000000 00:00 0 
+7f7c10dfc000-7f7c11401000 rw-p 00000000 00:00 0 
+7f7c11401000-7f7c11402000 r--s 00005000 08:07 815858                     /usr/share/java/jansi-1.4.jar
+7f7c11402000-7f7c11405000 r--s 00018000 08:07 815872                     /usr/share/java/scala/jline.jar
+7f7c11405000-7f7c11419000 r--s 000bc000 08:07 815874                     /usr/share/java/scalap-2.9.1.jar
+7f7c11419000-7f7c11498000 r--s 007fa000 08:07 815861                     /usr/share/java/scala-library-2.9.1.jar
+7f7c11498000-7f7c11577000 r--s 00a9a000 08:07 815873                     /usr/share/java/scala-compiler-2.9.1.jar
+7f7c11577000-7f7c115aa000 rw-p 00000000 00:00 0 
+7f7c115aa000-7f7c1173c000 r--s 037bf000 08:07 928101                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/rt.jar
+7f7c1173c000-7f7c11764000 rw-p 00000000 00:00 0 
+7f7c11764000-7f7c11765000 ---p 00000000 00:00 0 
+7f7c11765000-7f7c11865000 rw-p 00000000 00:00 0 
+7f7c11865000-7f7c11866000 ---p 00000000 00:00 0 
+7f7c11866000-7f7c11966000 rw-p 00000000 00:00 0 
+7f7c11966000-7f7c11967000 ---p 00000000 00:00 0 
+7f7c11967000-7f7c11a67000 rw-p 00000000 00:00 0 
+7f7c11a67000-7f7c11a68000 ---p 00000000 00:00 0 
+7f7c11a68000-7f7c11b77000 rw-p 00000000 00:00 0 
+7f7c11b77000-7f7c11b84000 ---p 00000000 00:00 0 
+7f7c11b84000-7f7c11bbb000 rw-p 00000000 00:00 0 
+7f7c11bbb000-7f7c11bce000 rw-p 00000000 00:00 0 
+7f7c11bce000-7f7c11c11000 rw-p 00000000 00:00 0 
+7f7c11c11000-7f7c11c20000 rw-p 00000000 00:00 0 
+7f7c11c20000-7f7c11c2d000 ---p 00000000 00:00 0 
+7f7c11c2d000-7f7c11c64000 rw-p 00000000 00:00 0 
+7f7c11c64000-7f7c11c77000 rw-p 00000000 00:00 0 
+7f7c11c77000-7f7c11cb9000 rw-p 00000000 00:00 0 
+7f7c11cb9000-7f7c11cc7000 rw-p 00000000 00:00 0 
+7f7c11cc7000-7f7c11ccb000 ---p 00000000 00:00 0 
+7f7c11ccb000-7f7c11ce4000 rw-p 00000000 00:00 0 
+7f7c11ce4000-7f7c11ce5000 rw-p 00000000 00:00 0 
+7f7c11ce5000-7f7c11cec000 r-xp 00000000 08:07 928137                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libzip.so
+7f7c11cec000-7f7c11eeb000 ---p 00007000 08:07 928137                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libzip.so
+7f7c11eeb000-7f7c11eec000 r--p 00006000 08:07 928137                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libzip.so
+7f7c11eec000-7f7c11eed000 rw-p 00007000 08:07 928137                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libzip.so
+7f7c11eed000-7f7c11ef9000 r-xp 00000000 08:07 1463178                    /lib/x86_64-linux-gnu/libnss_files-2.15.so
+7f7c11ef9000-7f7c120f8000 ---p 0000c000 08:07 1463178                    /lib/x86_64-linux-gnu/libnss_files-2.15.so
+7f7c120f8000-7f7c120f9000 r--p 0000b000 08:07 1463178                    /lib/x86_64-linux-gnu/libnss_files-2.15.so
+7f7c120f9000-7f7c120fa000 rw-p 0000c000 08:07 1463178                    /lib/x86_64-linux-gnu/libnss_files-2.15.so
+7f7c120fa000-7f7c12104000 r-xp 00000000 08:07 1463174                    /lib/x86_64-linux-gnu/libnss_nis-2.15.so
+7f7c12104000-7f7c12304000 ---p 0000a000 08:07 1463174                    /lib/x86_64-linux-gnu/libnss_nis-2.15.so
+7f7c12304000-7f7c12305000 r--p 0000a000 08:07 1463174                    /lib/x86_64-linux-gnu/libnss_nis-2.15.so
+7f7c12305000-7f7c12306000 rw-p 0000b000 08:07 1463174                    /lib/x86_64-linux-gnu/libnss_nis-2.15.so
+7f7c12306000-7f7c1231d000 r-xp 00000000 08:07 1463187                    /lib/x86_64-linux-gnu/libnsl-2.15.so
+7f7c1231d000-7f7c1251c000 ---p 00017000 08:07 1463187                    /lib/x86_64-linux-gnu/libnsl-2.15.so
+7f7c1251c000-7f7c1251d000 r--p 00016000 08:07 1463187                    /lib/x86_64-linux-gnu/libnsl-2.15.so
+7f7c1251d000-7f7c1251e000 rw-p 00017000 08:07 1463187                    /lib/x86_64-linux-gnu/libnsl-2.15.so
+7f7c1251e000-7f7c12520000 rw-p 00000000 00:00 0 
+7f7c12520000-7f7c12528000 r-xp 00000000 08:07 1463179                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
+7f7c12528000-7f7c12727000 ---p 00008000 08:07 1463179                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
+7f7c12727000-7f7c12728000 r--p 00007000 08:07 1463179                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
+7f7c12728000-7f7c12729000 rw-p 00008000 08:07 1463179                    /lib/x86_64-linux-gnu/libnss_compat-2.15.so
+7f7c12729000-7f7c12755000 r-xp 00000000 08:07 928123                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libjava.so
+7f7c12755000-7f7c12954000 ---p 0002c000 08:07 928123                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libjava.so
+7f7c12954000-7f7c12955000 r--p 0002b000 08:07 928123                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libjava.so
+7f7c12955000-7f7c12958000 rw-p 0002c000 08:07 928123                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libjava.so
+7f7c12958000-7f7c12966000 r-xp 00000000 08:07 928122                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libverify.so
+7f7c12966000-7f7c12b65000 ---p 0000e000 08:07 928122                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libverify.so
+7f7c12b65000-7f7c12b67000 r--p 0000d000 08:07 928122                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libverify.so
+7f7c12b67000-7f7c12b68000 rw-p 0000f000 08:07 928122                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/libverify.so
+7f7c12b68000-7f7c12b6f000 r-xp 00000000 08:07 1463172                    /lib/x86_64-linux-gnu/librt-2.15.so
+7f7c12b6f000-7f7c12d6e000 ---p 00007000 08:07 1463172                    /lib/x86_64-linux-gnu/librt-2.15.so
+7f7c12d6e000-7f7c12d6f000 r--p 00006000 08:07 1463172                    /lib/x86_64-linux-gnu/librt-2.15.so
+7f7c12d6f000-7f7c12d70000 rw-p 00007000 08:07 1463172                    /lib/x86_64-linux-gnu/librt-2.15.so
+7f7c12d70000-7f7c12d85000 r-xp 00000000 08:07 1445692                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f7c12d85000-7f7c12f84000 ---p 00015000 08:07 1445692                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f7c12f84000-7f7c12f85000 r--p 00014000 08:07 1445692                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f7c12f85000-7f7c12f86000 rw-p 00015000 08:07 1445692                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7f7c12f86000-7f7c1307f000 r-xp 00000000 08:07 1463176                    /lib/x86_64-linux-gnu/libm-2.15.so
+7f7c1307f000-7f7c1327e000 ---p 000f9000 08:07 1463176                    /lib/x86_64-linux-gnu/libm-2.15.so
+7f7c1327e000-7f7c1327f000 r--p 000f8000 08:07 1463176                    /lib/x86_64-linux-gnu/libm-2.15.so
+7f7c1327f000-7f7c13280000 rw-p 000f9000 08:07 1463176                    /lib/x86_64-linux-gnu/libm-2.15.so
+7f7c13280000-7f7c13362000 r-xp 00000000 08:07 663441                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f7c13362000-7f7c13561000 ---p 000e2000 08:07 663441                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f7c13561000-7f7c13569000 r--p 000e1000 08:07 663441                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f7c13569000-7f7c1356b000 rw-p 000e9000 08:07 663441                     /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16
+7f7c1356b000-7f7c13580000 rw-p 00000000 00:00 0 
+7f7c13580000-7f7c13e84000 r-xp 00000000 08:07 928127                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7f7c13e84000-7f7c14084000 ---p 00904000 08:07 928127                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7f7c14084000-7f7c14104000 r--p 00904000 08:07 928127                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7f7c14104000-7f7c1411f000 rw-p 00984000 08:07 928127                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7f7c1411f000-7f7c14148000 rw-p 00000000 00:00 0 
+7f7c14148000-7f7c1415e000 r-xp 00000000 08:07 1445782                    /lib/x86_64-linux-gnu/libz.so.1.2.3.4
+7f7c1415e000-7f7c1435d000 ---p 00016000 08:07 1445782                    /lib/x86_64-linux-gnu/libz.so.1.2.3.4
+7f7c1435d000-7f7c1435e000 r--p 00015000 08:07 1445782                    /lib/x86_64-linux-gnu/libz.so.1.2.3.4
+7f7c1435e000-7f7c1435f000 rw-p 00016000 08:07 1445782                    /lib/x86_64-linux-gnu/libz.so.1.2.3.4
+7f7c1435f000-7f7c14514000 r-xp 00000000 08:07 1463168                    /lib/x86_64-linux-gnu/libc-2.15.so
+7f7c14514000-7f7c14713000 ---p 001b5000 08:07 1463168                    /lib/x86_64-linux-gnu/libc-2.15.so
+7f7c14713000-7f7c14717000 r--p 001b4000 08:07 1463168                    /lib/x86_64-linux-gnu/libc-2.15.so
+7f7c14717000-7f7c14719000 rw-p 001b8000 08:07 1463168                    /lib/x86_64-linux-gnu/libc-2.15.so
+7f7c14719000-7f7c1471e000 rw-p 00000000 00:00 0 
+7f7c1471e000-7f7c14720000 r-xp 00000000 08:07 1463167                    /lib/x86_64-linux-gnu/libdl-2.15.so
+7f7c14720000-7f7c14920000 ---p 00002000 08:07 1463167                    /lib/x86_64-linux-gnu/libdl-2.15.so
+7f7c14920000-7f7c14921000 r--p 00002000 08:07 1463167                    /lib/x86_64-linux-gnu/libdl-2.15.so
+7f7c14921000-7f7c14922000 rw-p 00003000 08:07 1463167                    /lib/x86_64-linux-gnu/libdl-2.15.so
+7f7c14922000-7f7c14926000 r-xp 00000000 08:07 928107                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7f7c14926000-7f7c14b25000 ---p 00004000 08:07 928107                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7f7c14b25000-7f7c14b26000 r--p 00003000 08:07 928107                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7f7c14b26000-7f7c14b27000 rw-p 00004000 08:07 928107                     /usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7f7c14b27000-7f7c14b3f000 r-xp 00000000 08:07 1463170                    /lib/x86_64-linux-gnu/libpthread-2.15.so
+7f7c14b3f000-7f7c14d3e000 ---p 00018000 08:07 1463170                    /lib/x86_64-linux-gnu/libpthread-2.15.so
+7f7c14d3e000-7f7c14d3f000 r--p 00017000 08:07 1463170                    /lib/x86_64-linux-gnu/libpthread-2.15.so
+7f7c14d3f000-7f7c14d40000 rw-p 00018000 08:07 1463170                    /lib/x86_64-linux-gnu/libpthread-2.15.so
+7f7c14d40000-7f7c14d44000 rw-p 00000000 00:00 0 
+7f7c14d44000-7f7c14d66000 r-xp 00000000 08:07 1463182                    /lib/x86_64-linux-gnu/ld-2.15.so
+7f7c14d68000-7f7c14d76000 r--s 00351000 08:07 659917                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/charsets.jar
+7f7c14d76000-7f7c14d78000 r--s 00013000 08:07 659019                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/jce.jar
+7f7c14d78000-7f7c14d7b000 r--s 0007d000 08:07 659018                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/jsse.jar
+7f7c14d7b000-7f7c14d82000 r--s 000fb000 08:07 662910                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/resources.jar
+7f7c14d82000-7f7c14d86000 r--s 00038000 08:07 661723                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/sunpkcs11.jar
+7f7c14d86000-7f7c14d90000 rw-p 00000000 00:00 0 
+7f7c14d90000-7f7c14e46000 rw-p 00000000 00:00 0 
+7f7c14e46000-7f7c14e49000 ---p 00000000 00:00 0 
+7f7c14e49000-7f7c14f4c000 rw-p 00000000 00:00 0 
+7f7c14f4c000-7f7c14f4f000 r--s 0007d000 08:07 659018                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/jsse.jar
+7f7c14f4f000-7f7c14f52000 r--s 00031000 08:07 662087                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/sunjce_provider.jar
+7f7c14f52000-7f7c14f55000 r--s 00077000 08:07 662057                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/localedata.jar
+7f7c14f55000-7f7c14f57000 r--s 0000f000 08:07 662882                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/pulse-java.jar
+7f7c14f57000-7f7c14f58000 r--s 00007000 08:07 799105                     /usr/share/java/java-atk-wrapper.jar
+7f7c14f58000-7f7c14f5a000 r--s 00001000 08:07 662088                     /usr/lib/jvm/java-6-openjdk-common/jre/lib/ext/dnsns.jar
+7f7c14f5a000-7f7c14f62000 rw-s 00000000 08:07 1575693                    /tmp/hsperfdata_marco/9156
+7f7c14f62000-7f7c14f63000 rw-p 00000000 00:00 0 
+7f7c14f63000-7f7c14f64000 r--p 00000000 00:00 0 
+7f7c14f64000-7f7c14f66000 rw-p 00000000 00:00 0 
+7f7c14f66000-7f7c14f67000 r--p 00022000 08:07 1463182                    /lib/x86_64-linux-gnu/ld-2.15.so
+7f7c14f67000-7f7c14f69000 rw-p 00023000 08:07 1463182                    /lib/x86_64-linux-gnu/ld-2.15.so
+7fff5b6f3000-7fff5b714000 rw-p 00000000 00:00 0                          [stack]
+7fff5b7ff000-7fff5b800000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+jvm_args: -Xmx256M -Xms32M -Xbootclasspath/a:/usr/share/java/scala-compiler.jar:/usr/share/java/scala-library.jar:/usr/share/java/scalap.jar:/usr/share/java/scala/jline.jar:/usr/share/java/jansi.jar -Dscala.usejavacp=true -Dscala.home=/usr/share/java -Denv.emacs= 
+java_command: scala.tools.nsc.MainGenericRunner scala.tools.nsc.CompileServer
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+LD_LIBRARY_PATH=/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64/server:/usr/lib/jvm/java-6-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-6-openjdk-amd64/jre/../lib/amd64
+SHELL=/bin/bash
+DISPLAY=:0.0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0x784310], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0x784310], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x648580], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: [libjvm.so+0x648580], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGXFSZ: [libjvm.so+0x648580], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGILL: [libjvm.so+0x648580], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x648730], sa_mask[0]=0x00000004, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x64b250], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: [libjvm.so+0x64b250], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGTERM: [libjvm.so+0x64b250], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGQUIT: [libjvm.so+0x64b250], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+
+
+---------------  S Y S T E M  ---------------
+
+OS:Ubuntu 12.04 (precise)
+uname:Linux 3.2.0-31-generic #50-Ubuntu SMP Fri Sep 7 16:16:45 UTC 2012 x86_64
+libc:glibc 2.15 NPTL 2.15 
+rlimit: STACK 8192k, CORE 0k, NPROC 30349, NOFILE 4096, AS infinity
+load average:0.08 0.10 0.17
+
+/proc/meminfo:
+MemTotal:        3902300 kB
+MemFree:         1696568 kB
+Buffers:           77696 kB
+Cached:           712560 kB
+SwapCached:            0 kB
+Active:          1287732 kB
+Inactive:         579916 kB
+Active(anon):    1078648 kB
+Inactive(anon):    50168 kB
+Active(file):     209084 kB
+Inactive(file):   529748 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:       3998716 kB
+SwapFree:        3998716 kB
+Dirty:               116 kB
+Writeback:             0 kB
+AnonPages:       1077384 kB
+Mapped:           269520 kB
+Shmem:             51432 kB
+Slab:              72356 kB
+SReclaimable:      39096 kB
+SUnreclaim:        33260 kB
+KernelStack:        3744 kB
+PageTables:        35936 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     5949864 kB
+Committed_AS:    3397388 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      109040 kB
+VmallocChunk:   34359626960 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:       90608 kB
+DirectMap2M:     3954688 kB
+
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 37 stepping 5, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 3902300k(1696568k free), swap 3998716k(3998716k free)
+
+vm_info: OpenJDK 64-Bit Server VM (20.0-b12) for linux-amd64 JRE (1.6.0_24-b24), built on Sep  2 2012 19:50:47 by "buildd" with gcc 4.6.3
+
+time: Wed Oct  3 17:51:29 2012
+elapsed time: 1971 seconds
+

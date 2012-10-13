@@ -6,10 +6,13 @@ import it.unipr.aotlab.dmat.scalabindings.AssignableTo
 import it.unipr.aotlab.dmat.scalabindings.InitializableIn
 import it.unipr.aotlab.dmat.scalabindings.typewire.MatrixElementType
 
+import it.unipr.aotlab.dmat.scalabindings.matrices.operations.MatrixExpression
+import it.unipr.aotlab.dmat.scalabindings.matrices.operations.MatrixOperationsContext
+
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
 import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody;
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
-import it.unipr.aotlab.dmat.core.net.Message;
+import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
 
 object MatrixInterface {
 	sealed trait AuthToken
@@ -17,6 +20,12 @@ object MatrixInterface {
 
 trait MatrixInterface extends AssignableTo[Host,Unit] {
 	import MatrixInterface._
+	
+	def getName: String
+	def getSize: MatrixDims
+	
+	def assignTo(node: Host)
+	def exposeValues
 	
 	def does(f: MatrixInterface => Unit): MatrixInterface = { f(this); this }
 	def and (f: MatrixInterface => Unit): MatrixInterface = { f(this); this }
@@ -35,13 +44,17 @@ object MatrixChunk {
 
 class MatrixChunk(val parent: Matrix, impl: Chunk) extends MatrixInterface {
 	import MatrixChunk._
+	import IntToDims._
 	
-	val name = impl.getChunkId()
+	override def getName: String = impl.getChunkId()
+	override def getSize: MatrixDims = (impl.getEndRow()-impl.getStartRow()+1) x (impl.getEndCol()-impl.getStartCol()+1)
 	
-	def assignTo(node: Host) = {
-		node.chunkToNodeAssignationJImplementation(jimpl);
-		println("[SCALA] Chunk "+jimpl+" of matrix "+parent.name+" assigned to node //"+node.ip+":"+node.port+"/")
+	override def assignTo(node: Host) = {
+		jimpl.assignChunkToNode(node.getImplementation)
+		println("[SCALA] Chunk "+jimpl+" of matrix "+parent.getName+" assigned to node //"+node.ip+":"+node.port+"/")
 	}
+	
+	override def exposeValues { jimpl.sendMessageExposeValues();  }
 	
 	override def toString(): String = impl.toString();
 	
@@ -49,22 +62,34 @@ class MatrixChunk(val parent: Matrix, impl: Chunk) extends MatrixInterface {
 	
 }
 
-class Matrix(val name: String, size: MatrixDims, impl: MatrixImpl, eltype: MatrixElementType, prog: Program)
-		extends MatrixInterface {
+class Matrix(name: String, size: MatrixDims, impl: MatrixImpl, prog: Program)
+		extends MatrixInterface with MatrixExpression {
 	import Matrix._
 	prog.register(name,this)
 	import IntToDims._
 	
 	import scala.collection.JavaConversions._
+
+	override def getName: String = jimpl.getMatrixId();
+	override def getSize: MatrixDims = jimpl.getNofRows() x jimpl.getNofCols();
 	
-	def assignTo(node: Host) = {
+	override def resultSize: MatrixDims = getSize
+	override protected[matrices] def evaluateIn(ctx: MatrixOperationsContext): (Matrix, MatrixOperationsContext) = (this,ctx)
+	
+	override def assignTo(node: Host) = {
 		for (c: Chunk <- jimpl.getChunks()) {
 			println("[SCALA] sending chunk "+chunk(c.getChunkId)+" to node //"+node.ip+":"+node.port+"/")
-			node.chunkToNodeAssignationJImplementation(c);
+			c.assignChunkToNode(node.getImplementation)
 		}
-		println("[SCALA] Matrix "+name+" assigned to node //"+node.ip+":"+node.port+"/")
+		println("[SCALA] Matrix "+getName+" assigned to node //"+node.ip+":"+node.port+"/")
 	}
 	
+	override def exposeValues {
+		for (c: Chunk <- jimpl.getChunks()) {
+			println("[SCALA] exposing values of chunk "+chunk(c.getChunkId))
+			c.sendMessageExposeValues();
+		}
+	}
 	
 	class WithLoadedVals extends InitializableIn[Host,Unit] {
 		private var jMsgBuilder: OrderSetMatrixBody.Builder = OrderSetMatrixBody.newBuilder();
@@ -73,12 +98,13 @@ class Matrix(val name: String, size: MatrixDims, impl: MatrixImpl, eltype: Matri
 		def loadFromURL(url: String): WithLoadedVals = {
 			this.url = url
 			jMsgBuilder.setURI(url);
-			println("[SCALA] Matrix "+name+" loads values from file "+url+".");
+			println("[SCALA] Matrix "+getName+" loads values from file "+url+".");
 			return this
 		}
 		
 		def initializeIn(node: Host) = {
-			println("[SCALA] Matrix "+name+" initialized in node //"+node.ip+":"+node.port+"/")
+			node.getImplementation.sendMessage(new MessageSetMatrix(jMsgBuilder))
+			println("[SCALA] Matrix "+getName+" initialized in node //"+node.ip+":"+node.port+"/")
 		}
 		
 		private var url: String = _
@@ -98,6 +124,9 @@ class Matrix(val name: String, size: MatrixDims, impl: MatrixImpl, eltype: Matri
 		return this;
 	}
 	
+	protected[matrices] def getImplementation: it.unipr.aotlab.dmat.core.matrices.Matrix = jimpl
+	
 	private var jimpl: it.unipr.aotlab.dmat.core.matrices.Matrix = _;
 	
 }
+

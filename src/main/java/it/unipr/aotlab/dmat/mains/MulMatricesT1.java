@@ -15,13 +15,13 @@ public class MulMatricesT1 {
     public static void main(String[] argv) {
         NodeWorkGroup register = NodeWorkGroup.builder().
                 masterId("master").
-                masterAddress(new IPAddress("42.190.197.46", 5672)).build();
+                masterAddress(new IPAddress("192.168.1.160", 5672)).build();
 
        try {
             Nodes nodes = new Nodes(register);
 
             Node testNode0 = nodes.setNodeName("testnode0")
-                    .setNodeAddress(new IPAddress("42.190.197.46", 6000)).build();
+                    .setNodeAddress(new IPAddress("192.168.1.160", 6000)).build();
 
             register.initialize();
 

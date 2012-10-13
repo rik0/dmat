@@ -13,7 +13,7 @@ import it.unipr.aotlab.dmat.core.registers.zeroMQ.NodeWorkGroup;
 
 public class MulMatricesT2 {
     private static final int MATRIX_SIZE = 400;
-    private static final String IP = "42.190.197.46";
+    private static final String IP = "192.168.1.160";
     private static final String C_TOP = "CTop";
 	private static final String C_BOTTOM = "CBottom";
 	private static final String B_RIGHT = "BRight";

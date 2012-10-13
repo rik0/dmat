@@ -31,6 +31,24 @@ object MatrixElementTypes extends Enum[MatrixElementType] {
     case object UINT64 extends MatrixElementType { val wrapped = TypeWire.ElementType.UINT64 }
     case object FLOAT32 extends MatrixElementType { val wrapped = TypeWire.ElementType.FLOAT32 }
     case object FLOAT64 extends MatrixElementType { val wrapped = TypeWire.ElementType.FLOAT64 }
+
+    def wrapperOf(et: TypeWire.ElementType): MatrixElementType = {
+	et match {
+	    case TypeWire.ElementType.BOOL => return BOOL;
+	    case TypeWire.ElementType.INT8 => return INT8;
+	    case TypeWire.ElementType.INT16 => return INT16;
+	    case TypeWire.ElementType.INT32 => return INT32;
+	    case TypeWire.ElementType.INT64 => return INT64;
+	    case TypeWire.ElementType.UINT8 => return UINT8;
+	    case TypeWire.ElementType.UINT16 => return UINT16;
+	    case TypeWire.ElementType.UINT32 => return UINT32;
+	    case TypeWire.ElementType.UINT64 => return UINT64;
+	    case TypeWire.ElementType.FLOAT32 => return FLOAT32;
+	    case TypeWire.ElementType.FLOAT64 => return FLOAT64;
+	}
+	return null;
+    }
+
 }
 
 

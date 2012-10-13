@@ -26,6 +26,7 @@ class NetGroup {
 	def master(): Master = mymaster
 	def node(name: String): Host = mynodes(name)
 	def node_of_:(name: String): Host = mynodes(name)
+	def nodes(): Iterable[Host] = mynodes.values
 	def executes(f: Program => Unit) = {
 	      try {
 		jimpl_ng.initialize();

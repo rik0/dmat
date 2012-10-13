@@ -5,6 +5,7 @@ import it.unipr.aotlab.dmat.scalabindings.matrices.Matrix
 
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 
 
 class Host(val ip: String, val port: Int)
@@ -12,19 +13,16 @@ class Host(val ip: String, val port: Int)
 	
 	def print() = println("[SCALA] //"+ip+":"+port+"/")
 	
+	def shutdown { jimpl.sendMessage(new MessageShutdown());  }
+	
 	def setImplementation(impl: it.unipr.aotlab.dmat.core.net.Node)(implicit auth: NetGroup.AuthToken with NotNull): Host = {
 		jimpl = impl;
 		return this;
 	}
 	
-	def chunkToNodeAssignationJImplementation(cimpl: Chunk)(implicit auth: MatrixInterface.AuthToken with NotNull) {
-		cimpl.assignChunkToNode(jimpl);
+	def getImplementation(implicit auth: MatrixInterface.AuthToken with NotNull): it.unipr.aotlab.dmat.core.net.Node = {
+		return jimpl
 	}
-	
-// 	def getJImplementation(implicit auth: MatrixInterface.AuthToken with NotNull): it.unipr.aotlab.dmat.core.net.Node = {
-// 		return jimpl
-// 	}
-	
 	
 	private var jimpl: it.unipr.aotlab.dmat.core.net.Node = _;
 	

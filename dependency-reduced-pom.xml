@@ -18,6 +18,14 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
@@ -114,8 +122,15 @@
                   <sourceDirectory>src/main/scala</sourceDirectory>
                   <testSourceDirectory>src/test/scala</testSourceDirectory>
                   <scalaVersion>2.8.0</scalaVersion>
+                  <args>
+                    <arg>-unchecked</arg>
+                    <arg>-deprecation</arg>
+                    <arg>-explaintypes</arg>
+                    <arg>-make:transitive</arg>
+                    <arg>-dependencyfile</arg>
+                    <arg>/home/marco/Documenti/Scuola/Unipr1112/SistemiDistribuiti/Progetto/dmat/target/.scala_dependencies</arg>
+                  </args>
                   <sendJavaToScalac>false</sendJavaToScalac>
-                  <outputDir>target/scala_classes</outputDir>
                 </configuration>
               </execution>
               <execution>
@@ -129,8 +144,15 @@
                   <sourceDirectory>src/main/scala</sourceDirectory>
                   <testSourceDirectory>src/test/scala</testSourceDirectory>
                   <scalaVersion>2.8.0</scalaVersion>
+                  <args>
+                    <arg>-unchecked</arg>
+                    <arg>-deprecation</arg>
+                    <arg>-explaintypes</arg>
+                    <arg>-make:transitive</arg>
+                    <arg>-dependencyfile</arg>
+                    <arg>/home/marco/Documenti/Scuola/Unipr1112/SistemiDistribuiti/Progetto/dmat/target/.scala_dependencies</arg>
+                  </args>
                   <sendJavaToScalac>false</sendJavaToScalac>
-                  <outputDir>target/scala_classes</outputDir>
                 </configuration>
               </execution>
               <execution>
@@ -138,15 +160,21 @@
                 <phase>process-resources</phase>
                 <goals>
                   <goal>add-source</goal>
-                  <goal>compile</goal>
                 </goals>
                 <configuration>
                   <displayCmd>true</displayCmd>
                   <sourceDirectory>src/main/scala</sourceDirectory>
                   <testSourceDirectory>src/test/scala</testSourceDirectory>
                   <scalaVersion>2.8.0</scalaVersion>
+                  <args>
+                    <arg>-unchecked</arg>
+                    <arg>-deprecation</arg>
+                    <arg>-explaintypes</arg>
+                    <arg>-make:transitive</arg>
+                    <arg>-dependencyfile</arg>
+                    <arg>/home/marco/Documenti/Scuola/Unipr1112/SistemiDistribuiti/Progetto/dmat/target/.scala_dependencies</arg>
+                  </args>
                   <sendJavaToScalac>false</sendJavaToScalac>
-                  <outputDir>target/scala_classes</outputDir>
                 </configuration>
               </execution>
             </executions>
@@ -155,24 +183,16 @@
               <sourceDirectory>src/main/scala</sourceDirectory>
               <testSourceDirectory>src/test/scala</testSourceDirectory>
               <scalaVersion>2.8.0</scalaVersion>
+              <args>
+                <arg>-unchecked</arg>
+                <arg>-deprecation</arg>
+                <arg>-explaintypes</arg>
+                <arg>-make:transitive</arg>
+                <arg>-dependencyfile</arg>
+                <arg>/home/marco/Documenti/Scuola/Unipr1112/SistemiDistribuiti/Progetto/dmat/target/.scala_dependencies</arg>
+              </args>
               <sendJavaToScalac>false</sendJavaToScalac>
-              <outputDir>target/scala_classes</outputDir>
             </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>compile</phase>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <source>1.6</source>
-                  <target>1.6</target>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>

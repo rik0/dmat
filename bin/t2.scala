@@ -17,19 +17,29 @@ MyNetGroup executes { program =>
 		B("block1", 200 x 400) - B("block2", 200 x 400)
 	  ) )
 	  
-	val c = define( matrix named "c" size(2 x 4) of elements.INT32
+	val c = define( matrix named "c" size(400 x 400) of elements.INT32
 			split( B("block1", 400 x 200) / B("block2", 400 x 200) )
 		)
 	
 	println("<<<<< "+c.getClass+" >>>>>")
 	
-// 	a ~> n0
-// 	(b chunk "block1") ~> n0
-// 	(b chunk "block2") ~> n1
-// 	(c chunk "block1") ~> n0
-// 	(c chunk "block2") ~> n1
+	a ~> n0
+	(b chunk "block1") ~> n0
+	(b chunk "block2") ~> n1
+	(c chunk "block1") ~> n0
+	(c chunk "block2") ~> n1
 	
-	n0 <=: a("pippo")
+	println(a chunk (null))
+	println(b chunk ("block1"))
+	println(b chunk ("block2"))
+	println(c chunk ("block1"))
+	println(c chunk ("block2"))
+	
+	MyNetGroup <=: b("file://" + System.getProperty("user.dir") + "/example_matrices/large")
+	MyNetGroup <=: c("file://" + System.getProperty("user.dir") + "/example_matrices/large")
+	
+	
+	a := b*c
 	
 	println("Hello world!");
 }

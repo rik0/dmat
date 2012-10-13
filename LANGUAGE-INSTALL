@@ -36,3 +36,24 @@ Changing default behaviour:
   include scala sources. If you want to include them, you must do
   mvn -Pscala-bindings compile
 
+
+Warnings - changing the pom.xml
+  The three-stage compilation (scala-java-scala) has to be
+  reduced to the two stages java-scala, because none of the java 
+  classes depends on scala ones (and this avoids compiler errors).
+  Furthermore sendJavaToScalac has to be set to false, or the
+  compiler finds errors in the protobuf generated classes (indeed
+  isn't clear how java can resolve BuilderParent to 
+  com.google.protobuf.GeneratedMessage.BuilderParent without
+  an import statement).
+  The maven-scala-plugin (scalac) outputDir could be set to another
+  directory to separate java and scala classes, but shade seems not
+  to find it, so they have been simply leaved together.
+  Once happened that inserting the scalac command-line arguments
+  via the args tag, as suggested in the plugin page, brings to
+  problems probably due to the endline separation. These arguments 
+  seemd not important, so they had been removed. Indeed a mvn clean
+  solved the issue.
+  
+  
+
