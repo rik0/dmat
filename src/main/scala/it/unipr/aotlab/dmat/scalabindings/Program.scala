@@ -14,7 +14,13 @@ class Program {
 	val elements = MatrixElementTypes
 	
 	def define(what: MatrixBuilder): Matrix = what.build;
-	def define_temp(what: MatrixBuilder): Matrix = ctxHandler.addTemporary(what.build)
+	def define_temp(what: MatrixBuilder): MatrixTmpWrapper = new MatrixTmpWrapper(ctxHandler.addTemporary(what.build))
+	
+	def get_temporary(name: String): MatrixTmpWrapper = {
+		val tmpo: Option[Matrix] = ctxHandler.getTemporary(name)
+		if (tmpo.isEmpty) throw new NoSuchElementException("No such temporary: "+name)
+		return new MatrixTmpWrapper(tmpo.get)
+	}
 	
 	def get_matrix(name: String)(implicit auth: MatrixBuilder.AuthToken with NotNull): Matrix = {
 	  if (is_matrix_temporary(name)) throw new NoSuchElementException("Cannot access matrix "+name+": it is a temporary")

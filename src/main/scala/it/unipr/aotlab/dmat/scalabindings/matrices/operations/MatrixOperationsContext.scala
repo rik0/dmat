@@ -2,6 +2,8 @@ package it.unipr.aotlab.dmat.scalabindings.matrices.operations
 
 import it.unipr.aotlab.dmat.scalabindings.matrices.Matrix
 
+import MatrixExpressionExceptions.MatrixOperationNotEnoughTemporariesInContextException
+
 // Immutable object that represents an expression context
 
 class MatrixOperationsContext(temporaries: Set[Matrix]) {
@@ -9,7 +11,7 @@ class MatrixOperationsContext(temporaries: Set[Matrix]) {
   
   def getTemporary(op: MatrixOperation): (Matrix,MatrixOperationsContext) = {
     val candidates: Iterable[Matrix] = op.fit(temp_usage)
-    //TODO: check for null
+    if (candidates isEmpty) throw new MatrixOperationNotEnoughTemporariesInContextException(op,this)
     setUsedTemporary(candidates.head)
     return (candidates.head, this)
   }

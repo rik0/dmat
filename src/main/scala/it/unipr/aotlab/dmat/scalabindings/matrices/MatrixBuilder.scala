@@ -1,56 +1,56 @@
-	package it.unipr.aotlab.dmat.scalabindings.matrices
+package it.unipr.aotlab.dmat.scalabindings.matrices
 
-	import it.unipr.aotlab.dmat.scalabindings.Program
-	import it.unipr.aotlab.dmat.scalabindings.typewire.MatrixElementType
-	import it.unipr.aotlab.dmat.scalabindings.typewire.Semiring
-
-
-	import it.unipr.aotlab.dmat.core.matrices.Matrices;
-	import it.unipr.aotlab.dmat.core.matrices.Chunk;
+import it.unipr.aotlab.dmat.scalabindings.Program
+import it.unipr.aotlab.dmat.scalabindings.typewire.MatrixElementType
+import it.unipr.aotlab.dmat.scalabindings.typewire.Semiring
 
 
-	object MatrixBuilder {
-		sealed trait AuthToken
-		private implicit object Auth extends AuthToken
+import it.unipr.aotlab.dmat.core.matrices.Matrices;
+import it.unipr.aotlab.dmat.core.matrices.Chunk;
+
+
+object MatrixBuilder {
+	sealed trait AuthToken
+	private implicit object Auth extends AuthToken
+}
+
+class MatrixBuilder(prog: Program) {
+	import MatrixBuilder._
+	
+	def apply(id: String): Matrix = prog.get_matrix(id)
+	
+	def build(): Matrix = {
+		jimpl_last_mat = jimpl.build();
+		jimpl.reset();
+		return new Matrix(id,dim,impl,prog).setImplementation(jimpl_last_mat);
 	}
-
-	class MatrixBuilder(prog: Program) {
-		import MatrixBuilder._
-		
-		def apply(id: String): Matrix = prog.get_matrix(id)
-		
-		def build(): Matrix = {
-			jimpl_last_mat = jimpl.build();
-			jimpl.reset();
-			return new Matrix(id,dim,impl,prog).setImplementation(jimpl_last_mat);
-		}
-		
-		def named(id: String): MatrixBuilder = { this.id = id; jimpl.setName(id); return this; }
-		
-		
-	// 	def row_major(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
-	// 	def col_major(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
-	// 	def triplets(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
-	// 	def compr_row(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
-	// 	def compr_col(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
-		
-		
-		def size(dim: MatrixDims): MatrixBuilder = {
-			this.dim = dim;
-			jimpl.setNofRows(dim.rows.number).setNofColumns(dim.cols.number);
-			return this;
-		}
-		
-		def of(eltype: MatrixElementType): MatrixBuilder = {
-			elTypeSet = true
-			jimpl.setElementType(eltype.wrapped);
-			return this;
-		}
-		
-		def on(semiring: Semiring): MatrixBuilder = {
-			jimpl.setSemiring(semiring.wrapped);
-			if (!elTypeSet) {
-			  jimpl.setElementType(semiring.defaultElementType.wrapped);
+	
+	def named(id: String): MatrixBuilder = { this.id = id; jimpl.setName(id); return this; }
+	
+	
+// 	def row_major(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
+// 	def col_major(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
+// 	def triplets(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
+// 	def compr_row(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
+// 	def compr_col(): MatrixBuilder = { impl = MatrixRowMajor(); return this; }
+	
+	
+	def size(dim: MatrixDims): MatrixBuilder = {
+		this.dim = dim;
+		jimpl.setNofRows(dim.rows.number).setNofColumns(dim.cols.number);
+		return this;
+	}
+	
+	def of(eltype: MatrixElementType): MatrixBuilder = {
+		elTypeSet = true
+		jimpl.setElementType(eltype.wrapped);
+		return this;
+	}
+	
+	def on(semiring: Semiring): MatrixBuilder = {
+		jimpl.setSemiring(semiring.wrapped);
+		if (!elTypeSet) {
+		  jimpl.setElementType(semiring.defaultElementType.wrapped);
 		}
 		return this
 	}

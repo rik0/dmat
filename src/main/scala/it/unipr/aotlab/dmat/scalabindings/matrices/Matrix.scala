@@ -27,9 +27,6 @@ trait MatrixInterface extends AssignableTo[Host,Unit] {
 	def assignTo(node: Host)
 	def exposeValues
 	
-	def does(f: MatrixInterface => Unit): MatrixInterface = { f(this); this }
-	def and (f: MatrixInterface => Unit): MatrixInterface = { f(this); this }
-	
 }
 
 object Matrix {
@@ -40,6 +37,43 @@ object Matrix {
 object MatrixChunk {
 	sealed trait AuthToken extends MatrixInterface.AuthToken
 	private implicit object Auth extends AuthToken
+}
+
+object MatrixTmpWrapper {
+	sealed trait AuthToken extends MatrixInterface.AuthToken
+	private implicit object Auth extends AuthToken
+}
+
+object MatrixTmpChunkWrapper {
+	sealed trait AuthToken extends MatrixInterface.AuthToken
+	private implicit object Auth extends AuthToken
+}
+
+
+// "filters" dangerous operations that cannot be done on a temporary (like using explicitly in a computation)
+class MatrixTmpWrapper(private val wrapped: Matrix) extends MatrixInterface {
+	import MatrixTmpWrapper._
+	
+	def getName: String = wrapped.getName
+	def getSize: MatrixDims = wrapped.getSize
+	
+	def assignTo(node: Host) = wrapped.assignTo(node)
+	def exposeValues = wrapped.exposeValues
+	
+	def chunk(name: String): MatrixTmpChunkWrapper = new MatrixTmpChunkWrapper(wrapped.chunk(name));
+	def chunk_of_:(name: String): MatrixTmpChunkWrapper = new MatrixTmpChunkWrapper(wrapped.chunk(name));
+	
+}
+
+class MatrixTmpChunkWrapper(private val wrapped: MatrixChunk) extends MatrixInterface {
+	import MatrixTmpChunkWrapper._
+	
+	def getName: String = wrapped.getName
+	def getSize: MatrixDims = wrapped.getSize
+	
+	def assignTo(node: Host) = wrapped.assignTo(node)
+	def exposeValues = wrapped.exposeValues
+
 }
 
 class MatrixChunk(val parent: Matrix, impl: Chunk) extends MatrixInterface {

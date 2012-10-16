@@ -8,6 +8,7 @@ import MatrixComparisons._
 
 
 trait MatrixExpression {
+	import MatrixExpressionImplementationException._
 
   def resultSize: MatrixDims
     
@@ -27,14 +28,37 @@ trait MatrixExpression {
     MatrixAdditionAssignment(this.asInstanceOf[Matrix],rhs).evaluateIn(ctx)
     return this.asInstanceOf[Matrix]
   }
+	
+	def :-=(rhs: MatrixExpression)(implicit ctx: MatrixOperationsContext): Matrix = {
+		throw new MatrixExpressionNotImplementedOperatorException(":-= (MatrixSubtractionAssignment)")
+	}
+
+	def :*=(rhs: MatrixExpression)(implicit ctx: MatrixOperationsContext): Matrix = {
+		throw new MatrixExpressionDMatWillFailException(":*=","MatrixMultiplicationAssignment","lhs := lhs * rhs")
+		this := this * rhs
+	}
 
   // ARITHMETIC OPERATORS
+	
+	def unary_- : MatrixNonAssignmentOperation = {
+		throw new MatrixExpressionNotImplementedOperatorException("unary_- (MatrixOpposite)")
+	}
+	
+	def +(rhs: MatrixExpression): MatrixAddition = new MatrixAddition(this,rhs)
+	
+	def -(rhs: MatrixExpression): MatrixNonAssignmentOperation = throw new MatrixExpressionNotImplementedOperatorException("- (MatrixSubtraction)")
+	
   def *(rhs: MatrixExpression): MatrixMultiplication = new MatrixMultiplication(this,rhs)
-
+	
+	// MATRIX OPERATORS
+	def transposed: Matrix = throw new MatrixExpressionNotImplementedOperatorException("transposed (MatrixTransposition)")
+	
+	def T: Matrix = transposed
 
   // COMPARISON OPERATORS
   def =?=(rhs: MatrixExpression)(implicit ctx: MatrixOperationsContext): Boolean = MatrixEquality(this,rhs).evaluateIn(ctx)._1
   
+	def =!?=(rhs: MatrixExpression)(implicit ctx: MatrixOperationsContext): Boolean = !(this =?= rhs)
    
 }
 
