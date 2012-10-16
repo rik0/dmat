@@ -144,7 +144,9 @@ You can also assign a whole matrix to a node: the library will assign each of th
 To initialize the matrix you must provide the filename that contains the values and the nodes in which initialize the matrix.
 The most verbose way to do this is, i.e.:
 
-	matrix("A").loadValuesFrom("/path/to/matrix/file").initializeIn(List[Host](MyNetGroup.node("nodename1"), MyNetGroup.node("nodename3")))
+	matrix("A").loadValuesFrom("/path/to/matrix/file")
+		   .initializeIn(List[Host](MyNetGroup.node("nodename1"), 
+				 MyNetGroup.node("nodename3")))
 
 But you can use the `apply` operator instead of `loadValuesFrom` and/or the `:=>` operator instead of `initializeIn`:
 	
