@@ -111,14 +111,27 @@ Besides the name and the size of the matrix, that are mandatory, you have to spe
 - the type of elements: of elements.INT32 (for a complete list of the elements type, see src/main/scala/it/unipr/aotlab/dmat/scalabindings/typewire/MatrixElementTypes.scala)
 - the semiring on which operate: on semiring.INT32TROPICAL (for a complete list of the semirings, see src/main/scala/it/unipr/aotlab/dmat/scalabindings/typewire/Semirings.scala)
 
-Then you can specify a split structure, i.e.:
+Then you can specify how the matrix is distributed among the nodes, e.g.:
 
 	define( matrix on semiring.BOOLEANORDINARY size(7 x 4) named "X" split(
 		( B("top-left",3 x 2) / B("top-right",3 x 2) ) -
 		( B("bottom-left",4 x 2) / B("bottom-right",4 x 2) )
 		) )
 
-splits the matrix "X" in 4 chunks, with specified names and dimensions.
+splits the matrix "X" in 4 chunks, with specified names and dimensions.:
+
+	   01 23 
+	  +--+--+
+	0 |  |  |
+	1 |  |  |
+	2 |  |  |
+	3 |  |  |
+	  +--+--+
+	4 |  |  |
+	5 |  |  |
+	6 |  |  |
+	7 |  |  |
+	  +--+--+
 
 #### Nodes assignation
 
