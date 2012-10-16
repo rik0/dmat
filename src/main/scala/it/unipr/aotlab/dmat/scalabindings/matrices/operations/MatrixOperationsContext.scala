@@ -12,6 +12,9 @@ class MatrixOperationsContext(temporaries: Set[Matrix]) {
   def getTemporary(op: MatrixOperation): (Matrix,MatrixOperationsContext) = {
     val candidates: Iterable[Matrix] = op.fit(temp_usage)
     if (candidates isEmpty) throw new MatrixOperationNotEnoughTemporariesInContextException(op,this)
+    val usg: Int = temp_usage(candidates.head)
+    if (usg > 0)
+      println("\033[33m[SCALA] WARNING: Reusing temporary "+candidates.head.getName+", already used "+usg+" times - results may not be correct\033[m")
     setUsedTemporary(candidates.head)
     return (candidates.head, this)
   }

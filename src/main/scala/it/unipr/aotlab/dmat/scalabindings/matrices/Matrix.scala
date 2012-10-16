@@ -14,98 +14,17 @@ import it.unipr.aotlab.dmat.core.generated.OrderSetMatrixWire.OrderSetMatrixBody
 import it.unipr.aotlab.dmat.core.generated.TypeWire;
 import it.unipr.aotlab.dmat.core.net.messages.MessageSetMatrix;
 
-object MatrixInterface {
-	sealed trait AuthToken
-}
 
-trait MatrixInterface extends AssignableTo[Host,Unit] {
-	import MatrixInterface._
-	
-	def getName: String
-	def getSize: MatrixDims
-	
-	def assignTo(node: Host)
-	def exposeValues
-	
-}
-
-object Matrix {
-	sealed trait AuthToken extends MatrixInterface.AuthToken
-	private implicit object Auth extends AuthToken
-}
-
-object MatrixChunk {
-	sealed trait AuthToken extends MatrixInterface.AuthToken
-	private implicit object Auth extends AuthToken
-}
-
-object MatrixTmpWrapper {
-	sealed trait AuthToken extends MatrixInterface.AuthToken
-	private implicit object Auth extends AuthToken
-}
-
-object MatrixTmpChunkWrapper {
-	sealed trait AuthToken extends MatrixInterface.AuthToken
-	private implicit object Auth extends AuthToken
-}
-
-
-// "filters" dangerous operations that cannot be done on a temporary (like using explicitly in a computation)
-class MatrixTmpWrapper(private val wrapped: Matrix) extends MatrixInterface {
-	import MatrixTmpWrapper._
-	
-	def getName: String = wrapped.getName
-	def getSize: MatrixDims = wrapped.getSize
-	
-	def assignTo(node: Host) = wrapped.assignTo(node)
-	def exposeValues = wrapped.exposeValues
-	
-	def chunk(name: String): MatrixTmpChunkWrapper = new MatrixTmpChunkWrapper(wrapped.chunk(name));
-	def chunk_of_:(name: String): MatrixTmpChunkWrapper = new MatrixTmpChunkWrapper(wrapped.chunk(name));
-	
-}
-
-class MatrixTmpChunkWrapper(private val wrapped: MatrixChunk) extends MatrixInterface {
-	import MatrixTmpChunkWrapper._
-	
-	def getName: String = wrapped.getName
-	def getSize: MatrixDims = wrapped.getSize
-	
-	def assignTo(node: Host) = wrapped.assignTo(node)
-	def exposeValues = wrapped.exposeValues
-
-}
-
-class MatrixChunk(val parent: Matrix, impl: Chunk) extends MatrixInterface {
-	import MatrixChunk._
-	import IntToDims._
-	
-	override def getName: String = impl.getChunkId()
-	override def getSize: MatrixDims = (impl.getEndRow()-impl.getStartRow()+1) x (impl.getEndCol()-impl.getStartCol()+1)
-	
-	override def assignTo(node: Host) = {
-		jimpl.assignChunkToNode(node.getImplementation)
-		println("[SCALA] Chunk "+jimpl+" of matrix "+parent.getName+" assigned to node //"+node.ip+":"+node.port+"/")
-	}
-	
-	override def exposeValues { jimpl.sendMessageExposeValues();  }
-	
-	override def toString(): String = impl.toString();
-	
-	private val jimpl: Chunk = impl
-	
-}
 
 class Matrix(name: String, size: MatrixDims, impl: MatrixImpl, prog: Program)
-		extends MatrixInterface with MatrixExpression {
-	import Matrix._
+		extends MatrixExpression with AssignableTo[Host,Unit] {
 	prog.register(name,this)
 	import IntToDims._
 	
 	import scala.collection.JavaConversions._
 
-	override def getName: String = jimpl.getMatrixId();
-	override def getSize: MatrixDims = jimpl.getNofRows() x jimpl.getNofCols();
+	def getName: String = jimpl.getMatrixId();
+	def getSize: MatrixDims = jimpl.getNofRows() x jimpl.getNofCols();
 	
 	override def resultSize: MatrixDims = getSize
 	override protected[matrices] def evaluateIn(ctx: MatrixOperationsContext): (Matrix, MatrixOperationsContext) = (this,ctx)
@@ -118,7 +37,7 @@ class Matrix(name: String, size: MatrixDims, impl: MatrixImpl, prog: Program)
 		println("[SCALA] Matrix "+getName+" assigned to node //"+node.ip+":"+node.port+"/")
 	}
 	
-	override def exposeValues {
+	def exposeValues {
 		for (c: Chunk <- jimpl.getChunks()) {
 			println("[SCALA] exposing values of chunk "+chunk(c.getChunkId))
 			c.sendMessageExposeValues();

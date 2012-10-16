@@ -14,7 +14,7 @@ import it.unipr.aotlab.dmat.core.matrices.Multiplication
 sealed abstract class MatrixOperation extends MatrixOperations.Value with MatrixExpression {
    
   // order a vector of matrices by fitness
-  def fit(ms: scala.collection.Map[Matrix,Int]): Iterable[Matrix] = ms.filterKeys(BySize(resultSize)).toList.map { p: (Matrix,Int) => p._1 } 
+  def fit(ms: scala.collection.Map[Matrix,Int]): Iterable[Matrix] = ms.filterKeys(BySize(resultSize)).toList.sortWith(_._2 < _._2).map { p: (Matrix,Int) => p._1 } 
   
 }
 

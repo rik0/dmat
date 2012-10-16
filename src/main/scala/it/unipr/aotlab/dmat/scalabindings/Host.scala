@@ -1,7 +1,7 @@
 package it.unipr.aotlab.dmat.scalabindings
 
-import it.unipr.aotlab.dmat.scalabindings.matrices.MatrixInterface
 import it.unipr.aotlab.dmat.scalabindings.matrices.Matrix
+import it.unipr.aotlab.dmat.scalabindings.matrices.MatrixChunk
 
 import it.unipr.aotlab.dmat.core.net.Node;
 import it.unipr.aotlab.dmat.core.matrices.Chunk;
@@ -9,7 +9,7 @@ import it.unipr.aotlab.dmat.core.net.messages.MessageShutdown;
 
 
 class Host(val ip: String, val port: Int)
-		extends (Host CanHaveAssigned MatrixInterface) {
+		extends (Host CanHaveAssigned AssignableTo[Host,_]) {
 	
 	def print() = println("[SCALA] //"+ip+":"+port+"/")
 	
@@ -20,9 +20,7 @@ class Host(val ip: String, val port: Int)
 		return this;
 	}
 	
-	def getImplementation(implicit auth: MatrixInterface.AuthToken with NotNull): it.unipr.aotlab.dmat.core.net.Node = {
-		return jimpl
-	}
+	def getImplementation: it.unipr.aotlab.dmat.core.net.Node = jimpl
 	
 	private var jimpl: it.unipr.aotlab.dmat.core.net.Node = _;
 	
