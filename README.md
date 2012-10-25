@@ -113,29 +113,73 @@ Besides the name and the size of the matrix, that are mandatory, you have to spe
 
 Then you can specify how the matrix is distributed among the nodes, e.g.:
 
-	define( matrix on semiring.BOOLEANORDINARY size(7 x 4) named "X" split(
-		( B("top-left",3 x 2) / B("top-right",3 x 2) ) -
-		( B("bottom-left",4 x 2) / B("bottom-right",4 x 2) )
+	define( matrix on semiring.BOOLEANORDINARY size(4 x 7) named "X" split(
+		( B("top-left",2 x 3) / B("top-right",2 x 3) ) -
+		( B("bottom-left",2 x 4) / B("bottom-right",2 x 4) )
 		) )
 
-splits the matrix "X" in 4 chunks, with specified names and dimensions.:
+splits the matrix "X" in 4 chunks, with specified names and dimensions:
 
-	   01 23 
-	  +--+--+
-	0 |  |  |
-	1 |  |  |
-	2 |  |  |
-	3 |  |  |
-	  +--+--+
-	4 |  |  |
-	5 |  |  |
-	6 |  |  |
-	7 |  |  |
-	  +--+--+
+	   012 3456 
+	  +---+----+
+	0 |   |    |
+	1 |   |    |
+	  +---+----+
+	2 |   |    |
+	3 |   |    |
+	  +---+----+
+
+Note that the symbol `B` has been used as a function to declare blocks, so you can't declare variables with that name.
+A more complicated example:
+
+	define( matrix named "Y" size(11 x 24) of elements.UINT16 split(
+		 ( B("LT",6 x 14) - 
+		   ( (B("LBLT",3 x 7) - B("LBLB",2 x 7) ) ) / B("LBR",5 x 5) ) / B("C",11 x 1) / 
+		 ( B("RTL",3 x 5) / B("RTR",3 x 4) - B("RC",1 x 9) - B("RBT",2 x 9) - B("RBB",5 x 9) )
+		) )
+
+becomes:
+
+	               1            2
+	    0123456 7890123 4 56789 0123
+	   +---------------+-+-----+----+
+	 0 |               | |     |    |
+	 1 |               | | RTL |RTR |
+	 2 |               | |     |    |
+	   |      LT       | +-----+----+
+	 3 |               | |    RC    |
+	   |               | +----------+
+	 4 |               | |   RBT    |
+	 5 |               |C|          |
+	   +-------+-------+ +----------+
+	 6 |       |       | |          |
+	 7 | LBLT  |       | |          |
+	 8 |       |  LBR  | |   RBB    |
+	   +-------+       | |          |
+	 9 | LBLB  |       | |          |
+	10 |       |       | |          |
+	   +-------+-------+-+----------+
+
+
+##### A note on temporaries
+
+As already said, temporaries are a special kind of matrix that you don't use directly, but takes part in compound computations.
+As an example, suppose you have 4 matrices `A`,`B`,`C`,`D` of proper sizes, and you want to compute `A*B*C` and store the result in `D`.
+The underlying Java implementation of DMat doesn't support the multiplication of three matrices, but only of two.
+With the Scala implementation you can do it, like this:
+
+	matrix("D") := matrix("A") * matrix("B") * matrix("C")
+
+But how is this implemented? First the result `A*B` is computed, then it is multiplicated by `C`.
+So the program requires a matrix to store the first sub-result (`A*B`). We say this is a _temporary_, because you need it only to reach the final result.
+Due to the distributed nature of the library, this temporary must be declared explicitly by the programmer: nobody else knows how this matrix must be associated, if and how it has to be splitted...
+
+Therefore you tipically declare a set of temporary matrices: when the program needs a temporary, the Scala implementation selects one, the _"most suitable"_ for the operation.
+
 
 #### Nodes assignation
 
-You have to assign each chunk to a node.
+You have to assign each chunk to a node. This node will be responsible of the chunk, and will receive the data that fill the chunk when you perform operations where that chunk belongs to the outputs.
 You can access a chunk via any of the following forms:
 
 - `matrix("X").chunk("top-left")`
@@ -180,23 +224,31 @@ Finally, any of the forms you choose, you can invert the order:
 #### Computations
 
 You can use directly the matrices with the available operators.
+For each operator it is specified if it's built-in in the java
+implementation and/or if it's currently available.
 
 ##### Assignment
 
-- `:=` simple assignment
-- `:+=` addition and assignment
+- `:=` simple assignment (copy: built-in)
+- `:+=` addition and assignment (built-in)
+- `:-=` subtraction and assignment (not implemented)
+- `:*=` multiplication and assignment (throws an exception)
+- `:=*` pre-multiplication and assignment (throws an exception)
 
 ##### Arithmetic
 
-- `*` product
+- `-` unary minus (not implemented)
+- `+` addition
+- `-` subtraction (not implemented)
+- `*` product (built-in)
 
 ##### Matrix
 
-- `transposed`, `T` transposition
+- `transposed`, `T` transposition (not implemented)
 
 ##### Comparison
 
-- `=?=` equality
+- `=?=` equality (built-in)
 - `=!?=` inequality
 
 

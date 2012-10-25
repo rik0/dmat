@@ -34,10 +34,17 @@ trait MatrixExpression {
 	}
 
 	def :*=(rhs: MatrixExpression)(implicit ctx: MatrixOperationsContext): Matrix = {
-		throw new MatrixExpressionDMatWillFailException(":*=","MatrixMultiplicationAssignment","lhs := lhs * rhs")
+		// TODO When this will be fixed, uncomment optimizations in MatrixMultiplication
+    throw new MatrixExpressionDMatWillFailException(":*=","MatrixMultiplicationAssignment","lhs := lhs * rhs")
 		this := this * rhs
 	}
-
+  
+  def :=*(rhs: MatrixExpression)(implicit ctx: MatrixOperationsContext): Matrix = {
+		// TODO When this will be fixed, uncomment optimizations in MatrixMultiplication
+    throw new MatrixExpressionDMatWillFailException(":=*","MatrixPreMultiplicationAssignment","lhs := rhs * lhs")
+		this := rhs * this
+	}
+  
   // ARITHMETIC OPERATORS
 	
 	def unary_- : MatrixNonAssignmentOperation = {

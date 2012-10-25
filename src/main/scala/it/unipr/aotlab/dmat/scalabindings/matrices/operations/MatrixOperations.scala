@@ -79,7 +79,7 @@ object MatrixOperations extends Enum[MatrixOperation] {
     
   }
 	
-	case class MatrixAddition(lhs: MatrixExpression, rhs: MatrixExpression) extends MatrixNonAssignmentOperation {
+  case class MatrixAddition(lhs: MatrixExpression, rhs: MatrixExpression) extends MatrixNonAssignmentOperation {
 		println("[SCALA] addition : "+lhs.resultSize+" vs "+rhs.resultSize) 
     assert(lhs.resultSize == rhs.resultSize, { throw new MatrixOperationIncompatibleSizesException(this) } )
     
@@ -131,7 +131,25 @@ object MatrixOperations extends Enum[MatrixOperation] {
       println("[SCALA] computing a matrix multiplication: "+lhs+" x "+rhs+" >> "+result)
       if (result.getSize != resultSize) throw new MatrixOperationInvalidOutputSizeException(this,result)
       val op: it.unipr.aotlab.dmat.core.matrices.Multiplication = new it.unipr.aotlab.dmat.core.matrices.Multiplication();
+      // TODO Uncomment when the :*= operator will be available
+      // // Save a temporary if the lhs needs one
+			// if (lhs.isInstanceOf[MatrixNonAssignmentOperation]) {
+			//	val c1 = lhs.asInstanceOf[MatrixNonAssignmentOperation].compute(result,ctx)
+			//	val r2: (Matrix, MatrixOperationsContext) = rhs.evaluateIn(c1)
+			//	implicit var unused_context: MatrixOperationsContext = r2._2
+			//	result :*= r2._1
+			//	return c2
+			//}
       val r1: (Matrix, MatrixOperationsContext) = lhs.evaluateIn(ctx)
+      // TODO Uncomment when the :=* operator will be available
+			// // Evaluation of the above line preserves left-to-right evaluation order
+			// // Save a temporary if the rhs needs one
+			// if (rhs.isInstanceOf[MatrixNonAssignmentOperation]) {
+			//	val c2 = rhs.asInstanceOf[MatrixNonAssignmentOperation].compute(result,r1._2)
+			//	implicit var unused_context: MatrixOperationsContext = c2
+			//	result :=* r1._1
+			//	return r2._2
+			//}
       val r2: (Matrix, MatrixOperationsContext) = rhs.evaluateIn(r1._2)
       op.setOperands(result.getImplementation,r1._1.getImplementation,r2._1.getImplementation);
       op.exec();
