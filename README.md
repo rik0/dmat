@@ -19,26 +19,26 @@ In the below example it will be installed in `$BASE/usr`
 
 1. *Install zeromq*
 
-	\# Move to the folder where you want to place zeromq sources
-	wget 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
-	tar xf zeromq-2.2.0.tar.gz
-	cd zeromq-2.2.0
-	./autogen.sh
-	./configure prefix="$BASE/usr" --with-pgm
-	make
-	make install
+		\# Move to the folder where you want to place zeromq sources
+		wget 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
+		tar xf zeromq-2.2.0.tar.gz
+		cd zeromq-2.2.0
+		./autogen.sh
+		./configure prefix="$BASE/usr" --with-pgm
+		make
+		make install
 
 2. *Install JZMQ*
 
-	\# Move to the folder where you want to place jzmq sources
-	git clone 'git://github.com/zeromq/jzmq.git'
-	cd jzmq
-	./autogen.sh
-	LDFLAGS="-Wl,-rpath -Wl,$BASE/usr/lib" ./configure --with-zeromq="$BASE/usr" --prefix="$BASE/usr"
-	make
-	make install
-	mvn package
-	mvn install:install-file -Dfile="`readlink -e target/jzmq-1.1.0-SNAPSHOT-sources.jar`" -DgroupId=org.zeromq -DartifactId=jzmq -Dversion=1.1.0-SNAPSHOT -Dpackaging=jar
+		\# Move to the folder where you want to place jzmq sources
+		git clone 'git://github.com/zeromq/jzmq.git'
+		cd jzmq
+		./autogen.sh
+		LDFLAGS="-Wl,-rpath -Wl,$BASE/usr/lib" ./configure --with-zeromq="$BASE/usr" --prefix="$BASE/usr"
+		make
+		make install
+		mvn package
+		mvn install:install-file -Dfile="`readlink -e target/jzmq-1.1.0-SNAPSHOT-sources.jar`" -DgroupId=org.zeromq -DartifactId=jzmq -Dversion=1.1.0-SNAPSHOT -Dpackaging=jar
 
 3. *Install DMat* read on, but modify pom.xml: in the tag extraJvmArguments change the java.library.path to `$BASE/usr`, i.e. where you have the zeromq natives
 
